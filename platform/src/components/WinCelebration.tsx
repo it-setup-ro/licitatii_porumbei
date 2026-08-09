@@ -160,6 +160,12 @@ export default function WinCelebration({
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
       )}
       <div className="relative z-10 mx-4 rounded-3xl bg-ivory p-8 text-center shadow-2xl">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/brand/logo.jpeg"
+          alt=""
+          className="mx-auto mb-3 h-20 w-20 rounded-full object-cover shadow-md"
+        />
         <div className="wing-gradient mx-auto mb-4 h-1.5 w-24 rounded-full" />
         <h2 className="font-display text-3xl font-bold">{t("title")}</h2>
         <p className="mt-1 text-ink/70">{t("subtitle")}</p>

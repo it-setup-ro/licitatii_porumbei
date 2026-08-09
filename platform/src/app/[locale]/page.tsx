@@ -26,7 +26,7 @@ export default async function HomePage({
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink text-ivory">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-20 text-center">
-          <LogoMark size={80} />
+          <LogoMark size={120} shape="card" />
           <h1 className="font-display max-w-2xl text-4xl font-bold leading-tight md:text-5xl">
             <span className="wing-gradient-text">{t("heroTitle")}</span>
           </h1>
