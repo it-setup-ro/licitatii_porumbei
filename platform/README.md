@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# No.1 & Best Pigeons — Platformă de licitații de porumbei
 
-## Getting Started
+Platformă web custom, full-stack, bilingvă RO/EN, cu licitații live în timp real,
+proxy-bidding, anti-sniping, plăți cu comision, notificări și rating de vânzători.
+Construită conform `../research-report.md` și `../client-decisions.md`.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router) + React 19 + TypeScript
+- **Prisma 6** + SQLite (dev) — schemă compatibilă PostgreSQL pentru producție
+- **next-intl** — bilingv RO/EN cu comutator de limbă
+- **SSE** (Server-Sent Events) — actualizări live la licitare (preț, prelungiri, închidere)
+- **Tailwind 4** — design system pe paleta din logo (ivory / negru / degrade aripă)
+- Plăți: strat de abstractizare (`src/lib/payments.ts`) cu **MockProvider** în dev
+  și schelet **Stripe Connect** pentru producție
+
+## Pornire
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npx prisma migrate dev   # creeaza dev.db
+npm run db:seed          # date demo
+npm run dev              # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Conturi demo (după seed)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Rol | E-mail | Parolă | Note |
+|---|---|---|---|
+| Admin | admin@nbp.test | admin1234 | panou `/ro/admin` |
+| Vânzător aprobat | seller@nbp.test | seller1234 | Columbodromul Câmpeanu |
+| Vânzător în așteptare | pending-seller@nbp.test | seller1234 | pt. testul de aprobare |
+| Cumpărător cu istoric | buyer1@nbp.test | buyer1234 | fără limită de licitare |
+| Cumpărător nou | buyer2@nbp.test | buyer1234 | limită 1.000 EUR (KYC hibrid) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Teste
 
-## Learn More
+```bash
+npm test          # unitare (Vitest): motorul de proxy-bidding, anti-sniping, bani
+npm run test:e2e  # Playwright: 19 teste pe DB separată (prisma/test.db), server pe :3100
+```
 
-To learn more about Next.js, take a look at the following resources:
+Suita e2e acoperă: pagini publice + i18n, înregistrare/login, cererea de cont
+vânzător, războiul de oferte între doi utilizatori reali (cu actualizări SSE),
+limita conturilor noi, anti-sniping, închiderea licitației cu animația stolului,
+plata mock, recenzii, moderarea admin (vânzători/loturi/recenzii) și panoul de
+setări cu audit trail.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Arhitectură — pe scurt
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `src/lib/bidding.ts` — logica pură de proxy-bidding (testabilă fără DB)
+- `src/lib/auction-service.ts` — tranzacții DB + race-condition safety + sweep
+  (pornire/închidere licitații; rulează la 15s prin `src/instrumentation.ts`)
+- `src/lib/settings.ts` — panoul de setări (client-decisions §G): toți parametrii
+  comerciali sunt configurabili din admin, cu audit trail
+- `src/lib/events.ts` — bus de evenimente in-memory (înlocuibil cu Redis pub/sub)
+- `src/app/api/*` — API-ul (auth, bid, stream SSE, sell, orders, admin)
+- `src/app/[locale]/*` — paginile, toate bilingve (messages/ro.json, en.json)
 
-## Deploy on Vercel
+## Producție — ce rămâne de făcut
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- PostgreSQL (schimbă `datasource` în `prisma/schema.prisma`) + Redis pub/sub pt. SSE multi-instanță
+- Stripe Connect real (chei în env, webhook-uri) — interfața există deja
+- Upload de imagini (acum: URL-uri) și e-mail real (acum: EmailLog + consolă)
+- SMS (Twilio/SMSLink) — pregătit, dezactivat conform deciziei D16

@@ -95,10 +95,12 @@ export function computeBid(input: BidInput): BidOutcome {
     };
   }
 
-  const step = incrementFor(currentPriceCents, tiers);
-
+  // Pasul se calculeaza la nivelul de pret unde are loc competitia (plafonul
+  // invins), nu la pretul vizibil vechi — altfel la plafoane mari pretul ar
+  // sari cu un pas nejustificat de mic.
   if (maxCents > leader.maxCents) {
     // Noul ofertant preia conducerea
+    const step = incrementFor(leader.maxCents, tiers);
     return {
       accepted: true,
       newLeader: { bidderId, maxCents },
@@ -110,6 +112,7 @@ export function computeBid(input: BidInput): BidOutcome {
   }
 
   // Plafon insuficient: liderul ramane, pretul urca (egalitate: primul venit castiga)
+  const step = incrementFor(maxCents, tiers);
   return {
     accepted: true,
     newLeader: leader,

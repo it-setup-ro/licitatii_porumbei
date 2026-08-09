@@ -28,8 +28,8 @@ export default function SiteHeader({
 
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.refresh();
-    router.push("/");
+    // reload complet: evita cache-ul de ruta al Next, care ar pastra header-ul vechi
+    window.location.assign("/");
   };
 
   return (

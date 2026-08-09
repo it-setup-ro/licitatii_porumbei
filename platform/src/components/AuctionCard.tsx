@@ -83,7 +83,11 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
           </div>
           <div className="text-right">
             <p className="text-xs uppercase tracking-wide text-ink/50">
-              {auction.status === "SCHEDULED" ? t("startsIn") : t("endsIn")}
+              {auction.status === "SCHEDULED"
+                ? t("startsIn")
+                : auction.status === "CLOSED"
+                  ? t("endedAt")
+                  : t("endsIn")}
             </p>
             {auction.status !== "CLOSED" ? (
               <Countdown
