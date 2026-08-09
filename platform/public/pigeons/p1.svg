@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="wing" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2E6E9E"/><stop offset="0.4" stop-color="#F2B417"/>
+      <stop offset="0.7" stop-color="#E8720C"/><stop offset="1" stop-color="#C0341D"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="#F3EEE1"/>
+  <ellipse cx="400" cy="480" rx="260" ry="30" fill="#1B1B1B" opacity="0.08"/>
+  <path d="M250 400 Q230 300 320 250 Q360 160 480 180 Q560 120 620 200 Q660 260 600 320 Q620 400 520 440 Q420 480 320 450 Q270 435 250 400 Z" fill="#1B1B1B"/>
+  <path d="M330 300 Q420 180 590 210 Q540 300 430 330 Q370 345 330 300 Z" fill="url(#wing)"/>
+  <circle cx="560" cy="220" r="8" fill="#F3EEE1"/>
+  <path d="M615 230 L665 245 L612 255 Z" fill="#E8720C"/>
+  <text x="400" y="560" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#1B1B1B">RO 2023 445566</text>
+</svg>

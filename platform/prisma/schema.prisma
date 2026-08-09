@@ -1,0 +1,238 @@
+// No.1 & Best Pigeons — schema de date
+// SQLite in dev (fara enums/Json native — folosim String; sume in bani/centi ca Int).
+// Proiectata Postgres-compatibil pentru productie.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  passwordHash     String
+  name             String
+  phone            String?
+  locale           String    @default("ro")
+  role             String    @default("BUYER") // BUYER | SELLER | ADMIN
+  sellerStatus     String? // PENDING | APPROVED | REJECTED
+  sellerCompany    String?
+  sellerCui        String?
+  sellerIban       String?
+  sellerBio        String?
+  emailVerifiedAt  DateTime?
+  phoneVerifiedAt  DateTime?
+  bidLimitOverride Int? // in centi; null = limita default platforma pt conturi noi
+  completedOrders  Int       @default(0)
+  suspendedAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  pigeons         Pigeon[]
+  bids            Bid[]
+  watchlist       WatchItem[]
+  ordersAsBuyer   Order[]        @relation("buyer")
+  ordersAsSeller  Order[]        @relation("seller")
+  reviewsGiven    Review[]       @relation("reviewAuthor")
+  reviewsReceived Review[]       @relation("reviewSeller")
+  notifications   Notification[]
+  auditLogs       AuditLog[]
+  auctionsWon     Auction[]      @relation("winner")
+  approvedLots    Auction[]      @relation("approver")
+}
+
+model Pigeon {
+  id          String  @id @default(cuid())
+  sellerId    String
+  seller      User    @relation(fields: [sellerId], references: [id])
+  ringNumber  String // ex: RO 2024 123456
+  birthYear   Int
+  sex         String // M | F | U
+  color       String?
+  strain      String? // linia/rasa (ex. Janssen, Van Loon)
+  category    String  @default("RACING") // RACING | FANCY
+  titleRo     String
+  titleEn     String
+  descRo      String?
+  descEn      String?
+  pedigreeJson String? // arbore genealogic serializat JSON (max 4 generatii)
+  dnaCertified Boolean @default(false)
+
+  results PigeonResult[]
+  media   MediaAsset[]
+  auction Auction?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PigeonResult {
+  id           String  @id @default(cuid())
+  pigeonId     String
+  pigeon       Pigeon  @relation(fields: [pigeonId], references: [id], onDelete: Cascade)
+  raceName     String
+  year         Int?
+  distanceKm   Int?
+  place        Int
+  participants Int?
+  note         String?
+}
+
+model MediaAsset {
+  id       String  @id @default(cuid())
+  pigeonId String
+  pigeon   Pigeon  @relation(fields: [pigeonId], references: [id], onDelete: Cascade)
+  type     String // IMAGE | VIDEO | DOCUMENT
+  url      String
+  title    String?
+  sortIdx  Int     @default(0)
+}
+
+model Auction {
+  id                   String    @id @default(cuid())
+  pigeonId             String    @unique
+  pigeon               Pigeon    @relation(fields: [pigeonId], references: [id])
+  sellerId             String
+  status               String    @default("PENDING_APPROVAL") // DRAFT | PENDING_APPROVAL | REJECTED | SCHEDULED | LIVE | CLOSED | CANCELLED
+  rejectReason         String?
+  listingType          String    @default("SELF") // SELF | ASSISTED
+  currency             String    @default("EUR")
+  startPriceCents      Int
+  currentPriceCents    Int       @default(0)
+  minIncrementOverride Int?
+  startsAt             DateTime
+  endsAt               DateTime
+  originalEndsAt       DateTime
+  extensionsCount      Int       @default(0)
+  winnerId             String?
+  winner               User?     @relation("winner", fields: [winnerId], references: [id])
+  winningBidId         String?
+  reserveNotMet        Boolean   @default(false)
+  dnaSexGuaranteed     Boolean   @default(false)
+  shippingMode         String    @default("SELLER") // SELLER | PICKUP | PLATFORM
+  shippingPayer        String    @default("BUYER") // BUYER | SELLER
+  approvedAt           DateTime?
+  approvedById         String?
+  approvedBy           User?     @relation("approver", fields: [approvedById], references: [id])
+  closedAt             DateTime?
+
+  bids      Bid[]
+  watchers  WatchItem[]
+  order     Order?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, endsAt])
+}
+
+model Bid {
+  id             String   @id @default(cuid())
+  auctionId      String
+  auction        Auction  @relation(fields: [auctionId], references: [id])
+  bidderId       String
+  bidder         User     @relation(fields: [bidderId], references: [id])
+  amountCents    Int // oferta vizibila la momentul plasarii
+  maxAmountCents Int // plafonul proxy (secret)
+  isLeading      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  @@index([auctionId, createdAt])
+}
+
+model WatchItem {
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  auctionId String
+  auction   Auction @relation(fields: [auctionId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@id([userId, auctionId])
+}
+
+model Order {
+  id               String    @id @default(cuid())
+  auctionId        String    @unique
+  auction          Auction   @relation(fields: [auctionId], references: [id])
+  buyerId          String
+  buyer            User      @relation("buyer", fields: [buyerId], references: [id])
+  sellerId         String
+  seller           User      @relation("seller", fields: [sellerId], references: [id])
+  amountCents      Int // pretul de adjudecare
+  commissionCents  Int // comisionul platformei (din vanzator)
+  currency         String    @default("EUR")
+  status           String    @default("PENDING_PAYMENT") // PENDING_PAYMENT | PAID | SHIPPED | DELIVERED | DISPUTED | CANCELLED
+  paymentRef       String?
+  paidAt           DateTime?
+  payoutStatus     String    @default("PENDING") // PENDING | SCHEDULED | RELEASED
+  payoutAt         DateTime?
+  shippingNote     String?
+  review           Review?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Review {
+  id            String    @id @default(cuid())
+  orderId       String    @unique
+  order         Order     @relation(fields: [orderId], references: [id])
+  sellerId      String
+  seller        User      @relation("reviewSeller", fields: [sellerId], references: [id])
+  authorId      String
+  author        User      @relation("reviewAuthor", fields: [authorId], references: [id])
+  rating        Int // 1..5
+  comment       String?
+  sellerReply   String?
+  status        String    @default("VISIBLE") // VISIBLE | REPORTED | HIDDEN
+  reportReason  String?
+  moderNote     String?
+  editableUntil DateTime
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([sellerId, status])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  type      String // OUTBID | AUCTION_ENDING | AUCTION_WON | AUCTION_LOST | SELLER_SOLD | LOT_APPROVED | LOT_REJECTED | ORDER_PAID | SELLER_APPROVED | REVIEW_RECEIVED
+  paramsJson String // parametri pt randare localizata
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt])
+}
+
+model EmailLog {
+  id        String   @id @default(cuid())
+  toEmail   String
+  subject   String
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model PlatformSetting {
+  key       String   @id
+  value     String // JSON serializat
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actor     User?    @relation(fields: [actorId], references: [id])
+  action    String // ex: SETTING_CHANGED, LOT_APPROVED, USER_SUSPENDED, REVIEW_HIDDEN
+  entity    String?
+  entityId  String?
+  dataJson  String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

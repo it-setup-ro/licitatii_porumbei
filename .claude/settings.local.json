@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\daniel\\\\.claude\\\\projects\\\\C--Users-daniel-Downloads-Pagina-licitatii-porumbei\" -Recurse -File | Select-Object FullName, @{N='MB';E={[math]::Round\\($_.Length/1MB,2\\)}}, LastWriteTime | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\daniel\\\\.claude\\\\projects\\\\C--Users-daniel-Downloads-Pagina-licitatii-porumbei\" -Recurse -File | ForEach-Object { \"{0,10:N2} MB  {1}  {2}\" -f \\($_.Length/1MB\\), $_.LastWriteTime, $_.Name })",
+      "PowerShell($f=\"C:\\\\Users\\\\daniel\\\\.claude\\\\projects\\\\C--Users-daniel-Downloads-Pagina-licitatii-porumbei\\\\b1af949f-a5dc-4a98-b4f0-170ad4c30a1b.jsonl\"; $last = Get-Content $f -Tail 3; foreach\\($l in $last\\){ if\\($l.Length -gt 600\\){$l.Substring\\(0,600\\)}else{$l}; \"---\" }; $m=\"C:\\\\Users\\\\daniel\\\\.claude\\\\projects\\\\C--Users-daniel-Downloads-Pagina-licitatii-porumbei\\\\b1af949f-a5dc-4a98-b4f0-170ad4c30a1b\\\\subagents\\\\agent-a9d07755deda2d9ac.meta.json\"; Get-Content $m)",
+      "WebFetch(domain:auctions.pipa.be)",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\daniel\\\\Downloads\\\\Pagina licitatii porumbei\\\\research-notes\")",
+      "WebFetch(domain:pigeonboss.com)",
+      "WebSearch",
+      "Bash(curl -sL -o /dev/null -w \"%{http_code}\" -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36\" \"https://auctions.pipa.be/en\")",
+      "Bash(curl -sL -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36\" \"https://auctions.pipa.be/en\")",
+      "WebFetch(domain:www.pipa.be)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36' https://auctions.pipa.be/en/upcoming-auctions -o /c/Users/daniel/AppData/Local/Temp/claude/C--Users-daniel-Downloads-Pagina-licitatii-porumbei/af756fd6-30c7-4445-858a-d15afa06aa4d/scratchpad/pipa/upcoming.html)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36' https://auctions.pipa.be/en/auction/2026-08-victoria-falls-one-loft-race -o /c/Users/daniel/AppData/Local/Temp/claude/C--Users-daniel-Downloads-Pagina-licitatii-porumbei/af756fd6-30c7-4445-858a-d15afa06aa4d/scratchpad/pipa/auction-vf.html)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36' https://auctions.pipa.be/en/frequently-asked-questions -o /c/Users/daniel/AppData/Local/Temp/claude/C--Users-daniel-Downloads-Pagina-licitatii-porumbei/af756fd6-30c7-4445-858a-d15afa06aa4d/scratchpad/pipa/faq.html)",
+      "Read(//c/Users/daniel/AppData/Local/Temp/claude/C--Users-daniel-Downloads-Pagina-licitatii-porumbei/af756fd6-30c7-4445-858a-d15afa06aa4d/scratchpad/pipa/**)",
+      "Bash(python -)",
+      "WebFetch(domain:www.newipigeon.com)",
+      "Bash(export PYTHONIOENCODING=utf-8)",
+      "WebFetch(domain:www.amazing-wings.com)",
+      "WebFetch(domain:auction.amazing-wings.com)",
+      "WebFetch(domain:dutchpigeons.nl)",
+      "WebFetch(domain:www.columba.ro)",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36' https://auctions.pipa.be/en/auction-archive -o /c/Users/daniel/AppData/Local/Temp/claude/C--Users-daniel-Downloads-Pagina-licitatii-porumbei/af756fd6-30c7-4445-858a-d15afa06aa4d/scratchpad/pipa/archive.html)",
+      "Bash(grep -oE '\\(api|endpoint|/jsonapi|vue|graphql\\)[^\"]{0,80}' /c/Users/daniel/AppData/Local/Temp/claude/C--Users-daniel-Downloads-Pagina-licitatii-porumbei/af756fd6-30c7-4445-858a-d15afa06aa4d/scratchpad/pipa/home.html)",
+      "WebFetch(domain:www.rpra.org)"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#FAF7EF"/>
+  <ellipse cx="400" cy="490" rx="240" ry="26" fill="#1B1B1B" opacity="0.08"/>
+  <path d="M280 410 Q250 310 340 260 Q380 180 490 200 Q570 150 620 220 Q650 280 590 330 Q610 400 510 440 Q410 470 330 445 Q295 432 280 410 Z" fill="#2E6E9E"/>
+  <path d="M350 310 Q440 200 600 230 Q550 310 450 335 Q390 350 350 310 Z" fill="#F2B417"/>
+  <circle cx="565" cy="235" r="7" fill="#F3EEE1"/>
+  <path d="M618 245 L662 258 L615 268 Z" fill="#C0341D"/>
+  <text x="400" y="560" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#1B1B1B">RO 2024 220044</text>
+</svg>
