@@ -1,13 +1,14 @@
 // No.1 & Best Pigeons — schema de date
-// SQLite in dev (fara enums/Json native — folosim String; sume in bani/centi ca Int).
-// Proiectata Postgres-compatibil pentru productie.
+// PostgreSQL. Campurile de tip status/rol raman String (nu enum) iar sumele
+// sunt in bani/centi ca Int — schema a fost proiectata initial pe SQLite si
+// pastreaza aceleasi tipuri pentru compatibilitate cu tot codul existent.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

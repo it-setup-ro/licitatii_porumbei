@@ -1,6 +1,7 @@
 import { Page, expect } from "@playwright/test";
 import { execSync } from "child_process";
 import path from "path";
+import { TEST_DATABASE_URL } from "../../playwright.config";
 
 export async function login(page: Page, email: string, password: string) {
   await page.goto("/ro/login");
@@ -25,7 +26,7 @@ export function runOnTestDb(script: string, args: string[] = []) {
   try {
     execSync(`npx tsx ${script} ${args.map((a) => `"${a}"`).join(" ")}`, {
       cwd: root,
-      env: { ...process.env, DATABASE_URL: "file:./test.db" },
+      env: { ...process.env, DATABASE_URL: TEST_DATABASE_URL },
       stdio: "pipe",
     });
   } catch (e) {

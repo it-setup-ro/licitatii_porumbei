@@ -7,7 +7,7 @@ Construită conform `../research-report.md` și `../client-decisions.md`.
 ## Stack
 
 - **Next.js 16** (App Router) + React 19 + TypeScript
-- **Prisma 6** + SQLite (dev) — schemă compatibilă PostgreSQL pentru producție
+- **Prisma 6** + **PostgreSQL** (local: baza `nbp`; testele e2e folosesc `nbp_test`)
 - **next-intl** — bilingv RO/EN cu comutator de limbă
 - **SSE** (Server-Sent Events) — actualizări live la licitare (preț, prelungiri, închidere)
 - **Tailwind 4** — design system pe paleta din logo (ivory / negru / degrade aripă)
@@ -18,7 +18,8 @@ Construită conform `../research-report.md` și `../client-decisions.md`.
 
 ```bash
 npm install
-npx prisma migrate dev   # creeaza dev.db
+# DATABASE_URL in .env: postgresql://postgres:...@localhost:5432/nbp
+npx prisma migrate dev   # aplica schema pe PostgreSQL
 npm run db:seed          # date demo
 npm run dev              # http://localhost:3000
 ```
@@ -37,7 +38,7 @@ npm run dev              # http://localhost:3000
 
 ```bash
 npm test          # unitare (Vitest): motorul de proxy-bidding, anti-sniping, bani
-npm run test:e2e  # Playwright: 19 teste pe DB separată (prisma/test.db), server pe :3100
+npm run test:e2e  # Playwright: 19 teste pe DB separată (nbp_test), server pe :3100
 ```
 
 Suita e2e acoperă: pagini publice + i18n, înregistrare/login, cererea de cont
@@ -59,7 +60,7 @@ setări cu audit trail.
 
 ## Producție — ce rămâne de făcut
 
-- PostgreSQL (schimbă `datasource` în `prisma/schema.prisma`) + Redis pub/sub pt. SSE multi-instanță
+- Redis pub/sub pt. SSE multi-instanță (o singură instanță merge fără)
 - Stripe Connect real (chei în env, webhook-uri) — interfața există deja
 - Upload de imagini (acum: URL-uri) și e-mail real (acum: EmailLog + consolă)
 - SMS (Twilio/SMSLink) — pregătit, dezactivat conform deciziei D16

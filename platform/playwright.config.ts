@@ -1,9 +1,11 @@
 import { defineConfig } from "@playwright/test";
 
 /**
- * E2E pe o baza de date separata (prisma/test.db), server dedicat pe :3100.
+ * E2E pe o baza de date separata (nbp_test in PostgreSQL), server dedicat pe :3100.
  * workers: 1 — testele impart aceeasi baza de date si ruleaza secvential.
  */
+export const TEST_DATABASE_URL =
+  "postgresql://postgres:dukygeorge@localhost:5432/nbp_test?schema=public";
 export default defineConfig({
   testDir: "./tests/e2e",
   globalSetup: "./tests/e2e/global-setup.ts",
@@ -21,7 +23,7 @@ export default defineConfig({
     reuseExistingServer: false,
     timeout: 120_000,
     env: {
-      DATABASE_URL: "file:./test.db",
+      DATABASE_URL: TEST_DATABASE_URL,
       AUTH_SECRET: "e2e-secret",
       NEXT_DIST_DIR: ".next-e2e",
     },
