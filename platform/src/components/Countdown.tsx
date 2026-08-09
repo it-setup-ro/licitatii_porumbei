@@ -53,6 +53,9 @@ export default function Countdown({
   return (
     <span
       data-testid="countdown"
+      // textul depinde de ceas: serverul si clientul difera cu cateva ms,
+      // iar React are exact pentru asta suppressHydrationWarning
+      suppressHydrationWarning
       className={`tabular-nums font-semibold ${critical ? "timer-critical" : ""} ${
         compact ? "text-sm" : "text-lg"
       }`}
