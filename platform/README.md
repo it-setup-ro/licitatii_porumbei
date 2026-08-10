@@ -58,8 +58,24 @@ setări cu audit trail.
 - `src/app/api/*` — API-ul (auth, bid, stream SSE, sell, orders, admin)
 - `src/app/[locale]/*` — paginile, toate bilingve (messages/ro.json, en.json)
 
+## Deploy live (test) — Contabo
+
+Rulează acum pe `http://207.180.241.165:3000` (fără domeniu/SSL încă — acces direct pe IP:port).
+
+- Cod: `/opt/licitatii-porumbei` pe server, clonat din [github.com/it-setup-ro/licitatii_porumbei](https://github.com/it-setup-ro/licitatii_porumbei) (public), branch `main`.
+- Serviciu: `licitatii-porumbei.service` (systemd), rulează ca user dedicat `nbp`, pornește automat la boot, `Restart=always`.
+- Bază de date: `nbp_prod` pe PostgreSQL-ul nativ al serverului (user dedicat `nbp_app`, izolat de baza `cleanware`).
+- **Reset la starea demo:** `ssh root@207.180.241.165 'bash /opt/licitatii-porumbei/reset-demo.sh'` — golește și repopulează cu datele demo (aceleași conturi ca local).
+- **Deploy al unei schimbări noi:**
+  ```bash
+  ssh root@207.180.241.165 'sudo -u nbp -H bash -c "cd /opt/licitatii-porumbei && git pull origin main && cd platform && npm install --no-audit --no-fund && npx prisma migrate deploy && npm run build"'
+  ssh root@207.180.241.165 'systemctl restart licitatii-porumbei.service'
+  ```
+- **Important:** cookie-ul de sesiune e `Secure` doar dacă setezi `COOKIE_SECURE=true` în `.env` de pe server — activează asta abia după ce pui domeniu + certificat SSL (altfel login-ul se rupe pe HTTP simplu).
+
 ## Producție — ce rămâne de făcut
 
+- Domeniu + certificat SSL (Let's Encrypt) + server block nginx dedicat, apoi `COOKIE_SECURE=true`
 - Redis pub/sub pt. SSE multi-instanță (o singură instanță merge fără)
 - Stripe Connect real (chei în env, webhook-uri) — interfața există deja
 - Upload de imagini (acum: URL-uri) și e-mail real (acum: EmailLog + consolă)
