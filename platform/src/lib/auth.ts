@@ -26,7 +26,10 @@ export async function createSessionCookie(uid: string, role: string) {
   store.set(COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    // Secure implicit doar cand chiar rulam pe HTTPS (nu doar NODE_ENV=production) —
+    // altfel browserul refuza sa trimita cookie-ul pe un deploy HTTP-only (IP:port fara domeniu/SSL).
+    // Seteaza COOKIE_SECURE=true in .env dupa ce site-ul are domeniu + certificat.
+    secure: process.env.COOKIE_SECURE === "true",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
   });
