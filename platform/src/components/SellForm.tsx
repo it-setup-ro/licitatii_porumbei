@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatMoney } from "@/lib/money";
 
@@ -42,11 +42,43 @@ export default function SellForm({
     mediaUrls: "",
   });
   const [results, setResults] = useState<ResultRow[]>([]);
+  const [uploadedUrls, setUploadedUrls] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const set = (k: string, v: unknown) => setForm((f) => ({ ...f, [k]: v }));
+
+  const uploadFiles = async (fileList: FileList | null) => {
+    if (!fileList || fileList.length === 0) return;
+    setUploading(true);
+    setUploadError(null);
+    const data = new FormData();
+    for (const file of Array.from(fileList)) data.append("files", file);
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: data });
+      const body = await res.json();
+      if (body.ok) {
+        setUploadedUrls((prev) => [...prev, ...body.urls]);
+      } else {
+        setUploadError(
+          body.error === "FILE_TOO_LARGE"
+            ? t("uploadTooLarge")
+            : body.error === "INVALID_TYPE"
+              ? t("uploadInvalidType")
+              : t("uploadFailed")
+        );
+      }
+    } catch {
+      setUploadError(t("uploadFailed"));
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,10 +91,13 @@ export default function SellForm({
         ...form,
         birthYear: Number(form.birthYear),
         startPriceCents: Math.round(Number(form.startPrice.replace(",", ".")) * 100),
-        mediaUrls: form.mediaUrls
-          .split("\n")
-          .map((s) => s.trim())
-          .filter(Boolean),
+        mediaUrls: [
+          ...uploadedUrls,
+          ...form.mediaUrls
+            .split("\n")
+            .map((s) => s.trim())
+            .filter(Boolean),
+        ],
         results: results
           .filter((r) => r.raceName && r.place)
           .map((r) => ({
@@ -195,8 +230,63 @@ export default function SellForm({
             className={input}
           />
         </label>
-        <label className="block text-sm">
-          <span className="font-medium">{t("mediaUrls")}</span>
+        {/* Poze: upload de pe calculator (principal) */}
+        <div className="text-sm">
+          <span className="font-medium">{t("photos")}</span>
+          <div className="mt-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+              className="hidden"
+              data-testid="sf-file-input"
+              onChange={(e) => uploadFiles(e.target.files)}
+            />
+            <button
+              type="button"
+              data-testid="sf-browse"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="rounded-xl border-2 border-dashed border-ink/25 bg-ivory-soft px-5 py-3 font-semibold text-ink/70 hover:border-wing-blue hover:text-wing-blue disabled:opacity-50"
+            >
+              {uploading ? t("uploading") : `📷 ${t("browsePhotos")}`}
+            </button>
+            <p className="mt-1 text-xs text-ink/50">{t("uploadHint")}</p>
+            {uploadError && (
+              <p className="mt-1 rounded-lg bg-wing-red/10 px-3 py-1.5 text-xs text-wing-red" data-testid="upload-error">
+                {uploadError}
+              </p>
+            )}
+            {uploadedUrls.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-3" data-testid="upload-previews">
+                {uploadedUrls.map((url) => (
+                  <div key={url} className="relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={url}
+                      alt=""
+                      className="h-20 w-28 rounded-lg border border-ink/10 object-cover"
+                    />
+                    <button
+                      type="button"
+                      aria-label={t("removePhoto")}
+                      onClick={() => setUploadedUrls((prev) => prev.filter((u) => u !== url))}
+                      className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-wing-red text-xs font-bold text-white shadow hover:opacity-85"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <details className="text-sm">
+          <summary className="cursor-pointer text-ink/60" data-testid="sf-media-toggle">
+            {t("mediaUrls")}
+          </summary>
           <textarea
             rows={2}
             data-testid="sf-media"
@@ -205,7 +295,7 @@ export default function SellForm({
             placeholder="/pigeons/p1.svg"
             className={input}
           />
-        </label>
+        </details>
 
         {/* Palmares */}
         <div>

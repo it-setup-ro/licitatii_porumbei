@@ -19,6 +19,7 @@ test.describe("Ciclul de viata al unei licitatii", () => {
     await seller.getByTestId("sf-title-ro").fill("Săgeata E2E — test complet");
     await seller.getByTestId("sf-title-en").fill("E2E Arrow — full test");
     await seller.getByTestId("sf-strain").fill("Janssen");
+    await seller.getByTestId("sf-media-toggle").click();
     await seller.getByTestId("sf-media").fill("/pigeons/p3.svg");
     await seller.getByTestId("sf-add-result").click();
     await seller.getByTestId("sf-race-0").fill("Test Race");
