@@ -41,7 +41,11 @@ export default async function AccountPage({
 
         {/* Statut vanzator */}
         <div className="rounded-2xl border border-ink/10 bg-white p-6" data-testid="seller-status">
-          {user!.sellerStatus === "APPROVED" ? (
+          {user!.role === "ADMIN" ? (
+            <p className="font-semibold text-wing-blue" data-testid="seller-admin-note">
+              {t("adminCanSell")}
+            </p>
+          ) : user!.sellerStatus === "APPROVED" ? (
             <p className="font-semibold text-green-700">✓ {t("sellerApproved")}</p>
           ) : user!.sellerStatus === "PENDING" ? (
             <p className="font-semibold text-wing-orange" data-testid="seller-pending">

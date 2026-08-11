@@ -139,6 +139,7 @@
     "markAllRead": "Mark all as read",
     "noNotifications": "No notifications.",
     "becomeSeller": "Become a seller",
+    "adminCanSell": "You are an administrator — you can list pigeons directly from \"Sell a pigeon\", no approval request needed.",
     "sellerPending": "Your seller application is being reviewed.",
     "sellerApproved": "Approved seller account",
     "sellerRejected": "Your seller application was rejected.",

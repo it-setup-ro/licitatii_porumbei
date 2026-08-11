@@ -139,6 +139,7 @@
     "markAllRead": "Marchează tot ca citit",
     "noNotifications": "Nicio notificare.",
     "becomeSeller": "Devino crescător-vânzător",
+    "adminCanSell": "Ești administrator — poți lista porumbei direct din meniul „Vinde un porumbel”, fără cerere de aprobare.",
     "sellerPending": "Cererea ta de cont vânzător este în curs de verificare.",
     "sellerApproved": "Cont de vânzător aprobat",
     "sellerRejected": "Cererea de cont vânzător a fost respinsă.",
