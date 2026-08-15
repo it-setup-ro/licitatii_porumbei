@@ -59,7 +59,7 @@
 
 ## Ce rămâne de făcut — necesită decizia sau acțiunea ta
 
-1. **Schimbă parola PostgreSQL locală** (`dukygeorge`, utilizator `postgres` de pe calculatorul tău). A fost publică pe GitHub și, deși am scos-o din cod, **rămâne în istoricul git** — oricine a clonat repo-ul o are. Ștergerea din istoric cere rescrierea lui (`git filter-repo`), operațiune care schimbă toate commit-urile: spune-mi dacă vrei s-o fac.
+1. **Schimbă parola PostgreSQL locală** (utilizatorul `postgres` de pe calculatorul tău — parola e în `credentiale-acces.md`, fișierul local care nu ajunge niciodată în git). A fost publică pe GitHub și, deși am scos-o din cod, **rămâne în istoricul git** — oricine a clonat repo-ul o are. Ștergerea din istoric cere rescrierea lui (`git filter-repo`), operațiune care schimbă toate commit-urile: spune-mi dacă vrei s-o fac.
 
 2. **HTTPS.** Site-ul rulează pe HTTP simplu, deci parolele și sesiunile circulă necriptat — oricine e pe aceeași rețea le poate citi. E singurul risc pe care nu-l pot repara din cod. Se rezolvă cu domeniu + certificat Let's Encrypt, apoi `COOKIE_SECURE=true` în `.env` de pe server.
 
