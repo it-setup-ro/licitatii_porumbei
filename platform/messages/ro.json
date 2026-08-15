@@ -25,7 +25,8 @@
     "admin": "Administrare",
     "myBids": "Ofertele mele",
     "watchlist": "Favorite",
-    "notifications": "Notificări"
+    "notifications": "Notificări",
+    "menu": "Meniu"
   },
   "home": {
     "heroTitle": "Campionii zboară aici",
@@ -124,7 +125,7 @@
     "sellerNote": "Conturile de vânzător necesită aprobarea unui administrator (verificare identitate + IBAN).",
     "errInvalidCredentials": "E-mail sau parolă greșite.",
     "errEmailTaken": "Există deja un cont cu acest e-mail.",
-    "errWeakPassword": "Parola trebuie să aibă minim 8 caractere.",
+    "errWeakPassword": "Parola trebuie să aibă minim 10 caractere și să nu fie una uzuală.",
     "newAccountLimit": "Notă: conturile noi au o limită de licitare de {limit} până la prima tranzacție finalizată."
   },
   "account": {

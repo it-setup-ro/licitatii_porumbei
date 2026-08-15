@@ -3,12 +3,36 @@ import { execSync } from "child_process";
 import path from "path";
 import { TEST_DATABASE_URL } from "../../playwright.config";
 
+/** Prenumele afisat in header pentru fiecare cont din seed. */
+const EXPECTED_FIRST_NAME: Record<string, string> = {
+  "admin@nbp.test": "Daniel",
+  "seller@nbp.test": "Ion",
+  "pending-seller@nbp.test": "Vasile",
+  "buyer1@nbp.test": "Mihai",
+  "buyer2@nbp.test": "John",
+};
+
+/**
+ * Autentificare prin interfata. Daca exista deja o sesiune, o inchide intai —
+ * altfel meniul de utilizator al contului VECHI ramane vizibil si testul crede
+ * ca s-a logat, cand de fapt a ramas pe contul anterior.
+ */
 export async function login(page: Page, email: string, password: string) {
+  await page.goto("/ro");
+  await page.request.post("/api/auth/logout");
   await page.goto("/ro/login");
   await page.getByTestId("login-email").fill(email);
   await page.getByTestId("login-password").fill(password);
   await page.getByTestId("login-submit").click();
-  await expect(page.getByTestId("user-menu")).toBeVisible();
+
+  const menu = page.getByTestId("user-menu").or(page.getByTestId("notif-bell"));
+  await expect(menu.first()).toBeVisible();
+
+  // confirma ca sesiunea e chiar a contului cerut
+  const expectedName = EXPECTED_FIRST_NAME[email];
+  if (expectedName) {
+    await expect(page.getByTestId("user-menu")).toContainText(expectedName);
+  }
 }
 
 export async function apiLogin(page: Page, email: string, password: string) {
@@ -37,10 +61,16 @@ export function runOnTestDb(script: string, args: string[] = []) {
   }
 }
 
-export function queryTestDb(inlineScript: string): string {
+/**
+ * Ruleaza un script pe baza de test si intoarce ultima linie de la stdout.
+ * (npx poate adauga linii de avertisment inaintea valorii utile.)
+ */
+export function readFromTestDb(script: string): string {
   const root = path.resolve(__dirname, "../..");
-  return execSync(`npx tsx -e "${inlineScript.replace(/"/g, '\\"')}"`, {
+  const out = execSync(`npx tsx ${script}`, {
     cwd: root,
-    env: { ...process.env, DATABASE_URL: "file:./test.db" },
+    env: { ...process.env, DATABASE_URL: TEST_DATABASE_URL },
   }).toString();
+  const lines = out.split(/\r?\n/).filter((l) => l.trim().length > 0);
+  return lines[lines.length - 1].trim();
 }

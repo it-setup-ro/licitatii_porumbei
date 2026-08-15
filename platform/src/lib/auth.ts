@@ -4,7 +4,22 @@ import bcrypt from "bcryptjs";
 import { prisma } from "./db";
 
 const COOKIE = "nbp_session";
-const secret = () => new TextEncoder().encode(process.env.AUTH_SECRET ?? "dev-secret");
+
+/**
+ * Secretul de semnare a sesiunilor. FARA fallback: un secret ghicibil ar permite
+ * oricui sa-si semneze singur un token de admin. In dev acceptam un secret local
+ * doar daca e setat explicit; in productie lipsa lui opreste aplicatia.
+ */
+const secret = () => {
+  const value = process.env.AUTH_SECRET;
+  if (!value || value.length < 32) {
+    throw new Error(
+      "AUTH_SECRET lipseste sau e prea scurt (minim 32 de caractere). " +
+        "Genereaza unul cu: openssl rand -base64 48"
+    );
+  }
+  return new TextEncoder().encode(value);
+};
 
 export type Session = { uid: string; role: string };
 

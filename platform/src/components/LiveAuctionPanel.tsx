@@ -69,7 +69,8 @@ export default function LiveAuctionPanel(props: Props) {
             setTimeout(() => setExtendedNote(false), 5000);
           }
           if (props.userId) {
-            const isLeadingNow = ev.leadingBidderId === props.userId;
+            // serverul ne spune direct daca noi conducem (nu mai trimite id-uri)
+            const isLeadingNow = ev.youAreLeading === true;
             setLeading(isLeadingNow);
             if (wasLeading.current && !isLeadingNow) {
               setShake((s) => s + 1);
@@ -79,7 +80,7 @@ export default function LiveAuctionPanel(props: Props) {
         } else if (ev.kind === "closed") {
           setStatus("CLOSED");
           setPriceCents(ev.priceCents);
-          if (props.userId && ev.winnerId === props.userId && props.winAnimationEnabled) {
+          if (props.userId && ev.youWon === true && props.winAnimationEnabled) {
             setCelebrate(true);
           }
           router.refresh();

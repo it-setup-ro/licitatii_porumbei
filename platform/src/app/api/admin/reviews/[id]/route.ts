@@ -22,7 +22,11 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     await prisma.$transaction([
       prisma.review.update({
         where: { id },
-        data: { status: hide ? "HIDDEN" : "VISIBLE", moderNote: body.data.note ?? null },
+        data: {
+          status: hide ? "HIDDEN" : "VISIBLE",
+          // marcam decizia luata, ca recenzia sa iasa din coada de moderare
+          moderNote: body.data.note ?? (hide ? "Ascunsă de administrator" : "Păstrată"),
+        },
       }),
       prisma.auditLog.create({
         data: {

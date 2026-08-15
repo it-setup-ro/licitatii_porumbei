@@ -25,7 +25,35 @@ export type PlaceBidResult =
       limitCents?: number;
     };
 
+/** Postgres respinge tranzactiile serializabile aflate in conflict cu 40001. */
+function isSerializationConflict(e: unknown): boolean {
+  const code = (e as { code?: string })?.code;
+  return code === "P2034" || code === "40001";
+}
+
+/**
+ * Plaseaza o oferta, reincercand daca doua oferte simultane intra in conflict.
+ * Fara retry, un ofertant onest ar primi eroare doar pentru ca altcineva a
+ * licitat in aceeasi milisecunda.
+ */
 export async function placeBid(
+  auctionId: string,
+  bidderId: string,
+  maxCents: number
+): Promise<PlaceBidResult> {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      return await placeBidOnce(auctionId, bidderId, maxCents);
+    } catch (e) {
+      if (!isSerializationConflict(e) || attempt === 3) throw e;
+      // asteptare scurta, crescatoare, ca cele doua cereri sa nu reintre in coliziune
+      await new Promise((r) => setTimeout(r, 25 * (attempt + 1)));
+    }
+  }
+  return { ok: false, error: "NOT_FOUND" };
+}
+
+async function placeBidOnce(
   auctionId: string,
   bidderId: string,
   maxCents: number
@@ -47,6 +75,9 @@ export async function placeBid(
   let outbidUserId: string | null = null;
   let result: PlaceBidResult | null = null;
 
+  // Serializable: doua oferte simultane pe acelasi lot nu mai pot citi acelasi
+  // "lider curent" si scrie amandoua isLeading=true (doi lideri / pret gresit).
+  // Postgres aborteaza una dintre ele cu 40001, iar noi o reluam (retry mai jos).
   await prisma.$transaction(async (tx) => {
     const auction = await tx.auction.findUnique({ where: { id: auctionId } });
     if (!auction) {
@@ -144,7 +175,7 @@ export async function placeBid(
       extended: newEndsAt !== null,
       endsAt: newEndsAt ?? auction.endsAt,
     };
-  });
+  }, { isolationLevel: "Serializable" });
 
   const r = result as PlaceBidResult | null;
   if (r && r.ok) {

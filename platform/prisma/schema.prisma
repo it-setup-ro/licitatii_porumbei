@@ -188,7 +188,11 @@ model Review {
   rating        Int // 1..5
   comment       String?
   sellerReply   String?
-  status        String    @default("VISIBLE") // VISIBLE | REPORTED | HIDDEN
+  // Vizibilitatea o decide DOAR adminul. O raportare pune recenzia in coada de
+  // moderare (reportedAt), dar nu o scoate din public — altfel oricine ar putea
+  // face sa dispara recenziile negative ale unui vanzator.
+  status        String    @default("VISIBLE") // VISIBLE | HIDDEN
+  reportedAt    DateTime?
   reportReason  String?
   moderNote     String?
   editableUntil DateTime

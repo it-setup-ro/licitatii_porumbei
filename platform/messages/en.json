@@ -25,7 +25,8 @@
     "admin": "Admin",
     "myBids": "My bids",
     "watchlist": "Watchlist",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "menu": "Menu"
   },
   "home": {
     "heroTitle": "Champions fly here",
@@ -124,7 +125,7 @@
     "sellerNote": "Seller accounts require admin approval (identity + IBAN verification).",
     "errInvalidCredentials": "Wrong e-mail or password.",
     "errEmailTaken": "An account with this e-mail already exists.",
-    "errWeakPassword": "Password must be at least 8 characters.",
+    "errWeakPassword": "Password must be at least 10 characters and not a common one.",
     "newAccountLimit": "Note: new accounts have a bidding limit of {limit} until the first completed transaction."
   },
   "account": {

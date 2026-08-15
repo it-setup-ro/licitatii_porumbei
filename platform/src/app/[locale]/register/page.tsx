@@ -25,7 +25,7 @@ export default function RegisterPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.password.length < 8) {
+    if (form.password.length < 10) {
       setError(t("errWeakPassword"));
       return;
     }

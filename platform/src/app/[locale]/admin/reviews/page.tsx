@@ -14,10 +14,11 @@ export default async function AdminReviewsPage({
   setRequestLocale(locale);
   const t = await getTranslations("admin");
 
+  // coada de moderare: raportate si neanalizate inca de un admin
   const reported = await prisma.review.findMany({
-    where: { status: "REPORTED" },
+    where: { reportedAt: { not: null }, moderNote: null },
     include: { author: true, seller: true },
-    orderBy: { updatedAt: "asc" },
+    orderBy: { reportedAt: "asc" },
   });
 
   return (

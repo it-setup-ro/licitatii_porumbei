@@ -2,7 +2,8 @@ import { randomBytes } from "crypto";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { requireApprovedSeller } from "@/lib/auth";
-import { jsonOk, jsonError, handleApiError } from "@/lib/api";
+import { rateLimit } from "@/lib/rate-limit";
+import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/api";
 
 /**
  * Upload de poze pentru loturi (doar vanzatori aprobati / admin).
@@ -39,7 +40,11 @@ function sniffImage(buf: Buffer): string | null {
 
 export async function POST(req: Request) {
   try {
-    await requireApprovedSeller();
+    const seller = await requireApprovedSeller();
+
+    // anti-umplere disc: maxim 40 de cereri de upload pe ora per vanzator
+    const check = rateLimit(`upload:${seller.id}`, 40, 60 * 60_000);
+    if (!check.allowed) return jsonTooManyRequests(check.retryAfterSeconds);
 
     const form = await req.formData();
     const files = form.getAll("files").filter((f): f is File => f instanceof File);

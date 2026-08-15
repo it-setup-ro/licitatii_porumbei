@@ -16,7 +16,7 @@ export default async function AdminDashboard({
   const [pendingSellers, pendingLots, reportedReviews, liveAuctions, orders] = await Promise.all([
     prisma.user.count({ where: { sellerStatus: "PENDING" } }),
     prisma.auction.count({ where: { status: "PENDING_APPROVAL" } }),
-    prisma.review.count({ where: { status: "REPORTED" } }),
+    prisma.review.count({ where: { reportedAt: { not: null }, moderNote: null } }),
     prisma.auction.count({ where: { status: "LIVE" } }),
     prisma.order.count(),
   ]);

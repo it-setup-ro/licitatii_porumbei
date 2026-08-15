@@ -9,6 +9,14 @@ export function jsonError(error: string, status = 400, extra: Record<string, unk
   return NextResponse.json({ ok: false, error, ...extra }, { status });
 }
 
+/** 429 cu Retry-After, folosit de rutele cu rate limiting. */
+export function jsonTooManyRequests(retryAfterSeconds: number) {
+  return NextResponse.json(
+    { ok: false, error: "RATE_LIMITED", retryAfterSeconds },
+    { status: 429, headers: { "Retry-After": String(retryAfterSeconds) } }
+  );
+}
+
 export function handleApiError(e: unknown) {
   if (e instanceof AuthError) {
     return jsonError(e.code, e.code === "UNAUTHENTICATED" ? 401 : 403);

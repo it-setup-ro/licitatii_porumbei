@@ -79,16 +79,19 @@ export async function payOrder(orderId: string, buyerId: string) {
           }
         : { payoutStatus: "PENDING", payoutAt: null }; // ON_DELIVERY
 
-  await prisma.$transaction([
-    prisma.order.update({
-      where: { id: order.id },
-      data: { status: "PAID", paymentRef: ref, paidAt: now, ...payout },
-    }),
-    prisma.user.update({
-      where: { id: buyerId },
-      data: { completedOrders: { increment: 1 } },
-    }),
-  ]);
+  // Update conditionat: doar tranzactia care prinde comanda inca in PENDING_PAYMENT
+  // trece mai departe. Fara asta, doua cereri paralele de plata ar incrementa
+  // completedOrders de doua ori si ar inregistra doua plati pentru aceeasi comanda.
+  const claimed = await prisma.order.updateMany({
+    where: { id: order.id, status: "PENDING_PAYMENT" },
+    data: { status: "PAID", paymentRef: ref, paidAt: now, ...payout },
+  });
+  if (claimed.count !== 1) return { ok: false as const, error: "ALREADY_PAID" };
+
+  await prisma.user.update({
+    where: { id: buyerId },
+    data: { completedOrders: { increment: 1 } },
+  });
 
   await notify(
     order.sellerId,
