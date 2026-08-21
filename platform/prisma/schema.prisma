@@ -44,6 +44,7 @@ model User {
   auditLogs       AuditLog[]
   auctionsWon     Auction[]      @relation("winner")
   approvedLots    Auction[]      @relation("approver")
+  shopOrders      ShopOrder[]    @relation("shopBuyer")
 }
 
 model Pigeon {
@@ -101,6 +102,10 @@ model Auction {
   status               String    @default("PENDING_APPROVAL") // DRAFT | PENDING_APPROVAL | REJECTED | SCHEDULED | LIVE | CLOSED | CANCELLED
   rejectReason         String?
   listingType          String    @default("SELF") // SELF | ASSISTED
+  // AUCTION = licitatie clasica; FIXED = pret fix, primul care apasa "Cumpara acum" ia lotul
+  saleMode             String    @default("AUCTION") // AUCTION | FIXED
+  contestId            String?
+  contest              Contest?  @relation(fields: [contestId], references: [id])
   currency             String    @default("EUR")
   startPriceCents      Int
   currentPriceCents    Int       @default(0)
@@ -240,4 +245,135 @@ model AuditLog {
   createdAt DateTime @default(now())
 
   @@index([createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Sectiuni noi: magazin de produse, articole, concursuri, pagini editabile
+// ─────────────────────────────────────────────────────────────────────────
+
+/// Produse pentru columbofili (hrana, vitamine, accesorii, inele).
+model Product {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  nameRo      String
+  nameEn      String
+  descRo      String?
+  descEn      String?
+  category    String  @default("FEED") // FEED | SUPPLEMENTS | ACCESSORIES | RINGS | OTHER
+  priceCents  Int
+  currency    String  @default("EUR")
+  stock       Int     @default(0)
+  imageUrl    String?
+  active      Boolean @default(true)
+  sortIdx     Int     @default(0)
+
+  items ShopOrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active, category])
+}
+
+/// Comanda din magazin (separata de comenzile de porumbei, care sunt legate de licitatii).
+model ShopOrder {
+  id              String    @id @default(cuid())
+  buyerId         String
+  buyer           User      @relation("shopBuyer", fields: [buyerId], references: [id])
+  status          String    @default("PENDING_PAYMENT") // PENDING_PAYMENT | PAID | SHIPPED | DELIVERED | CANCELLED
+  subtotalCents   Int
+  shippingCents   Int       @default(0)
+  totalCents      Int
+  currency        String    @default("EUR")
+  paymentRef      String?
+  paidAt          DateTime?
+  shippingName    String
+  shippingPhone   String
+  shippingAddress String
+  note            String?
+
+  items ShopOrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([buyerId, status])
+}
+
+model ShopOrderItem {
+  id            String    @id @default(cuid())
+  shopOrderId   String
+  shopOrder     ShopOrder @relation(fields: [shopOrderId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product   @relation(fields: [productId], references: [id])
+  /// Denumirea si pretul se copiaza la momentul comenzii — daca produsul se
+  /// schimba ulterior, comanda ramane cu ce a cumparat clientul efectiv.
+  nameSnapshot  String
+  priceCents    Int
+  quantity      Int
+}
+
+/// Articole editoriale (blog), bilingve.
+model Article {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  titleRo     String
+  titleEn     String
+  excerptRo   String?
+  excerptEn   String?
+  bodyRo      String
+  bodyEn      String
+  coverUrl    String?
+  authorName  String    @default("No.1 & Best Pigeons")
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([publishedAt])
+}
+
+/// Concursuri / campionate organizate de platforma, cu loturi dedicate.
+model Contest {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  titleRo     String
+  titleEn     String
+  descRo      String?
+  descEn      String?
+  rulesRo     String?
+  rulesEn     String?
+  coverUrl    String?
+  startsAt    DateTime
+  endsAt      DateTime
+  status      String    @default("UPCOMING") // UPCOMING | ACTIVE | FINISHED
+  published   Boolean   @default(false)
+
+  auctions Auction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Pagini de continut editabile din admin (regulament, despre noi, contact...).
+model ContentPage {
+  id        String   @id @default(cuid())
+  slug      String   @unique // regulament | info-licitatii | alte-info | transport-agenti | despre-noi | contact
+  titleRo   String
+  titleEn   String
+  bodyRo    String
+  bodyEn    String
+  updatedAt DateTime @updatedAt
+}
+
+/// Mesaje trimise din formularul de contact.
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  handledAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([handledAt])
 }

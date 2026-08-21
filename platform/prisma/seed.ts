@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { seedSections } from "./seed-sections";
 
 const prisma = new PrismaClient();
 
@@ -9,6 +10,12 @@ const D = 24 * H;
 async function main() {
   console.log("Seeding...");
   await prisma.$transaction([
+    prisma.shopOrderItem.deleteMany(),
+    prisma.shopOrder.deleteMany(),
+    prisma.product.deleteMany(),
+    prisma.article.deleteMany(),
+    prisma.contentPage.deleteMany(),
+    prisma.contactMessage.deleteMany(),
     prisma.notification.deleteMany(),
     prisma.emailLog.deleteMany(),
     prisma.review.deleteMany(),
@@ -16,6 +23,7 @@ async function main() {
     prisma.watchItem.deleteMany(),
     prisma.bid.deleteMany(),
     prisma.auction.deleteMany(),
+    prisma.contest.deleteMany(),
     prisma.pigeonResult.deleteMany(),
     prisma.mediaAsset.deleteMany(),
     prisma.pigeon.deleteMany(),
@@ -362,6 +370,14 @@ async function main() {
       endsAt: new Date(now + 17 * D),
       originalEndsAt: new Date(now + 17 * D),
     },
+  });
+
+  await seedSections(prisma, {
+    now,
+    adminId: admin.id,
+    sellerId: seller.id,
+    mainAuctionId: a1.id,
+    pedigree,
   });
 
   console.log("Seed complet: admin@nbp.test/admin1234, seller@nbp.test/seller1234, buyer1@nbp.test/buyer1234, buyer2@nbp.test/buyer1234");
