@@ -8,6 +8,8 @@ import { getSettings } from "@/lib/settings";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import SiteHeader from "@/components/SiteHeader";
+import TopBar from "@/components/TopBar";
+import { cartItemCount } from "@/lib/cart";
 import SiteFooter from "@/components/SiteFooter";
 import "../globals.css";
 
@@ -42,11 +44,13 @@ export default async function LocaleLayout({
   const unreadCount = user
     ? await prisma.notification.count({ where: { userId: user.id, readAt: null } })
     : 0;
+  const cartCount = await cartItemCount();
 
   return (
     <html lang={locale} className={`${display.variable} ${body.variable} h-full antialiased`}>
       <body className="min-h-screen flex flex-col">
         <NextIntlClientProvider>
+          <TopBar isLoggedIn={user !== null} />
           <SiteHeader
             siteName={settings.siteName}
             user={
@@ -60,6 +64,7 @@ export default async function LocaleLayout({
                 : null
             }
             unreadCount={unreadCount}
+            cartCount={cartCount}
           />
           <main className="flex-1">{children}</main>
           <SiteFooter siteName={settings.siteName} />
