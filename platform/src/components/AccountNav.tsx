@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 
 export default async function AccountNav({ active }: { active: string }) {
   const t = await getTranslations("account");
+  const tc = await getTranslations("cart");
   const items = [
     { key: "profile", href: "/account", label: t("profile") },
     { key: "bids", href: "/account/bids", label: t("myBids") },
@@ -10,6 +11,7 @@ export default async function AccountNav({ active }: { active: string }) {
     { key: "purchases", href: "/account/purchases", label: t("purchases") },
     { key: "sales", href: "/account/sales", label: t("sales") },
     { key: "lots", href: "/account/lots", label: t("myLots") },
+    { key: "shop", href: "/account/shop-orders", label: tc("myOrders") },
     { key: "notifications", href: "/account/notifications", label: t("notifications") },
   ];
   return (
