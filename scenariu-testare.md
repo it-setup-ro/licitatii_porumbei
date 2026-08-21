@@ -78,6 +78,20 @@ Licitația „Regina Nordului" se închide normal în ~2 ore — prea mult ca s�
 
 ---
 
+## Partea 5b — Secțiunile noi din meniu
+
+- [ ] **Bara de sus:** verifică ceasul — arată **ora serverului**, nu a calculatorului tău. Schimbă ora pe PC și reîncarcă: ceasul de pe site rămâne corect (asta elimină disputele la închiderea licitațiilor).
+- [ ] **Preț fix:** intră pe „Preț fix" → alege un porumbel → „Cumpără acum" → confirmă. Se creează direct comanda, fără licitare. Dacă încerci același lot din alt cont, primești „Vândut".
+- [ ] **Produse:** intră pe „Produse", filtrează pe categorii, adaugă 2-3 articole în coș (observă numărul din coșul din header), apoi „Coș" → completează datele de livrare → „Trimite comanda". Verifică apoi că stocul a scăzut.
+- [ ] **Articole:** deschide un articol din listă și verifică-l și în engleză (comutatorul RO/EN din bara de sus).
+- [ ] **Concursuri Campionat:** deschide „Campionatul Național de Fond 2026" — are regulament și lotul de campionat asociat.
+- [ ] **Informații:** din meniu, submeniul are 3 intrări (Regulament / Informații licitații / Alte informații).
+- [ ] **Contact:** trimite un mesaj din formular → apoi, ca admin, verifică-l în Administrare → Mesaje.
+
+**Ca admin — editare fără cod:** Administrare → **Pagini** îți permite să rescrii Regulamentul, Despre noi, Transport etc. (RO și EN); **Produse**, **Articole** și **Concursuri** au fiecare listă + formular de adăugare/editare. Orice modificare apare imediat pe site.
+
+---
+
 ## Partea 6 — Vânzător
 
 - [ ] Loghează-te cu **seller@nbp.test**.
