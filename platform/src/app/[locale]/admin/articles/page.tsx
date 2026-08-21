@@ -68,8 +68,8 @@ export default async function AdminArticlesPage({
         </a>
       </div>
 
-      <div className="mb-8 overflow-hidden rounded-2xl border border-ink/10 bg-white">
-        <table className="w-full text-sm" data-testid="admin-articles-table">
+      <div className="mb-8 overflow-x-auto rounded-2xl border border-ink/10 bg-white">
+        <table className="w-full min-w-[36rem] text-sm" data-testid="admin-articles-table">
           <tbody>
             {articles.map((a) => (
               <tr key={a.id} className="border-b border-ink/5 last:border-0">
@@ -86,7 +86,7 @@ export default async function AdminArticlesPage({
                 <td className="px-4 py-2.5 text-right">
                   <a
                     href={`?id=${a.id}`}
-                    className="font-semibold text-wing-blue hover:underline"
+                    className="-my-1 inline-block rounded-lg px-3 py-2 font-semibold text-wing-blue hover:bg-wing-blue/10 hover:underline"
                     data-testid="article-edit"
                   >
                     Editează

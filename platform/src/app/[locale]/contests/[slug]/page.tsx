@@ -35,7 +35,7 @@ export default async function ContestPage({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
-      <Link href="/contests" className="text-sm text-ink/60 hover:text-wing-orange">
+      <Link href="/contests" className="-ml-2 inline-block rounded-lg px-2 py-2 text-sm text-ink/60 hover:text-wing-orange">
         {t("backToList")}
       </Link>
 

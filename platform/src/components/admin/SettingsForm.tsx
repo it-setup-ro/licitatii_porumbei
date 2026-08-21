@@ -166,15 +166,15 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
                   id={`set-${f.key}`}
                   data-testid={`setting-${f.key}`}
                   onClick={() => setValue(f.key, !values[f.key])}
-                  className={`h-7 w-12 rounded-full p-1 transition-colors ${
+                  className={`h-8 w-14 rounded-full p-1 transition-colors ${
                     values[f.key] ? "bg-wing-blue" : "bg-ink/20"
                   }`}
                   role="switch"
                   aria-checked={Boolean(values[f.key])}
                 >
                   <span
-                    className={`block h-5 w-5 rounded-full bg-white transition-transform ${
-                      values[f.key] ? "translate-x-5" : ""
+                    className={`block h-6 w-6 rounded-full bg-white transition-transform ${
+                      values[f.key] ? "translate-x-6" : ""
                     }`}
                   />
                 </button>

@@ -71,8 +71,8 @@ export default async function AdminLinksPage({
         clasamentele pe anul următor, schimbi doar adresa aici.
       </p>
 
-      <div className="mb-8 overflow-hidden rounded-2xl border border-ink/10 bg-white">
-        <table className="w-full text-sm" data-testid="admin-links-table">
+      <div className="mb-8 overflow-x-auto rounded-2xl border border-ink/10 bg-white">
+        <table className="w-full min-w-[36rem] text-sm" data-testid="admin-links-table">
           <tbody>
             {links.map((l) => (
               <tr key={l.id} className="border-b border-ink/5 last:border-0">
@@ -89,7 +89,7 @@ export default async function AdminLinksPage({
                 <td className="px-4 py-2.5 text-right">
                   <a
                     href={`?id=${l.id}`}
-                    className="font-semibold text-wing-blue hover:underline"
+                    className="-my-1 inline-block rounded-lg px-3 py-2 font-semibold text-wing-blue hover:bg-wing-blue/10 hover:underline"
                     data-testid="link-edit"
                   >
                     Editează

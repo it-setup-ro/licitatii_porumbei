@@ -30,7 +30,7 @@ export default function LanguageSwitcher({
           key={l}
           onClick={() => switchTo(l)}
           data-testid={`lang-${l}`}
-          className={`rounded px-2 py-0.5 uppercase transition-colors ${
+          className={`min-w-10 rounded px-2.5 py-2.5 uppercase leading-none sm:min-w-9 sm:py-1.5 transition-colors ${
             l === locale
               ? dark
                 ? "bg-ivory text-ink"

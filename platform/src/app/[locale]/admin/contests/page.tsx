@@ -96,8 +96,8 @@ export default async function AdminContestsPage({
         </a>
       </div>
 
-      <div className="mb-8 overflow-hidden rounded-2xl border border-ink/10 bg-white">
-        <table className="w-full text-sm" data-testid="admin-contests-table">
+      <div className="mb-8 overflow-x-auto rounded-2xl border border-ink/10 bg-white">
+        <table className="w-full min-w-[36rem] text-sm" data-testid="admin-contests-table">
           <tbody>
             {contests.map((c) => (
               <tr key={c.id} className="border-b border-ink/5 last:border-0">
@@ -112,7 +112,7 @@ export default async function AdminContestsPage({
                 <td className="px-4 py-2.5 text-right">
                   <a
                     href={`?id=${c.id}`}
-                    className="font-semibold text-wing-blue hover:underline"
+                    className="-my-1 inline-block rounded-lg px-3 py-2 font-semibold text-wing-blue hover:bg-wing-blue/10 hover:underline"
                     data-testid="contest-edit"
                   >
                     Editează

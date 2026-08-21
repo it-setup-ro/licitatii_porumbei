@@ -22,8 +22,8 @@ export default async function AdminAuditPage({
   return (
     <div>
       <h1 className="font-display mb-8 text-3xl font-bold">{t("audit")}</h1>
-      <div className="overflow-hidden rounded-2xl border border-ink/10 bg-white">
-        <table className="w-full text-sm" data-testid="audit-table">
+      <div className="overflow-x-auto rounded-2xl border border-ink/10 bg-white">
+        <table className="w-full min-w-[36rem] text-sm" data-testid="audit-table">
           <tbody>
             {logs.map((l) => (
               <tr key={l.id} className="border-b border-ink/5 last:border-0">

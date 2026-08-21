@@ -81,7 +81,7 @@ export default function RegisterPage() {
             checked={form.wantsSeller}
             data-testid="reg-wants-seller"
             onChange={(e) => set("wantsSeller", e.target.checked)}
-            className="mt-0.5"
+            className="mt-0.5 h-5 w-5 shrink-0 accent-wing-blue"
           />
           <span>
             <span className="font-medium">{t("wantToSell")}</span>

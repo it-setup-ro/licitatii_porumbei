@@ -349,7 +349,7 @@ export default function SellForm({
             onClick={() =>
               setResults((rs) => [...rs, { raceName: "", distanceKm: "", place: "", participants: "" }])
             }
-            className="mt-2 rounded-lg border border-ink/20 px-3 py-1.5 text-xs font-semibold hover:border-wing-blue"
+            className="mt-2 rounded-lg border border-ink/20 px-4 py-2.5 text-xs font-semibold hover:border-wing-blue"
           >
             + {t("addResult")}
           </button>
@@ -380,6 +380,7 @@ export default function SellForm({
             <label className="flex items-center gap-2">
               <input
                 type="radio"
+                className="h-5 w-5 shrink-0 accent-wing-blue"
                 name="listingType"
                 checked={form.listingType === "SELF"}
                 onChange={() => set("listingType", "SELF")}
@@ -416,6 +417,7 @@ export default function SellForm({
         <label className="flex items-center gap-2 text-sm">
           <input
             type="checkbox"
+            className="h-5 w-5 shrink-0 accent-wing-blue"
             checked={form.dnaSexGuaranteed}
             onChange={(e) => set("dnaSexGuaranteed", e.target.checked)}
             data-testid="sf-dna"

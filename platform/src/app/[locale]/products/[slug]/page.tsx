@@ -25,7 +25,7 @@ export default async function ProductPage({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
-      <Link href="/products" className="text-sm text-ink/60 hover:text-wing-orange">
+      <Link href="/products" className="-ml-2 inline-block rounded-lg px-2 py-2 text-sm text-ink/60 hover:text-wing-orange">
         {t("backToList")}
       </Link>
 

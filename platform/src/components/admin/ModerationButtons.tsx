@@ -37,21 +37,21 @@ export default function ModerationButtons({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
       {askReason && (
         <input
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder={t("rejectReason")}
           data-testid="mod-reason"
-          className="rounded-lg border border-ink/20 px-3 py-1.5 text-sm outline-none focus:border-wing-blue"
+          className="w-full rounded-lg border border-ink/20 px-3 py-2 text-sm outline-none focus:border-wing-blue sm:w-48"
         />
       )}
       <button
         onClick={() => run(approveAction)}
         disabled={busy}
         data-testid="mod-approve"
-        className="rounded-lg bg-green-600 px-4 py-1.5 text-sm font-bold text-white hover:bg-green-700 disabled:opacity-50"
+        className="flex-1 rounded-lg bg-green-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-green-700 disabled:opacity-50 sm:flex-none"
       >
         {approveAction === "KEEP" ? t("keep") : t("approve")}
       </button>
@@ -59,7 +59,7 @@ export default function ModerationButtons({
         onClick={() => run(rejectAction)}
         disabled={busy}
         data-testid="mod-reject"
-        className="rounded-lg bg-wing-red px-4 py-1.5 text-sm font-bold text-white hover:opacity-85 disabled:opacity-50"
+        className="flex-1 rounded-lg bg-wing-red px-4 py-2.5 text-sm font-bold text-white hover:opacity-85 disabled:opacity-50 sm:flex-none"
       >
         {rejectAction === "HIDE" ? t("hide") : t("reject")}
       </button>
