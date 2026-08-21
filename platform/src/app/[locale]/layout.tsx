@@ -45,6 +45,11 @@ export default async function LocaleLayout({
     ? await prisma.notification.count({ where: { userId: user.id, readAt: null } })
     : 0;
   const cartCount = await cartItemCount();
+  const contestLinks = await prisma.externalLink.findMany({
+    where: { group: "CONTESTS", active: true },
+    orderBy: { sortIdx: "asc" },
+    select: { id: true, labelRo: true, labelEn: true, url: true },
+  });
 
   return (
     <html lang={locale} className={`${display.variable} ${body.variable} h-full antialiased`}>
@@ -65,6 +70,7 @@ export default async function LocaleLayout({
             }
             unreadCount={unreadCount}
             cartCount={cartCount}
+            contestLinks={contestLinks}
           />
           <main className="flex-1">{children}</main>
           <SiteFooter siteName={settings.siteName} />

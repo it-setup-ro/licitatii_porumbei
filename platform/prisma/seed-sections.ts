@@ -305,5 +305,54 @@ export async function seedSections(
     ],
   });
 
-  console.log("  + preț fix (2), concursuri (2), produse (5), articole (3), pagini (6)");
+  // ── Linkuri externe pentru submeniul „Concursuri" ──────────────────────
+  // Sunt editabile din admin: cand apar clasamentele 2027, se schimba doar URL-ul.
+  await prisma.externalLink.createMany({
+    data: [
+      {
+        group: "CONTESTS",
+        labelRo: "Clasamente 2026",
+        labelEn: "2026 Rankings",
+        url: "https://anunturi-porumbei.ro/clasamente_2026.php?tipic=fm",
+        sortIdx: 1,
+      },
+      {
+        group: "CONTESTS",
+        labelRo: "Asociații 2026",
+        labelEn: "2026 Associations",
+        url: "https://columba.ro/competitie/asociatii-2026.html",
+        sortIdx: 2,
+      },
+      {
+        group: "CONTESTS",
+        labelRo: "One loft races",
+        labelEn: "One loft races",
+        url: null, // inca fara adresa -> apare ca „in curand"
+        sortIdx: 3,
+      },
+      {
+        group: "CONTESTS",
+        labelRo: "UNCR — COLUMBA",
+        labelEn: "UNCR — COLUMBA",
+        url: "https://columba.ro",
+        sortIdx: 4,
+      },
+      {
+        group: "CONTESTS",
+        labelRo: "F.R.S.C.",
+        labelEn: "F.R.S.C.",
+        url: "https://federatiaromanasportivcolumbofila.ro",
+        sortIdx: 5,
+      },
+      {
+        group: "CONTESTS",
+        labelRo: "U.C.P.",
+        labelEn: "U.C.P.",
+        url: "https://ucpt.ro",
+        sortIdx: 6,
+      },
+    ],
+  });
+
+  console.log("  + preț fix (2), concursuri (2), produse (5), articole (3), pagini (6), linkuri externe (6)");
 }

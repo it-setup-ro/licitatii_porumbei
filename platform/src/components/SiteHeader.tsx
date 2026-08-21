@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import LogoMark from "./LogoMark";
 
@@ -14,41 +14,52 @@ type HeaderUser = {
 
 type NavItem = { href: string; labelKey: string; testid: string; children?: NavItem[] };
 
+/** Linkuri catre site-uri externe (submeniul Concursuri), venite din DB. */
+export type ExternalNavLink = {
+  id: string;
+  labelRo: string;
+  labelEn: string;
+  url: string | null;
+};
+
 export default function SiteHeader({
   siteName,
   user,
   unreadCount,
   cartCount,
+  contestLinks,
 }: {
   siteName: string;
   user: HeaderUser;
   unreadCount: number;
   cartCount: number;
+  contestLinks: ExternalNavLink[];
 }) {
   const t = useTranslations("nav");
+  const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [infoOpen, setInfoOpen] = useState(false);
-  const infoRef = useRef<HTMLLIElement>(null);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const navRef = useRef<HTMLUListElement>(null);
 
   // închide meniurile la schimbarea paginii
   useEffect(() => {
     setMobileOpen(false);
     setMenuOpen(false);
-    setInfoOpen(false);
+    setOpenMenu(null);
   }, [pathname]);
 
-  // închide submeniul la clic în afara lui
+  // închide submeniul deschis la clic în afara navigației
   useEffect(() => {
-    if (!infoOpen) return;
+    if (!openMenu) return;
     const onClick = (e: MouseEvent) => {
-      if (infoRef.current && !infoRef.current.contains(e.target as Node)) setInfoOpen(false);
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenMenu(null);
     };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
-  }, [infoOpen]);
+  }, [openMenu]);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -67,7 +78,6 @@ export default function SiteHeader({
   const items: NavItem[] = [
     { href: "/", labelKey: "home", testid: "nav-home" },
     { href: "/articles", labelKey: "articles", testid: "nav-articles" },
-    { href: "/contests", labelKey: "contests", testid: "nav-contests" },
     {
       href: "/info/regulament",
       labelKey: "info",
@@ -262,52 +272,82 @@ export default function SiteHeader({
 
       {/* Navigația principală — desktop */}
       <nav className="hidden border-t border-ink/10 lg:block" data-testid="main-nav">
-        <ul className="mx-auto flex max-w-6xl items-center gap-1 px-4 text-sm font-medium">
-          {items.map((item) =>
-            item.children ? (
-              <li key={item.testid} className="relative" ref={infoRef}>
-                <button
-                  onClick={() => setInfoOpen((v) => !v)}
-                  data-testid={item.testid}
-                  aria-expanded={infoOpen}
-                  className="flex items-center gap-1 px-3 py-2.5 transition-colors hover:text-wing-orange"
-                >
-                  {t(item.labelKey)}
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </button>
-                {infoOpen && (
-                  <ul
-                    className="absolute left-0 z-50 mt-0 w-64 rounded-xl border border-ink/10 bg-white p-2 shadow-xl"
-                    data-testid="info-submenu"
+        <ul
+          ref={navRef}
+          className="mx-auto flex max-w-6xl items-center gap-1 px-4 text-sm font-medium"
+        >
+          {items.map((item) => (
+            <Fragment key={item.testid}>
+              {/* Concursuri — linkuri catre site-uri externe, inserat dupa Articole */}
+              {item.testid === "nav-info" && (
+                <li className="relative">
+                  <button
+                    onClick={() => setOpenMenu((v) => (v === "contests" ? null : "contests"))}
+                    data-testid="nav-contests"
+                    aria-expanded={openMenu === "contests"}
+                    className="flex items-center gap-1 px-3 py-2.5 transition-colors hover:text-wing-orange"
                   >
-                    {item.children.map((child) => (
-                      <li key={child.testid}>
-                        <Link
-                          href={child.href}
-                          data-testid={child.testid}
-                          className="block rounded-lg px-3 py-2 hover:bg-ink/5"
-                        >
-                          {t(child.labelKey)}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ) : (
-              <li key={item.testid}>
-                <Link
-                  href={item.href}
-                  data-testid={item.testid}
-                  className="block px-3 py-2.5 transition-colors hover:text-wing-orange"
-                >
-                  {t(item.labelKey)}
-                </Link>
-              </li>
-            )
-          )}
+                    {t("contests")}
+                    <Chevron />
+                  </button>
+                  {openMenu === "contests" && (
+                    <ul
+                      className="absolute left-0 z-50 w-72 rounded-xl border border-ink/10 bg-white p-2 shadow-xl"
+                      data-testid="contests-submenu"
+                    >
+                      {contestLinks.map((link) => (
+                        <li key={link.id}>
+                          <ExternalItem link={link} locale={locale} soonLabel={t("comingSoon")} />
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              )}
+
+              {item.children ? (
+                <li className="relative">
+                  <button
+                    onClick={() => setOpenMenu((v) => (v === item.testid ? null : item.testid))}
+                    data-testid={item.testid}
+                    aria-expanded={openMenu === item.testid}
+                    className="flex items-center gap-1 px-3 py-2.5 transition-colors hover:text-wing-orange"
+                  >
+                    {t(item.labelKey)}
+                    <Chevron />
+                  </button>
+                  {openMenu === item.testid && (
+                    <ul
+                      className="absolute left-0 z-50 mt-0 w-64 rounded-xl border border-ink/10 bg-white p-2 shadow-xl"
+                      data-testid="info-submenu"
+                    >
+                      {item.children.map((child) => (
+                        <li key={child.testid}>
+                          <Link
+                            href={child.href}
+                            data-testid={child.testid}
+                            className="block rounded-lg px-3 py-2 hover:bg-ink/5"
+                          >
+                            {t(child.labelKey)}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    href={item.href}
+                    data-testid={item.testid}
+                    className="block px-3 py-2.5 transition-colors hover:text-wing-orange"
+                  >
+                    {t(item.labelKey)}
+                  </Link>
+                </li>
+              )}
+            </Fragment>
+          ))}
           {canSell && (
             <li className="ml-auto">
               <Link
@@ -348,6 +388,24 @@ export default function SiteHeader({
             <div className="space-y-1">
               {items.map((item) => (
                 <div key={item.testid}>
+                  {item.testid === "nav-info" && (
+                    <div data-testid="m-contests-group">
+                      <p className="px-3 pb-1 pt-2 text-xs font-bold uppercase tracking-wide text-ink/40">
+                        {t("contests")}
+                      </p>
+                      <div className="ml-4 border-l border-ink/10 pl-2">
+                        {contestLinks.map((link) => (
+                          <ExternalItem
+                            key={link.id}
+                            link={link}
+                            locale={locale}
+                            soonLabel={t("comingSoon")}
+                            mobile
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   <MobileLink
                     href={item.href}
                     label={t(item.labelKey)}
@@ -470,5 +528,85 @@ function MobileLink({
     >
       {label}
     </Link>
+  );
+}
+
+function Chevron() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+/**
+ * Intrare catre un site extern.
+ * `rel="noopener noreferrer"` e obligatoriu la target="_blank": fara `noopener`,
+ * pagina externa poate manipula fereastra noastra prin `window.opener`.
+ * Fara URL, intrarea e afisata inactiv, cu eticheta „in curand".
+ */
+function ExternalItem({
+  link,
+  locale,
+  soonLabel,
+  mobile = false,
+}: {
+  link: ExternalNavLink;
+  locale: string;
+  soonLabel: string;
+  mobile?: boolean;
+}) {
+  const label = locale === "en" ? link.labelEn : link.labelRo;
+  const base = mobile
+    ? "block rounded-lg px-3 py-2 text-sm"
+    : "flex items-center justify-between gap-2 rounded-lg px-3 py-2";
+
+  if (!link.url) {
+    return (
+      <span
+        className={`${base} cursor-default text-ink/40`}
+        data-testid="contest-link-soon"
+        title={soonLabel}
+      >
+        {label}
+        <span className="ml-2 rounded bg-ink/5 px-1.5 py-0.5 text-xs">{soonLabel}</span>
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href={link.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-testid="contest-link"
+      className={`${base} hover:bg-ink/5 hover:text-wing-orange`}
+    >
+      {label}
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="shrink-0 opacity-50"
+      >
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+        <path d="M15 3h6v6" />
+        <path d="M10 14 21 3" />
+      </svg>
+    </a>
   );
 }

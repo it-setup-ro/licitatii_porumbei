@@ -15,6 +15,7 @@ async function main() {
     prisma.product.deleteMany(),
     prisma.article.deleteMany(),
     prisma.contentPage.deleteMany(),
+    prisma.externalLink.deleteMany(),
     prisma.contactMessage.deleteMany(),
     prisma.notification.deleteMany(),
     prisma.emailLog.deleteMany(),

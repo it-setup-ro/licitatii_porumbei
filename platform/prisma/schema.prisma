@@ -377,3 +377,22 @@ model ContactMessage {
 
   @@index([handledAt])
 }
+
+/// Linkuri catre site-uri externe, afisate ca submeniu (ex. Concursuri).
+/// Editabile din admin: cand apar clasamentele 2027, Daniel schimba doar URL-ul.
+model ExternalLink {
+  id      String  @id @default(cuid())
+  /// gruparea in meniu; deocamdata doar CONTESTS, dar modelul e reutilizabil
+  group   String  @default("CONTESTS")
+  labelRo String
+  labelEn String
+  /// null sau gol = intrare inactiva, afisata ca „in curand" (ex. One loft races)
+  url     String?
+  sortIdx Int     @default(0)
+  active  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([group, active, sortIdx])
+}

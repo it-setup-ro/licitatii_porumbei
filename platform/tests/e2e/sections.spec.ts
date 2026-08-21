@@ -309,3 +309,82 @@ test.describe("Administrarea secțiunilor noi", () => {
     expect(res.status()).toBe(403);
   });
 });
+
+test.describe("Concursuri — linkuri catre site-uri externe", () => {
+  test("submeniul are toate intrarile si se deschid in fila noua", async ({ page }) => {
+    await page.goto("/ro");
+    await page.getByTestId("nav-contests").click();
+    const sub = page.getByTestId("contests-submenu");
+    await expect(sub).toBeVisible();
+
+    // 5 linkuri active + 1 inactiv (One loft races)
+    const links = sub.getByTestId("contest-link");
+    await expect(links).toHaveCount(5);
+
+    // toate se deschid in fila noua, cu protectia noopener
+    for (let i = 0; i < 5; i++) {
+      await expect(links.nth(i)).toHaveAttribute("target", "_blank");
+      await expect(links.nth(i)).toHaveAttribute("rel", /noopener/);
+      await expect(links.nth(i)).toHaveAttribute("href", /^https:\/\//);
+    }
+
+    // adresele cerute de client
+    await expect(sub).toContainText("Clasamente 2026");
+    await expect(sub).toContainText("UNCR");
+    await expect(sub).toContainText("F.R.S.C.");
+    await expect(sub).toContainText("U.C.P.");
+  });
+
+  test("intrarea fara adresa apare inactiva, cu „in curand”", async ({ page }) => {
+    await page.goto("/ro");
+    await page.getByTestId("nav-contests").click();
+    const soon = page.getByTestId("contests-submenu").getByTestId("contest-link-soon");
+    await expect(soon).toHaveCount(1);
+    await expect(soon).toContainText("One loft races");
+    await expect(soon).toContainText("în curând");
+    // nu e link -> nu poate fi accesat
+    await expect(soon).not.toHaveAttribute("href", /./);
+  });
+
+  test("linkurile se traduc si in engleza", async ({ page }) => {
+    await page.goto("/en");
+    await page.getByTestId("nav-contests").click();
+    await expect(page.getByTestId("contests-submenu")).toContainText("coming soon");
+  });
+
+  test("adminul poate schimba adresa unui link", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/links");
+    await expect(page.getByTestId("admin-links-table")).toContainText("Clasamente 2026");
+
+    // deschide prima intrare si schimba adresa
+    await page.getByTestId("link-edit").first().click();
+    await page.getByTestId("field-url").fill("https://example.org/clasamente-2027");
+    await page.getByTestId("editor-save").click();
+    await expect(page.getByTestId("editor-saved")).toBeVisible();
+
+    // schimbarea apare in meniu
+    await page.goto("/ro");
+    await page.getByTestId("nav-contests").click();
+    await expect(
+      page.getByTestId("contests-submenu").getByTestId("contest-link").first()
+    ).toHaveAttribute("href", "https://example.org/clasamente-2027");
+  });
+
+  test("adresele periculoase sunt respinse", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    for (const url of ["javascript:alert(1)", "columba.ro", "data:text/html,<script>"]) {
+      const res = await page.request.post("/api/admin/links", {
+        data: {
+          labelRo: "Test",
+          labelEn: "Test",
+          url,
+          sortIdx: 99,
+          active: true,
+          group: "CONTESTS",
+        },
+      });
+      expect(res.status(), `respins: ${url}`).toBe(422);
+    }
+  });
+});
