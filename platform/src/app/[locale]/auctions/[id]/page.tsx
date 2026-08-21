@@ -7,6 +7,7 @@ import { formatMoney } from "@/lib/money";
 import { minimumAcceptableMax } from "@/lib/bidding";
 import { Link } from "@/i18n/navigation";
 import LiveAuctionPanel from "@/components/LiveAuctionPanel";
+import BuyNowPanel from "@/components/BuyNowPanel";
 import PedigreeTree from "@/components/PedigreeTree";
 import StarRating from "@/components/StarRating";
 import WatchButton from "@/components/WatchButton";
@@ -185,6 +186,16 @@ export default async function AuctionDetailPage({
 
         {/* Coloana dreapta: panoul de licitare + crescator + garantii */}
         <div className="space-y-5">
+          {auction.saleMode === "FIXED" ? (
+            <BuyNowPanel
+              auctionId={auction.id}
+              priceCents={auction.startPriceCents}
+              currency={auction.currency}
+              sold={auction.status !== "LIVE"}
+              userId={user?.id ?? null}
+              userIsSeller={user?.id === auction.sellerId}
+            />
+          ) : (
           <LiveAuctionPanel
             auctionId={auction.id}
             status={auction.status}
@@ -202,6 +213,7 @@ export default async function AuctionDetailPage({
             snipeMinutes={settings.snipeWindowMinutes}
             extensionMinutes={settings.extensionMinutes}
           />
+          )}
 
           {auction.status === "CLOSED" && auction.winnerId && (
             <div
