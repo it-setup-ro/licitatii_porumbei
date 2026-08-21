@@ -21,7 +21,7 @@ test.describe("Meniu pe telefon", () => {
     const menu = page.getByTestId("mobile-menu");
     await expect(menu).toBeVisible();
     await expect(menu.getByTestId("m-auctions")).toBeVisible();
-    await expect(menu.getByTestId("m-how")).toBeVisible();
+    await expect(menu.getByTestId("m-info-rules")).toBeVisible();
     await expect(menu.getByTestId("m-sell")).toBeVisible();
     await expect(menu.getByTestId("m-admin")).toBeVisible();
     await expect(menu.getByTestId("m-account")).toBeVisible();
@@ -55,6 +55,7 @@ test.describe("Meniu pe telefon", () => {
     await page.getByTestId("mobile-menu-button").click();
     const menu = page.getByTestId("mobile-menu");
     await expect(menu.getByTestId("m-auctions")).toBeVisible();
+    await expect(menu.getByTestId("m-products")).toBeVisible();
     await expect(menu.getByTestId("m-admin")).toHaveCount(0);
     await expect(menu.getByTestId("m-sell")).toHaveCount(0);
   });

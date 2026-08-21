@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import LogoMark from "./LogoMark";
-import LanguageSwitcher from "./LanguageSwitcher";
 
 type HeaderUser = {
   id: string;
@@ -98,10 +97,6 @@ export default function SiteHeader({
         </Link>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <div className="lg:hidden">
-            <LanguageSwitcher />
-          </div>
-
           {/* Coș */}
           <Link
             href="/cart"

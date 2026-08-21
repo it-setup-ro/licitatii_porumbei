@@ -29,7 +29,7 @@ export default function LanguageSwitcher({
         <button
           key={l}
           onClick={() => switchTo(l)}
-          data-testid={`lang-${l}${dark ? "-top" : ""}`}
+          data-testid={`lang-${l}`}
           className={`rounded px-2 py-0.5 uppercase transition-colors ${
             l === locale
               ? dark
