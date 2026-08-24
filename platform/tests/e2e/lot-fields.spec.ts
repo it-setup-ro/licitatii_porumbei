@@ -186,16 +186,22 @@ test.describe("Pagina lotului", () => {
     await expect(page.getByTestId("bid-row")).toHaveCount(3);
   });
 
-  test("pe telefon, pretul apare imediat sub galerie", async ({ page }) => {
+  test("pedigree-ul vine imediat dupa poze, iar pretul inaintea descrierii", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto("/ro/auctions");
     await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
 
     const galerie = (await page.getByTestId("lot-gallery").boundingBox())!;
+    const pedigree = (await page.getByTestId("lot-pedigree").boundingBox())!;
     const pret = (await page.getByTestId("current-price").boundingBox())!;
+    const fisa = (await page.getByTestId("lot-facts").boundingBox())!;
     const descriere = (await page.getByTestId("lot-description").boundingBox())!;
-    expect(pret.y).toBeGreaterThan(galerie.y);
+
+    // pedigree-ul urmeaza direct dupa poze, inaintea oricarui alt bloc
+    expect(pedigree.y).toBeGreaterThan(galerie.y);
+    expect(pedigree.y).toBeLessThan(fisa.y);
+    // pretul ramane sus, inaintea descrierii lungi
     expect(pret.y).toBeLessThan(descriere.y);
 
     // fara derulare laterala

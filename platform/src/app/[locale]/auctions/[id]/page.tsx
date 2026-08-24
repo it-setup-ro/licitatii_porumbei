@@ -20,9 +20,9 @@ import WatchButton from "@/components/WatchButton";
  *
  *   serie inel · nume · rand scurt de descriere
  *   galerie (foto + video)
+ *   pedigree — imediat sub poze, e primul lucru cerut dupa ce vezi porumbelul
  *   serie / an / sex · reprodus de · oferit de
  *   descrierea lunga
- *   pedigree
  *   „Toate detaliile" — restul informatiilor, pliate
  *
  * Coloana din dreapta ramane pentru licitat/cumparat, crescator si favorite.
@@ -134,6 +134,16 @@ export default async function AuctionDetailPage({
           </div>
 
           <LotGallery media={pigeon.media} alt={pigeon.name} videoLabel={t("video")} />
+
+          {/* Pedigree scanat — imediat sub pozele porumbelului */}
+          {pigeon.pedigreeUrl && (
+            <PedigreeScan
+              url={pigeon.pedigreeUrl}
+              title={tp("pedigree")}
+              openLabel={tp("openPedigree")}
+              alt={`${tp("pedigree")} ${pigeon.name}`}
+            />
+          )}
         </div>
 
         {/* Coloana dreapta: licitare/cumparare, crescator, favorite */}
@@ -230,16 +240,6 @@ export default async function AuctionDetailPage({
               <h2 className="font-display mb-3 text-xl font-bold">{tp("about")}</h2>
               <p className="whitespace-pre-line leading-relaxed text-ink/80">{desc}</p>
             </div>
-          )}
-
-          {/* Pedigree scanat */}
-          {pigeon.pedigreeUrl && (
-            <PedigreeScan
-              url={pigeon.pedigreeUrl}
-              title={tp("pedigree")}
-              openLabel={tp("openPedigree")}
-              alt={`${tp("pedigree")} ${pigeon.name}`}
-            />
           )}
 
           {/* Restul informatiilor, la un buton */}
