@@ -71,6 +71,9 @@ model Pigeon {
   /// Scanul pedigree-ului (poza sau PDF). Arborele pe campuri ramane optional.
   pedigreeUrl String?
   pedigreeJson String? // arbore genealogic serializat JSON (max 4 generatii)
+  /// Caracteristicile din fisa de tip pipa (ochi, constitutie, aripa) — JSON,
+  /// cu chei si valori dintr-o lista fixa (vezi src/lib/pigeon-traits.ts)
+  traitsJson   String?
   dnaCertified Boolean @default(false)
 
   results PigeonResult[]

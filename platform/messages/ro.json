@@ -142,7 +142,8 @@
     "videos": "Video",
     "pedigreeScan": "Pedigree",
     "openPedigree": "Deschide pedigree-ul (PDF)",
-    "about": "Despre porumbel"
+    "about": "Despre porumbel",
+    "traits": "Fișa porumbelului"
   },
   "auth": {
     "loginTitle": "Autentificare",
@@ -241,7 +242,9 @@
     "englishHint": "Dacă lași gol, vizitatorii străini văd textul în română.",
     "bredByPlaceholder": "ex. Hetzel Martin",
     "offeredByHint": "Precompletat cu numele tău. Schimbă-l dacă îl oferă altcineva.",
-    "videos": "Video"
+    "videos": "Video",
+    "traitsSection": "Fișa detaliată a porumbelului",
+    "traitsHint": "Ochi, constituție, aripă și penaj — ca pe fișele de la pipa.be. Tot ce lași necompletat pur și simplu nu apare pe pagina lotului."
   },
   "orders": {
     "title": "Comandă",

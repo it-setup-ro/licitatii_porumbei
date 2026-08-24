@@ -19,7 +19,7 @@ test.describe("Ciclul de viata al unei licitatii", () => {
     await seller.getByTestId("sf-name").fill("Săgeata E2E");
     await seller.getByTestId("sf-tagline").fill("Lot de test — ciclu complet");
     // restul campurilor stau sub „Alte detalii"
-    await seller.locator('[data-testid="sf-more"] summary').click();
+    await seller.locator('[data-testid="sf-more"] > summary').click();
     await seller.getByTestId("sf-strain").fill("Janssen");
     await seller.getByTestId("sf-add-result").click();
     await seller.getByTestId("sf-race-0").fill("Test Race");

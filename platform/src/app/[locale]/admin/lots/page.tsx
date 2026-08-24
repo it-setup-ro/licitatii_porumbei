@@ -2,7 +2,9 @@ import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/money";
 import { Link } from "@/i18n/navigation";
+import { getSettings } from "@/lib/settings";
 import ModerationButtons from "@/components/admin/ModerationButtons";
+import ShortenButton from "@/components/admin/ShortenButton";
 
 export const dynamic = "force-dynamic";
 
@@ -16,10 +18,28 @@ export default async function AdminLotsPage({
   const t = await getTranslations("admin");
   const currentLocale = await getLocale();
 
-  const pending = await prisma.auction.findMany({
-    where: { status: "PENDING_APPROVAL" },
-    include: { pigeon: { include: { seller: true } } },
-    orderBy: { createdAt: "asc" },
+  const [pending, settings] = await Promise.all([
+    prisma.auction.findMany({
+      where: { status: "PENDING_APPROVAL" },
+      include: { pigeon: { include: { seller: true } } },
+      orderBy: { createdAt: "asc" },
+    }),
+    getSettings(),
+  ]);
+
+  // Lista de mai jos exista doar pentru unealta de test „inchide in 1 minut".
+  // Cand comutatorul e stins, nici nu mai interogam.
+  const running = settings.testShortenEnabled
+    ? await prisma.auction.findMany({
+        where: { status: { in: ["LIVE", "SCHEDULED"] } },
+        include: { pigeon: true },
+        orderBy: { endsAt: "asc" },
+      })
+    : [];
+
+  const when = new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+    dateStyle: "short",
+    timeStyle: "short",
   });
 
   return (
@@ -57,6 +77,47 @@ export default async function AdminLotsPage({
           ))}
         </div>
       )}
+      {settings.testShortenEnabled && (
+        <section className="mt-12" data-testid="test-tools">
+          <div className="mb-4 rounded-2xl border border-wing-orange/40 bg-wing-orange/5 p-4">
+            <h2 className="font-display text-xl font-bold">🧪 Licitații în desfășurare — testare</h2>
+            <p className="mt-1 text-sm text-ink/70">
+              Butonul mută închiderea peste un minut, ca să poți verifica rapid finalul:
+              anti-sniping, câștigător, notificări, comandă. Se ascunde din{" "}
+              <Link
+                href="/admin/settings"
+                className="-my-1 inline-block py-2 font-semibold underline"
+              >
+                Setări → Unelte de test
+              </Link>
+              , când platforma intră pe public.
+            </p>
+          </div>
+
+          {running.length === 0 ? (
+            <p className="text-ink/50">Nicio licitație activă sau programată.</p>
+          ) : (
+            <div className="space-y-3">
+              {running.map((a) => (
+                <div
+                  key={a.id}
+                  className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-ink/10 bg-white p-5"
+                  data-testid="running-lot-row"
+                >
+                  <div className="text-sm">
+                    <p className="font-display text-base font-bold">{a.pigeon.name}</p>
+                    <p className="text-ink/60">
+                      {a.pigeon.ringNumber} · {a.status} · se închide {when.format(a.endsAt)}
+                    </p>
+                  </div>
+                  <ShortenButton auctionId={a.id} />
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
       <p className="mt-6 text-xs text-ink/50">
         <Link href="/admin" className="-ml-2 inline-block px-2 py-2 underline">
           ← {t("title")}

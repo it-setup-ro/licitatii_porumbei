@@ -112,6 +112,18 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
         { key: "invoiceSeries", label: "Serie facturi", type: "text" },
       ],
     },
+    {
+      // Grup temporar, cât timp platforma e în testare. Când se lansează,
+      // comutatorul se pune pe oprit și butonul dispare din pagina Loturi.
+      title: "🧪 Unelte de test",
+      fields: [
+        {
+          key: "testShortenEnabled",
+          label: "Buton „Închide în 1 minut” în pagina Loturi",
+          type: "boolean",
+        },
+      ],
+    },
   ];
 
   const setValue = (key: string, value: unknown) => {

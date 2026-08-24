@@ -57,7 +57,7 @@ test.describe("Formularul de listare", () => {
     await login(page, "seller@nbp.test", "seller1234");
     await page.goto("/ro/sell");
     await expect(page.getByTestId("sf-color")).toBeHidden();
-    await page.locator('[data-testid="sf-more"] summary').click();
+    await page.locator('[data-testid="sf-more"] > summary').click();
     await expect(page.getByTestId("sf-color")).toBeVisible();
     await expect(page.getByTestId("sf-strain")).toBeVisible();
     await expect(page.getByTestId("sf-add-result")).toBeVisible();

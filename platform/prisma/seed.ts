@@ -139,6 +139,28 @@ async function main() {
       descEn:
         "Exceptional Janssen cock, nest brother to 1st Arad Long Distance 2024. Eagle eye, impeccable feathering, perfect long-distance build.",
       pedigreeJson: pedigree("RO-445566"),
+      // fisa detaliata, ca pe pipa (vezi src/lib/pigeon-traits.ts)
+      traitsJson: JSON.stringify({
+        eyeColor: "orange",
+        disciplines: ["middle", "long"],
+        size: "medium",
+        thickness: "normal",
+        vitality: "strong",
+        colorDensity: "strong",
+        length: "long",
+        strength: "strong",
+        ventboneStrength: "strong",
+        ventbonePosition: "veryClosed",
+        muscles: "supple",
+        balance: "balanced",
+        back: "strong",
+        breedingFeathers: "squareLong",
+        feather: "long",
+        plumage: "thick",
+        feathersTexture: "soft",
+        secondaries: "regular",
+        suppleness: "supple",
+      }),
       dnaCertified: true,
       media: {
         create: [

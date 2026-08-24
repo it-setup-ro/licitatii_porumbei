@@ -77,6 +77,11 @@ export default function LiveAuctionPanel(props: Props) {
             }
             wasLeading.current = isLeadingNow;
           }
+        } else if (ev.kind === "rescheduled") {
+          // ora de inchidere a fost mutata din administrare — cronometrul de pe
+          // ecranul tuturor trebuie sa arate noua ora, fara reincarcare
+          setEndsAt(ev.endsAt);
+          setStatus("LIVE");
         } else if (ev.kind === "closed") {
           setStatus("CLOSED");
           setPriceCents(ev.priceCents);

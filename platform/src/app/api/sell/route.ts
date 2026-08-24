@@ -9,6 +9,7 @@ import {
   SAFE_GALLERY_URL,
   SAFE_PEDIGREE_URL,
 } from "@/lib/limits";
+import { sanitizeTraits } from "@/lib/pigeon-traits";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 
 const resultSchema = z.object({
@@ -59,6 +60,8 @@ const schema = z.object({
   offeredBy: z.string().max(160).optional(),
   pedigreeUrl: z.string().max(300).regex(SAFE_PEDIGREE_URL).optional().or(z.literal("")),
   pedigree: pedigreeSchema.optional(),
+  /** caracteristicile din fisa (ochi, constitutie, aripa) — filtrate cu whitelist */
+  traits: z.unknown().optional(),
   startPriceCents: z.number().int().positive().max(MAX_MONEY_CENTS),
   listingType: z.enum(["SELF", "ASSISTED"]).default("SELF"),
   shippingMode: z.enum(["SELLER", "PICKUP"]).default("SELLER"),
@@ -113,6 +116,10 @@ export async function POST(req: Request) {
         offeredBy: d.offeredBy || seller.sellerCompany || seller.name,
         pedigreeUrl: d.pedigreeUrl || null,
         pedigreeJson,
+        traitsJson: (() => {
+          const clean = sanitizeTraits(d.traits);
+          return Object.keys(clean).length > 0 ? JSON.stringify(clean) : null;
+        })(),
         media: {
           create: d.media.map((m, i) => ({ type: m.type, url: m.url, sortIdx: i })),
         },

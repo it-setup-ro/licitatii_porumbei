@@ -11,6 +11,7 @@ import BuyNowPanel from "@/components/BuyNowPanel";
 import LotGallery from "@/components/LotGallery";
 import BidHistory, { type BidRow } from "@/components/BidHistory";
 import PedigreeTree from "@/components/PedigreeTree";
+import { describeTraits, parseTraits } from "@/lib/pigeon-traits";
 import StarRating from "@/components/StarRating";
 import WatchButton from "@/components/WatchButton";
 
@@ -96,11 +97,15 @@ export default async function AuctionDetailPage({
     leading: b.isLeading,
   }));
 
+  // fisa detaliata, in stil pipa: doar randurile completate
+  const traitGroups = describeTraits(parseTraits(pigeon.traitsJson), currentLocale);
+
   const hasExtras =
     pigeon.color ||
     pigeon.strain ||
     pigeon.results.length > 0 ||
     pigeon.pedigreeJson ||
+    traitGroups.length > 0 ||
     auction.dnaSexGuaranteed;
 
   return (
@@ -255,6 +260,34 @@ export default async function AuctionDetailPage({
                     value={tp(`category${pigeon.category}` as "categoryRACING")}
                   />
                 </div>
+
+                {/* Fisa detaliata a porumbelului */}
+                {traitGroups.length > 0 && (
+                  <div data-testid="lot-traits">
+                    <h3 className="font-display mb-3 text-lg font-bold">{tp("traits")}</h3>
+                    <div className="space-y-4">
+                      {traitGroups.map((g) => (
+                        <div key={g.key}>
+                          <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ink/40">
+                            {g.label}
+                          </p>
+                          <dl className="overflow-hidden rounded-xl border border-ink/10">
+                            {g.rows.map((r) => (
+                              <div
+                                key={r.key}
+                                className="flex justify-between gap-4 border-b border-ink/5 px-4 py-2 text-sm last:border-0 odd:bg-ivory-soft/60"
+                                data-testid={`trait-row-${r.key}`}
+                              >
+                                <dt className="text-ink/60">{r.label}</dt>
+                                <dd className="text-right font-semibold">{r.value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {pigeon.pedigreeJson && <PedigreeTree pedigreeJson={pigeon.pedigreeJson} />}
 

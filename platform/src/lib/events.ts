@@ -16,7 +16,9 @@ export type AuctionEvent =
       endsAt: string;
       extended: boolean;
     }
-  | { kind: "closed"; auctionId: string; winnerId: string | null; priceCents: number };
+  | { kind: "closed"; auctionId: string; winnerId: string | null; priceCents: number }
+  /** ora de inchidere s-a schimbat din administrare (deocamdata: unealta de test) */
+  | { kind: "rescheduled"; auctionId: string; endsAt: string };
 
 const g = globalThis as unknown as { __auctionBus?: EventEmitter };
 

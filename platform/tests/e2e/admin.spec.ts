@@ -46,7 +46,7 @@ test.describe("Panoul de administrare", () => {
     });
     await sellerPage.goto("/ro/sell");
     // tipul de listare (cu procentul de comision) sta sub „Alte detalii"
-    await sellerPage.locator('[data-testid="sf-more"] summary').click();
+    await sellerPage.locator('[data-testid="sf-more"] > summary').click();
     await expect(sellerPage.locator("text=comision 15%")).toBeVisible();
     await sellerCtx.close();
 

@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 94 teste end-to-end, toate verzi.
+**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 100 teste end-to-end, toate verzi.
 
 ---
 
@@ -21,6 +21,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 
 ### Public
 - **Pagina unui lot, în formatul pipa.be**: serie inel · nume · rând scurt de descriere; galerie foto+video; fișa cu serie/an/sex, reprodus de, oferit de; descrierea lungă; pedigree scanat (poză sau PDF); restul informațiilor sub butonul „Toate detaliile"; ofertele — ultimele 3 și „Vezi toate ofertele"
+- **Fișa detaliată a porumbelului** (ca pe pipa): ochi, specializare, constituție (11 rânduri), aripă și penaj (6 rânduri) — toate opționale, afișate sub „Toate detaliile". Lista e în `src/lib/pigeon-traits.ts`
 - **Licitații** cu proxy-bidding (plafon secret), anti-sniping (+5 min), actualizare live pe ecranul tuturor fără refresh, închidere automată cu desemnarea câștigătorului și animația stolului de porumbei
 - **Preț fix** — cumpărare directă, fără licitație, cu rezervare atomică (al doilea cumpărător primește „Vândut")
 - **Produse** — magazin cu categorii, coș (merge și nelogat), checkout cu scădere de stoc
@@ -57,6 +58,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 | 7 | Upload imagini pe stocare externă (S3) | Doar dacă se trece pe mai multe servere | mai târziu |
 | 8 | Redis pentru actualizările live | Doar la scalare pe mai multe instanțe | mai târziu |
 | 9 | SMS | Pregătit, dezactivat (decizia D16) | mai târziu |
+| 10 | **Oprește uneltele de test** înainte de public | Setări → 🧪 Unelte de test → oprește „Închide în 1 minut". Butonul dispare din Loturi, iar ruta refuză cererile | Daniel |
 
 **Rămase deschise din `open-questions.md`:** verificare marcă OSIM/EUIPO (există deja BestPigeons.ro), achiziția domeniului, bugetul SMS.
 
@@ -135,3 +137,4 @@ platform/src/
 | 21 aug | Preț fix, magazin, articole, concursuri, pagini de conținut, bară cu ceas; apoi Concursuri → linkuri externe |
 | 24 aug | Compozitor de articole cu video; audit mobil; caseta de cont; cameră + Administrare în bara de sus |
 | 24 aug | Câmpurile cerute pe lot (nume, rubrică, reprodus de, oferit de, pedigree scanat, video) și pagina lotului în formatul pipa.be |
+| 24 aug | Fișa detaliată de tip pipa (ochi, constituție, aripă) + buton de test „Închide în 1 minut" în Loturi |

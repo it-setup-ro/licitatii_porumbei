@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { setSetting, type PlatformSettings } from "@/lib/settings";
-import { MAX_COUNT, MAX_MONEY_CENTS } from "@/lib/limits";
+import { MAX_MONEY_CENTS } from "@/lib/limits";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 
 /**
@@ -55,6 +55,7 @@ const SETTING_SCHEMAS: Record<keyof PlatformSettings, z.ZodTypeAny> = {
   emailEnabled: z.boolean(),
   smsEnabled: z.boolean(),
   // Continut & brand
+  testShortenEnabled: z.boolean(),
   siteName: z.string().min(1).max(80),
   blogEnabled: z.boolean(),
   fancyCategoryEnabled: z.boolean(),

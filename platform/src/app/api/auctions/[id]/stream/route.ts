@@ -22,8 +22,12 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
       const { leadingBidderId, ...rest } = event;
       return { ...rest, youAreLeading: viewerId !== null && leadingBidderId === viewerId };
     }
-    const { winnerId, ...rest } = event;
-    return { ...rest, youWon: viewerId !== null && winnerId === viewerId };
+    if (event.kind === "closed") {
+      const { winnerId, ...rest } = event;
+      return { ...rest, youWon: viewerId !== null && winnerId === viewerId };
+    }
+    // „rescheduled": doar noua ora de inchidere, nimic personal
+    return event;
   };
 
   const stream = new ReadableStream({

@@ -142,7 +142,8 @@
     "videos": "Video",
     "pedigreeScan": "Pedigree",
     "openPedigree": "Open the pedigree (PDF)",
-    "about": "About the pigeon"
+    "about": "About the pigeon",
+    "traits": "Pigeon assessment"
   },
   "auth": {
     "loginTitle": "Log in",
@@ -241,7 +242,9 @@
     "englishHint": "If left empty, foreign visitors see the Romanian text.",
     "bredByPlaceholder": "e.g. Hetzel Martin",
     "offeredByHint": "Prefilled with your name. Change it if someone else offers the bird.",
-    "videos": "Video"
+    "videos": "Video",
+    "traitsSection": "Detailed pigeon assessment",
+    "traitsHint": "Eye, body, wing and plumage — like the pipa.be assessment sheets. Anything you leave empty simply does not show on the lot page."
   },
   "orders": {
     "title": "Order",

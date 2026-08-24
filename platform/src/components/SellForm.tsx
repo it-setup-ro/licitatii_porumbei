@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatMoney } from "@/lib/money";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
+import TraitsEditor from "@/components/TraitsEditor";
+import type { PigeonTraits } from "@/lib/pigeon-traits";
 
 /**
  * Formularul de listare, in ordinea de pe pipa.be:
@@ -61,6 +63,7 @@ export default function SellForm({
   const [videos, setVideos] = useState<PickedMedia[]>([]);
   const [pedigree, setPedigree] = useState<PickedMedia[]>([]);
   const [results, setResults] = useState<ResultRow[]>([]);
+  const [traits, setTraits] = useState<PigeonTraits>({});
   const [showEn, setShowEn] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -80,6 +83,7 @@ export default function SellForm({
         birthYear: Number(form.birthYear),
         startPriceCents: Math.round(Number(form.startPrice.replace(",", ".")) * 100),
         pedigreeUrl: pedigree[0]?.url ?? "",
+        traits,
         // pozele intai, clipurile dupa — prima poza devine coperta lotului
         media: [...photos, ...videos].map((m) => ({ url: m.url, type: m.type })),
         results: results
@@ -470,6 +474,17 @@ export default function SellForm({
             />
             {t("dnaGuarantee")}
           </label>
+
+          {/* Fisa detaliata, ca pe pipa — toate campurile optionale */}
+          <details className="rounded-xl border border-ink/10" data-testid="sf-traits">
+            <summary className="cursor-pointer px-4 py-3 text-sm font-bold">
+              {t("traitsSection")}
+            </summary>
+            <div className="border-t border-ink/10 p-4">
+              <p className="mb-4 text-xs text-ink/50">{t("traitsHint")}</p>
+              <TraitsEditor value={traits} onChange={setTraits} />
+            </div>
+          </details>
         </div>
       </details>
 

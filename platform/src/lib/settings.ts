@@ -59,6 +59,8 @@ export type PlatformSettings = {
   companyBank: string;
   companyVatPayer: boolean;
   invoiceSeries: string;
+  /** UNELTE DE TEST — se sting de aici cand platforma intra pe public */
+  testShortenEnabled: boolean;
 };
 
 export const DEFAULT_SETTINGS: PlatformSettings = {
@@ -110,6 +112,8 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   companyBank: "",
   companyVatPayer: false,
   invoiceSeries: "NBP",
+  // activ cat timp platforma e in testare; se stinge din Setari inainte de lansare
+  testShortenEnabled: true,
 };
 
 type Cache = { value: PlatformSettings; at: number } | null;
