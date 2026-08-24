@@ -57,10 +57,19 @@ model Pigeon {
   color       String?
   strain      String? // linia/rasa (ex. Janssen, Van Loon)
   category    String  @default("RACING") // RACING | FANCY
-  titleRo     String
-  titleEn     String
+  /// Numele porumbelului, ca pe pipa.be ("Mittwoch"). Nu se traduce.
+  name        String
+  /// Randul scurt de sub nume ("1. As & Medalie de argint!"). Bilingv.
+  taglineRo   String?
+  taglineEn   String?
   descRo      String?
   descEn      String?
+  /// Cine l-a reprodus (crescatorul de origine) si cine il ofera la licitatie.
+  /// Text liber: de multe ori nu sunt conturi pe platforma.
+  bredBy      String?
+  offeredBy   String?
+  /// Scanul pedigree-ului (poza sau PDF). Arborele pe campuri ramane optional.
+  pedigreeUrl String?
   pedigreeJson String? // arbore genealogic serializat JSON (max 4 generatii)
   dnaCertified Boolean @default(false)
 

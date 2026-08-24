@@ -94,11 +94,10 @@ test.describe("Securitate — abuzuri blocate", () => {
         ringNumber: "RO 2025 999111",
         birthYear: 2025,
         sex: "M",
-        titleRo: "Test URL extern respins",
-        titleEn: "External URL rejected test",
+        name: "Test URL extern respins",
         startPriceCents: 15_000,
         // pixel de urmarire gazduit extern
-        mediaUrls: ["https://evil.example.com/tracker.gif"],
+        media: [{ url: "https://evil.example.com/tracker.gif", type: "IMAGE" }],
       },
     });
     expect(res.status()).toBe(422);

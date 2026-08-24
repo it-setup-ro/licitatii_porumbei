@@ -13,8 +13,9 @@ export type AuctionCardData = {
   endsAt: Date;
   bidCount: number;
   pigeon: {
-    titleRo: string;
-    titleEn: string;
+    name: string;
+    taglineRo: string | null;
+    taglineEn: string | null;
     ringNumber: string;
     sex: string;
     birthYear: number;
@@ -26,7 +27,8 @@ export type AuctionCardData = {
 export default async function AuctionCard({ auction }: { auction: AuctionCardData }) {
   const t = await getTranslations("auction");
   const locale = await getLocale();
-  const title = locale === "en" ? auction.pigeon.titleEn : auction.pigeon.titleRo;
+  const title = auction.pigeon.name;
+  const tagline = locale === "en" ? auction.pigeon.taglineEn : auction.pigeon.taglineRo;
   const price =
     auction.bidCount > 0 || auction.status === "CLOSED"
       ? auction.currentPriceCents
@@ -60,6 +62,9 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
       </div>
       <div className="space-y-2 p-4">
         <h3 className="font-display text-lg font-bold leading-snug">{title}</h3>
+        {tagline && (
+          <p className="line-clamp-2 text-sm font-medium text-wing-orange">{tagline}</p>
+        )}
         <p className="text-xs text-ink/60">
           {auction.pigeon.ringNumber} · {auction.pigeon.birthYear}
           {auction.pigeon.strain ? ` · ${auction.pigeon.strain}` : ""}

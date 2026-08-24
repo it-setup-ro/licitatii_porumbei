@@ -45,6 +45,8 @@ test.describe("Panoul de administrare", () => {
       data: { email: "seller@nbp.test", password: "seller1234" },
     });
     await sellerPage.goto("/ro/sell");
+    // tipul de listare (cu procentul de comision) sta sub „Alte detalii"
+    await sellerPage.locator('[data-testid="sf-more"] summary').click();
     await expect(sellerPage.locator("text=comision 15%")).toBeVisible();
     await sellerCtx.close();
 

@@ -15,17 +15,22 @@ export const MAX_COUNT = 1_000_000;
 export const MAX_PEDIGREE_CHARS = 8_000;
 
 /**
- * Pozele acceptate pe un lot: doar fisiere urcate prin /api/upload sau
- * imaginile demo din /pigeons/. Blocheaza URL-uri externe (pixeli de urmarire
- * care ar scurge IP-ul vizitatorilor catre terti) si scheme periculoase.
+ * Fisierele acceptate in continut: doar ce a fost urcat prin /api/upload sau
+ * imaginile demo din repo. Blocheaza URL-uri externe (care ar functiona ca
+ * pixeli de urmarire, scurgand IP-ul fiecarui vizitator catre un tert) si
+ * schemele periculoase (javascript:, data:).
+ *
+ * Trei liste, pentru ca nu peste tot are sens acelasi set de fisiere.
  */
-/**
- * Fisierele permise pe un articol: acelasi set ca la loturi, plus clipuri.
- * Videoclipurile sunt acceptate DOAR aici — pe pagina unui lot media se
- * randeaza in <img>, unde un fisier video oricum nu s-ar vedea.
- */
-export const SAFE_ARTICLE_MEDIA_URL =
+
+/** O singura poza: coperta de produs sau de concurs. */
+export const SAFE_IMAGE_URL =
+  /^\/(api\/files\/[a-z0-9-]+\.(jpg|png|webp)|(pigeons|products|brand)\/[a-z0-9._-]+\.(svg|jpg|jpeg|png|webp))$/i;
+
+/** Galerie: poze si clipuri. Folosita la articole si la loturi. */
+export const SAFE_GALLERY_URL =
   /^\/(api\/files\/[a-z0-9-]+\.(jpg|png|webp|mp4|webm)|(pigeons|products|brand)\/[a-z0-9._-]+\.(svg|jpg|jpeg|png|webp))$/i;
 
-export const SAFE_MEDIA_URL =
-  /^\/(api\/files\/[a-z0-9-]+\.(jpg|png|webp)|(pigeons|products|brand)\/[a-z0-9._-]+\.(svg|jpg|jpeg|png|webp))$/i;
+/** Scanul pedigree-ului: poza sau PDF. */
+export const SAFE_PEDIGREE_URL =
+  /^\/(api\/files\/[a-z0-9-]+\.(jpg|png|webp|pdf)|(pigeons|products|brand)\/[a-z0-9._-]+\.(svg|jpg|jpeg|png|webp))$/i;

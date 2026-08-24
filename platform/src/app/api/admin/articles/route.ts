@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { SAFE_ARTICLE_MEDIA_URL } from "@/lib/limits";
+import { SAFE_GALLERY_URL } from "@/lib/limits";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 
 /**
@@ -15,7 +15,7 @@ import { jsonOk, jsonError, handleApiError } from "@/lib/api";
  */
 
 const mediaSchema = z.object({
-  url: z.string().max(300).regex(SAFE_ARTICLE_MEDIA_URL),
+  url: z.string().max(300).regex(SAFE_GALLERY_URL),
   type: z.enum(["IMAGE", "VIDEO"]),
 });
 

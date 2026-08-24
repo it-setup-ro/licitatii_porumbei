@@ -6,7 +6,7 @@ import type { ReadableStream as NodeWebReadableStream } from "stream/web";
 import { Readable } from "stream";
 
 /**
- * Serveste fisierele urcate (poze si clipuri).
+ * Serveste fisierele urcate (poze, clipuri si pedigree-uri PDF).
  *
  * Numele e validat strict — fara path traversal. Pentru video raspundem la
  * cereri partiale (HTTP Range): fara ele playerul nu poate derula, iar un clip
@@ -21,9 +21,10 @@ const TYPES: Record<string, string> = {
   ".webp": "image/webp",
   ".mp4": "video/mp4",
   ".webm": "video/webm",
+  ".pdf": "application/pdf",
 };
 
-const NAME_RE = /^[a-z0-9-]+\.(jpg|png|webp|mp4|webm)$/i;
+const NAME_RE = /^[a-z0-9-]+\.(jpg|png|webp|mp4|webm|pdf)$/i;
 
 export async function GET(req: Request, ctx: { params: Promise<{ name: string }> }) {
   const { name } = await ctx.params;
@@ -46,6 +47,13 @@ export async function GET(req: Request, ctx: { params: Promise<{ name: string }>
     "Accept-Ranges": "bytes",
     "Cache-Control": "public, max-age=31536000, immutable",
   };
+
+  // Headerele de izolare (nosniff, sandbox) vin din next.config.ts, pentru tot
+  // ce se serveste din /api/files. Aici doar spunem browserului sa deschida
+  // PDF-ul in pagina, nu sa-l descarce.
+  if (type === "application/pdf") {
+    baseHeaders["Content-Disposition"] = `inline; filename="${name}"`;
+  }
 
   const range = req.headers.get("range");
   if (range) {

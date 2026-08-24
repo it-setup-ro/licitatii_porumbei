@@ -16,11 +16,11 @@ test.describe("Ciclul de viata al unei licitatii", () => {
     await seller.goto("/ro/sell");
     await seller.getByTestId("sf-ring").fill("RO 2025 777001");
     await seller.getByTestId("sf-year").fill("2025");
-    await seller.getByTestId("sf-title-ro").fill("Săgeata E2E — test complet");
-    await seller.getByTestId("sf-title-en").fill("E2E Arrow — full test");
+    await seller.getByTestId("sf-name").fill("Săgeata E2E");
+    await seller.getByTestId("sf-tagline").fill("Lot de test — ciclu complet");
+    // restul campurilor stau sub „Alte detalii"
+    await seller.locator('[data-testid="sf-more"] summary').click();
     await seller.getByTestId("sf-strain").fill("Janssen");
-    await seller.getByTestId("sf-media-toggle").click();
-    await seller.getByTestId("sf-media").fill("/pigeons/p3.svg");
     await seller.getByTestId("sf-add-result").click();
     await seller.getByTestId("sf-race-0").fill("Test Race");
     await seller.getByTestId("sf-place-0").fill("2");

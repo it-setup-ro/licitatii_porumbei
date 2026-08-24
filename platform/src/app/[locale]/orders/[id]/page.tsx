@@ -37,7 +37,7 @@ export default async function OrderPage({
   const settings = await getSettings();
   const isBuyer = order.buyerId === user!.id;
   const title =
-    currentLocale === "en" ? order.auction.pigeon.titleEn : order.auction.pigeon.titleRo;
+    order.auction.pigeon.name;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">

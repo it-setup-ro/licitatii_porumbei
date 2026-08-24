@@ -47,7 +47,7 @@ export default async function MyLotsPage({ params }: { params: Promise<{ locale:
                 href={`/auctions/${a.id}`}
                 className="font-display font-bold hover:text-wing-blue"
               >
-                {currentLocale === "en" ? a.pigeon.titleEn : a.pigeon.titleRo}
+                {a.pigeon.name}
               </Link>
               <p className="text-sm text-ink/60">
                 {a._count.bids > 0

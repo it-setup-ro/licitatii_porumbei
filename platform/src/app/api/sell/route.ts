@@ -2,7 +2,13 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireApprovedSeller } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
-import { MAX_COUNT, MAX_MONEY_CENTS, MAX_PEDIGREE_CHARS, SAFE_MEDIA_URL } from "@/lib/limits";
+import {
+  MAX_COUNT,
+  MAX_MONEY_CENTS,
+  MAX_PEDIGREE_CHARS,
+  SAFE_GALLERY_URL,
+  SAFE_PEDIGREE_URL,
+} from "@/lib/limits";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 
 const resultSchema = z.object({
@@ -30,24 +36,34 @@ const pedigreeSchema = z
   .object({ sire: ancestorSchema.optional(), dam: ancestorSchema.optional() })
   .strict();
 
+/** Poze si clipuri, in ordinea aleasa de crescator. */
+const mediaSchema = z.object({
+  // doar fisiere urcate pe platforma sau imaginile demo — nu URL-uri externe
+  // (un URL extern ar functiona ca pixel de urmarire pentru fiecare vizitator)
+  url: z.string().max(300).regex(SAFE_GALLERY_URL),
+  type: z.enum(["IMAGE", "VIDEO"]),
+});
+
 const schema = z.object({
   ringNumber: z.string().min(3).max(40),
   birthYear: z.number().int().min(1990).max(2100),
   sex: z.enum(["M", "F", "U"]),
   color: z.string().max(60).optional(),
   strain: z.string().max(120).optional(),
-  titleRo: z.string().min(5).max(160),
-  titleEn: z.string().min(5).max(160),
-  descRo: z.string().max(4000).optional(),
-  descEn: z.string().max(4000).optional(),
+  name: z.string().min(2).max(120),
+  taglineRo: z.string().max(200).optional(),
+  taglineEn: z.string().max(200).optional(),
+  descRo: z.string().max(20_000).optional(),
+  descEn: z.string().max(20_000).optional(),
+  bredBy: z.string().max(160).optional(),
+  offeredBy: z.string().max(160).optional(),
+  pedigreeUrl: z.string().max(300).regex(SAFE_PEDIGREE_URL).optional().or(z.literal("")),
   pedigree: pedigreeSchema.optional(),
   startPriceCents: z.number().int().positive().max(MAX_MONEY_CENTS),
   listingType: z.enum(["SELF", "ASSISTED"]).default("SELF"),
   shippingMode: z.enum(["SELLER", "PICKUP"]).default("SELLER"),
   dnaSexGuaranteed: z.boolean().default(false),
-  // doar poze urcate pe platforma sau imaginile demo — nu URL-uri externe
-  // (un URL extern ar functiona ca pixel de urmarire pentru fiecare vizitator)
-  mediaUrls: z.array(z.string().max(300).regex(SAFE_MEDIA_URL)).max(12).default([]),
+  media: z.array(mediaSchema).max(12).default([]),
   results: z.array(resultSchema).max(30).default([]),
 });
 
@@ -87,13 +103,18 @@ export async function POST(req: Request) {
         color: d.color,
         strain: d.strain,
         category: "RACING",
-        titleRo: d.titleRo,
-        titleEn: d.titleEn,
+        name: d.name,
+        taglineRo: d.taglineRo || null,
+        taglineEn: d.taglineEn || d.taglineRo || null,
         descRo: d.descRo,
         descEn: d.descEn,
+        bredBy: d.bredBy || null,
+        // daca nu spune altcineva, porumbelul e oferit de cel care il listeaza
+        offeredBy: d.offeredBy || seller.sellerCompany || seller.name,
+        pedigreeUrl: d.pedigreeUrl || null,
         pedigreeJson,
         media: {
-          create: d.mediaUrls.map((url, i) => ({ type: "IMAGE", url, sortIdx: i })),
+          create: d.media.map((m, i) => ({ type: m.type, url: m.url, sortIdx: i })),
         },
         results: { create: d.results },
         auction: {

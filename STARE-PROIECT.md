@@ -13,13 +13,14 @@
 
 Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 85 teste end-to-end, toate verzi.
+**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 94 teste end-to-end, toate verzi.
 
 ---
 
 ## 2. Ce funcționează acum
 
 ### Public
+- **Pagina unui lot, în formatul pipa.be**: serie inel · nume · rând scurt de descriere; galerie foto+video; fișa cu serie/an/sex, reprodus de, oferit de; descrierea lungă; pedigree scanat (poză sau PDF); restul informațiilor sub butonul „Toate detaliile"; ofertele — ultimele 3 și „Vezi toate ofertele"
 - **Licitații** cu proxy-bidding (plafon secret), anti-sniping (+5 min), actualizare live pe ecranul tuturor fără refresh, închidere automată cu desemnarea câștigătorului și animația stolului de porumbei
 - **Preț fix** — cumpărare directă, fără licitație, cu rezervare atomică (al doilea cumpărător primește „Vândut")
 - **Produse** — magazin cu categorii, coș (merge și nelogat), checkout cu scădere de stoc
@@ -39,6 +40,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - Produse, Articole, Concursuri, Pagini, Linkuri, Mesaje de contact
 - **Compozitor de articole** stil rețea socială: titlu + text + foto/video; slug, rezumat și versiunea EN se generează automat
 - **Selector de fișiere identic peste tot** (articole, listare porumbel, produse): pe telefon „Fă o poză" / „Filmează" deschid camera; pe calculator doar alegerea din fișiere
+- **Formularul de listare** în ordinea cerută: serie/an/sex → nume → descriere → pedigree → foto → video → reprodus de → oferit de → preț; restul pliat sub „Alte detalii"
 
 ---
 
@@ -117,6 +119,8 @@ platform/src/
 5. **Agenții de fundal mor dacă aplicația Claude se închide** — scrie pe disc des și fă commit-uri de checkpoint.
 6. **Pe Windows, SSH cu parolă nu merge prin OpenSSH standard** — folosește `plink -ssh -batch -pw`.
 7. **Testele e2e împart o bază de date** — nu te baza pe numărul exact de înregistrări; testele care creează date pot rula înaintea celor care numără.
+8. **CSP `sandbox` pe un PDF îl transformă în descărcare** — Chrome nu-și poate folosi vizualizatorul propriu pe un document sandboxat. Fișierele urcate se servesc cu `default-src 'none'; frame-ancestors 'self'`, nu cu `sandbox`.
+9. **`object-src 'none'` din CSP blochează `<object>`** — pentru încadrarea unui PDF folosește `<iframe>`.
 
 ---
 
@@ -130,3 +134,4 @@ platform/src/
 | 15 aug | Audit de securitate: 18 probleme, 15 reparate; meniu hamburger; clopoțel |
 | 21 aug | Preț fix, magazin, articole, concursuri, pagini de conținut, bară cu ceas; apoi Concursuri → linkuri externe |
 | 24 aug | Compozitor de articole cu video; audit mobil; caseta de cont; cameră + Administrare în bara de sus |
+| 24 aug | Câmpurile cerute pe lot (nume, rubrică, reprodus de, oferit de, pedigree scanat, video) și pagina lotului în formatul pipa.be |

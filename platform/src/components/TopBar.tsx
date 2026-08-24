@@ -43,7 +43,7 @@ export default async function TopBar({
           <Link
             href="/admin"
             data-testid="top-admin"
-            className="flex items-center gap-1.5 rounded-full bg-wing-orange px-3 py-1 font-bold text-white transition-colors hover:bg-wing-red"
+            className="-my-1 flex min-h-8 items-center gap-1.5 rounded-full bg-wing-orange px-3 py-1.5 font-bold text-white transition-colors hover:bg-wing-red"
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M3 3v18h18" />

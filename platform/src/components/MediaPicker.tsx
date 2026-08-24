@@ -14,7 +14,7 @@ import { useRef, useState } from "react";
  * astepte degeaba un fisier care oricum ar fi respins.
  */
 
-export type PickedMedia = { url: string; type: "IMAGE" | "VIDEO" };
+export type PickedMedia = { url: string; type: "IMAGE" | "VIDEO" | "DOC" };
 
 const MAX_VIDEO_SECONDS = 60;
 
@@ -38,13 +38,19 @@ export default function MediaPicker({
   value,
   onChange,
   maxFiles = 10,
+  allowImages = true,
   allowVideo = true,
+  allowPdf = false,
   label,
 }: {
   value: PickedMedia[];
   onChange: (next: PickedMedia[]) => void;
   maxFiles?: number;
+  /** pus pe false, selectorul accepta doar clipuri (rubrica „Video") */
+  allowImages?: boolean;
   allowVideo?: boolean;
+  /** pentru pedigree: se accepta si un PDF scanat, nu doar poza */
+  allowPdf?: boolean;
   label?: string;
 }) {
   const filesRef = useRef<HTMLInputElement>(null);
@@ -90,9 +96,11 @@ export default function MediaPicker({
           out.error === "FILE_TOO_LARGE"
             ? out.isVideo
               ? "Clipul e prea mare (maxim 60 MB). Filmează mai scurt."
-              : "Poza e prea mare (maxim 5 MB)."
+              : out.isDoc
+                ? "PDF-ul e prea mare (maxim 10 MB)."
+                : "Poza e prea mare (maxim 5 MB)."
             : out.error === "INVALID_TYPE"
-              ? "Format neacceptat. Poze: JPG, PNG, WebP. Video: MP4, WebM, MOV."
+              ? `Format neacceptat. Poze: JPG, PNG, WebP.${allowVideo ? " Video: MP4, WebM, MOV." : ""}${allowPdf ? " Document: PDF." : ""}`
               : "Încărcarea a eșuat. Încearcă din nou."
         );
       }
@@ -127,11 +135,13 @@ export default function MediaPicker({
       <input
         ref={filesRef}
         type="file"
-        accept={
-          allowVideo
-            ? "image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
-            : "image/jpeg,image/png,image/webp"
-        }
+        accept={[
+          allowImages ? "image/jpeg,image/png,image/webp," : "",
+          allowVideo ? "video/mp4,video/webm,video/quicktime," : "",
+          allowPdf ? "application/pdf," : "",
+        ]
+          .join("")
+          .replace(/,$/, "")}
         multiple={maxFiles > 1}
         className="hidden"
         data-testid="media-input-files"
@@ -141,6 +151,7 @@ export default function MediaPicker({
         ref={photoRef}
         type="file"
         accept="image/*"
+        disabled={!allowImages}
         capture="environment"
         className="hidden"
         data-testid="media-input-photo"
@@ -160,16 +171,18 @@ export default function MediaPicker({
 
       <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
         {/* Camera — doar pe ecrane mici, unde chiar exista o camera de folosit */}
-        <button
-          type="button"
-          onClick={() => photoRef.current?.click()}
-          disabled={busy || remaining <= 0}
-          data-testid="media-take-photo"
-          className={`${btn} sm:hidden`}
-        >
-          <CameraIcon />
-          Fă o poză
-        </button>
+        {allowImages && (
+          <button
+            type="button"
+            onClick={() => photoRef.current?.click()}
+            disabled={busy || remaining <= 0}
+            data-testid="media-take-photo"
+            className={`${btn} sm:hidden`}
+          >
+            <CameraIcon />
+            Fă o poză
+          </button>
+        )}
         {allowVideo && (
           <button
             type="button"
@@ -195,15 +208,29 @@ export default function MediaPicker({
           ) : (
             <>
               <GalleryIcon />
-              {allowVideo ? "Alege poze / clipuri" : "Alege poze"}
+              {!allowImages
+                ? maxFiles === 1
+                  ? "Alege un clip"
+                  : "Alege clipuri"
+                : allowVideo
+                ? "Alege poze / clipuri"
+                : allowPdf
+                  ? maxFiles === 1
+                    ? "Alege poza sau PDF-ul"
+                    : "Alege poze sau PDF"
+                  : maxFiles === 1
+                    ? "Alege poza"
+                    : "Alege poze"}
             </>
           )}
         </button>
       </div>
 
       <p className="mt-2 text-xs text-ink/50">
-        Poze JPG/PNG/WebP până la 5 MB
-        {allowVideo && `; clipuri până la ${MAX_VIDEO_SECONDS} de secunde (60 MB)`}. Maxim{" "}
+        {allowImages && "Poze JPG/PNG/WebP până la 5 MB"}
+        {allowVideo &&
+          `${allowImages ? "; c" : "C"}lipuri MP4/WebM/MOV până la ${MAX_VIDEO_SECONDS} de secunde (60 MB)`}
+        {allowPdf && "; PDF până la 10 MB"}. Maxim{" "}
         {maxFiles} {maxFiles === 1 ? "fișier" : "fișiere"}.
       </p>
 
@@ -220,7 +247,18 @@ export default function MediaPicker({
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3" data-testid="media-previews">
           {value.map((m, i) => (
             <div key={m.url} className="relative overflow-hidden rounded-xl bg-ink/5">
-              {m.type === "VIDEO" ? (
+              {m.type === "DOC" ? (
+                <a
+                  href={m.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="media-doc-preview"
+                  className="flex aspect-square w-full flex-col items-center justify-center gap-2 bg-white text-center text-xs font-semibold text-wing-blue"
+                >
+                  <DocIcon />
+                  Deschide PDF-ul
+                </a>
+              ) : m.type === "VIDEO" ? (
                 <video
                   src={m.url}
                   className="aspect-square w-full object-cover"
@@ -276,6 +314,15 @@ export default function MediaPicker({
         </div>
       )}
     </div>
+  );
+}
+
+function DocIcon() {
+  return (
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />
+      <path d="M14 3v5h5" />
+    </svg>
   );
 }
 

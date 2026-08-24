@@ -10,8 +10,9 @@ type AuctionWithCard = {
   startsAt: Date;
   endsAt: Date;
   pigeon: {
-    titleRo: string;
-    titleEn: string;
+    name: string;
+    taglineRo: string | null;
+    taglineEn: string | null;
     ringNumber: string;
     sex: string;
     birthYear: number;
@@ -37,8 +38,9 @@ export function toCardData(a: AuctionWithCard): AuctionCardData {
     endsAt: a.endsAt,
     bidCount: a._count.bids,
     pigeon: {
-      titleRo: a.pigeon.titleRo,
-      titleEn: a.pigeon.titleEn,
+      name: a.pigeon.name,
+      taglineRo: a.pigeon.taglineRo,
+      taglineEn: a.pigeon.taglineEn,
       ringNumber: a.pigeon.ringNumber,
       sex: a.pigeon.sex,
       birthYear: a.pigeon.birthYear,

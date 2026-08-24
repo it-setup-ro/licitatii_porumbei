@@ -31,10 +31,25 @@ test.describe("Camera si alegerea fisierelor — pe telefon", () => {
   test("acelasi selector la listarea unui porumbel", async ({ page }) => {
     await login(page, "seller@nbp.test", "seller1234");
     await page.goto("/ro/sell");
-    await expect(page.getByTestId("media-take-photo")).toBeVisible();
-    // la porumbei nu se accepta clipuri, deci butonul de filmare lipseste
-    await expect(page.getByTestId("media-record-video")).toHaveCount(0);
-    await expect(page.getByTestId("media-choose-files")).toBeVisible();
+
+    // rubrica „Foto": camera foto, fara filmare
+    const foto = page.getByTestId("sf-photos-picker");
+    await expect(foto.getByTestId("media-take-photo")).toBeVisible();
+    await expect(foto.getByTestId("media-record-video")).toHaveCount(0);
+    await expect(foto.getByTestId("media-choose-files")).toBeVisible();
+
+    // rubrica „Video": filmare, fara buton de poza
+    const video = page.getByTestId("sf-videos-picker");
+    await expect(video.getByTestId("media-record-video")).toBeVisible();
+    await expect(video.getByTestId("media-take-photo")).toHaveCount(0);
+
+    // rubrica „Pedigree": o singura poza sau un PDF
+    const pedigree = page.getByTestId("sf-pedigree-picker");
+    await expect(pedigree.getByTestId("media-take-photo")).toBeVisible();
+    await expect(pedigree.getByTestId("media-input-files")).toHaveAttribute(
+      "accept",
+      /application\/pdf/
+    );
   });
 
   test("acelasi selector la produsele din magazin", async ({ page }) => {

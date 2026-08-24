@@ -96,7 +96,7 @@ export async function payOrder(orderId: string, buyerId: string) {
   await notify(
     order.sellerId,
     "ORDER_PAID",
-    { lot: order.auction.pigeon.titleRo, amountCents: order.amountCents },
+    { lot: order.auction.pigeon.name, amountCents: order.amountCents },
     "/account/sales"
   );
   return { ok: true as const, ref };

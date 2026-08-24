@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { MAX_MONEY_CENTS, SAFE_MEDIA_URL } from "@/lib/limits";
+import { MAX_MONEY_CENTS, SAFE_IMAGE_URL } from "@/lib/limits";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 
 const productSchema = z.object({
@@ -18,7 +18,7 @@ const productSchema = z.object({
   category: z.enum(["FEED", "SUPPLEMENTS", "ACCESSORIES", "RINGS", "OTHER"]),
   priceCents: z.number().int().positive().max(MAX_MONEY_CENTS),
   stock: z.number().int().min(0).max(100_000),
-  imageUrl: z.string().max(300).regex(SAFE_MEDIA_URL).optional().or(z.literal("")),
+  imageUrl: z.string().max(300).regex(SAFE_IMAGE_URL).optional().or(z.literal("")),
   active: z.boolean(),
   sortIdx: z.number().int().min(0).max(1000),
 });

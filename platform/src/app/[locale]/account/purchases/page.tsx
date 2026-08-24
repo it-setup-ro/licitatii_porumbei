@@ -39,7 +39,7 @@ export default async function PurchasesPage({ params }: { params: Promise<{ loca
             >
               <div>
                 <p className="font-display font-bold">
-                  {currentLocale === "en" ? o.auction.pigeon.titleEn : o.auction.pigeon.titleRo}
+                  {o.auction.pigeon.name}
                 </p>
                 <p className="text-sm text-ink/60">
                   {formatMoney(o.amountCents, o.currency, currentLocale)}

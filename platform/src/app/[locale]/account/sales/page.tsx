@@ -40,7 +40,7 @@ export default async function SalesPage({ params }: { params: Promise<{ locale: 
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-display font-bold">
-                    {currentLocale === "en" ? o.auction.pigeon.titleEn : o.auction.pigeon.titleRo}
+                    {o.auction.pigeon.name}
                   </p>
                   <p className="text-sm text-ink/60">
                     {formatMoney(o.amountCents, o.currency, currentLocale)} ·{" "}

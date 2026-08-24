@@ -30,8 +30,9 @@ export default async function AuctionsPage({
         ? {
             pigeon: {
               OR: [
-                { titleRo: { contains: q } },
-                { titleEn: { contains: q } },
+                { name: { contains: q } },
+                { taglineRo: { contains: q } },
+                { taglineEn: { contains: q } },
                 { ringNumber: { contains: q } },
                 { strain: { contains: q } },
               ],

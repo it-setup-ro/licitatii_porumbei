@@ -279,7 +279,7 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
         winnerId: final.winnerId,
         priceCents: final.currentPriceCents,
       });
-      const lotName = final.pigeon.titleRo;
+      const lotName = final.pigeon.name;
       if (final.winnerId) {
         await notify(
           final.winnerId,

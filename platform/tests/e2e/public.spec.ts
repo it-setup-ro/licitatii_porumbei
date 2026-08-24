@@ -16,7 +16,9 @@ test.describe("Pagini publice & i18n", () => {
     await page.getByTestId("lang-en").click();
     await expect(page).toHaveURL(/\/en$/);
     await expect(page.locator("h1")).toContainText("Champions fly here");
-    await expect(page.getByTestId("section-live")).toContainText("Blue Lightning");
+    // numele porumbelului ramane acelasi in ambele limbi; se traduce rubrica
+    await expect(page.getByTestId("section-live")).toContainText("Fulger Albastru");
+    await expect(page.getByTestId("section-live")).toContainText("Long Distance Arad");
     await page.getByTestId("lang-ro").click();
     await expect(page.locator("h1")).toContainText("Campionii zboară aici");
   });
@@ -39,7 +41,12 @@ test.describe("Pagini publice & i18n", () => {
     await page.goto("/ro/auctions");
     await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
     await expect(page.getByTestId("lot-title")).toContainText("Fulger Albastru");
+    await expect(page.getByTestId("lot-tagline")).toContainText("Arad");
     await expect(page.getByTestId("fact-ring")).toContainText("RO 2023 445566");
+    await expect(page.getByTestId("fact-bred-by")).toContainText("Petrescu");
+    // pedigree-ul scanat e vizibil direct; arborele si palmaresul stau sub buton
+    await expect(page.getByTestId("lot-pedigree")).toBeVisible();
+    await page.locator('[data-testid="lot-more"] summary').click();
     await expect(page.getByTestId("pedigree")).toContainText("Blue Thunder");
     await expect(page.getByTestId("results-table")).toContainText("Satu Mare");
     await expect(page.getByTestId("seller-link")).toBeVisible();

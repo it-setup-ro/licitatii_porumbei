@@ -39,7 +39,7 @@ export default async function AdminLotsPage({
             >
               <div className="text-sm">
                 <p className="font-display text-base font-bold">
-                  {currentLocale === "en" ? a.pigeon.titleEn : a.pigeon.titleRo}
+                  {a.pigeon.name}
                 </p>
                 <p className="text-ink/60">
                   {a.pigeon.ringNumber} · {a.pigeon.seller.name} ·{" "}

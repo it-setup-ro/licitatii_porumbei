@@ -31,6 +31,7 @@ export default async function SellPage({ params }: { params: Promise<{ locale: s
           assistedPercent={settings.commissionPercent + settings.assistedExtraPercent}
           assistedEnabled={settings.assistedListingEnabled}
           durationDays={settings.defaultDurationDays}
+          defaultOfferedBy={user!.sellerCompany ?? user!.name}
         />
       )}
     </div>

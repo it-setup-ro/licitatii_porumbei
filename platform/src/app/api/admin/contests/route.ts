@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { SAFE_MEDIA_URL } from "@/lib/limits";
+import { SAFE_IMAGE_URL } from "@/lib/limits";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 
 const schema = z.object({
@@ -17,7 +17,7 @@ const schema = z.object({
   descEn: z.string().max(4000).optional(),
   rulesRo: z.string().max(20_000).optional(),
   rulesEn: z.string().max(20_000).optional(),
-  coverUrl: z.string().max(300).regex(SAFE_MEDIA_URL).optional().or(z.literal("")),
+  coverUrl: z.string().max(300).regex(SAFE_IMAGE_URL).optional().or(z.literal("")),
   startsAt: z.string().datetime(),
   endsAt: z.string().datetime(),
   status: z.enum(["UPCOMING", "ACTIVE", "FINISHED"]),

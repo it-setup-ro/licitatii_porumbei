@@ -35,7 +35,7 @@ export default async function FixedPricePage({
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {lots.map((lot) => {
             const sold = lot.status === "CLOSED";
-            const title = currentLocale === "en" ? lot.pigeon.titleEn : lot.pigeon.titleRo;
+            const title = lot.pigeon.name;
             return (
               <Link
                 key={lot.id}

@@ -44,7 +44,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
       await notify(
         auction.sellerId,
         "LOT_REJECTED",
-        { lot: auction.pigeon.titleRo, reason: body.data.reason ?? "-" },
+        { lot: auction.pigeon.name, reason: body.data.reason ?? "-" },
         "/account/lots"
       );
       return jsonOk();
@@ -76,7 +76,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     await notify(
       auction.sellerId,
       "LOT_APPROVED",
-      { lot: auction.pigeon.titleRo },
+      { lot: auction.pigeon.name },
       `/auctions/${id}`
     );
     return jsonOk();
