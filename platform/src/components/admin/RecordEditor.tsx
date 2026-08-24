@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
+import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 
 /**
  * Editor generic pentru înregistrările din admin (produse, articole, concursuri,
@@ -12,7 +13,8 @@ import { useRouter } from "@/i18n/navigation";
 export type FieldDef = {
   key: string;
   label: string;
-  type: "text" | "textarea" | "number" | "money" | "boolean" | "select" | "datetime";
+  /** "image" = alegere de poza cu acelasi selector ca la articole/loturi */
+  type: "text" | "textarea" | "number" | "money" | "boolean" | "select" | "datetime" | "image";
   options?: { value: string; label: string }[];
   hint?: string;
   rows?: number;
@@ -93,7 +95,20 @@ export default function RecordEditor({
               {f.label}
             </label>
 
-            {f.type === "boolean" ? (
+            {f.type === "image" ? (
+              <div className="mt-1">
+                <MediaPicker
+                  value={
+                    values[f.key]
+                      ? ([{ url: String(values[f.key]), type: "IMAGE" }] as PickedMedia[])
+                      : []
+                  }
+                  onChange={(next) => set(f.key, next[0]?.url ?? "")}
+                  maxFiles={1}
+                  allowVideo={false}
+                />
+              </div>
+            ) : f.type === "boolean" ? (
               <div className="mt-1">
                 <button
                   type="button"

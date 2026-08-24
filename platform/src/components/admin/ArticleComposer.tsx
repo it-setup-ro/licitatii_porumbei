@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
+import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 
 /**
  * Compunerea unui articol, in stil retea sociala: titlu, text, poze/clipuri.
@@ -12,7 +13,7 @@ import { useRouter } from "@/i18n/navigation";
  * foloseste textul romanesc si pentru vizitatorii straini.
  */
 
-export type ComposerMedia = { url: string; type: "IMAGE" | "VIDEO" };
+export type ComposerMedia = PickedMedia;
 
 export default function ArticleComposer({
   articleId,
@@ -32,7 +33,6 @@ export default function ArticleComposer({
   initialPublished?: boolean;
 }) {
   const router = useRouter();
-  const fileRef = useRef<HTMLInputElement>(null);
 
   const [title, setTitle] = useState(initialTitle);
   const [body, setBody] = useState(initialBody);
@@ -43,51 +43,9 @@ export default function ArticleComposer({
   const [titleEn, setTitleEn] = useState(initialTitleEn);
   const [bodyEn, setBodyEn] = useState(initialBodyEn);
 
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [savedSlug, setSavedSlug] = useState<string | null>(null);
-
-  const attach = async (list: FileList | null) => {
-    if (!list || list.length === 0) return;
-    setUploading(true);
-    setUploadError(null);
-    const data = new FormData();
-    for (const f of Array.from(list)) data.append("files", f);
-    try {
-      const res = await fetch("/api/upload", { method: "POST", body: data });
-      const out = await res.json();
-      if (out.ok) {
-        setMedia((prev) => [...prev, ...out.files].slice(0, 10));
-      } else {
-        setUploadError(
-          out.error === "FILE_TOO_LARGE"
-            ? out.isVideo
-              ? "Clipul e prea mare (maxim 60 MB)."
-              : "Poza e prea mare (maxim 5 MB)."
-            : out.error === "INVALID_TYPE"
-              ? "Format neacceptat. Poze: JPG, PNG, WebP. Video: MP4, WebM, MOV."
-              : "Încărcarea a eșuat. Încearcă din nou."
-        );
-      }
-    } catch {
-      setUploadError("Încărcarea a eșuat. Încearcă din nou.");
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
-  };
-
-  const move = (index: number, delta: number) => {
-    setMedia((prev) => {
-      const next = [...prev];
-      const target = index + delta;
-      if (target < 0 || target >= next.length) return prev;
-      [next[index], next[target]] = [next[target], next[index]];
-      return next;
-    });
-  };
 
   const publish = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,7 +105,7 @@ export default function ArticleComposer({
     );
   }
 
-  const canPublish = title.trim().length >= 3 && body.trim().length > 0 && !busy && !uploading;
+  const canPublish = title.trim().length >= 3 && body.trim().length > 0 && !busy;
 
   return (
     <form
@@ -155,7 +113,6 @@ export default function ArticleComposer({
       className="overflow-hidden rounded-2xl border border-ink/10 bg-white"
       data-testid="article-composer"
     >
-      {/* Titlu */}
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -165,7 +122,6 @@ export default function ArticleComposer({
         className="w-full border-b border-ink/10 px-4 py-4 font-display text-xl font-bold outline-none placeholder:font-sans placeholder:text-base placeholder:font-normal placeholder:text-ink/35 focus:bg-ivory-soft"
       />
 
-      {/* Text */}
       <textarea
         value={body}
         onChange={(e) => setBody(e.target.value)}
@@ -175,118 +131,11 @@ export default function ArticleComposer({
         className="w-full resize-y px-4 py-4 text-base leading-relaxed outline-none placeholder:text-ink/35 focus:bg-ivory-soft"
       />
 
-      {/* Previzualizări */}
-      {media.length > 0 && (
-        <div className="grid grid-cols-2 gap-3 px-4 pb-4 sm:grid-cols-3" data-testid="composer-media">
-          {media.map((m, i) => (
-            <div key={m.url} className="group relative overflow-hidden rounded-xl bg-ink/5">
-              {m.type === "VIDEO" ? (
-                <video
-                  src={m.url}
-                  className="aspect-square w-full object-cover"
-                  muted
-                  playsInline
-                  preload="metadata"
-                />
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={m.url} alt="" className="aspect-square w-full object-cover" />
-              )}
+      <div className="border-t border-ink/10 px-4 py-4">
+        <MediaPicker value={media} onChange={setMedia} maxFiles={10} />
+      </div>
 
-              {m.type === "VIDEO" && (
-                <span className="pointer-events-none absolute left-2 top-2 rounded bg-ink/70 px-1.5 py-0.5 text-xs font-bold text-white">
-                  VIDEO
-                </span>
-              )}
-
-              <button
-                type="button"
-                onClick={() => setMedia((prev) => prev.filter((x) => x.url !== m.url))}
-                aria-label="Șterge"
-                data-testid="composer-remove"
-                className="absolute right-1.5 top-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-wing-red text-sm font-bold text-white shadow"
-              >
-                ✕
-              </button>
-
-              {media.length > 1 && (
-                <div className="absolute inset-x-1.5 bottom-1.5 flex justify-between">
-                  <button
-                    type="button"
-                    onClick={() => move(i, -1)}
-                    disabled={i === 0}
-                    aria-label="Mută la stânga"
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-ink/70 text-white disabled:opacity-25"
-                  >
-                    ‹
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => move(i, 1)}
-                    disabled={i === media.length - 1}
-                    aria-label="Mută la dreapta"
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-ink/70 text-white disabled:opacity-25"
-                  >
-                    ›
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {uploadError && (
-        <p
-          className="mx-4 mb-3 rounded-lg bg-wing-red/10 px-3 py-2 text-sm text-wing-red"
-          data-testid="composer-upload-error"
-        >
-          {uploadError}
-        </p>
-      )}
-
-      {/* Bara de acțiuni */}
       <div className="flex flex-wrap items-center gap-2 border-t border-ink/10 bg-ivory-soft px-3 py-3">
-        <input
-          ref={fileRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime"
-          multiple
-          className="hidden"
-          data-testid="composer-file-input"
-          onChange={(e) => attach(e.target.files)}
-        />
-        <button
-          type="button"
-          onClick={() => fileRef.current?.click()}
-          disabled={uploading || media.length >= 10}
-          data-testid="composer-attach"
-          className="flex items-center gap-2 rounded-xl border border-ink/20 bg-white px-4 py-2.5 text-sm font-semibold hover:border-wing-blue hover:text-wing-blue disabled:opacity-50"
-        >
-          {uploading ? (
-            "Se încarcă…"
-          ) : (
-            <>
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <path d="m21 15-5-5L5 21" />
-              </svg>
-              Foto / video
-            </>
-          )}
-        </button>
-
         <label className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-ink/5">
           <input
             type="checkbox"
@@ -308,7 +157,7 @@ export default function ArticleComposer({
         </button>
       </div>
 
-      {/* Traducere engleză — optională, ascunsă implicit */}
+      {/* Traducere engleză — opțională, ascunsă implicit */}
       <div className="border-t border-ink/10 px-4 py-3">
         {showEn ? (
           <div className="space-y-3">

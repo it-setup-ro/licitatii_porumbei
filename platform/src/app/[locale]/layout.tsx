@@ -63,7 +63,7 @@ export default async function LocaleLayout({
     <html lang={locale} className={`${display.variable} ${body.variable} h-full antialiased`}>
       <body className="min-h-screen flex flex-col">
         <NextIntlClientProvider>
-          <TopBar isLoggedIn={user !== null} />
+          <TopBar isLoggedIn={user !== null} isAdmin={user?.role === "ADMIN"} />
           <SiteHeader
             siteName={settings.siteName}
             user={

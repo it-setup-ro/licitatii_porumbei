@@ -22,12 +22,7 @@ const FIELDS: FieldDef[] = [
   { key: "descEn", label: "Descriere (EN)", type: "textarea", rows: 3 },
   { key: "priceCents", label: "Preț (EUR)", type: "money" },
   { key: "stock", label: "Stoc", type: "number" },
-  {
-    key: "imageUrl",
-    label: "Imagine",
-    type: "text",
-    hint: "cale internă, ex. /products/feed.svg sau /api/files/…",
-  },
+  { key: "imageUrl", label: "Imagine", type: "image", full: true },
   { key: "sortIdx", label: "Ordine afișare", type: "number" },
   { key: "active", label: "Activ în magazin", type: "boolean" },
 ];

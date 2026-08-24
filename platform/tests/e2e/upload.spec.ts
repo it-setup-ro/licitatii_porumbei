@@ -10,11 +10,11 @@ test.describe("Upload poze de pe calculator (formular listare)", () => {
     await page.goto("/ro/sell");
 
     // butonul de browse exista; input-ul de fisiere primeste fixture-ul
-    await expect(page.getByTestId("sf-browse")).toBeVisible();
-    await page.getByTestId("sf-file-input").setInputFiles(FIXTURE);
+    await expect(page.getByTestId("media-choose-files")).toBeVisible();
+    await page.getByTestId("media-input-files").setInputFiles(FIXTURE);
 
     // apare preview-ul cu URL servit de /api/files/
-    const preview = page.getByTestId("upload-previews").locator("img");
+    const preview = page.getByTestId("media-previews").locator("img");
     await expect(preview).toHaveCount(1);
     const src = await preview.getAttribute("src");
     expect(src).toMatch(/^\/api\/files\/[a-z0-9-]+\.png$/);
@@ -25,8 +25,8 @@ test.describe("Upload poze de pe calculator (formular listare)", () => {
     expect(res.headers()["content-type"]).toBe("image/png");
 
     // stergerea din preview functioneaza
-    await page.getByTestId("upload-previews").locator("button").click();
-    await expect(page.getByTestId("upload-previews")).toHaveCount(0);
+    await page.getByTestId("media-previews").locator("button").click();
+    await expect(page.getByTestId("media-previews")).toHaveCount(0);
   });
 
   test("poza urcata ajunge pe lotul publicat", async ({ page }) => {
@@ -38,8 +38,8 @@ test.describe("Upload poze de pe calculator (formular listare)", () => {
     await page.getByTestId("sf-year").fill("2025");
     await page.getByTestId("sf-title-ro").fill("Aripă de Foc — test upload poze");
     await page.getByTestId("sf-title-en").fill("Fire Wing — photo upload test");
-    await page.getByTestId("sf-file-input").setInputFiles(FIXTURE);
-    await expect(page.getByTestId("upload-previews").locator("img")).toHaveCount(1);
+    await page.getByTestId("media-input-files").setInputFiles(FIXTURE);
+    await expect(page.getByTestId("media-previews").locator("img")).toHaveCount(1);
     await page.getByTestId("sf-start-price").fill("110");
     await page.getByTestId("sell-submit").click();
     await expect(page.getByTestId("sell-success")).toBeVisible();

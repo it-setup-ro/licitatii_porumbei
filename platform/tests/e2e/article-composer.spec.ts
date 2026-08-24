@@ -54,10 +54,10 @@ test.describe("Compozitor de articole", () => {
 
     await page.getByTestId("composer-title").fill(`Cu poze si clip ${Date.now()}`);
     await page.getByTestId("composer-body").fill("Articol cu fișiere atașate.");
-    await page.getByTestId("composer-file-input").setInputFiles([PHOTO, CLIP]);
+    await page.getByTestId("media-input-files").setInputFiles([PHOTO, CLIP]);
 
     // apar doua previzualizari
-    await expect(page.getByTestId("composer-media").locator("img, video")).toHaveCount(2);
+    await expect(page.getByTestId("media-previews").locator("img, video")).toHaveCount(2);
 
     await page.getByTestId("composer-submit").click();
     await expect(page.getByTestId("composer-saved")).toBeVisible();
@@ -79,10 +79,10 @@ test.describe("Compozitor de articole", () => {
   test("stergerea unui fisier din compozitor", async ({ page }) => {
     await login(page, "admin@nbp.test", "admin1234");
     await page.goto("/ro/admin/articles?new=1");
-    await page.getByTestId("composer-file-input").setInputFiles(PHOTO);
-    await expect(page.getByTestId("composer-media").locator("img")).toHaveCount(1);
-    await page.getByTestId("composer-remove").click();
-    await expect(page.getByTestId("composer-media")).toHaveCount(0);
+    await page.getByTestId("media-input-files").setInputFiles(PHOTO);
+    await expect(page.getByTestId("media-previews").locator("img")).toHaveCount(1);
+    await page.getByTestId("media-remove").click();
+    await expect(page.getByTestId("media-previews")).toHaveCount(0);
   });
 
   test("butonul de publicare e blocat fara titlu si text", async ({ page }) => {
