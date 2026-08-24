@@ -18,6 +18,7 @@ export default async function ArticlePage({
 
   const article = await prisma.article.findFirst({
     where: { slug, publishedAt: { not: null, lte: new Date() } },
+    include: { media: { orderBy: { sortIdx: "asc" } } },
   });
   if (!article) notFound();
 
@@ -30,7 +31,7 @@ export default async function ArticlePage({
         {t("backToList")}
       </Link>
 
-      {article.coverUrl && (
+      {article.media.length === 0 && article.coverUrl && (
         <div className="mt-4 overflow-hidden rounded-2xl border border-ink/10 bg-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={article.coverUrl} alt={title} className="aspect-[16/9] w-full object-cover" />
@@ -55,6 +56,33 @@ export default async function ArticlePage({
       <div className="mt-6" data-testid="article-body">
         <RichText text={body} />
       </div>
+
+      {article.media.length > 0 && (
+        <div className="mt-8 space-y-4" data-testid="article-media">
+          {article.media.map((m) =>
+            m.type === "VIDEO" ? (
+              <video
+                key={m.id}
+                src={m.url}
+                controls
+                playsInline
+                preload="metadata"
+                data-testid="article-video"
+                className="w-full rounded-2xl border border-ink/10 bg-ink"
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={m.id}
+                src={m.url}
+                alt=""
+                data-testid="article-image"
+                className="w-full rounded-2xl border border-ink/10 object-cover"
+              />
+            )
+          )}
+        </div>
+      )}
     </article>
   );
 }

@@ -1,33 +1,39 @@
 import { randomBytes } from "crypto";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
-import { requireApprovedSeller } from "@/lib/auth";
+import { requireApprovedSeller, requireAdmin, AuthError } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
 import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/api";
 
 /**
- * Upload de poze pentru loturi (doar vanzatori aprobati / admin).
+ * Upload de poze si clipuri (loturi + articole).
  * Fisierele se salveaza pe disc in uploads/ si se servesc prin /api/files/[name].
- * Validari stricte: doar imagini raster (nu SVG — risc XSS), max 5MB, max 8 per cerere.
+ *
+ * Validari: se verifica semnatura reala a fisierului (magic bytes), nu tipul
+ * declarat de browser — un fisier text redenumit .png nu trece. SVG-ul e
+ * exclus deliberat (poate contine script => XSS).
  */
 
 const UPLOADS_DIR = path.join(process.cwd(), "uploads");
-const MAX_SIZE = 5 * 1024 * 1024;
-const MAX_FILES = 8;
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_VIDEO_BYTES = 60 * 1024 * 1024; // 60 MB — un clip scurt de telefon
+const MAX_FILES = 10;
 
-const ALLOWED: Record<string, string> = {
+const EXT: Record<string, string> = {
   "image/jpeg": ".jpg",
   "image/png": ".png",
   "image/webp": ".webp",
+  "video/mp4": ".mp4",
+  "video/webm": ".webm",
+  "video/quicktime": ".mp4", // clipurile de pe iPhone (.mov) folosesc tot containerul ISO-BMFF
 };
 
-/** Verifica semnatura reala a fisierului (magic bytes), nu doar tipul declarat. */
-function sniffImage(buf: Buffer): string | null {
+const VIDEO_TYPES = new Set(["video/mp4", "video/webm", "video/quicktime"]);
+
+/** Recunoaste tipul dupa continut, nu dupa numele fisierului. */
+function sniff(buf: Buffer): string | null {
   if (buf.length > 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return "image/jpeg";
-  if (
-    buf.length > 8 &&
-    buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47
-  )
+  if (buf.length > 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47)
     return "image/png";
   if (
     buf.length > 12 &&
@@ -35,15 +41,32 @@ function sniffImage(buf: Buffer): string | null {
     buf.toString("ascii", 8, 12) === "WEBP"
   )
     return "image/webp";
+  // WebM/Matroska incepe cu antetul EBML
+  if (buf.length > 4 && buf[0] === 0x1a && buf[1] === 0x45 && buf[2] === 0xdf && buf[3] === 0xa3)
+    return "video/webm";
+  // MP4 / MOV: caseta "ftyp" la offset 4
+  if (buf.length > 12 && buf.toString("ascii", 4, 8) === "ftyp") {
+    const brand = buf.toString("ascii", 8, 12);
+    return brand.startsWith("qt") ? "video/quicktime" : "video/mp4";
+  }
   return null;
 }
 
 export async function POST(req: Request) {
   try {
-    const seller = await requireApprovedSeller();
+    // Loturile le urca vanzatorii aprobati; articolele le scrie adminul.
+    // Acceptam oricare dintre cele doua roluri.
+    let uploaderId: string;
+    try {
+      const seller = await requireApprovedSeller();
+      uploaderId = seller.id;
+    } catch (e) {
+      if (!(e instanceof AuthError)) throw e;
+      const admin = await requireAdmin();
+      uploaderId = admin.id;
+    }
 
-    // anti-umplere disc: maxim 40 de cereri de upload pe ora per vanzator
-    const check = rateLimit(`upload:${seller.id}`, 40, 60 * 60_000);
+    const check = rateLimit(`upload:${uploaderId}`, 60, 60 * 60_000);
     if (!check.allowed) return jsonTooManyRequests(check.retryAfterSeconds);
 
     const form = await req.formData();
@@ -53,18 +76,24 @@ export async function POST(req: Request) {
 
     await mkdir(UPLOADS_DIR, { recursive: true });
 
-    const urls: string[] = [];
+    const uploaded: { url: string; type: "IMAGE" | "VIDEO" }[] = [];
     for (const file of files) {
-      if (file.size > MAX_SIZE) return jsonError("FILE_TOO_LARGE", 400, { maxBytes: MAX_SIZE });
       const buf = Buffer.from(await file.arrayBuffer());
-      const realType = sniffImage(buf);
-      if (!realType || !(realType in ALLOWED)) return jsonError("INVALID_TYPE", 400);
+      const realType = sniff(buf);
+      if (!realType || !(realType in EXT)) return jsonError("INVALID_TYPE", 400);
 
-      const name = `${Date.now()}-${randomBytes(8).toString("hex")}${ALLOWED[realType]}`;
+      const isVideo = VIDEO_TYPES.has(realType);
+      const limit = isVideo ? MAX_VIDEO_BYTES : MAX_IMAGE_BYTES;
+      if (file.size > limit) {
+        return jsonError("FILE_TOO_LARGE", 400, { maxBytes: limit, isVideo });
+      }
+
+      const name = `${Date.now()}-${randomBytes(8).toString("hex")}${EXT[realType]}`;
       await writeFile(path.join(UPLOADS_DIR, name), buf);
-      urls.push(`/api/files/${name}`);
+      uploaded.push({ url: `/api/files/${name}`, type: isVideo ? "VIDEO" : "IMAGE" });
     }
-    return jsonOk({ urls });
+
+    return jsonOk({ files: uploaded, urls: uploaded.map((u) => u.url) });
   } catch (e) {
     return handleApiError(e);
   }
