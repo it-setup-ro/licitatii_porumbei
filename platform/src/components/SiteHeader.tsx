@@ -2,8 +2,9 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import LogoMark from "./LogoMark";
+import AccountMenu from "./AccountMenu";
 
 type HeaderUser = {
   id: string;
@@ -37,19 +38,9 @@ export default function SiteHeader({
 }) {
   const t = useTranslations("nav");
   const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
-  const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLUListElement>(null);
-
-  // închide meniurile la schimbarea paginii
-  useEffect(() => {
-    setMobileOpen(false);
-    setMenuOpen(false);
-    setOpenMenu(null);
-  }, [pathname]);
 
   // închide submeniul deschis la clic în afara navigației
   useEffect(() => {
@@ -67,11 +58,6 @@ export default function SiteHeader({
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
-
-  const logout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    window.location.assign("/");
-  };
 
   const canSell = user && (user.role === "ADMIN" || user.sellerStatus === "APPROVED");
 
@@ -140,31 +126,10 @@ export default function SiteHeader({
             )}
           </Link>
 
-          {/* Cont / Autentificare — iconiță vizibilă pe telefon, unde butoanele
-              text din dreapta sunt ascunse. Fara ea, un vizitator de pe telefon
-              nu avea de unde sti ca se poate autentifica. */}
-          <Link
-            href={user ? "/account" : "/login"}
-            data-testid={user ? "mobile-account-icon" : "mobile-login-icon"}
-            aria-label={user ? t("account") : t("login")}
-            title={user ? t("account") : t("login")}
-            className="rounded-full p-2 text-ink/70 transition-colors hover:bg-ink/5 hover:text-ink lg:hidden"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          </Link>
+          {/* Caseta de cont (telefon) — autentificare SI iesire in acelasi loc */}
+          <div className="lg:hidden">
+            <AccountMenu user={user} unreadCount={unreadCount} variant="icon" />
+          </div>
 
           {/* Clopoțel notificări */}
           {user && (
@@ -202,65 +167,10 @@ export default function SiteHeader({
             </Link>
           )}
 
-          {/* Cont — desktop */}
-          {user ? (
-            <div className="relative hidden lg:block">
-              <button
-                onClick={() => setMenuOpen((v) => !v)}
-                className="flex items-center gap-2 rounded-full border border-ink/15 px-3 py-1.5 text-sm font-medium transition-colors hover:border-ink/40"
-                data-testid="user-menu"
-              >
-                <span>{user.name.split(" ")[0]}</span>
-              </button>
-              {menuOpen && (
-                <div
-                  className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-ink/10 bg-white p-2 shadow-xl"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <MenuLink href="/account" label={t("account")} testid="menu-account" />
-                  <MenuLink href="/account/bids" label={t("myBids")} testid="menu-bids" />
-                  <MenuLink
-                    href="/account/watchlist"
-                    label={t("watchlist")}
-                    testid="menu-watchlist"
-                  />
-                  <MenuLink
-                    href="/account/purchases"
-                    label={t("myPurchases")}
-                    testid="menu-purchases"
-                  />
-                  {canSell && <MenuLink href="/sell" label={t("sell")} testid="menu-sell" />}
-                  {user.role === "ADMIN" && (
-                    <MenuLink href="/admin" label={t("admin")} testid="menu-admin" />
-                  )}
-                  <button
-                    onClick={logout}
-                    data-testid="menu-logout"
-                    className="w-full rounded-lg px-3 py-2 text-left text-sm text-wing-red hover:bg-ink/5"
-                  >
-                    {t("logout")}
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="hidden items-center gap-2 text-sm font-medium lg:flex">
-              <Link
-                href="/login"
-                className="rounded-full px-3 py-1.5 transition-colors hover:bg-ink/5"
-                data-testid="nav-login"
-              >
-                {t("login")}
-              </Link>
-              <Link
-                href="/register"
-                className="rounded-full bg-ink px-4 py-1.5 text-ivory transition-colors hover:bg-ink/85"
-                data-testid="nav-register"
-              >
-                {t("register")}
-              </Link>
-            </div>
-          )}
+          {/* Caseta de cont (desktop) */}
+          <div className="hidden lg:block">
+            <AccountMenu user={user} unreadCount={unreadCount} variant="full" />
+          </div>
 
           <button
             onClick={() => setMobileOpen((v) => !v)}
@@ -410,26 +320,8 @@ export default function SiteHeader({
           <nav
             className="absolute inset-x-0 z-40 max-h-[calc(100vh-57px)] overflow-y-auto border-b border-ink/10 bg-ivory p-4 shadow-xl lg:hidden"
             data-testid="mobile-menu"
+            onClick={() => setMobileOpen(false)}
           >
-            {!user && (
-              <div className="mb-4 space-y-2 border-b border-ink/10 pb-4">
-                <Link
-                  href="/login"
-                  data-testid="m-login"
-                  className="block rounded-xl bg-ink px-4 py-3 text-center font-semibold text-ivory"
-                >
-                  {t("login")}
-                </Link>
-                <Link
-                  href="/register"
-                  data-testid="m-register"
-                  className="block rounded-xl border border-ink/20 px-4 py-3 text-center font-semibold"
-                >
-                  {t("register")}
-                </Link>
-              </div>
-            )}
-
             <div className="space-y-1">
               {items.map((item) => (
                 <div key={item.testid}>
@@ -479,57 +371,10 @@ export default function SiteHeader({
               )}
             </div>
 
-            <div className="my-3 h-px bg-ink/10" />
-
-            {user ? (
-              <div className="space-y-1">
-                <p className="px-3 pb-1 text-xs font-bold uppercase tracking-wide text-ink/40">
-                  {user.name}
-                </p>
-                <MobileLink href="/account" label={t("account")} testid="m-account" />
-                <MobileLink href="/account/bids" label={t("myBids")} testid="m-bids" />
-                <MobileLink
-                  href="/account/watchlist"
-                  label={t("watchlist")}
-                  testid="m-watchlist"
-                />
-                <MobileLink
-                  href="/account/purchases"
-                  label={t("myPurchases")}
-                  testid="m-purchases"
-                />
-                <MobileLink
-                  href="/account/notifications"
-                  label={
-                    unreadCount > 0 ? `${t("notifications")} (${unreadCount})` : t("notifications")
-                  }
-                  testid="m-notifications"
-                />
-                <button
-                  onClick={logout}
-                  data-testid="m-logout"
-                  className="w-full rounded-lg px-3 py-2.5 text-left font-medium text-wing-red hover:bg-ink/5"
-                >
-                  {t("logout")}
-                </button>
-              </div>
-            ) : null}
           </nav>
         </>
       )}
     </header>
-  );
-}
-
-function MenuLink({ href, label, testid }: { href: string; label: string; testid: string }) {
-  return (
-    <Link
-      href={href}
-      data-testid={testid}
-      className="block rounded-lg px-3 py-2 text-sm hover:bg-ink/5"
-    >
-      {label}
-    </Link>
   );
 }
 
