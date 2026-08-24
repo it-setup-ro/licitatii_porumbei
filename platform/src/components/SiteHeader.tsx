@@ -140,6 +140,32 @@ export default function SiteHeader({
             )}
           </Link>
 
+          {/* Cont / Autentificare — iconiță vizibilă pe telefon, unde butoanele
+              text din dreapta sunt ascunse. Fara ea, un vizitator de pe telefon
+              nu avea de unde sti ca se poate autentifica. */}
+          <Link
+            href={user ? "/account" : "/login"}
+            data-testid={user ? "mobile-account-icon" : "mobile-login-icon"}
+            aria-label={user ? t("account") : t("login")}
+            title={user ? t("account") : t("login")}
+            className="rounded-full p-2 text-ink/70 transition-colors hover:bg-ink/5 hover:text-ink lg:hidden"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </Link>
+
           {/* Clopoțel notificări */}
           {user && (
             <Link
@@ -385,6 +411,25 @@ export default function SiteHeader({
             className="absolute inset-x-0 z-40 max-h-[calc(100vh-57px)] overflow-y-auto border-b border-ink/10 bg-ivory p-4 shadow-xl lg:hidden"
             data-testid="mobile-menu"
           >
+            {!user && (
+              <div className="mb-4 space-y-2 border-b border-ink/10 pb-4">
+                <Link
+                  href="/login"
+                  data-testid="m-login"
+                  className="block rounded-xl bg-ink px-4 py-3 text-center font-semibold text-ivory"
+                >
+                  {t("login")}
+                </Link>
+                <Link
+                  href="/register"
+                  data-testid="m-register"
+                  className="block rounded-xl border border-ink/20 px-4 py-3 text-center font-semibold"
+                >
+                  {t("register")}
+                </Link>
+              </div>
+            )}
+
             <div className="space-y-1">
               {items.map((item) => (
                 <div key={item.testid}>
@@ -468,24 +513,7 @@ export default function SiteHeader({
                   {t("logout")}
                 </button>
               </div>
-            ) : (
-              <div className="space-y-2">
-                <Link
-                  href="/login"
-                  data-testid="m-login"
-                  className="block rounded-xl border border-ink/20 px-4 py-2.5 text-center font-semibold"
-                >
-                  {t("login")}
-                </Link>
-                <Link
-                  href="/register"
-                  data-testid="m-register"
-                  className="block rounded-xl bg-ink px-4 py-2.5 text-center font-semibold text-ivory"
-                >
-                  {t("register")}
-                </Link>
-              </div>
-            )}
+            ) : null}
           </nav>
         </>
       )}

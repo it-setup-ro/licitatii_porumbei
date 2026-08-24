@@ -24,6 +24,14 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+/**
+ * Antetul afiseaza date care se schimba de la o cerere la alta: utilizatorul
+ * curent, numarul din cos, notificarile necitite si linkurile din meniu
+ * (editabile din admin). Fara randare dinamica explicita, o modificare facuta
+ * in admin putea sa nu apara pana la urmatorul build.
+ */
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }

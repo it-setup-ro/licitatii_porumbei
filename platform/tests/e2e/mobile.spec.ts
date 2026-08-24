@@ -79,3 +79,43 @@ test.describe("Clopotelul de notificari", () => {
     await expect(page.getByTestId("notif-bell")).toHaveCount(0);
   });
 });
+
+test.describe("Autentificarea trebuie sa fie vizibila pe telefon", () => {
+  test("vizitatorul nelogat vede iconita de autentificare direct in antet", async ({ page }) => {
+    await page.goto("/ro");
+    // fara ea, pe telefon nu exista niciun semn ca te poti autentifica:
+    // butoanele text din antet sunt ascunse sub 1024px
+    const icon = page.getByTestId("mobile-login-icon");
+    await expect(icon).toBeVisible();
+    await expect(icon).toHaveAttribute("aria-label", /Autentificare/i);
+    await icon.click();
+    await expect(page).toHaveURL(/\/ro\/login$/);
+  });
+
+  test("Autentificare si Cont nou sunt primele optiuni din panoul mobil", async ({ page }) => {
+    await page.goto("/ro");
+    await page.getByTestId("mobile-menu-button").click();
+    const menu = page.getByTestId("mobile-menu");
+    await expect(menu.getByTestId("m-login")).toBeVisible();
+    await expect(menu.getByTestId("m-register")).toBeVisible();
+
+    // trebuie sa apara inaintea navigatiei, nu ingropate la final
+    const texts = await menu.locator("a, button").allTextContents();
+    expect(texts[0]).toMatch(/Autentificare/i);
+    expect(texts[1]).toMatch(/Cont nou/i);
+  });
+
+  test("utilizatorul logat are scurtatura catre cont in antet", async ({ page }) => {
+    await page.goto("/ro/login");
+    await page.getByTestId("login-email").fill("buyer1@nbp.test");
+    await page.getByTestId("login-password").fill("buyer1234");
+    await page.getByTestId("login-submit").click();
+    await expect(page.getByTestId("notif-bell")).toBeVisible();
+
+    await expect(page.getByTestId("mobile-login-icon")).toHaveCount(0);
+    const account = page.getByTestId("mobile-account-icon");
+    await expect(account).toBeVisible();
+    await account.click();
+    await expect(page).toHaveURL(/\/ro\/account$/);
+  });
+});
