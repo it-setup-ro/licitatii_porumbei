@@ -142,3 +142,4 @@ platform/src/
 | 24 aug | Fișa detaliată de tip pipa (ochi, constituție, aripă) + buton de test „Închide în 1 minut" în Loturi |
 | 24 aug | Pedigree imediat sub poze; meniuri strânse (Articole/Concursuri/Informații); „Crescător" → „Vânzător" pe lot |
 | 29 aug | Copie de siguranță zilnică a bazei (03:00, 30 de zile) și confirmare obligatorie la `reset-demo.sh` |
+| 29 aug | Poze reale de porumbei (CC0) și pedigree-uri demonstrative generate pe loturile demo |

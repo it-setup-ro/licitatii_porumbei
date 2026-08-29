@@ -133,7 +133,7 @@ async function main() {
       taglineEn: "3rd Long Distance Arad 2024 — 2,140 birds · nest brother to 1st Arad",
       bredBy: "Janssen Bros. — import 2019",
       offeredBy: "Columbodromul Câmpeanu",
-      pedigreeUrl: "/pigeons/p1b.svg",
+      pedigreeUrl: "/pigeons/pedigree-fulger-albastru.svg",
       descRo:
         "Mascul excepțional din linia Janssen, frate de cuib cu 1° Ararad Fond 2024. Ochi de vultur, penaj impecabil, construcție perfectă pentru fond.",
       descEn:
@@ -164,8 +164,7 @@ async function main() {
       dnaCertified: true,
       media: {
         create: [
-          { type: "IMAGE", url: "/pigeons/p1.svg", title: "Profil", sortIdx: 0 },
-          { type: "IMAGE", url: "/pigeons/p1b.svg", title: "Aripa", sortIdx: 1 },
+          { type: "IMAGE", url: "/pigeons/voiajor-vanat-bara.jpg", title: "Profil", sortIdx: 0 },
         ],
       },
       results: {
@@ -253,14 +252,14 @@ async function main() {
       taglineEn: "1st county middle-distance ace 2024 · pure Van Loon line",
       bredBy: "Van Loon (import 2022)",
       offeredBy: "Columbodromul Câmpeanu",
-      pedigreeUrl: "/pigeons/p2.svg",
+      pedigreeUrl: "/pigeons/pedigree-regina-nordului.svg",
       descRo:
         "Femelă de excepție, dublu As Demifond regional. Mamă a doi pui clasați în top 10 național.",
       descEn:
         "Outstanding hen, twice regional Middle Distance Ace. Dam of two youngsters placed top 10 national.",
       pedigreeJson: pedigree("RO-118822"),
       media: {
-        create: [{ type: "IMAGE", url: "/pigeons/p2.svg", title: "Profil", sortIdx: 0 }],
+        create: [{ type: "IMAGE", url: "/pigeons/voiajor-vanat-pestrit.jpg", title: "Profil", sortIdx: 0 }],
       },
       results: {
         create: [
@@ -300,11 +299,12 @@ async function main() {
       taglineEn: "Speed yearling, out of the pair that produced 2 aces",
       bredBy: "Columbodromul Câmpeanu",
       offeredBy: "Columbodromul Câmpeanu",
+      pedigreeUrl: "/pigeons/pedigree-vant-de-vest.svg",
       descRo: "Yearling promițător din linia Van den Bulck, pregătit pentru sezonul de viteză.",
       descEn: "Promising Van den Bulck yearling, ready for the sprint season.",
       pedigreeJson: pedigree("RO-990011"),
       media: {
-        create: [{ type: "IMAGE", url: "/pigeons/p3.svg", title: "Profil", sortIdx: 0 }],
+        create: [{ type: "IMAGE", url: "/pigeons/voiajor-deschis.jpg", title: "Profil", sortIdx: 0 }],
       },
     },
   });
@@ -338,11 +338,12 @@ async function main() {
       taglineEn: "Aarden marathon cock · 5 national placings",
       bredBy: "Aarden — linia originală",
       offeredBy: "Columbodromul Câmpeanu",
+      pedigreeUrl: "/pigeons/pedigree-as-de-fond.svg",
       descRo: "Mascul de mare fond cu clasări constante peste 700 km.",
       descEn: "Marathon cock with consistent placings beyond 700 km.",
       pedigreeJson: pedigree("RO-337788"),
       media: {
-        create: [{ type: "IMAGE", url: "/pigeons/p4.svg", title: "Profil", sortIdx: 0 }],
+        create: [{ type: "IMAGE", url: "/pigeons/voiajor-robust.jpg", title: "Profil", sortIdx: 0 }],
       },
       results: {
         create: [
@@ -418,11 +419,12 @@ async function main() {
       taglineEn: "Young hen from the loft's golden pair",
       bredBy: "Columbodromul Câmpeanu",
       offeredBy: "Columbodromul Câmpeanu",
+      pedigreeUrl: "/pigeons/pedigree-perla.svg",
       descRo: "Femelă tânără din cuplul de bază al crescătoriei.",
       descEn: "Young hen from the loft's foundation pair.",
       pedigreeJson: pedigree("RO-220044"),
       media: {
-        create: [{ type: "IMAGE", url: "/pigeons/p5.svg", title: "Profil", sortIdx: 0 }],
+        create: [{ type: "IMAGE", url: "/pigeons/voiajor-alb-bara.jpg", title: "Profil", sortIdx: 0 }],
       },
     },
   });

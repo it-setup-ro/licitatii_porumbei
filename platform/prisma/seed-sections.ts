@@ -35,12 +35,13 @@ export async function seedSections(
       taglineEn: "Janssen youngster 2026, available at a fixed price",
       bredBy: "Columbodromul Câmpeanu",
       offeredBy: "Columbodromul Câmpeanu",
+      pedigreeUrl: "/pigeons/pedigree-sageata-alba.svg",
       descRo:
         "Pui din cuplul de bază al crescătoriei, disponibil imediat la preț fix. Fără licitație — primul cumpărător îl ia.",
       descEn:
         "Youngster from the loft's foundation pair, available immediately at a fixed price. No bidding — the first buyer takes it.",
       pedigreeJson: pedigree("RO-550077"),
-      media: { create: [{ type: "IMAGE", url: "/pigeons/p3.svg", sortIdx: 0 }] },
+      media: { create: [{ type: "IMAGE", url: "/pigeons/voiajor-alb-sa.jpg", sortIdx: 0 }] },
     },
   });
   await prisma.auction.create({
@@ -72,9 +73,10 @@ export async function seedSections(
       taglineEn: "Breeding hen with proven origins, fixed price",
       bredBy: "Columbodromul Câmpeanu",
       offeredBy: "Columbodromul Câmpeanu",
+      pedigreeUrl: "/pigeons/pedigree-perla-nordului.svg",
       descRo: "Femelă de prăsilă din linie testată, disponibilă imediat, fără licitație.",
       descEn: "Breeding hen from a proven line, available immediately, no bidding.",
-      media: { create: [{ type: "IMAGE", url: "/pigeons/p5.svg", sortIdx: 0 }] },
+      media: { create: [{ type: "IMAGE", url: "/pigeons/voiajor-grizzle.jpg", sortIdx: 0 }] },
     },
   });
   await prisma.auction.create({
@@ -219,7 +221,7 @@ export async function seedSections(
           "Alegerea unui porumbel de fond începe cu pedigree-ul, dar nu se termină acolo.\n\nPrimul lucru pe care îl verifici este consistența liniei: nu un singur rezultat spectaculos, ci rezultate repetate pe distanțe lungi, în ani diferiți și în condiții meteo variate. Un porumbel cu un singur premiu mare poate fi produsul unei zile norocoase; unul cu cinci clasări bune în trei ani este produsul unei genetici solide.\n\nAl doilea criteriu este conformația. Un porumbel de fond bun are musculatura fermă dar elastică, penajul mătăsos și aripa cu pene de zbor bine distanțate. Ține-l în mână: trebuie să pară mai ușor decât arată.\n\nAl treilea criteriu, adesea ignorat, este originea maternală. Multe crescătorii de top își construiesc rezultatele pe câteva femele de bază, iar o femelă bună transmite mai constant decât un mascul spectaculos.",
         bodyEn:
           "Choosing a long-distance pigeon starts with the pedigree, but it does not end there.\n\nThe first thing to check is the consistency of the line: not a single spectacular result, but repeated results over long distances, in different years and in varied weather. A pigeon with one big prize may be the product of a lucky day; one with five good placings over three years is the product of solid genetics.\n\nThe second criterion is conformation. A good long-distance pigeon has firm but elastic muscling, silky feathering and a wing with well-spaced flight feathers. Hold it in your hand: it should feel lighter than it looks.\n\nThe third criterion, often overlooked, is maternal origin. Many top lofts build their results on a few foundation hens, and a good hen passes on her qualities more consistently than a spectacular cock.",
-        coverUrl: "/pigeons/p1b.svg",
+        coverUrl: "/pigeons/voiajor-vanat-bara.jpg",
         publishedAt: new Date(now - 6 * D),
       },
       {
@@ -232,7 +234,7 @@ export async function seedSections(
           "Sezonul se câștigă iarna, nu în ziua concursului.\n\nAntrenamentul progresiv începe cu zboruri scurte în jurul crescătoriei și crește gradual, cu atenție la recuperare între etape. Greșeala clasică este să mărești distanța prea repede: porumbeii ajung la primul concurs deja obosiți.\n\nAlimentația se ajustează după efort — amestec bogat în carbohidrați înainte de zbor, proteine pentru refacere după. Apa curată, schimbată zilnic, contează mai mult decât orice supliment.\n\nControlul sanitar preventiv, în special pentru trichomonoză și coccidioză, face diferența între o colonie care rezistă tot sezonul și una care cedează în iulie.",
         bodyEn:
           "The season is won in winter, not on race day.\n\nProgressive training starts with short flights around the loft and increases gradually, with attention to recovery between stages. The classic mistake is increasing distance too fast: the pigeons arrive at the first race already tired.\n\nFeeding is adjusted to effort — a carbohydrate-rich mix before flying, protein for recovery afterwards. Clean water, changed daily, matters more than any supplement.\n\nPreventive health control, especially for trichomoniasis and coccidiosis, makes the difference between a colony that lasts the whole season and one that collapses in July.",
-        coverUrl: "/pigeons/p2.svg",
+        coverUrl: "/pigeons/voiajor-vanat-pestrit.jpg",
         publishedAt: new Date(now - 2 * D),
       },
       {
@@ -245,7 +247,7 @@ export async function seedSections(
           "După adjudecare, transportul este responsabilitatea comună a vânzătorului și a cumpărătorului.\n\nPorumbeii se transportă în cuști individuale sau cu maximum patru exemplare, cu apă disponibilă la drumuri de peste patru ore. Cuștile trebuie ventilate pe toate laturile și ferite de curent direct.\n\nPentru livrări interne recomandăm curieri specializați în animale vii — un curier obișnuit nu are voie și nici condiții pentru transport de păsări.\n\nPentru livrări internaționale se adaugă documentația sanitar-veterinară. Verifică cerințele înainte de a licita, nu după.",
         bodyEn:
           "After winning a lot, transport is the shared responsibility of the seller and the buyer.\n\nPigeons travel in individual crates or with a maximum of four birds, with water available on journeys over four hours. Crates must be ventilated on all sides and protected from direct draught.\n\nFor domestic deliveries we recommend couriers specialised in live animals — an ordinary courier is neither allowed nor equipped to transport birds.\n\nInternational deliveries additionally require veterinary documentation. Check the requirements before bidding, not after.",
-        coverUrl: "/pigeons/p4.svg",
+        coverUrl: "/pigeons/voiajor-robust.jpg",
         publishedAt: new Date(now - 12 * H),
       },
     ],
