@@ -74,6 +74,9 @@ export default async function AuctionDetailPage({
     : false;
 
   const leadingBid = auction.bids.find((b) => b.isLeading);
+  // Numele sub care apare contul care vinde. Cand „Oferit de" spune acelasi
+  // lucru, nu-l mai repetam in fisa — ar arata ca doua informatii diferite.
+  const sellerLabel = seller.sellerCompany ?? seller.name;
   const tagline = currentLocale === "en" ? pigeon.taglineEn : pigeon.taglineRo;
   const desc = currentLocale === "en" ? pigeon.descEn : pigeon.descRo;
 
@@ -196,9 +199,7 @@ export default async function AuctionDetailPage({
           {/* Crescatorul (contul de pe platforma) */}
           <div className="rounded-2xl border border-ink/10 bg-white p-5">
             <p className="text-xs uppercase tracking-wide text-ink/50">{t("seller")}</p>
-            <p className="font-display mt-1 text-lg font-bold">
-              {seller.sellerCompany ?? seller.name}
-            </p>
+            <p className="font-display mt-1 text-lg font-bold">{sellerLabel}</p>
             {sellerStats._count > 0 && (
               <div className="mt-1 flex items-center gap-2 text-sm text-ink/60">
                 <StarRating rating={sellerStats._avg.rating ?? 0} />
@@ -229,7 +230,7 @@ export default async function AuctionDetailPage({
             {pigeon.bredBy && (
               <Fact label={tp("bredBy")} value={pigeon.bredBy} testid="fact-bred-by" />
             )}
-            {pigeon.offeredBy && (
+            {pigeon.offeredBy && pigeon.offeredBy !== sellerLabel && (
               <Fact label={tp("offeredBy")} value={pigeon.offeredBy} testid="fact-offered-by" />
             )}
           </div>

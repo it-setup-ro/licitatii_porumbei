@@ -57,6 +57,9 @@ test("submeniul Concursuri e accesibil din panoul mobil", async ({ page }) => {
   await page.getByTestId("mobile-menu-button").click();
   const group = page.getByTestId("m-contests-group");
   await expect(group).toBeVisible();
+  // grupul porneste strans si se desface la clic
+  await expect(group.getByTestId("contest-link")).toHaveCount(0);
+  await group.getByTestId("m-contests-toggle").click();
   await expect(group.getByTestId("contest-link")).toHaveCount(5);
   await expect(group.getByTestId("contest-link-soon")).toHaveCount(1);
 });

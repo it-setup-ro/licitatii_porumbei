@@ -21,6 +21,9 @@ test.describe("Meniu pe telefon", () => {
     const menu = page.getByTestId("mobile-menu");
     await expect(menu).toBeVisible();
     await expect(menu.getByTestId("m-auctions")).toBeVisible();
+    // Informatii e strans; se desface la clic
+    await expect(menu.getByTestId("m-info-rules")).toHaveCount(0);
+    await menu.getByTestId("m-info-toggle").click();
     await expect(menu.getByTestId("m-info-rules")).toBeVisible();
     await expect(menu.getByTestId("m-sell")).toBeVisible();
     await expect(menu.getByTestId("m-admin")).toBeVisible();

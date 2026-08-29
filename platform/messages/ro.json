@@ -43,7 +43,8 @@
     "myPurchases": "Cumpărăturile mele",
     "moreInfo": "Mai multe informații",
     "officialTime": "Ora oficială a platformei (București)",
-    "comingSoon": "în curând"
+    "comingSoon": "în curând",
+    "allArticles": "Toate articolele"
   },
   "home": {
     "heroTitle": "Campionii zboară aici",
@@ -86,8 +87,8 @@
     "antiSnipeNote": "Ofertele din ultimele {minutes} minute prelungesc automat licitația cu {extension} minute.",
     "extended": "Licitație prelungită!",
     "winner": "Câștigător",
-    "seller": "Crescător",
-    "viewSellerProfile": "Vezi profilul crescătorului",
+    "seller": "Vânzător",
+    "viewSellerProfile": "Vezi profilul vânzătorului",
     "watch": "Adaugă la favorite",
     "unwatch": "Scoate de la favorite",
     "bidHistory": "Istoricul ofertelor",

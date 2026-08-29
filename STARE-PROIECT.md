@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 100 teste end-to-end, toate verzi.
+**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 110 teste end-to-end, toate verzi.
 
 ---
 
@@ -27,6 +27,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - **Produse** — magazin cu categorii, coș (merge și nelogat), checkout cu scădere de stoc
 - **Articole** — blog bilingv, cu poze și clipuri
 - **Concursuri** — submeniu cu 6 linkuri către site-uri externe (clasamente, UNCR, FRSC, UCP)
+- **Meniuri strânse**: Articole (ultimele 5 articole + „Toate articolele"), Concursuri și Informații se desfac la clic — dropdown pe calculator, acordeon în panoul de pe telefon
 - **Pagini de conținut** — Regulament, Info licitații, Alte info, Transport, Despre noi, Contact (cu formular)
 - Bară de sus cu **ora oficială a platformei** (ora serverului — reper comun la închiderea licitațiilor)
 
@@ -138,3 +139,4 @@ platform/src/
 | 24 aug | Compozitor de articole cu video; audit mobil; caseta de cont; cameră + Administrare în bara de sus |
 | 24 aug | Câmpurile cerute pe lot (nume, rubrică, reprodus de, oferit de, pedigree scanat, video) și pagina lotului în formatul pipa.be |
 | 24 aug | Fișa detaliată de tip pipa (ochi, constituție, aripă) + buton de test „Închide în 1 minut" în Loturi |
+| 24 aug | Pedigree imediat sub poze; meniuri strânse (Articole/Concursuri/Informații); „Crescător" → „Vânzător" pe lot |

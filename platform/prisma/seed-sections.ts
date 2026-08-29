@@ -33,8 +33,8 @@ export async function seedSections(
       name: "Săgeata Albă",
       taglineRo: "Pui Janssen 2026, disponibil la preț fix",
       taglineEn: "Janssen youngster 2026, available at a fixed price",
-      bredBy: "Crescătoria Petrescu",
-      offeredBy: "Crescătoria Petrescu",
+      bredBy: "Columbodromul Câmpeanu",
+      offeredBy: "Columbodromul Câmpeanu",
       descRo:
         "Pui din cuplul de bază al crescătoriei, disponibil imediat la preț fix. Fără licitație — primul cumpărător îl ia.",
       descEn:
@@ -70,8 +70,8 @@ export async function seedSections(
       name: "Perla Nordului",
       taglineRo: "Femelă de prăsilă cu origini verificate, preț fix",
       taglineEn: "Breeding hen with proven origins, fixed price",
-      bredBy: "Crescătoria Petrescu",
-      offeredBy: "Crescătoria Petrescu",
+      bredBy: "Columbodromul Câmpeanu",
+      offeredBy: "Columbodromul Câmpeanu",
       descRo: "Femelă de prăsilă din linie testată, disponibilă imediat, fără licitație.",
       descEn: "Breeding hen from a proven line, available immediately, no bidding.",
       media: { create: [{ type: "IMAGE", url: "/pigeons/p5.svg", sortIdx: 0 }] },

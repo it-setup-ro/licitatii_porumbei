@@ -1,10 +1,20 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import LogoMark from "./LogoMark";
 import AccountMenu from "./AccountMenu";
+
+/**
+ * Antetul si navigatia.
+ *
+ * Intrarile cu mai mult continut — Articole, Concursuri, Informatii — stau
+ * stranse si se desfac la clic, si pe calculator (dropdown), si pe telefon
+ * (acordeon in panoul hamburger). Inainte, pe telefon toate cele sase linkuri
+ * de concursuri si cele trei pagini de informatii erau desfasurate din start,
+ * iar meniul avea peste douazeci de randuri.
+ */
 
 type HeaderUser = {
   id: string;
@@ -13,7 +23,19 @@ type HeaderUser = {
   sellerStatus: string | null;
 } | null;
 
-type NavItem = { href: string; labelKey: string; testid: string; children?: NavItem[] };
+/** O intrare din submeniu, cu eticheta deja tradusa. */
+type SubItem = { href: string; label: string; testid: string };
+
+type NavItem = {
+  href: string;
+  label: string;
+  testid: string;
+  /** prezenta lor face intrarea sa se comporte ca dropdown */
+  children?: SubItem[];
+  submenuTestid?: string;
+  /** latime dropdown pe calculator */
+  wide?: boolean;
+};
 
 /** Linkuri catre site-uri externe (submeniul Concursuri), venite din DB. */
 export type ExternalNavLink = {
@@ -23,23 +45,34 @@ export type ExternalNavLink = {
   url: string | null;
 };
 
+/** Ultimele articole publicate, pentru submeniul Articole. */
+export type ArticleNavLink = {
+  id: string;
+  slug: string;
+  titleRo: string;
+  titleEn: string;
+};
+
 export default function SiteHeader({
   siteName,
   user,
   unreadCount,
   cartCount,
   contestLinks,
+  latestArticles,
 }: {
   siteName: string;
   user: HeaderUser;
   unreadCount: number;
   cartCount: number;
   contestLinks: ExternalNavLink[];
+  latestArticles: ArticleNavLink[];
 }) {
   const t = useTranslations("nav");
   const locale = useLocale();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const navRef = useRef<HTMLUListElement>(null);
 
   // închide submeniul deschis la clic în afara navigației
@@ -61,26 +94,54 @@ export default function SiteHeader({
 
   const canSell = user && (user.role === "ADMIN" || user.sellerStatus === "APPROVED");
 
+  const articleChildren: SubItem[] = [
+    ...latestArticles.map((a) => ({
+      href: `/articles/${a.slug}`,
+      label: locale === "en" ? a.titleEn : a.titleRo,
+      testid: "nav-article",
+    })),
+    { href: "/articles", label: t("allArticles"), testid: "nav-articles-all" },
+  ];
+
   const items: NavItem[] = [
-    { href: "/", labelKey: "home", testid: "nav-home" },
-    { href: "/articles", labelKey: "articles", testid: "nav-articles" },
+    { href: "/", label: t("home"), testid: "nav-home" },
+    {
+      href: "/articles",
+      label: t("articles"),
+      testid: "nav-articles",
+      children: articleChildren,
+      submenuTestid: "articles-submenu",
+      wide: true,
+    },
+    {
+      href: "/contests",
+      label: t("contests"),
+      testid: "nav-contests",
+      // continutul e randat separat (sunt linkuri externe, nu interne)
+      children: [],
+      submenuTestid: "contests-submenu",
+      wide: true,
+    },
     {
       href: "/info/regulament",
-      labelKey: "info",
+      label: t("info"),
       testid: "nav-info",
       children: [
-        { href: "/info/regulament", labelKey: "infoRules", testid: "nav-info-rules" },
-        { href: "/info/info-licitatii", labelKey: "infoAuctions", testid: "nav-info-auctions" },
-        { href: "/info/alte-info", labelKey: "infoOther", testid: "nav-info-other" },
+        { href: "/info/regulament", label: t("infoRules"), testid: "nav-info-rules" },
+        { href: "/info/info-licitatii", label: t("infoAuctions"), testid: "nav-info-auctions" },
+        { href: "/info/alte-info", label: t("infoOther"), testid: "nav-info-other" },
       ],
+      submenuTestid: "info-submenu",
     },
-    { href: "/auctions", labelKey: "auctions", testid: "nav-auctions" },
-    { href: "/fixed-price", labelKey: "fixedPrice", testid: "nav-fixed" },
-    { href: "/products", labelKey: "products", testid: "nav-products" },
-    { href: "/shipping-agents", labelKey: "shippingAgents", testid: "nav-shipping" },
-    { href: "/about", labelKey: "about", testid: "nav-about" },
-    { href: "/contact", labelKey: "contact", testid: "nav-contact" },
+    { href: "/auctions", label: t("auctions"), testid: "nav-auctions" },
+    { href: "/fixed-price", label: t("fixedPrice"), testid: "nav-fixed" },
+    { href: "/products", label: t("products"), testid: "nav-products" },
+    { href: "/shipping-agents", label: t("shippingAgents"), testid: "nav-shipping" },
+    { href: "/about", label: t("about"), testid: "nav-about" },
+    { href: "/contact", label: t("contact"), testid: "nav-contact" },
   ];
+
+  const isContests = (item: NavItem) => item.testid === "nav-contests";
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink/10 bg-ivory/95 backdrop-blur">
@@ -173,7 +234,11 @@ export default function SiteHeader({
           </div>
 
           <button
-            onClick={() => setMobileOpen((v) => !v)}
+            onClick={() => {
+              // panoul se redeschide mereu cu grupurile stranse
+              setOpenGroup(null);
+              setMobileOpen((v) => !v);
+            }}
             data-testid="mobile-menu-button"
             aria-label={t("menu")}
             aria-expanded={mobileOpen}
@@ -212,78 +277,62 @@ export default function SiteHeader({
           ref={navRef}
           className="mx-auto flex max-w-6xl items-center gap-1 px-4 text-sm font-medium"
         >
-          {items.map((item) => (
-            <Fragment key={item.testid}>
-              {/* Concursuri — linkuri catre site-uri externe, inserat dupa Articole */}
-              {item.testid === "nav-info" && (
-                <li className="relative">
-                  <button
-                    onClick={() => setOpenMenu((v) => (v === "contests" ? null : "contests"))}
-                    data-testid="nav-contests"
-                    aria-expanded={openMenu === "contests"}
-                    className="flex items-center gap-1 px-3 py-2.5 transition-colors hover:text-wing-orange"
+          {items.map((item) =>
+            item.children ? (
+              <li className="relative" key={item.testid}>
+                <button
+                  onClick={() => setOpenMenu((v) => (v === item.testid ? null : item.testid))}
+                  data-testid={item.testid}
+                  aria-expanded={openMenu === item.testid}
+                  className="flex items-center gap-1 px-3 py-2.5 transition-colors hover:text-wing-orange"
+                >
+                  {item.label}
+                  <Chevron open={openMenu === item.testid} />
+                </button>
+                {openMenu === item.testid && (
+                  <ul
+                    className={`absolute left-0 z-50 rounded-xl border border-ink/10 bg-white p-2 shadow-xl ${
+                      item.wide ? "w-72" : "w-64"
+                    }`}
+                    data-testid={item.submenuTestid}
+                    onClick={() => setOpenMenu(null)}
                   >
-                    {t("contests")}
-                    <Chevron />
-                  </button>
-                  {openMenu === "contests" && (
-                    <ul
-                      className="absolute left-0 z-50 w-72 rounded-xl border border-ink/10 bg-white p-2 shadow-xl"
-                      data-testid="contests-submenu"
-                    >
-                      {contestLinks.map((link) => (
-                        <li key={link.id}>
-                          <ExternalItem link={link} locale={locale} soonLabel={t("comingSoon")} />
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              )}
-
-              {item.children ? (
-                <li className="relative">
-                  <button
-                    onClick={() => setOpenMenu((v) => (v === item.testid ? null : item.testid))}
-                    data-testid={item.testid}
-                    aria-expanded={openMenu === item.testid}
-                    className="flex items-center gap-1 px-3 py-2.5 transition-colors hover:text-wing-orange"
-                  >
-                    {t(item.labelKey)}
-                    <Chevron />
-                  </button>
-                  {openMenu === item.testid && (
-                    <ul
-                      className="absolute left-0 z-50 mt-0 w-64 rounded-xl border border-ink/10 bg-white p-2 shadow-xl"
-                      data-testid="info-submenu"
-                    >
-                      {item.children.map((child) => (
-                        <li key={child.testid}>
-                          <Link
-                            href={child.href}
-                            data-testid={child.testid}
-                            className="block rounded-lg px-3 py-2 hover:bg-ink/5"
-                          >
-                            {t(child.labelKey)}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ) : (
-                <li>
-                  <Link
-                    href={item.href}
-                    data-testid={item.testid}
-                    className="block px-3 py-2.5 transition-colors hover:text-wing-orange"
-                  >
-                    {t(item.labelKey)}
-                  </Link>
-                </li>
-              )}
-            </Fragment>
-          ))}
+                    {isContests(item)
+                      ? contestLinks.map((link) => (
+                          <li key={link.id}>
+                            <ExternalItem link={link} locale={locale} soonLabel={t("comingSoon")} />
+                          </li>
+                        ))
+                      : item.children.map((child, i) => (
+                          <li key={`${child.testid}-${i}`}>
+                            <Link
+                              href={child.href}
+                              data-testid={child.testid}
+                              className={
+                                child.testid === "nav-articles-all"
+                                  ? "mt-1 block truncate rounded-lg border-t border-ink/10 px-3 py-2 pt-3 font-semibold text-wing-blue hover:bg-ink/5"
+                                  : "block truncate rounded-lg px-3 py-2 hover:bg-ink/5"
+                              }
+                            >
+                              {child.label}
+                            </Link>
+                          </li>
+                        ))}
+                  </ul>
+                )}
+              </li>
+            ) : (
+              <li key={item.testid}>
+                <Link
+                  href={item.href}
+                  data-testid={item.testid}
+                  className="block px-3 py-2.5 transition-colors hover:text-wing-orange"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            )
+          )}
           {canSell && (
             <li className="ml-auto">
               <Link
@@ -323,46 +372,55 @@ export default function SiteHeader({
             onClick={() => setMobileOpen(false)}
           >
             <div className="space-y-1">
-              {items.map((item) => (
-                <div key={item.testid}>
-                  {item.testid === "nav-info" && (
-                    <div data-testid="m-contests-group">
-                      <p className="px-3 pb-1 pt-2 text-xs font-bold uppercase tracking-wide text-ink/40">
-                        {t("contests")}
-                      </p>
+              {items.map((item) =>
+                item.children ? (
+                  <div key={item.testid} data-testid={`m-${item.testid.replace("nav-", "")}-group`}>
+                    <button
+                      onClick={(e) => {
+                        // altfel clicul urca la <nav> si inchide tot panoul
+                        e.stopPropagation();
+                        setOpenGroup((v) => (v === item.testid ? null : item.testid));
+                      }}
+                      data-testid={`m-${item.testid.replace("nav-", "")}-toggle`}
+                      aria-expanded={openGroup === item.testid}
+                      className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left font-medium hover:bg-ink/5"
+                    >
+                      {item.label}
+                      <Chevron open={openGroup === item.testid} />
+                    </button>
+                    {openGroup === item.testid && (
                       <div className="ml-4 border-l border-ink/10 pl-2">
-                        {contestLinks.map((link) => (
-                          <ExternalItem
-                            key={link.id}
-                            link={link}
-                            locale={locale}
-                            soonLabel={t("comingSoon")}
-                            mobile
-                          />
-                        ))}
+                        {isContests(item)
+                          ? contestLinks.map((link) => (
+                              <ExternalItem
+                                key={link.id}
+                                link={link}
+                                locale={locale}
+                                soonLabel={t("comingSoon")}
+                                mobile
+                              />
+                            ))
+                          : item.children.map((child, i) => (
+                              <MobileLink
+                                key={`${child.testid}-${i}`}
+                                href={child.href}
+                                label={child.label}
+                                testid={`m-${child.testid.replace("nav-", "")}`}
+                                small
+                              />
+                            ))}
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
+                ) : (
                   <MobileLink
+                    key={item.testid}
                     href={item.href}
-                    label={t(item.labelKey)}
+                    label={item.label}
                     testid={`m-${item.testid.replace("nav-", "")}`}
                   />
-                  {item.children && (
-                    <div className="ml-4 border-l border-ink/10 pl-2">
-                      {item.children.map((child) => (
-                        <MobileLink
-                          key={child.testid}
-                          href={child.href}
-                          label={t(child.labelKey)}
-                          testid={`m-${child.testid.replace("nav-", "")}`}
-                          small
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                )
+              )}
               {canSell && (
                 <MobileLink href="/sell" label={`+ ${t("sell")}`} testid="m-sell" accent />
               )}
@@ -370,7 +428,6 @@ export default function SiteHeader({
                 <MobileLink href="/admin" label={t("admin")} testid="m-admin" accent />
               )}
             </div>
-
           </nav>
         </>
       )}
@@ -396,7 +453,7 @@ function MobileLink({
       href={href}
       data-testid={testid}
       className={`block rounded-lg px-3 hover:bg-ink/5 ${
-        small ? "py-2 text-sm text-ink/70" : "py-2.5 font-medium"
+        small ? "py-2.5 text-sm text-ink/70" : "py-2.5 font-medium"
       } ${accent ? "text-wing-blue" : ""}`}
     >
       {label}
@@ -404,7 +461,7 @@ function MobileLink({
   );
 }
 
-function Chevron() {
+function Chevron({ open = false }: { open?: boolean }) {
   return (
     <svg
       width="12"
@@ -414,6 +471,7 @@ function Chevron() {
       stroke="currentColor"
       strokeWidth="3"
       aria-hidden="true"
+      className={`shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
     >
       <path d="m6 9 6 6 6-6" />
     </svg>
@@ -439,7 +497,7 @@ function ExternalItem({
 }) {
   const label = locale === "en" ? link.labelEn : link.labelRo;
   const base = mobile
-    ? "block rounded-lg px-3 py-2 text-sm"
+    ? "flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-sm"
     : "flex items-center justify-between gap-2 rounded-lg px-3 py-2";
 
   if (!link.url) {
