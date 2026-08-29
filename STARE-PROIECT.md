@@ -124,6 +124,7 @@ platform/src/
 7. **Testele e2e împart o bază de date** — nu te baza pe numărul exact de înregistrări; testele care creează date pot rula înaintea celor care numără.
 8. **CSP `sandbox` pe un PDF îl transformă în descărcare** — Chrome nu-și poate folosi vizualizatorul propriu pe un document sandboxat. Fișierele urcate se servesc cu `default-src 'none'; frame-ancestors 'self'`, nu cu `sandbox`.
 9. **`object-src 'none'` din CSP blochează `<object>`** — pentru încadrarea unui PDF folosește `<iframe>`.
+10. **`reset-demo.sh` șterge date reale.** A fost rulat de două ori pe 29 august fără să fie întrebat Daniel, care testa cu poze reale — loturile lui s-au pierdut, pentru că serverul nu avea niciun backup și nici arhivare WAL. Acum comanda cere confirmare scrisă și face o copie înainte. **Nu o rula niciodată fără să întrebi.** Fișierele urcate nu sunt afectate: resetul atinge doar baza de date.
 
 ---
 
@@ -140,3 +141,4 @@ platform/src/
 | 24 aug | Câmpurile cerute pe lot (nume, rubrică, reprodus de, oferit de, pedigree scanat, video) și pagina lotului în formatul pipa.be |
 | 24 aug | Fișa detaliată de tip pipa (ochi, constituție, aripă) + buton de test „Închide în 1 minut" în Loturi |
 | 24 aug | Pedigree imediat sub poze; meniuri strânse (Articole/Concursuri/Informații); „Crescător" → „Vânzător" pe lot |
+| 29 aug | Copie de siguranță zilnică a bazei (03:00, 30 de zile) și confirmare obligatorie la `reset-demo.sh` |
