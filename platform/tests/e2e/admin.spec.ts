@@ -2,12 +2,18 @@ import { test, expect } from "@playwright/test";
 import { login, runOnTestDb } from "./helpers";
 
 test.describe("Panoul de administrare", () => {
-  test("dashboard-ul afiseaza statisticile", async ({ page }) => {
+  test("panoul arata ce e de facut si cifrele platformei", async ({ page }) => {
     await login(page, "admin@nbp.test", "admin1234");
     await page.goto("/ro/admin");
+
+    // in datele demo exista un vanzator si un lot in asteptare
     await expect(page.getByTestId("stat-sellers")).toBeVisible();
     await expect(page.getByTestId("stat-lots")).toBeVisible();
-    await expect(page.getByTestId("stat-reviews")).toBeVisible();
+
+    // cifrele platformei sunt mereu acolo
+    await expect(page.getByTestId("stat-live")).toBeVisible();
+    await expect(page.getByTestId("stat-orders")).toBeVisible();
+    await expect(page.getByTestId("stat-members")).toBeVisible();
   });
 
   test("aprobare vanzator in asteptare", async ({ page }) => {

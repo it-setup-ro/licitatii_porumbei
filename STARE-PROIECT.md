@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 110 teste end-to-end, toate verzi.
+**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 117 teste end-to-end, toate verzi.
 
 ---
 
@@ -38,6 +38,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 
 ### Admin
 - Buton **Administrare** în bara de sus, pe orice pagină (doar pentru admini)
+- **Navigație grupată** în administrare (Moderare / Conținut / Platformă), cu numărul de așteptări lângă fiecare secțiune de moderat: coloană pe calculator, un rând + panoul „Secțiuni" pe telefon
 - Setări platformă (~40 de parametri, cu audit trail), aprobare vânzători, moderare loturi și recenzii
 - Produse, Articole, Concursuri, Pagini, Linkuri, Mesaje de contact
 - **Compozitor de articole** stil rețea socială: titlu + text + foto/video; slug, rezumat și versiunea EN se generează automat
@@ -143,3 +144,4 @@ platform/src/
 | 24 aug | Pedigree imediat sub poze; meniuri strânse (Articole/Concursuri/Informații); „Crescător" → „Vânzător" pe lot |
 | 29 aug | Copie de siguranță zilnică a bazei (03:00, 30 de zile) și confirmare obligatorie la `reset-demo.sh` |
 | 29 aug | Poze reale de porumbei (CC0) și pedigree-uri demonstrative generate pe loturile demo |
+| 29 aug | Navigația din administrare: din 12 pastile pe 5 rânduri → coloană grupată / panou „Secțiuni" |

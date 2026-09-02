@@ -118,11 +118,6 @@ export default async function AdminLotsPage({
         </section>
       )}
 
-      <p className="mt-6 text-xs text-ink/50">
-        <Link href="/admin" className="-ml-2 inline-block px-2 py-2 underline">
-          ← {t("title")}
-        </Link>
-      </p>
     </div>
   );
 }
