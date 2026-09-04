@@ -42,9 +42,27 @@ model User {
   reviewsReceived Review[]       @relation("reviewSeller")
   notifications   Notification[]
   auditLogs       AuditLog[]
+  resetTokens     PasswordResetToken[]
   auctionsWon     Auction[]      @relation("winner")
   approvedLots    Auction[]      @relation("approver")
   shopOrders      ShopOrder[]    @relation("shopBuyer")
+}
+
+/// Link de resetare a parolei. In baza se tine doar amprenta (sha256) —
+/// tokenul in clar exista doar in linkul trimis utilizatorului.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  /// se completeaza la prima folosire — un link merge o singura data
+  usedAt    DateTime?
+  /// „SELF" = cerut de utilizator, „ADMIN" = generat din panou
+  issuedBy  String    @default("SELF")
+  createdAt DateTime  @default(now())
+
+  @@index([userId, usedAt])
 }
 
 model Pigeon {

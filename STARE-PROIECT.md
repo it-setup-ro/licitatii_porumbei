@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 117 teste end-to-end, toate verzi.
+**Stare: funcțională cap-coadă pentru testare.** 30 teste unitare + 128 teste end-to-end, toate verzi.
 
 ---
 
@@ -33,11 +33,13 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 
 ### Cont
 - Înregistrare, autentificare, cerere de cont crescător (aprobată manual de admin)
+- **Parola**: buton de arătat/ascuns la autentificare, înregistrare și resetare; „Am uitat parola" cu link valabil o oră, de unică folosință; schimbarea parolei din Contul meu (cu parola veche)
 - Ofertele mele, favorite, cumpărături, vânzări, loturile mele, comenzi magazin, notificări
 - **Caseta de cont** (iconița din antet): autentificare/înregistrare când ești delogat; cont + ieșire când ești logat — totul într-un singur loc
 
 ### Admin
 - Buton **Administrare** în bara de sus, pe orice pagină (doar pentru admini)
+- **Utilizatori** (căutare + buton „Link de resetare" pentru cine nu primește e-mailul) și **E-mailuri trimise** (jurnalul din care se citesc linkurile cât timp e-mailul nu e conectat)
 - **Navigație grupată** în administrare (Moderare / Conținut / Platformă), cu numărul de așteptări lângă fiecare secțiune de moderat: coloană pe calculator, un rând + panoul „Secțiuni" pe telefon
 - Setări platformă (~40 de parametri, cu audit trail), aprobare vânzători, moderare loturi și recenzii
 - Produse, Articole, Concursuri, Pagini, Linkuri, Mesaje de contact
@@ -55,7 +57,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 | 2 | **Plăți reale (Stripe)** | Acum sunt simulate — oricine poate marca o comandă „plătită" fără să plătească. Abstracția există în `src/lib/payments.ts` | Daniel (cont Stripe) |
 | 3 | **Schimbă parola PostgreSQL locală** | A fost publică pe GitHub și rămâne în istoricul git | Daniel |
 | 4 | **Șterge conturile demo** înainte de public | `admin@nbp.test/admin1234` e scris în README | Daniel |
-| 5 | **E-mail real** | Acum notificările se scriu doar în tabelul `EmailLog`. De ales: Resend / Brevo / SES | Daniel |
+| 5 | **E-mail real** | Acum notificările se scriu doar în tabelul `EmailLog`, vizibil în Administrare → E-mailuri. **Resetarea parolei depinde de asta**: până atunci, linkul se ia din acea pagină sau se generează din Utilizatori. De ales: Resend / Brevo / SES | Daniel |
 | 6 | Avocat (T&C, GDPR) și contabil (TVA, e-Factura, DAC7) | Vezi `client-decisions.md` secțiunea E | Daniel |
 | 7 | Upload imagini pe stocare externă (S3) | Doar dacă se trece pe mai multe servere | mai târziu |
 | 8 | Redis pentru actualizările live | Doar la scalare pe mai multe instanțe | mai târziu |
@@ -125,7 +127,8 @@ platform/src/
 7. **Testele e2e împart o bază de date** — nu te baza pe numărul exact de înregistrări; testele care creează date pot rula înaintea celor care numără.
 8. **CSP `sandbox` pe un PDF îl transformă în descărcare** — Chrome nu-și poate folosi vizualizatorul propriu pe un document sandboxat. Fișierele urcate se servesc cu `default-src 'none'; frame-ancestors 'self'`, nu cu `sandbox`.
 9. **`object-src 'none'` din CSP blochează `<object>`** — pentru încadrarea unui PDF folosește `<iframe>`.
-10. **`reset-demo.sh` șterge date reale.** A fost rulat de două ori pe 29 august fără să fie întrebat Daniel, care testa cu poze reale — loturile lui s-au pierdut, pentru că serverul nu avea niciun backup și nici arhivare WAL. Acum comanda cere confirmare scrisă și face o copie înainte. **Nu o rula niciodată fără să întrebi.** Fișierele urcate nu sunt afectate: resetul atinge doar baza de date.
+10. **`PUBLIC_BASE_URL`** din `.env` intră în linkurile de resetare a parolei. După ce site-ul are domeniu, trebuie schimbat acolo — altfel linkurile trimit oamenii la vechea adresă IP.
+11. **`reset-demo.sh` șterge date reale.** A fost rulat de două ori pe 29 august fără să fie întrebat Daniel, care testa cu poze reale — loturile lui s-au pierdut, pentru că serverul nu avea niciun backup și nici arhivare WAL. Acum comanda cere confirmare scrisă și face o copie înainte. **Nu o rula niciodată fără să întrebi.** Fișierele urcate nu sunt afectate: resetul atinge doar baza de date.
 
 ---
 
@@ -145,3 +148,4 @@ platform/src/
 | 29 aug | Copie de siguranță zilnică a bazei (03:00, 30 de zile) și confirmare obligatorie la `reset-demo.sh` |
 | 29 aug | Poze reale de porumbei (CC0) și pedigree-uri demonstrative generate pe loturile demo |
 | 29 aug | Navigația din administrare: din 12 pastile pe 5 rânduri → coloană grupată / panou „Secțiuni" |
+| 29 aug | Arătarea parolei, resetare prin link (e-mail sau generat din admin) și schimbarea parolei din cont |

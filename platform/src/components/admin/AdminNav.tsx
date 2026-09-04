@@ -42,6 +42,7 @@ function groups(): Group[] {
         { href: "/admin/sellers", label: "Vânzători", icon: <IconUser />, count: "sellers" },
         { href: "/admin/lots", label: "Loturi", icon: <IconLot />, count: "lots" },
         { href: "/admin/reviews", label: "Recenzii", icon: <IconStar />, count: "reviews" },
+        { href: "/admin/users", label: "Utilizatori", icon: <IconUsers /> },
       ],
     },
     {
@@ -59,6 +60,7 @@ function groups(): Group[] {
       items: [
         { href: "/admin/settings", label: "Setări", icon: <IconGear /> },
         { href: "/admin/messages", label: "Mesaje", icon: <IconMail />, count: "messages" },
+        { href: "/admin/emails", label: "E-mailuri", icon: <IconSend /> },
         { href: "/admin/audit", label: "Jurnal", icon: <IconList /> },
       ],
     },
@@ -263,6 +265,23 @@ function IconLot() {
       <path d="m14 3 7 7-3 3-7-7z" />
       <path d="M11.5 5.5 5 12l7 7 6.5-6.5" />
       <path d="M3 21h8" />
+    </svg>
+  );
+}
+function IconUsers() {
+  return (
+    <svg {...ico}>
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8" />
+    </svg>
+  );
+}
+function IconSend() {
+  return (
+    <svg {...ico}>
+      <path d="M21 3 10.5 13.5" />
+      <path d="M21 3l-6.8 18-3.7-7.5L3 9.8z" />
     </svg>
   );
 }

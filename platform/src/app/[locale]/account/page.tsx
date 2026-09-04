@@ -3,6 +3,7 @@ import { redirect } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import SellerRequestForm from "@/components/SellerRequestForm";
 import AccountNav from "@/components/AccountNav";
+import ChangePasswordForm from "@/components/ChangePasswordForm";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,8 @@ export default async function AccountPage({
             </div>
           </dl>
         </div>
+
+        <ChangePasswordForm />
 
         {/* Statut vanzator */}
         <div className="rounded-2xl border border-ink/10 bg-white p-6" data-testid="seller-status">

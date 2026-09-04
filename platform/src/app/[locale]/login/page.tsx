@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
+import PasswordField from "@/components/PasswordField";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
@@ -42,13 +43,21 @@ export default function LoginPage() {
           onChange={setEmail}
           testid="login-email"
         />
-        <Field
+        <PasswordField
           label={t("password")}
-          type="password"
           value={password}
           onChange={setPassword}
           testid="login-password"
         />
+        <p className="text-right">
+          <Link
+            href="/forgot-password"
+            data-testid="forgot-link"
+            className="-my-1 inline-block py-2.5 text-sm font-semibold text-wing-blue hover:underline"
+          >
+            {t("forgotPassword")}
+          </Link>
+        </p>
         {error && (
           <p className="rounded-lg bg-wing-red/10 px-3 py-2 text-sm text-wing-red" data-testid="login-error">
             {error}
@@ -64,7 +73,7 @@ export default function LoginPage() {
         </button>
         <p className="text-center text-sm text-ink/60">
           {t("noAccount")}{" "}
-          <Link href="/register" className="font-semibold text-wing-blue hover:underline">
+          <Link href="/register" className="-my-1 inline-block py-2.5 font-semibold text-wing-blue hover:underline">
             {t("registerTitle")}
           </Link>
         </p>

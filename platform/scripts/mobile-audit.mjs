@@ -27,6 +27,7 @@ const PUBLIC_PAGES = [
   "/ro/contact",
   "/ro/login",
   "/ro/register",
+  "/ro/forgot-password",
   "/ro/how-it-works",
 ];
 
@@ -51,6 +52,8 @@ const AUTH_PAGES = [
   "/ro/admin/content",
   "/ro/admin/links",
   "/ro/admin/messages",
+  "/ro/admin/users",
+  "/ro/admin/emails",
   "/ro/admin/audit",
 ];
 

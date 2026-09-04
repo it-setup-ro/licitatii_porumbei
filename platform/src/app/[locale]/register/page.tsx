@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
+import PasswordField from "@/components/PasswordField";
 
 export default function RegisterPage() {
   const t = useTranslations("auth");
@@ -60,12 +61,13 @@ export default function RegisterPage() {
           onChange={(v) => set("email", v)}
           testid="reg-email"
         />
-        <Field
+        <PasswordField
           label={t("password")}
-          type="password"
           value={form.password}
           onChange={(v) => set("password", v)}
           testid="reg-password"
+          autoComplete="new-password"
+          hint={t("passwordHint")}
         />
         <Field
           label={t("phone")}
@@ -129,7 +131,7 @@ export default function RegisterPage() {
         </button>
         <p className="text-center text-sm text-ink/60">
           {t("haveAccount")}{" "}
-          <Link href="/login" className="font-semibold text-wing-blue hover:underline">
+          <Link href="/login" className="-my-1 inline-block py-2.5 font-semibold text-wing-blue hover:underline">
             {t("loginTitle")}
           </Link>
         </p>
