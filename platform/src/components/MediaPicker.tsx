@@ -16,7 +16,7 @@ import { useRef, useState } from "react";
 
 export type PickedMedia = { url: string; type: "IMAGE" | "VIDEO" | "DOC" };
 
-const MAX_VIDEO_SECONDS = 60;
+const MAX_VIDEO_SECONDS = 300; // cinci minute
 
 /** Citeste durata unui clip din metadate, fara sa-l incarce pe server. */
 function readDuration(file: File): Promise<number> {
@@ -73,8 +73,10 @@ export default function MediaPicker({
       if (file.type.startsWith("video/")) {
         const seconds = await readDuration(file);
         if (Number.isFinite(seconds) && seconds > MAX_VIDEO_SECONDS + 1) {
+          const minute = Math.floor(seconds / 60);
+          const rest = Math.round(seconds % 60);
           setError(
-            `Clipul e prea lung (${Math.round(seconds)} secunde). Maxim ${MAX_VIDEO_SECONDS} de secunde.`
+            `Clipul e prea lung (${minute} min ${rest} s). Maxim ${MAX_VIDEO_SECONDS / 60} minute.`
           );
           setBusy(false);
           resetInputs();
@@ -83,19 +85,48 @@ export default function MediaPicker({
       }
     }
 
-    const data = new FormData();
-    for (const f of chosen) data.append("files", f);
+    // Clipurile se trimit unul cate unul, ca atare: serverul le scrie pe disc pe
+    // masura ce vin. Un clip de cinci minute are sute de MB — trimis in acelasi
+    // pachet cu restul, ar fi trebuit tinut intreg in memorie, si de partea
+    // noastra, si a serverului.
+    const videos = chosen.filter((f) => f.type.startsWith("video/"));
+    const rest = chosen.filter((f) => !f.type.startsWith("video/"));
 
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: data });
-      const out = await res.json();
-      if (out.ok) {
-        onChange([...value, ...out.files].slice(0, maxFiles));
-      } else {
+      const uploaded: PickedMedia[] = [];
+      let failure: { error?: string; isVideo?: boolean; isDoc?: boolean } | null = null;
+
+      for (const f of videos) {
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          headers: { "Content-Type": f.type || "application/octet-stream" },
+          body: f,
+        });
+        const out = await res.json();
+        if (out.ok) uploaded.push(...out.files);
+        else {
+          failure = out;
+          break;
+        }
+      }
+
+      if (!failure && rest.length > 0) {
+        const data = new FormData();
+        for (const f of rest) data.append("files", f);
+        const res = await fetch("/api/upload", { method: "POST", body: data });
+        const out = await res.json();
+        if (out.ok) uploaded.push(...out.files);
+        else failure = out;
+      }
+
+      if (uploaded.length > 0) onChange([...value, ...uploaded].slice(0, maxFiles));
+
+      if (failure) {
+        const out = failure;
         setError(
           out.error === "FILE_TOO_LARGE"
             ? out.isVideo
-              ? "Clipul e prea mare (maxim 60 MB). Filmează mai scurt."
+              ? "Clipul e prea mare (maxim 300 MB). Filmează mai scurt sau la calitate mai mică."
               : out.isDoc
                 ? "PDF-ul e prea mare (maxim 10 MB)."
                 : "Poza e prea mare (maxim 5 MB)."
@@ -229,7 +260,7 @@ export default function MediaPicker({
       <p className="mt-2 text-xs text-ink/50">
         {allowImages && "Poze JPG/PNG/WebP până la 5 MB"}
         {allowVideo &&
-          `${allowImages ? "; c" : "C"}lipuri MP4/WebM/MOV până la ${MAX_VIDEO_SECONDS} de secunde (60 MB)`}
+          `${allowImages ? "; c" : "C"}lipuri MP4/WebM/MOV până la ${MAX_VIDEO_SECONDS / 60} minute (300 MB)`}
         {allowPdf && "; PDF până la 10 MB"}. Maxim{" "}
         {maxFiles} {maxFiles === 1 ? "fișier" : "fișiere"}.
       </p>

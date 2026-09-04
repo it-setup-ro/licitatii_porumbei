@@ -66,6 +66,14 @@ export default async function AdminLotsPage({
                   {formatMoney(a.startPriceCents, a.currency, currentLocale)} · {a.listingType}
                 </p>
               </div>
+              <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+              <Link
+                href={`/account/lots/${a.id}/edit`}
+                data-testid="admin-lot-edit"
+                className="rounded-lg border border-ink/20 px-4 py-2.5 text-center text-sm font-semibold hover:border-wing-blue hover:text-wing-blue"
+              >
+                Editează
+              </Link>
               <ModerationButtons
                 endpoint={`/api/admin/lots/${a.id}`}
                 approveAction="APPROVE"
@@ -73,6 +81,7 @@ export default async function AdminLotsPage({
                 askReason
                 startNow
               />
+              </div>
             </div>
           ))}
         </div>

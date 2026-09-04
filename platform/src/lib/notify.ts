@@ -17,7 +17,8 @@ export type NotifyType =
   | "ORDER_PAID"
   | "SELLER_APPROVED"
   | "SELLER_REJECTED"
-  | "REVIEW_RECEIVED";
+  | "REVIEW_RECEIVED"
+  | "LOT_EDITED_BY_ADMIN";
 
 const EMAIL_SUBJECTS: Record<NotifyType, { ro: string; en: string }> = {
   OUTBID: { ro: "Oferta ta a fost depășită", en: "You have been outbid" },
@@ -31,6 +32,10 @@ const EMAIL_SUBJECTS: Record<NotifyType, { ro: string; en: string }> = {
   SELLER_APPROVED: { ro: "Contul de vânzător a fost aprobat", en: "Seller account approved" },
   SELLER_REJECTED: { ro: "Contul de vânzător a fost respins", en: "Seller account rejected" },
   REVIEW_RECEIVED: { ro: "Ai primit o recenzie nouă", en: "You received a new review" },
+  LOT_EDITED_BY_ADMIN: {
+    ro: "Un lot al tău a fost corectat de administrator",
+    en: "One of your lots was corrected by an administrator",
+  },
 };
 
 export async function notify(

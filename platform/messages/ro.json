@@ -213,7 +213,9 @@
     "noWatch": "Nu ai licitații favorite.",
     "noPurchases": "Nicio cumpărătură încă.",
     "noSales": "Nicio vânzare încă.",
-    "language": "Limba preferată"
+    "language": "Limba preferată",
+    "editLot": "Editează",
+    "lotLocked": "Lotul e închis — nu se mai poate modifica."
   },
   "notif": {
     "OUTBID": "Oferta ta a fost depășită. Prețul curent: {price}.",
@@ -226,7 +228,8 @@
     "ORDER_PAID": "Plata pentru „{lot}” a fost confirmată.",
     "SELLER_APPROVED": "Contul tău de vânzător a fost aprobat. Poți lista porumbei.",
     "SELLER_REJECTED": "Cererea de cont vânzător a fost respinsă.",
-    "REVIEW_RECEIVED": "Ai primit o recenzie nouă ({rating}/5)."
+    "REVIEW_RECEIVED": "Ai primit o recenzie nouă ({rating}/5).",
+    "LOT_EDITED_BY_ADMIN": "Lotul „{lot}” a fost corectat de administrator."
   },
   "sell": {
     "title": "Listează un porumbel",
@@ -268,7 +271,19 @@
     "offeredByHint": "Precompletat cu numele tău. Schimbă-l dacă îl oferă altcineva.",
     "videos": "Video",
     "traitsSection": "Fișa detaliată a porumbelului",
-    "traitsHint": "Ochi, constituție, aripă și penaj — ca pe fișele de la pipa.be. Tot ce lași necompletat pur și simplu nu apare pe pagina lotului."
+    "traitsHint": "Ochi, constituție, aripă și penaj — ca pe fișele de la pipa.be. Tot ce lași necompletat pur și simplu nu apare pe pagina lotului.",
+    "editTitle": "Modifică lotul",
+    "editFullHint": "Poți schimba orice. Dacă modifici seria inelului, anul, sexul sau prețul, lotul se întoarce la aprobare.",
+    "editAdditionsHint": "Lotul are deja oferte. Poți doar să adaugi: poze, clipuri și o completare la descriere. Seria inelului, anul, sexul și prețul rămân blocate — cine a licitat a licitat pe ce a văzut.",
+    "editAdminHint": "Ești administrator: poți corecta orice, fără să treacă prin aprobare. Modificarea rămâne în jurnalul de audit.",
+    "addNote": "Completare la descriere",
+    "addNoteHint": "Se adaugă la sfârșitul descrierii, cu data de azi. Textul existent rămâne neatins.",
+    "addPhotos": "Adaugă poze sau clipuri",
+    "currentMedia": "Fișiere existente",
+    "saveEdit": "Salvează modificările",
+    "editSaved": "Modificările au fost salvate.",
+    "editReapproval": "Lotul s-a întors la aprobare, pentru că ai schimbat date importante.",
+    "editFailed": "Nu s-a putut salva. Verifică datele."
   },
   "orders": {
     "title": "Comandă",

@@ -13,6 +13,7 @@ import BidHistory, { type BidRow } from "@/components/BidHistory";
 import PedigreeTree from "@/components/PedigreeTree";
 import { describeTraits, parseTraits } from "@/lib/pigeon-traits";
 import StarRating from "@/components/StarRating";
+import ZoomableImage from "@/components/ZoomableImage";
 import WatchButton from "@/components/WatchButton";
 
 /**
@@ -123,8 +124,17 @@ export default async function AuctionDetailPage({
         <div className="space-y-8 lg:col-start-1 lg:row-start-1">
           {/* Serie inel · nume · rand scurt */}
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-ink/50" data-testid="lot-ring">
-              {pigeon.ringNumber}
+            {/* Identitatea, pe un rand: serie · an · sex. Erau doar in fisa de mai
+                jos, iar cine se uita la un lot vrea sa le vada langa nume. */}
+            <p
+              className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold uppercase tracking-wide text-ink/50"
+              data-testid="lot-ring"
+            >
+              <span>{pigeon.ringNumber}</span>
+              <span aria-hidden="true">·</span>
+              <span data-testid="lot-year">{pigeon.birthYear}</span>
+              <span aria-hidden="true">·</span>
+              <span data-testid="lot-sex">{tp(`sex${pigeon.sex}` as "sexM")}</span>
             </p>
             <h1 className="font-display mt-1 text-3xl font-bold" data-testid="lot-title">
               {pigeon.name}
@@ -225,8 +235,6 @@ export default async function AuctionDetailPage({
             data-testid="lot-facts"
           >
             <Fact label={tp("ring")} value={pigeon.ringNumber} testid="fact-ring" />
-            <Fact label={tp("year")} value={String(pigeon.birthYear)} testid="fact-year" />
-            <Fact label={tp("sex")} value={tp(`sex${pigeon.sex}` as "sexM")} testid="fact-sex" />
             {pigeon.bredBy && (
               <Fact label={tp("bredBy")} value={pigeon.bredBy} testid="fact-bred-by" />
             )}
@@ -409,14 +417,12 @@ function PedigreeScan({
           />
         </>
       ) : (
-        <a href={url} target="_blank" rel="noopener noreferrer" data-testid="pedigree-open">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={url}
-            alt={alt}
-            className="w-full rounded-2xl border border-ink/10 bg-white"
-          />
-        </a>
+        <ZoomableImage
+          src={url}
+          alt={alt}
+          testid="pedigree-open"
+          className="w-full rounded-2xl border border-ink/10 bg-white"
+        />
       )}
     </div>
   );

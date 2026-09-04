@@ -213,7 +213,9 @@
     "noWatch": "No watched auctions.",
     "noPurchases": "No purchases yet.",
     "noSales": "No sales yet.",
-    "language": "Preferred language"
+    "language": "Preferred language",
+    "editLot": "Edit",
+    "lotLocked": "This lot is closed — it can no longer be changed."
   },
   "notif": {
     "OUTBID": "You have been outbid. Current price: {price}.",
@@ -226,7 +228,8 @@
     "ORDER_PAID": "Payment for \"{lot}\" was confirmed.",
     "SELLER_APPROVED": "Your seller account was approved. You can now list pigeons.",
     "SELLER_REJECTED": "Your seller application was rejected.",
-    "REVIEW_RECEIVED": "You received a new review ({rating}/5)."
+    "REVIEW_RECEIVED": "You received a new review ({rating}/5).",
+    "LOT_EDITED_BY_ADMIN": "Lot “{lot}” was corrected by an administrator."
   },
   "sell": {
     "title": "List a pigeon",
@@ -268,7 +271,19 @@
     "offeredByHint": "Prefilled with your name. Change it if someone else offers the bird.",
     "videos": "Video",
     "traitsSection": "Detailed pigeon assessment",
-    "traitsHint": "Eye, body, wing and plumage — like the pipa.be assessment sheets. Anything you leave empty simply does not show on the lot page."
+    "traitsHint": "Eye, body, wing and plumage — like the pipa.be assessment sheets. Anything you leave empty simply does not show on the lot page.",
+    "editTitle": "Edit the lot",
+    "editFullHint": "You can change anything. If you change the ring number, year, sex or price, the lot goes back for approval.",
+    "editAdditionsHint": "This lot already has bids. You can only add: photos, clips and a note to the description. Ring number, year, sex and price stay locked — people bid on what they saw.",
+    "editAdminHint": "You are an administrator: you can correct anything, without approval. The change is recorded in the audit log.",
+    "addNote": "Note added to the description",
+    "addNoteHint": "Appended at the end of the description, dated today. The existing text stays untouched.",
+    "addPhotos": "Add photos or clips",
+    "currentMedia": "Existing files",
+    "saveEdit": "Save changes",
+    "editSaved": "Your changes have been saved.",
+    "editReapproval": "The lot went back for approval, because you changed important details.",
+    "editFailed": "Could not save. Please check the fields."
   },
   "orders": {
     "title": "Order",
