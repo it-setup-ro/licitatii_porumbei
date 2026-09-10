@@ -1,26 +1,29 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Pagini publice & i18n", () => {
-  test("homepage RO afiseaza sectiunile si licitatiile din seed", async ({ page }) => {
+  test("homepage RO afiseaza sectiunile din macheta", async ({ page }) => {
     await page.goto("/ro");
+    await expect(page.getByTestId("hero")).toBeVisible();
+    await expect(page.getByTestId("feature-strip")).toBeVisible();
+    await expect(page.getByTestId("breeders-strip")).toBeVisible();
     await expect(page.getByTestId("section-live")).toContainText("Fulger Albastru");
-    await expect(page.getByTestId("section-upcoming")).toContainText("Vânt de Vest");
-    await expect(page.getByTestId("section-closed")).toContainText("As de Fond");
+    await expect(page.getByTestId("home-articles")).toBeVisible();
+    await expect(page.getByTestId("home-stats")).toBeVisible();
   });
 
   test("comutatorul de limba schimba continutul in engleza si pastreaza pagina", async ({
     page,
   }) => {
     await page.goto("/ro");
-    await expect(page.locator("h1")).toContainText("Campionii zboară aici");
+    await expect(page.locator("h1")).toContainText("Pasiunea unește oameni");
     await page.getByTestId("lang-en").click();
     await expect(page).toHaveURL(/\/en$/);
-    await expect(page.locator("h1")).toContainText("Champions fly here");
+    await expect(page.locator("h1")).toContainText("Passion brings people together");
     // numele porumbelului ramane acelasi in ambele limbi; se traduce rubrica
     await expect(page.getByTestId("section-live")).toContainText("Fulger Albastru");
     await expect(page.getByTestId("section-live")).toContainText("Long Distance Arad");
     await page.getByTestId("lang-ro").click();
-    await expect(page.locator("h1")).toContainText("Campionii zboară aici");
+    await expect(page.locator("h1")).toContainText("Pasiunea unește oameni");
   });
 
   test("lista de licitatii cu taburi si cautare", async ({ page }) => {
