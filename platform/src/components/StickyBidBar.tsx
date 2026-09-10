@@ -33,31 +33,25 @@ export default function StickyBidBar({
     if (isSeller) return;
 
     /*
-      Ascultăm derularea, nu IntersectionObserver. Observatorul are nevoie ca
-      pagina să deseneze cadre ca să raporteze ceva; într-un tab ascuns sau
-      într-un browser condus automat, poate să nu pornească deloc. Un calcul
-      simplu de poziție merge oriunde, iar rAF îl ține ieftin.
+      Un calcul simplu de poziție la derulare — fără IntersectionObserver și
+      fără requestAnimationFrame. Amândouă au nevoie ca pagina să deseneze
+      cadre; într-un tab ascuns sau într-un browser condus automat sunt
+      suspendate, iar bara nu mai apare niciodată. `getBoundingClientRect` pe
+      un eveniment de derulare deja limitat de browser e destul de ieftin.
     */
-    let cerut = false;
     const verifica = () => {
-      cerut = false;
       const panel = document.querySelector('[data-testid="bid-panel"]');
       if (!panel) return;
       // bara apare abia după ce panoul a ieșit de tot din ecran, în sus
       setShown(panel.getBoundingClientRect().bottom < 80);
     };
-    const laDerulare = () => {
-      if (cerut) return;
-      cerut = true;
-      requestAnimationFrame(verifica);
-    };
 
     verifica();
-    window.addEventListener("scroll", laDerulare, { passive: true });
-    window.addEventListener("resize", laDerulare);
+    window.addEventListener("scroll", verifica, { passive: true });
+    window.addEventListener("resize", verifica);
     return () => {
-      window.removeEventListener("scroll", laDerulare);
-      window.removeEventListener("resize", laDerulare);
+      window.removeEventListener("scroll", verifica);
+      window.removeEventListener("resize", verifica);
     };
   }, [isSeller]);
 
