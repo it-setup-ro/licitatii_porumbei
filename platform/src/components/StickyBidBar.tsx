@@ -31,15 +31,34 @@ export default function StickyBidBar({
   useEffect(() => {
     // vânzătorul nu licitează la propriul lot — nu-i ocupăm ecranul degeaba
     if (isSeller) return;
-    const panel = document.querySelector('[data-testid="bid-panel"]');
-    if (!panel) return;
 
-    const io = new IntersectionObserver(
-      ([entry]) => setShown(!entry.isIntersecting),
-      { rootMargin: "-80px 0px 0px 0px" }
-    );
-    io.observe(panel);
-    return () => io.disconnect();
+    /*
+      Ascultăm derularea, nu IntersectionObserver. Observatorul are nevoie ca
+      pagina să deseneze cadre ca să raporteze ceva; într-un tab ascuns sau
+      într-un browser condus automat, poate să nu pornească deloc. Un calcul
+      simplu de poziție merge oriunde, iar rAF îl ține ieftin.
+    */
+    let cerut = false;
+    const verifica = () => {
+      cerut = false;
+      const panel = document.querySelector('[data-testid="bid-panel"]');
+      if (!panel) return;
+      // bara apare abia după ce panoul a ieșit de tot din ecran, în sus
+      setShown(panel.getBoundingClientRect().bottom < 80);
+    };
+    const laDerulare = () => {
+      if (cerut) return;
+      cerut = true;
+      requestAnimationFrame(verifica);
+    };
+
+    verifica();
+    window.addEventListener("scroll", laDerulare, { passive: true });
+    window.addEventListener("resize", laDerulare);
+    return () => {
+      window.removeEventListener("scroll", laDerulare);
+      window.removeEventListener("resize", laDerulare);
+    };
   }, [isSeller]);
 
   if (isSeller || !shown) return null;
