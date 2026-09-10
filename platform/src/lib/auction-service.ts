@@ -183,10 +183,15 @@ async function placeBidOnce(
     const leadingNow = await prisma.bid.findFirst({
       where: { auctionId, isLeading: true },
     });
+    // Minimul urmator merge pe fir odata cu pretul. Fara el, un ecran deschis in
+    // alta parte arata pretul nou, dar continua sa propuna suma veche — iar cine
+    // o trimite primeste „oferta prea mica" fara sa inteleaga de ce.
+    const minNextCents = (await nextMinimumForAuction(auctionId)) ?? r.priceCents;
     emitAuctionEvent({
       kind: "bid",
       auctionId,
       priceCents: r.priceCents,
+      minNextCents,
       bidCount,
       leadingBidderId: leadingNow?.bidderId ?? bidderId,
       endsAt: r.endsAt.toISOString(),

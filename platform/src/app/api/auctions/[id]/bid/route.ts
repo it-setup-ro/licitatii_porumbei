@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { MAX_MONEY_CENTS } from "@/lib/limits";
 import { requireUser } from "@/lib/auth";
-import { placeBid } from "@/lib/auction-service";
+import { placeBid, nextMinimumForAuction } from "@/lib/auction-service";
 import { sweepAuctions } from "@/lib/auction-service";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 
@@ -30,6 +30,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     }
     return jsonOk({
       priceCents: result.priceCents,
+      minNextCents: (await nextMinimumForAuction(id)) ?? result.priceCents,
       leading: result.leading,
       extended: result.extended,
       endsAt: result.endsAt.toISOString(),

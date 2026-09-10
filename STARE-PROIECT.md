@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 45 teste unitare + 148 teste end-to-end, toate verzi.
+**Stare: funcțională cap-coadă pentru testare.** 45 teste unitare + 153 teste end-to-end, toate verzi.
 
 ---
 
@@ -22,6 +22,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 ### Public
 - **Pagina unui lot, în formatul pipa.be**: serie inel · nume · rând scurt de descriere; galerie foto+video; fișa cu serie/an/sex, reprodus de, oferit de; descrierea lungă; pedigree scanat (poză sau PDF); restul informațiilor sub butonul „Toate detaliile"; ofertele — ultimele 3 și „Vezi toate ofertele"
 - **Modificarea unui lot** de către crescător (`/account/lots` → Editează): tot, până la prima ofertă; după, doar adăugiri — poze, clipuri și o completare datată la descriere. Schimbarea seriei/anului/sexului/prețului pe un lot public îl trimite înapoi la aprobare. Adminul poate corecta orice, cu urmă în audit
+- **Bară de progres** la încărcarea fișierelor, cu procent și cât s-a trimis din cât
 - **Mărirea pozelor** la clic, inclusiv pedigree-ul (unde scrisul e mărunt)
 - **Fișa detaliată a porumbelului** (ca pe pipa): ochi, specializare, constituție (11 rânduri), aripă și penaj (6 rânduri) — toate opționale, afișate sub „Toate detaliile". Lista e în `src/lib/pigeon-traits.ts`
 - **Licitații** cu proxy-bidding (plafon secret), anti-sniping (+5 min), actualizare live pe ecranul tuturor fără refresh, închidere automată cu desemnarea câștigătorului și animația stolului de porumbei
@@ -131,7 +132,8 @@ platform/src/
 9. **`object-src 'none'` din CSP blochează `<object>`** — pentru încadrarea unui PDF folosește `<iframe>`.
 10. **`PUBLIC_BASE_URL`** din `.env` intră în linkurile de resetare a parolei. După ce site-ul are domeniu, trebuie schimbat acolo — altfel linkurile trimit oamenii la vechea adresă IP.
 11. **Clipurile nu trec prin memorie.** `/api/upload` are două căi: multipart (poze, PDF) și corpul brut al cererii, pentru clipuri. A doua scrie direct pe disc — la 300 MB, citirea în memorie ar fi pus în pericol și celelalte aplicații de pe server.
-12. **`reset-demo.sh` șterge date reale.** A fost rulat de două ori pe 29 august fără să fie întrebat Daniel, care testa cu poze reale — loturile lui s-au pierdut, pentru că serverul nu avea niciun backup și nici arhivare WAL. Acum comanda cere confirmare scrisă și face o copie înainte. **Nu o rula niciodată fără să întrebi.** Fișierele urcate nu sunt afectate: resetul atinge doar baza de date.
+12. **Pe fluxul live trebuie trimis și minimul următor, nu doar prețul.** Altfel un ecran deschis în altă parte arată prețul nou, dar propune suma veche, iar cine o trimite primește „ofertă prea mică". Liderul are alt minim decât ceilalți: el trebuie să treacă peste propriul plafon secret.
+13. **`reset-demo.sh` șterge date reale.** A fost rulat de două ori pe 29 august fără să fie întrebat Daniel, care testa cu poze reale — loturile lui s-au pierdut, pentru că serverul nu avea niciun backup și nici arhivare WAL. Acum comanda cere confirmare scrisă și face o copie înainte. **Nu o rula niciodată fără să întrebi.** Fișierele urcate nu sunt afectate: resetul atinge doar baza de date.
 
 ---
 
@@ -152,4 +154,5 @@ platform/src/
 | 29 aug | Poze reale de porumbei (CC0) și pedigree-uri demonstrative generate pe loturile demo |
 | 29 aug | Navigația din administrare: din 12 pastile pe 5 rânduri → coloană grupată / panou „Secțiuni" |
 | 29 aug | Arătarea parolei, resetare prin link (e-mail sau generat din admin) și schimbarea parolei din cont |
+| 10 sep | Bară de progres la încărcare; reparat: suma minimă nu se actualiza pe al doilea ecran |
 | 29 aug | Editarea loturilor de către crescător; clipuri până la 5 min (300 MB, scrise direct pe disc); an+sex în antetul lotului; mărirea pozelor |

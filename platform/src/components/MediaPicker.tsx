@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import UploadProgress, { type UploadState } from "./UploadProgress";
 
 /**
  * Alegerea fisierelor — aceeasi peste tot: articole, listare porumbel, produse.
@@ -17,6 +18,37 @@ import { useRef, useState } from "react";
 export type PickedMedia = { url: string; type: "IMAGE" | "VIDEO" | "DOC" };
 
 const MAX_VIDEO_SECONDS = 300; // cinci minute
+
+/**
+ * Trimite un fisier si raporteaza cat s-a urcat.
+ *
+ * Se foloseste XMLHttpRequest, nu fetch: fetch nu spune cat din corpul cererii
+ * a plecat, iar la un clip de sute de MB tocmai asta trebuie aratat.
+ */
+function upload(
+  body: XMLHttpRequestBodyInit,
+  contentType: string | null,
+  onProgress: (sent: number, total: number) => void
+): Promise<{ ok: boolean; files?: PickedMedia[]; error?: string; isVideo?: boolean; isDoc?: boolean }> {
+  return new Promise((resolve) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/upload");
+    if (contentType) xhr.setRequestHeader("Content-Type", contentType);
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) onProgress(e.loaded, e.total);
+    };
+    xhr.onload = () => {
+      try {
+        resolve(JSON.parse(xhr.responseText));
+      } catch {
+        resolve({ ok: false });
+      }
+    };
+    xhr.onerror = () => resolve({ ok: false });
+    xhr.send(body);
+  });
+}
 
 /** Citeste durata unui clip din metadate, fara sa-l incarce pe server. */
 function readDuration(file: File): Promise<number> {
@@ -57,6 +89,7 @@ export default function MediaPicker({
   const photoRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState<UploadState | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const remaining = maxFiles - value.length;
@@ -96,14 +129,18 @@ export default function MediaPicker({
       const uploaded: PickedMedia[] = [];
       let failure: { error?: string; isVideo?: boolean; isDoc?: boolean } | null = null;
 
+      // clipurile: unul cate unul, ca sa se vada progresul pe fiecare
+      const pasi = videos.length + (rest.length > 0 ? 1 : 0);
+      let pas = 0;
+
       for (const f of videos) {
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          headers: { "Content-Type": f.type || "application/octet-stream" },
-          body: f,
-        });
-        const out = await res.json();
-        if (out.ok) uploaded.push(...out.files);
+        pas++;
+        const numar = pas;
+        setProgress({ index: numar, total: pasi, sent: 0, size: f.size, name: f.name });
+        const out = await upload(f, f.type || "application/octet-stream", (sent, size) =>
+          setProgress({ index: numar, total: pasi, sent, size, name: f.name })
+        );
+        if (out.ok && out.files) uploaded.push(...out.files);
         else {
           failure = out;
           break;
@@ -111,11 +148,17 @@ export default function MediaPicker({
       }
 
       if (!failure && rest.length > 0) {
+        pas++;
+        const numar = pas;
         const data = new FormData();
         for (const f of rest) data.append("files", f);
-        const res = await fetch("/api/upload", { method: "POST", body: data });
-        const out = await res.json();
-        if (out.ok) uploaded.push(...out.files);
+        const total = rest.reduce((n, f) => n + f.size, 0);
+        const eticheta = rest.length === 1 ? rest[0].name : `${rest.length} fișiere`;
+        setProgress({ index: numar, total: pasi, sent: 0, size: total, name: eticheta });
+        const out = await upload(data, null, (sent, size) =>
+          setProgress({ index: numar, total: pasi, sent, size, name: eticheta })
+        );
+        if (out.ok && out.files) uploaded.push(...out.files);
         else failure = out;
       }
 
@@ -139,6 +182,7 @@ export default function MediaPicker({
       setError("Încărcarea a eșuat. Încearcă din nou.");
     } finally {
       setBusy(false);
+      setProgress(null);
       resetInputs();
     }
   };
@@ -256,6 +300,8 @@ export default function MediaPicker({
           )}
         </button>
       </div>
+
+      {busy && progress && <UploadProgress state={progress} />}
 
       <p className="mt-2 text-xs text-ink/50">
         {allowImages && "Poze JPG/PNG/WebP până la 5 MB"}

@@ -136,6 +136,31 @@ test.describe("Clipuri de până la cinci minute", () => {
     expect((await res.json()).error).toBe("INVALID_TYPE");
   });
 
+  test("bara de progres se vede în timpul încărcării", async ({ page }) => {
+    await login(page, "seller@nbp.test", "seller1234");
+
+    // intarziem raspunsul serverului, altfel pe localhost incarcarea e instantanee
+    // si bara ar disparea inainte s-o putem vedea
+    await page.route("**/api/upload", async (route) => {
+      await new Promise((r) => setTimeout(r, 2500));
+      await route.continue();
+    });
+
+    await page.goto("/ro/sell");
+    await page.getByTestId("sf-videos-picker").getByTestId("media-input-files").setInputFiles(CLIP);
+
+    const bara = page.getByTestId("upload-progress");
+    await expect(bara).toBeVisible();
+    await expect(page.getByTestId("upload-bar")).toHaveAttribute("role", "progressbar");
+    await expect(bara).toContainText("test-clip.mp4");
+
+    // la final dispare si ramane previzualizarea
+    await expect(bara).toHaveCount(0, { timeout: 15_000 });
+    await expect(
+      page.getByTestId("sf-videos-picker").getByTestId("media-previews").locator("video")
+    ).toHaveCount(1);
+  });
+
   test("cumpărătorii nu pot încărca nici pe calea nouă", async ({ page }) => {
     await login(page, "buyer1@nbp.test", "buyer1234");
     const res = await page.request.post("/api/upload", {

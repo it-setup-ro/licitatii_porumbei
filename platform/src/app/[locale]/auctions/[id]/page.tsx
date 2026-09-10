@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { getCurrentUser } from "@/lib/auth";
 import { formatMoney } from "@/lib/money";
-import { minimumAcceptableMax } from "@/lib/bidding";
+import { incrementFor, minimumAcceptableMax } from "@/lib/bidding";
 import { Link } from "@/i18n/navigation";
 import LiveAuctionPanel from "@/components/LiveAuctionPanel";
 import BuyNowPanel from "@/components/BuyNowPanel";
@@ -87,6 +87,19 @@ export default async function AuctionDetailPage({
     auction.startPriceCents,
     settings.increments
   );
+
+  /*
+    Cine conduce deja are alt minim: ca sa-si ridice plafonul trebuie sa treaca
+    peste PROPRIUL plafon secret, nu peste pretul vizibil. Fara asta, liderului i
+    se arata suma pe care ar trebui s-o dea un contracandidat — o trimite si
+    primeste „oferta prea mica", fara sa inteleaga de ce.
+    E propriul lui plafon, deci nu divulgam nimic.
+  */
+  const viewerIsLeading = Boolean(user && leadingBid && leadingBid.bidderId === user.id);
+  const minNextForViewer =
+    viewerIsLeading && leadingBid
+      ? leadingBid.maxAmountCents + incrementFor(auction.currentPriceCents, settings.increments)
+      : minNext;
 
   const dateFmt = new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
     dateStyle: "short",
@@ -179,7 +192,7 @@ export default async function AuctionDetailPage({
               startPriceCents={auction.startPriceCents}
               initialBidCount={auction._count.bids}
               initialEndsAt={auction.endsAt.toISOString()}
-              minNextCents={minNext}
+              minNextCents={minNextForViewer}
               userId={user?.id ?? null}
               userIsSeller={user?.id === auction.sellerId}
               userIsLeading={leadingBid?.bidderId === user?.id}

@@ -45,6 +45,8 @@ export default function LiveAuctionPanel(props: Props) {
   const [extendedNote, setExtendedNote] = useState(false);
   const [celebrate, setCelebrate] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  /** „ai fost depasit" — stare, nu ref: refurile nu se citesc in timpul randarii */
+  const [showOutbid, setShowOutbid] = useState(false);
   const wasLeading = useRef(props.userIsLeading);
 
   const fmt = useCallback(
@@ -63,6 +65,13 @@ export default function LiveAuctionPanel(props: Props) {
           setPriceCents(ev.priceCents);
           setBidCount(ev.bidCount);
           setEndsAt(ev.endsAt);
+          // si suma propusa, nu doar pretul: altfel ecranul asta ramane cu
+          // minimul de acum cinci oferte si trimite o suma deja depasita.
+          // Pe fir vine minimul pentru un contracandidat; daca TU conduci, al tau
+          // e altul (peste propriul plafon) si il lasam asa cum e.
+          if (typeof ev.minNextCents === "number" && ev.youAreLeading !== true) {
+            setMinNext(ev.minNextCents);
+          }
           setFlash((f) => f + 1);
           if (ev.extended) {
             setExtendedNote(true);
@@ -74,7 +83,9 @@ export default function LiveAuctionPanel(props: Props) {
             setLeading(isLeadingNow);
             if (wasLeading.current && !isLeadingNow) {
               setShake((s) => s + 1);
+              setShowOutbid(true);
             }
+            if (isLeadingNow) setShowOutbid(false);
             wasLeading.current = isLeadingNow;
           }
         } else if (ev.kind === "rescheduled") {
@@ -113,11 +124,12 @@ export default function LiveAuctionPanel(props: Props) {
         setInput("");
         if (data.leading) {
           setMessage({ kind: "ok", text: t("bidPlacedLeading", { amount: fmt(data.priceCents) }) });
+          setShowOutbid(false);
         } else {
           setMessage({ kind: "info", text: t("bidPlacedOutbid") });
           setShake((s) => s + 1);
         }
-        setMinNext(data.priceCents + 1); // reactualizat oricum de urmatorul refresh
+        setMinNext(data.minNextCents ?? data.priceCents);
       } else {
         const key = `err${data.error}` as const;
         const params: Record<string, string> = {};
@@ -191,7 +203,7 @@ export default function LiveAuctionPanel(props: Props) {
               ✓ {t("youAreLeading")}
             </p>
           )}
-          {!leading && wasLeading.current === false && shake > 0 && (
+          {!leading && showOutbid && (
             <p
               className="mb-2 rounded-lg bg-wing-red/10 px-3 py-2 text-sm font-semibold text-wing-red"
               data-testid="outbid-badge"
@@ -225,7 +237,17 @@ export default function LiveAuctionPanel(props: Props) {
               {t("placeBid")}
             </button>
           </div>
-          <p className="mt-1.5 text-xs text-ink/50">{t("minimumBid", { amount: fmt(minNext) })}</p>
+          {/* Suma minima e si buton: o apesi si intra in camp. Pe telefon, a o
+              scrie de mana dupa fiecare oferta noua e cea mai sigura cale spre
+              „oferta prea mica". */}
+          <button
+            type="button"
+            onClick={() => setInput(String(minNext / 100))}
+            data-testid="bid-use-minimum"
+            className="-mx-1 mt-1.5 rounded-lg px-1 py-1.5 text-xs text-ink/50 transition-colors hover:bg-ink/5 hover:text-wing-blue"
+          >
+            {t("minimumBid", { amount: fmt(minNext) })}
+          </button>
           {message && (
             <p
               data-testid="bid-message"

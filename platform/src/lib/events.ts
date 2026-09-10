@@ -11,6 +11,8 @@ export type AuctionEvent =
       kind: "bid";
       auctionId: string;
       priceCents: number;
+      /** minimul acceptat pentru urmatoarea oferta, dupa aceasta */
+      minNextCents: number;
       bidCount: number;
       leadingBidderId: string;
       endsAt: string;

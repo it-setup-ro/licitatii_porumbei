@@ -358,17 +358,22 @@ test.describe("Concursuri — linkuri catre site-uri externe", () => {
     await page.goto("/ro/admin/links");
     await expect(page.getByTestId("admin-links-table")).toContainText("Clasamente 2026");
 
-    // deschide prima intrare si schimba adresa
-    await page.getByTestId("link-edit").first().click();
+    // Tintim ANUME randul „Clasamente 2026", nu primul din tabel: alte teste
+    // adauga si sterg linkuri, iar „primul" nu e mereu acelasi.
+    const rand = page.locator("tr").filter({ hasText: "Clasamente 2026" });
+    await rand.getByTestId("link-edit").click();
     await page.getByTestId("field-url").fill("https://example.org/clasamente-2027");
     await page.getByTestId("editor-save").click();
     await expect(page.getByTestId("editor-saved")).toBeVisible();
 
-    // schimbarea apare in meniu
+    // schimbarea apare in meniu, pe intrarea cu acelasi nume
     await page.goto("/ro");
     await page.getByTestId("nav-contests").click();
     await expect(
-      page.getByTestId("contests-submenu").getByTestId("contest-link").first()
+      page
+        .getByTestId("contests-submenu")
+        .getByTestId("contest-link")
+        .filter({ hasText: "Clasamente 2026" })
     ).toHaveAttribute("href", "https://example.org/clasamente-2027");
   });
 
