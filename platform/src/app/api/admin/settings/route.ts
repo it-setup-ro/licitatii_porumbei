@@ -32,6 +32,7 @@ const SETTING_SCHEMAS: Record<keyof PlatformSettings, z.ZodTypeAny> = {
   minStartPriceCents: money,
   defaultDurationDays: z.number().int().min(1).max(365),
   sellerChoosesDuration: z.boolean(),
+  reservePriceEnabled: z.boolean(),
   // Licitare
   snipeWindowMinutes: z.number().int().min(0).max(1440),
   extensionMinutes: z.number().int().min(1).max(1440),

@@ -18,7 +18,7 @@ const PAROLA_NOUA = "TestParola2026!";
 async function contNou(page: Page) {
   const email = `live-${Date.now()}-${Math.floor(Math.random() * 1e6)}@e2e.test`;
   const res = await page.request.post("/api/auth/register", {
-    data: { email, password: PAROLA_NOUA, name: "Test Live" },
+    data: { email, password: PAROLA_NOUA, name: "Test Live", nickname: `TL${Date.now() % 1e7}` },
   });
   expect(res.status()).toBe(200);
   await page.request.post("/api/auth/logout");
@@ -136,7 +136,7 @@ test.describe("Două ecrane pe același lot", () => {
     await ctxS.close();
   });
 
-  test("apăsarea sumei minime o pune în câmp", async ({ page, browser }) => {
+  test("câmpul pornește pe suma minimă, iar +/− o mișcă cu treapta", async ({ page, browser }) => {
     test.setTimeout(120_000);
     const ctxS = await browser.newContext({ locale: "ro-RO" });
     const setup = await ctxS.newPage();
@@ -144,12 +144,25 @@ test.describe("Două ecrane pe același lot", () => {
     await ctxS.close();
 
     await deschide(page, id, "buyer1@nbp.test", "buyer1234");
-    await expect(page.getByTestId("bid-input")).toHaveValue("");
-    await page.getByTestId("bid-use-minimum").click();
+    const minim = await minimAfisat(page);
 
-    const valoare = Number(await page.getByTestId("bid-input").inputValue());
-    expect(valoare).toBeGreaterThan(0);
-    expect(Math.round(valoare * 100)).toBe(await minimAfisat(page));
+    // campul e deja completat cu suma propusa — nu trebuie scrisa de mana
+    const camp = page.getByTestId("bid-input");
+    expect(Math.round(Number(await camp.inputValue()) * 100)).toBe(minim);
+
+    // „+" urca cu o treapta, „−" nu coboara sub minim
+    await page.getByTestId("bid-plus").click();
+    const dupaPlus = Math.round(Number(await camp.inputValue()) * 100);
+    expect(dupaPlus).toBeGreaterThan(minim);
+
+    await page.getByTestId("bid-minus").click();
+    expect(Math.round(Number(await camp.inputValue()) * 100)).toBe(minim);
+
+    await page.getByTestId("bid-minus").click();
+    expect(
+      Math.round(Number(await camp.inputValue()) * 100),
+      "nu trebuie sa poata cobori sub minim"
+    ).toBe(minim);
   });
 
   test("răspunsul propriei oferte aduce noua sumă minimă", async ({ page, browser }) => {

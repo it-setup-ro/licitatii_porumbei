@@ -20,6 +20,8 @@ export type PlatformSettings = {
   minStartPriceCents: number;
   defaultDurationDays: number;
   sellerChoosesDuration: boolean;
+  /** crescatorii pot pune un pret de rezerva (suma ramane ascunsa) */
+  reservePriceEnabled: boolean;
   // Licitare
   snipeWindowMinutes: number;
   extensionMinutes: number;
@@ -74,8 +76,9 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   minStartPriceCents: 10_000, // 100 EUR
   defaultDurationDays: 14,
   sellerChoosesDuration: false,
-  snipeWindowMinutes: 5,
-  extensionMinutes: 5,
+  reservePriceEnabled: true,
+  snipeWindowMinutes: 2,
+  extensionMinutes: 2,
   maxExtensions: 50,
   increments: [
     { upToCents: 10_000, stepCents: 500 }, // sub 100 EUR: pas 5

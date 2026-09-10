@@ -63,6 +63,8 @@ const schema = z.object({
   /** caracteristicile din fisa (ochi, constitutie, aripa) — filtrate cu whitelist */
   traits: z.unknown().optional(),
   startPriceCents: z.number().int().positive().max(MAX_MONEY_CENTS),
+  /** suma sub care crescatorul nu vinde; ramane ascunsa cumparatorilor */
+  reservePriceCents: z.number().int().positive().max(MAX_MONEY_CENTS).optional(),
   listingType: z.enum(["SELF", "ASSISTED"]).default("SELF"),
   shippingMode: z.enum(["SELLER", "PICKUP"]).default("SELLER"),
   dnaSexGuaranteed: z.boolean().default(false),
@@ -131,6 +133,10 @@ export async function POST(req: Request) {
             listingType: d.listingType,
             currency: settings.platformCurrency,
             startPriceCents: d.startPriceCents,
+            reservePriceCents:
+              settings.reservePriceEnabled && d.reservePriceCents && d.reservePriceCents > d.startPriceCents
+                ? d.reservePriceCents
+                : null,
             startsAt,
             endsAt,
             originalEndsAt: endsAt,

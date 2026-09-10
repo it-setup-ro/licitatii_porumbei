@@ -17,6 +17,9 @@ model User {
   email            String    @unique
   passwordHash     String
   name             String
+  /// Numele sub care apare in istoricul ofertelor. Public — numele real nu
+  /// se arata niciodata acolo.
+  nickname         String?   @unique
   phone            String?
   locale           String    @default("ro")
   role             String    @default("BUYER") // BUYER | SELLER | ADMIN
@@ -144,9 +147,14 @@ model Auction {
   endsAt               DateTime
   originalEndsAt       DateTime
   extensionsCount      Int       @default(0)
+  /// cand s-a trimis anuntul „se apropie finalul" — ca sa nu plece de zeci de ori
+  endingNotifiedAt     DateTime?
   winnerId             String?
   winner               User?     @relation("winner", fields: [winnerId], references: [id])
   winningBidId         String?
+  /// Suma sub care vanzatorul nu vinde. Ascunsa cumparatorilor: se arata doar
+  /// daca a fost atinsa sau nu. null = licitatie fara pret de rezerva.
+  reservePriceCents    Int?
   reserveNotMet        Boolean   @default(false)
   dnaSexGuaranteed     Boolean   @default(false)
   shippingMode         String    @default("SELLER") // SELLER | PICKUP | PLATFORM

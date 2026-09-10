@@ -2,33 +2,15 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { hashPassword, createSessionCookie } from "@/lib/auth";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { nicknameSchema } from "@/lib/nickname";
+import { passwordSchema } from "@/lib/password";
 import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/api";
-
-/** Lista scurta de parole banale — blocheaza cele mai frecvente incercari. */
-const COMMON_PASSWORDS = new Set([
-  "parola123",
-  "password",
-  "password1",
-  "12345678",
-  "123456789",
-  "1234567890",
-  "qwertyui",
-  "qwerty123",
-  "iloveyou",
-  "admin123",
-  "welcome1",
-  "parolamea",
-]);
 
 const schema = z.object({
   email: z.string().email().toLowerCase().max(200),
-  password: z
-    .string()
-    .min(10, "Parola trebuie să aibă minim 10 caractere")
-    .max(200)
-    .refine((p) => !COMMON_PASSWORDS.has(p.toLowerCase()), "Parolă prea uzuală")
-    .refine((p) => !/^(.)\1+$/.test(p), "Parolă prea simplă"),
+  password: passwordSchema,
   name: z.string().min(2).max(120),
+  nickname: nicknameSchema,
   phone: z.string().max(30).optional(),
   locale: z.enum(["ro", "en"]).default("ro"),
   wantsSeller: z.boolean().default(false),
@@ -52,11 +34,17 @@ export async function POST(req: Request) {
     const existing = await prisma.user.findUnique({ where: { email: d.email } });
     if (existing) return jsonError("EMAIL_TAKEN", 409);
 
+    const nickTaken = await prisma.user.findFirst({
+      where: { nickname: { equals: d.nickname, mode: "insensitive" } },
+    });
+    if (nickTaken) return jsonError("NICKNAME_TAKEN", 409);
+
     const user = await prisma.user.create({
       data: {
         email: d.email,
         passwordHash: await hashPassword(d.password),
         name: d.name,
+        nickname: d.nickname,
         phone: d.phone,
         locale: d.locale,
         role: d.wantsSeller ? "SELLER" : "BUYER",

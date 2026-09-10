@@ -114,7 +114,23 @@
     "hideAllBids": "Hide bids",
     "noBidsYet": "No bids yet.",
     "lastBids": "Latest bids",
-    "video": "Video"
+    "video": "Video",
+    "liveAuction": "Live auction",
+    "biddersCount": "{count, plural, =0 {no bidders} one {one bidder} other {# bidders}}",
+    "reserveMet": "Reserve price met",
+    "reserveNotMet": "Reserve price not met",
+    "decrease": "Decrease",
+    "increase": "Increase",
+    "proxyTitle": "How automatic bidding works",
+    "bidHistoryFor": "{bids} · {bidders}",
+    "trustPedigree": "Verified pedigree",
+    "trustPayment": "Secure payment",
+    "trustShipping": "Specialist shipping",
+    "trustSeller": "Verified breeder",
+    "story": "The pigeon's story",
+    "similar": "Similar pigeons",
+    "similarHint": "From the same breeder or the same line",
+    "mobileBidNow": "Bid"
   },
   "pigeon": {
     "ring": "Ring number",
@@ -185,7 +201,11 @@
     "changeDone": "Your password has been changed.",
     "wrongCurrentPassword": "That current password isn't right.",
     "samePassword": "The new password is the same as the old one.",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "nickname": "Public name (nickname)",
+    "nicknameHint": "The name you appear under in the bid history. Your real name is never shown there. Letters, digits, - and _.",
+    "errNickname": "Invalid nickname: 3–20 characters, only letters, digits, - and _.",
+    "errNICKNAME_TAKEN": "That nickname is taken. Please choose another."
   },
   "account": {
     "title": "My account",
@@ -229,7 +249,8 @@
     "SELLER_APPROVED": "Your seller account was approved. You can now list pigeons.",
     "SELLER_REJECTED": "Your seller application was rejected.",
     "REVIEW_RECEIVED": "You received a new review ({rating}/5).",
-    "LOT_EDITED_BY_ADMIN": "Lot “{lot}” was corrected by an administrator."
+    "LOT_EDITED_BY_ADMIN": "Lot “{lot}” was corrected by an administrator.",
+    "RESERVE_NOT_MET": "Auction “{lot}” ended at {price}, below your reserve price. The pigeon was not sold."
   },
   "sell": {
     "title": "List a pigeon",
@@ -283,7 +304,9 @@
     "saveEdit": "Save changes",
     "editSaved": "Your changes have been saved.",
     "editReapproval": "The lot went back for approval, because you changed important details.",
-    "editFailed": "Could not save. Please check the fields."
+    "editFailed": "Could not save. Please check the fields.",
+    "reservePrice": "Reserve price ({currency}) — optional",
+    "reserveHint": "The amount below which you will not sell. Buyers do NOT see it — only whether it has been met. Leave empty to sell at any price."
   },
   "orders": {
     "title": "Order",

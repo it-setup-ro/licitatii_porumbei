@@ -5,6 +5,10 @@ import { getSettings } from "@/lib/settings";
 import { getCurrentUser } from "@/lib/auth";
 import { formatMoney } from "@/lib/money";
 import { incrementFor, minimumAcceptableMax } from "@/lib/bidding";
+import { bidderCountForAuction, reserveState } from "@/lib/auction-service";
+import { cardInclude, toCardData } from "@/lib/queries";
+import AuctionCard from "@/components/AuctionCard";
+import StickyBidBar from "@/components/StickyBidBar";
 import { Link } from "@/i18n/navigation";
 import LiveAuctionPanel from "@/components/LiveAuctionPanel";
 import BuyNowPanel from "@/components/BuyNowPanel";
@@ -75,6 +79,24 @@ export default async function AuctionDetailPage({
     : false;
 
   const leadingBid = auction.bids.find((b) => b.isLeading);
+  const bidderCount = await bidderCountForAuction(auction.id);
+  const stepCents = incrementFor(auction.currentPriceCents, settings.increments);
+  const reserve = reserveState(auction.reservePriceCents, auction.currentPriceCents);
+
+  // Porumbei asemanatori: intai de la acelasi crescator, apoi din aceeasi linie.
+  const similar = await prisma.auction.findMany({
+    where: {
+      status: "LIVE",
+      id: { not: auction.id },
+      OR: [
+        { sellerId: auction.sellerId },
+        ...(pigeon.strain ? [{ pigeon: { strain: pigeon.strain } }] : []),
+      ],
+    },
+    include: cardInclude,
+    orderBy: { endsAt: "asc" },
+    take: 3,
+  });
   // Numele sub care apare contul care vinde. Cand „Oferit de" spune acelasi
   // lucru, nu-l mai repetam in fisa — ar arata ca doua informatii diferite.
   const sellerLabel = seller.sellerCompany ?? seller.name;
@@ -108,7 +130,8 @@ export default async function AuctionDetailPage({
 
   const bidRows: BidRow[] = auction.bids.map((b) => ({
     id: b.id,
-    name: maskName(b.bidder.name),
+    // Numele public ales de om. Numele real nu apare niciodata aici.
+    name: b.bidder.nickname ?? maskName(b.bidder.name),
     amount: formatMoney(b.amountCents, auction.currency, currentLocale),
     when: dateFmt.format(b.createdAt),
     leading: b.isLeading,
@@ -191,8 +214,11 @@ export default async function AuctionDetailPage({
               initialPriceCents={auction.currentPriceCents}
               startPriceCents={auction.startPriceCents}
               initialBidCount={auction._count.bids}
+              initialBidderCount={bidderCount}
               initialEndsAt={auction.endsAt.toISOString()}
               minNextCents={minNextForViewer}
+              stepCents={stepCents}
+              reserve={reserve}
               userId={user?.id ?? null}
               userIsSeller={user?.id === auction.sellerId}
               userIsLeading={leadingBid?.bidderId === user?.id}
@@ -209,9 +235,10 @@ export default async function AuctionDetailPage({
               data-testid="winner-note"
             >
               🏆 {t("winner")}:{" "}
-              {maskName(
-                (await prisma.user.findUnique({ where: { id: auction.winnerId } }))?.name ?? "—"
-              )}
+              {await (async () => {
+                const w = await prisma.user.findUnique({ where: { id: auction.winnerId! } });
+                return w?.nickname ?? maskName(w?.name ?? "—");
+              })()}
             </div>
           )}
 
@@ -219,8 +246,20 @@ export default async function AuctionDetailPage({
             <WatchButton auctionId={auction.id} initialWatching={watching} />
           )}
 
+          {/* Semne de incredere — discrete, dar chiar langa buton, unde omul
+              ezita. Se afiseaza doar ce e adevarat despre lotul asta. */}
+          <ul
+            className="grid grid-cols-2 gap-x-3 gap-y-2 rounded-2xl border border-ink/10 bg-white p-4 text-xs font-medium text-ink/70"
+            data-testid="trust-badges"
+          >
+            {pigeon.pedigreeUrl && <Trust label={t("trustPedigree")} />}
+            <Trust label={t("trustPayment")} />
+            <Trust label={t("trustShipping")} />
+            {seller.sellerStatus === "APPROVED" && <Trust label={t("trustSeller")} />}
+          </ul>
+
           {/* Crescatorul (contul de pe platforma) */}
-          <div className="rounded-2xl border border-ink/10 bg-white p-5">
+          <div className="rounded-2xl border border-ink/10 bg-white p-5" data-testid="seller-card">
             <p className="text-xs uppercase tracking-wide text-ink/50">{t("seller")}</p>
             <p className="font-display mt-1 text-lg font-bold">{sellerLabel}</p>
             {sellerStats._count > 0 && (
@@ -367,6 +406,19 @@ export default async function AuctionDetailPage({
             </details>
           )}
 
+          {/* Porumbei asemanatori — de la acelasi crescator sau din aceeasi linie */}
+          {similar.length > 0 && (
+            <div data-testid="similar-lots">
+              <h2 className="font-display mb-1 text-xl font-bold">{t("similar")}</h2>
+              <p className="mb-4 text-sm text-ink/60">{t("similarHint")}</p>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {similar.map((a) => (
+                  <AuctionCard key={a.id} auction={toCardData(a)} />
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Ofertele: ultimele cateva, restul la buton */}
           {auction.saleMode !== "FIXED" && (
             <div>
@@ -377,7 +429,34 @@ export default async function AuctionDetailPage({
         </div>
 
       </div>
+
+      {/* Pe telefon, butonul de licitat ramane la indemana oricat ai derula. */}
+      {auction.saleMode !== "FIXED" && auction.status === "LIVE" && (
+        <StickyBidBar
+          priceLabel={formatMoney(
+            auction._count.bids > 0 ? auction.currentPriceCents : auction.startPriceCents,
+            auction.currency,
+            currentLocale
+          )}
+          buttonLabel={t("mobileBidNow")}
+          loggedIn={Boolean(user)}
+          isSeller={user?.id === auction.sellerId}
+          loginHref={`/${locale}/login`}
+        />
+      )}
     </div>
+  );
+}
+
+/** Un semn de incredere: bifa + text scurt. */
+function Trust({ label }: { label: string }) {
+  return (
+    <li className="flex items-center gap-1.5">
+      <span className="text-wing-blue" aria-hidden="true">
+        ✓
+      </span>
+      {label}
+    </li>
   );
 }
 

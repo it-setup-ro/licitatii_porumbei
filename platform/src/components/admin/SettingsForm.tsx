@@ -39,6 +39,7 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
         { key: "minStartPriceCents", label: "Preț minim de pornire (cenți)", type: "number" },
         { key: "defaultDurationDays", label: "Durata licitației (zile)", type: "number" },
         { key: "sellerChoosesDuration", label: "Vânzătorul alege durata", type: "boolean" },
+        { key: "reservePriceEnabled", label: "Preț de rezervă permis", type: "boolean" },
       ],
     },
     {

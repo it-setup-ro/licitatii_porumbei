@@ -13,7 +13,13 @@ export type AuctionEvent =
       priceCents: number;
       /** minimul acceptat pentru urmatoarea oferta, dupa aceasta */
       minNextCents: number;
+      /** treapta de licitare la nivelul de pret curent */
+      stepCents: number;
       bidCount: number;
+      /** cati oameni distincti au licitat */
+      bidderCount: number;
+      /** „NONE" | „MET" | „NOT_MET" — suma de rezerva ramane ascunsa */
+      reserve: string;
       leadingBidderId: string;
       endsAt: string;
       extended: boolean;

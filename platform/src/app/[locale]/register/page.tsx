@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
+import { NICKNAME_RE, suggestNickname } from "@/lib/nickname";
 import PasswordField from "@/components/PasswordField";
 
 export default function RegisterPage() {
@@ -11,6 +12,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({
     name: "",
+    nickname: "",
     email: "",
     password: "",
     phone: "",
@@ -19,6 +21,7 @@ export default function RegisterPage() {
     sellerIban: "",
     sellerCui: "",
   });
+  const [nicknameTouched, setNicknameTouched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -28,6 +31,10 @@ export default function RegisterPage() {
     e.preventDefault();
     if (form.password.length < 10) {
       setError(t("errWeakPassword"));
+      return;
+    }
+    if (!NICKNAME_RE.test(form.nickname.trim())) {
+      setError(t("errNickname"));
       return;
     }
     setBusy(true);
@@ -53,7 +60,26 @@ export default function RegisterPage() {
     <div className="mx-auto max-w-md px-4 py-14">
       <h1 className="font-display mb-6 text-3xl font-bold">{t("registerTitle")}</h1>
       <form onSubmit={submit} className="space-y-4 rounded-2xl border border-ink/10 bg-white p-6">
-        <Field label={t("name")} value={form.name} onChange={(v) => set("name", v)} testid="reg-name" />
+        <Field
+          label={t("name")}
+          value={form.name}
+          onChange={(v) => {
+            set("name", v);
+            // propunem un nickname din nume, dar doar cat timp omul nu l-a atins
+            if (!nicknameTouched) set("nickname", suggestNickname(v));
+          }}
+          testid="reg-name"
+        />
+        <Field
+          label={t("nickname")}
+          value={form.nickname}
+          onChange={(v) => {
+            setNicknameTouched(true);
+            set("nickname", v);
+          }}
+          testid="reg-nickname"
+        />
+        <p className="-mt-2 text-xs text-ink/55">{t("nicknameHint")}</p>
         <Field
           label={t("email")}
           type="email"

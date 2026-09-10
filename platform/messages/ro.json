@@ -114,7 +114,23 @@
     "hideAllBids": "Ascunde ofertele",
     "noBidsYet": "Încă nicio ofertă.",
     "lastBids": "Ultimele oferte",
-    "video": "Video"
+    "video": "Video",
+    "liveAuction": "Licitație live",
+    "biddersCount": "{count, plural, =0 {niciun ofertant} one {un ofertant} few {# ofertanți} other {# de ofertanți}}",
+    "reserveMet": "Preț de rezervă atins",
+    "reserveNotMet": "Prețul de rezervă nu a fost atins",
+    "decrease": "Scade suma",
+    "increase": "Crește suma",
+    "proxyTitle": "Cum funcționează licitarea automată",
+    "bidHistoryFor": "{bids} · {bidders}",
+    "trustPedigree": "Pedigree verificat",
+    "trustPayment": "Plată securizată",
+    "trustShipping": "Transport specializat",
+    "trustSeller": "Crescător verificat",
+    "story": "Povestea porumbelului",
+    "similar": "Porumbei asemănători",
+    "similarHint": "De la același crescător sau din aceeași linie",
+    "mobileBidNow": "Licitează"
   },
   "pigeon": {
     "ring": "Serie inel",
@@ -185,7 +201,11 @@
     "changeDone": "Parola a fost schimbată.",
     "wrongCurrentPassword": "Parola actuală nu e corectă.",
     "samePassword": "Parola nouă e aceeași cu cea veche.",
-    "cancel": "Renunță"
+    "cancel": "Renunță",
+    "nickname": "Nume public (nickname)",
+    "nicknameHint": "Numele sub care apari în istoricul ofertelor. Numele tău real nu se arată acolo niciodată. Litere, cifre, - și _.",
+    "errNickname": "Nickname invalid: 3–20 caractere, doar litere, cifre, - și _.",
+    "errNICKNAME_TAKEN": "Nickname-ul e deja luat. Alege altul."
   },
   "account": {
     "title": "Contul meu",
@@ -229,7 +249,8 @@
     "SELLER_APPROVED": "Contul tău de vânzător a fost aprobat. Poți lista porumbei.",
     "SELLER_REJECTED": "Cererea de cont vânzător a fost respinsă.",
     "REVIEW_RECEIVED": "Ai primit o recenzie nouă ({rating}/5).",
-    "LOT_EDITED_BY_ADMIN": "Lotul „{lot}” a fost corectat de administrator."
+    "LOT_EDITED_BY_ADMIN": "Lotul „{lot}” a fost corectat de administrator.",
+    "RESERVE_NOT_MET": "Licitația „{lot}” s-a încheiat la {price}, sub prețul de rezervă. Porumbelul nu s-a vândut."
   },
   "sell": {
     "title": "Listează un porumbel",
@@ -283,7 +304,9 @@
     "saveEdit": "Salvează modificările",
     "editSaved": "Modificările au fost salvate.",
     "editReapproval": "Lotul s-a întors la aprobare, pentru că ai schimbat date importante.",
-    "editFailed": "Nu s-a putut salva. Verifică datele."
+    "editFailed": "Nu s-a putut salva. Verifică datele.",
+    "reservePrice": "Preț de rezervă ({currency}) — opțional",
+    "reserveHint": "Suma sub care nu vinzi. Cumpărătorii NU o văd — li se arată doar dacă a fost atinsă sau nu. Lasă gol dacă vinzi la orice preț."
   },
   "orders": {
     "title": "Comandă",

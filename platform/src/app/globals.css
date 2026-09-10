@@ -1,13 +1,28 @@
 @import "tailwindcss";
 
-/* Design system No.1 & Best Pigeons — paleta derivata din logo (brief §2) */
+/*
+  Design system No.1 & Best Pigeons.
+  Paleta a fost crem/bej; clientul a cerut alta ordine, iar directia e buna:
+  fundal alb, albastru de cer in zonele importante, auriu DOAR ca accent,
+  bleumarin pentru text. Albastrul e aerul paginii, nu o acopera.
+
+  Numele culorilor au ramas aceleasi (ink, ivory, wing-*), ca sa nu schimbam
+  o mie de clase prin tot site-ul — s-au schimbat doar valorile.
+*/
 :root {
-  --ink: #1b1b1b;
-  --ivory: #f3eee1;
-  --ivory-soft: #faf7ef;
-  --wing-blue: #2e6e9e;
-  --wing-yellow: #f2b417;
-  --wing-orange: #e8720c;
+  /* bleumarin — textul si suprafetele „grele" */
+  --ink: #10243f;
+  /* fundalul paginii: alb, cu o urma de albastru ca sa nu fie clinic */
+  --ivory: #f7fafd;
+  /* suprafata secundara (campuri, randuri alternate) */
+  --ivory-soft: #eef4fa;
+  /* albastru de cer — actiunile si zonele importante */
+  --wing-blue: #1d6fc0;
+  /* auriu deschis, pentru fundaluri de accent */
+  --wing-yellow: #e8b33a;
+  /* auriu profund — pretul si butonul principal; contrast bun pe alb */
+  --wing-orange: #b8860b;
+  /* rosu, doar pentru alerte si semnul „live" */
   --wing-red: #c0341d;
   --background: var(--ivory);
   --foreground: var(--ink);
@@ -108,6 +123,16 @@ h1, h2, h3, .font-display {
   animation: upload-shimmer 1.4s linear infinite;
 }
 
+/* Punctul rosu de langa „licitatie live" — pulseaza incet, ca sa se vada ca
+   pagina e vie, fara sa distraga de la pret. */
+@keyframes live-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.82); }
+}
+.live-dot {
+  animation: live-dot 1.8s ease-in-out infinite;
+}
+
 .card-hover {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -120,7 +145,8 @@ h1, h2, h3, .font-display {
   .timer-critical,
   .outbid-shake,
   .price-flash,
-  .upload-shimmer {
+  .upload-shimmer,
+  .live-dot {
     animation: none;
   }
   .card-hover,

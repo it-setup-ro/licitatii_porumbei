@@ -27,6 +27,7 @@ export default function SellForm({
   assistedEnabled,
   durationDays,
   defaultOfferedBy,
+  reserveEnabled,
 }: {
   currency: string;
   minStartCents: number;
@@ -36,6 +37,8 @@ export default function SellForm({
   durationDays: number;
   /** numele contului care listeaza — precompleteaza „Oferit de" */
   defaultOfferedBy: string;
+  /** platforma permite pret de rezerva */
+  reserveEnabled: boolean;
 }) {
   const t = useTranslations("sell");
   const tp = useTranslations("pigeon");
@@ -55,6 +58,7 @@ export default function SellForm({
     color: "",
     strain: "",
     startPrice: "",
+    reservePrice: "",
     listingType: "SELF",
     shippingMode: "SELLER",
     dnaSexGuaranteed: false,
@@ -82,6 +86,9 @@ export default function SellForm({
         ...form,
         birthYear: Number(form.birthYear),
         startPriceCents: Math.round(Number(form.startPrice.replace(",", ".")) * 100),
+        reservePriceCents: form.reservePrice
+          ? Math.round(Number(form.reservePrice.replace(",", ".")) * 100)
+          : undefined,
         pedigreeUrl: pedigree[0]?.url ?? "",
         traits,
         // pozele intai, clipurile dupa — prima poza devine coperta lotului
@@ -323,6 +330,20 @@ export default function SellForm({
             {t("startPriceMin", { min: formatMoney(minStartCents, currency, locale) })}
           </span>
         </label>
+        {reserveEnabled && (
+          <label className="block text-sm">
+            <span className="font-medium">{t("reservePrice", { currency })}</span>
+            <input
+              type="number"
+              step="1"
+              data-testid="sf-reserve-price"
+              value={form.reservePrice}
+              onChange={(e) => set("reservePrice", e.target.value)}
+              className={input}
+            />
+            <span className="text-xs text-ink/50">{t("reserveHint")}</span>
+          </label>
+        )}
         <p className="text-xs text-ink/50">{t("duration", { days: durationDays })}</p>
       </section>
 

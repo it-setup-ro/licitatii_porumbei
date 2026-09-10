@@ -1,6 +1,14 @@
 import { prisma } from "./db";
 import { getSettings } from "./settings";
-import { computeBid, computeExtension, minimumAcceptableMax } from "./bidding";
+import {
+  computeBid,
+  computeExtension,
+  incrementFor,
+  minimumAcceptableMax,
+  reserveState,
+} from "./bidding";
+
+export { reserveState };
 import { emitAuctionEvent } from "./events";
 import { notify } from "./notify";
 
@@ -110,6 +118,7 @@ async function placeBidOnce(
       currentPriceCents: auction.currentPriceCents,
       leader,
       tiers,
+      reserveCents: auction.reservePriceCents,
     });
 
     if (!outcome.accepted) {
@@ -187,12 +196,27 @@ async function placeBidOnce(
     // alta parte arata pretul nou, dar continua sa propuna suma veche — iar cine
     // o trimite primeste „oferta prea mica" fara sa inteleaga de ce.
     const minNextCents = (await nextMinimumForAuction(auctionId)) ?? r.priceCents;
+    const bidderCount = (
+      await prisma.bid.findMany({
+        where: { auctionId },
+        select: { bidderId: true },
+        distinct: ["bidderId"],
+      })
+    ).length;
+    const settingsNow = await getSettings();
+    const stepCents = incrementFor(r.priceCents, settingsNow.increments);
+    const auctionNow = await prisma.auction.findUnique({ where: { id: auctionId } });
+    const reserve = reserveState(auctionNow?.reservePriceCents ?? null, r.priceCents);
+
     emitAuctionEvent({
       kind: "bid",
       auctionId,
       priceCents: r.priceCents,
       minNextCents,
+      stepCents,
       bidCount,
+      bidderCount,
+      reserve,
       leadingBidderId: leadingNow?.bidderId ?? bidderId,
       endsAt: r.endsAt.toISOString(),
       extended: r.extended,
@@ -202,6 +226,16 @@ async function placeBidOnce(
     }
   }
   return r ?? { ok: false, error: "NOT_FOUND" };
+}
+
+/** Cati oameni distincti au licitat pe lotul asta. */
+export async function bidderCountForAuction(auctionId: string): Promise<number> {
+  const rows = await prisma.bid.findMany({
+    where: { auctionId },
+    select: { bidderId: true },
+    distinct: ["bidderId"],
+  });
+  return rows.length;
 }
 
 /** Minimul acceptat pentru urmatoarea oferta (pentru UI). */
@@ -216,6 +250,53 @@ export async function nextMinimumForAuction(auctionId: string): Promise<number |
     auction.startPriceCents,
     settings.increments
   );
+}
+
+/** Cu cat timp inainte de final se anunta cei implicati. */
+const ENDING_SOON_MINUTES = 60;
+
+/**
+ * Anunta „licitatia se apropie de final" ofertantilor si celor care au pus lotul
+ * la favorite.
+ *
+ * Tipul de notificare exista de la inceput, dar nu-l trimitea nimeni niciodata.
+ * `endingNotifiedAt` tine minte ca s-a trimis, ca sa nu plece la fiecare trecere.
+ */
+async function notifyEndingSoon(now: Date) {
+  const prag = new Date(now.getTime() + ENDING_SOON_MINUTES * 60_000);
+  const auctions = await prisma.auction.findMany({
+    where: {
+      status: "LIVE",
+      endingNotifiedAt: null,
+      endsAt: { gt: now, lte: prag },
+    },
+    include: { pigeon: true },
+  });
+
+  for (const a of auctions) {
+    await prisma.auction.update({
+      where: { id: a.id },
+      data: { endingNotifiedAt: now },
+    });
+
+    const ofertanti = await prisma.bid.findMany({
+      where: { auctionId: a.id },
+      select: { bidderId: true },
+      distinct: ["bidderId"],
+    });
+    const favoriti = await prisma.watchItem.findMany({
+      where: { auctionId: a.id },
+      select: { userId: true },
+    });
+
+    const destinatari = new Set([
+      ...ofertanti.map((o) => o.bidderId),
+      ...favoriti.map((f) => f.userId),
+    ]);
+    for (const userId of destinatari) {
+      await notify(userId, "AUCTION_ENDING", { lot: a.pigeon.name }, `/auctions/${a.id}`);
+    }
+  }
 }
 
 /** Porneste licitatiile programate si inchide licitatiile expirate. Idempotent. */
@@ -233,6 +314,8 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
     where: { status: "LIVE", endsAt: { lte: now } },
   });
 
+  await notifyEndingSoon(now);
+
   let closed = 0;
   for (const auction of due) {
     const settings = await getSettings();
@@ -244,17 +327,28 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
         where: { auctionId: fresh.id, isLeading: true },
       });
 
+      /*
+        Pretul de rezerva: suma sub care vanzatorul nu vinde. Daca licitatia s-a
+        oprit sub ea, lotul NU se adjudeca — nu exista castigator si nu se face
+        comanda. Altfel l-am obliga pe crescator sa dea un porumbel de valoare
+        pe o suma pe care n-a acceptat-o niciodata.
+      */
+      const reserveMet =
+        fresh.reservePriceCents === null || fresh.currentPriceCents >= fresh.reservePriceCents;
+      const adjudecat = Boolean(winningBid) && reserveMet;
+
       await tx.auction.update({
         where: { id: fresh.id },
         data: {
           status: "CLOSED",
           closedAt: new Date(),
-          winnerId: winningBid?.bidderId ?? null,
-          winningBidId: winningBid?.id ?? null,
+          winnerId: adjudecat ? winningBid!.bidderId : null,
+          winningBidId: adjudecat ? winningBid!.id : null,
+          reserveNotMet: Boolean(winningBid) && !reserveMet,
         },
       });
 
-      if (winningBid) {
+      if (adjudecat && winningBid) {
         const commissionPercent =
           fresh.listingType === "ASSISTED"
             ? settings.commissionPercent + settings.assistedExtraPercent
@@ -285,6 +379,17 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
         priceCents: final.currentPriceCents,
       });
       const lotName = final.pigeon.name;
+
+      // licitatie oprita sub pretul de rezerva: nu s-a vandut, dar merita spus
+      if (final.reserveNotMet) {
+        await notify(
+          final.sellerId,
+          "RESERVE_NOT_MET",
+          { lot: lotName, priceCents: final.currentPriceCents },
+          `/account/lots`
+        );
+      }
+
       if (final.winnerId) {
         await notify(
           final.winnerId,

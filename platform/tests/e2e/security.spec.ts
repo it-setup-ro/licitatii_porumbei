@@ -115,7 +115,12 @@ test.describe("Securitate — abuzuri blocate", () => {
   test("parolele slabe sunt respinse la inregistrare", async ({ page }) => {
     for (const password of ["scurta12", "password", "12345678"]) {
       const res = await page.request.post("/api/auth/register", {
-        data: { email: `weak-${Date.now()}@e2e.test`, password, name: "Test Slab" },
+        data: {
+          email: `weak-${Date.now()}@e2e.test`,
+          password,
+          name: "Test Slab",
+          nickname: `Slab${Date.now() % 1e7}`,
+        },
       });
       expect(res.status(), `parola respinsa: ${password}`).toBe(422);
     }

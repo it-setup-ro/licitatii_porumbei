@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 45 teste unitare + 153 teste end-to-end, toate verzi.
+**Stare: funcțională cap-coadă pentru testare.** 54 teste unitare + 160 teste end-to-end, toate verzi.
 
 ---
 
@@ -22,6 +22,9 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 ### Public
 - **Pagina unui lot, în formatul pipa.be**: serie inel · nume · rând scurt de descriere; galerie foto+video; fișa cu serie/an/sex, reprodus de, oferit de; descrierea lungă; pedigree scanat (poză sau PDF); restul informațiilor sub butonul „Toate detaliile"; ofertele — ultimele 3 și „Vezi toate ofertele"
 - **Modificarea unui lot** de către crescător (`/account/lots` → Editează): tot, până la prima ofertă; după, doar adăugiri — poze, clipuri și o completare datată la descriere. Schimbarea seriei/anului/sexului/prețului pe un lot public îl trimite înapoi la aprobare. Adminul poate corecta orice, cu urmă în audit
+- **Zona de licitație** după brief-ul clientului: „licitație live", preț mare, câți ofertanți și câte oferte, cronometru, stepper − / +, buton pe toată lățimea, preț de rezervă (sumă ascunsă), semne de încredere, bară fixă jos pe telefon
+- **Nickname public** în istoricul ofertelor (numele real nu apare niciodată acolo)
+- **Porumbei asemănători** la finalul paginii lotului
 - **Bară de progres** la încărcarea fișierelor, cu procent și cât s-a trimis din cât
 - **Mărirea pozelor** la clic, inclusiv pedigree-ul (unde scrisul e mărunt)
 - **Fișa detaliată a porumbelului** (ca pe pipa): ochi, specializare, constituție (11 rânduri), aripă și penaj (6 rânduri) — toate opționale, afișate sub „Toate detaliile". Lista e în `src/lib/pigeon-traits.ts`
@@ -66,6 +69,8 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 | 8 | Redis pentru actualizările live | Doar la scalare pe mai multe instanțe | mai târziu |
 | 9 | SMS | Pregătit, dezactivat (decizia D16) | mai târziu |
 | 10 | **Oprește uneltele de test** înainte de public | Setări → 🧪 Unelte de test → oprește „Închide în 1 minut". Butonul dispare din Loturi, iar ruta refuză cererile | Daniel |
+
+**Cerut de client, nefăcut încă:** pagina principală după macheta trimisă (hero, carduri de crescători, banner de concurs, cifre, subsol bogat) — e de câteva ori mai mult decât pagina lotului și merită făcută după ce se validează pagina asta.
 
 **Rămase deschise din `open-questions.md`:** verificare marcă OSIM/EUIPO (există deja BestPigeons.ro), achiziția domeniului, bugetul SMS.
 
@@ -154,5 +159,6 @@ platform/src/
 | 29 aug | Poze reale de porumbei (CC0) și pedigree-uri demonstrative generate pe loturile demo |
 | 29 aug | Navigația din administrare: din 12 pastile pe 5 rânduri → coloană grupată / panou „Secțiuni" |
 | 29 aug | Arătarea parolei, resetare prin link (e-mail sau generat din admin) și schimbarea parolei din cont |
+| 10 sep | Paletă nouă (alb / bleu cer / auriu / bleumarin), zona de licitație refăcută, preț de rezervă, nickname-uri, porumbei similari, bară fixă pe telefon |
 | 10 sep | Bară de progres la încărcare; reparat: suma minimă nu se actualiza pe al doilea ecran |
 | 29 aug | Editarea loturilor de către crescător; clipuri până la 5 min (300 MB, scrise direct pe disc); an+sex în antetul lotului; mărirea pozelor |

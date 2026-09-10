@@ -16,7 +16,7 @@ const PAROLA_NOUA = "AltaParola2026#";
 async function contNou(page: Page) {
   const email = `pass-${Date.now()}-${Math.floor(Math.random() * 1e6)}@e2e.test`;
   const res = await page.request.post("/api/auth/register", {
-    data: { email, password: PAROLA, name: "Test Parola" },
+    data: { email, password: PAROLA, name: "Test Parola", nickname: `TP${Date.now() % 1e7}` },
   });
   expect(res.status()).toBe(200);
   await page.request.post("/api/auth/logout");

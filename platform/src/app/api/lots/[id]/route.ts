@@ -52,6 +52,7 @@ const fullSchema = z.object({
   media: z.array(mediaSchema).max(12).default([]),
   results: z.array(resultSchema).max(30).default([]),
   startPriceCents: z.number().int().positive().max(MAX_MONEY_CENTS),
+  reservePriceCents: z.number().int().positive().max(MAX_MONEY_CENTS).nullable().optional(),
 });
 
 /**
@@ -200,6 +201,10 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
         where: { id },
         data: {
           startPriceCents: d.startPriceCents,
+          reservePriceCents:
+            settings.reservePriceEnabled && d.reservePriceCents && d.reservePriceCents > d.startPriceCents
+              ? d.reservePriceCents
+              : null,
           ...(reapproval
             ? { status: "PENDING_APPROVAL", approvedAt: null, approvedById: null }
             : {}),

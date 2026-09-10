@@ -5,6 +5,7 @@ import {
   changedFields,
   appendNote,
 } from "../../src/lib/lot-editing";
+import { computeBid, reserveState } from "../../src/lib/bidding";
 
 describe("cine poate modifica un lot", () => {
   it("crescătorul schimbă orice cât timp lotul e în așteptare sau respins", () => {
@@ -92,5 +93,92 @@ describe("completarea descrierii", () => {
   it("merge și pe un lot fără descriere", () => {
     expect(appendNote(null, "Prima notă", when)).toBe("— Completare 09.03.2026: Prima notă");
     expect(appendNote("   ", "Prima notă", when)).toBe("— Completare 09.03.2026: Prima notă");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// Pretul de rezerva
+// ─────────────────────────────────────────────────────────────────────────
+
+describe("prețul de rezervă", () => {
+  it("fără rezervă, nu se afișează nimic", () => {
+    expect(reserveState(null, 50_000)).toBe("NONE");
+  });
+
+  it("sub prag: neatins", () => {
+    expect(reserveState(60_000, 45_000)).toBe("NOT_MET");
+  });
+
+  it("exact la prag: atins — pragul se include", () => {
+    expect(reserveState(60_000, 60_000)).toBe("MET");
+  });
+
+  it("peste prag: atins", () => {
+    expect(reserveState(60_000, 72_500)).toBe("MET");
+  });
+
+  it("suma nu iese niciodată din funcție — doar starea", () => {
+    const stare = reserveState(999_999, 1_000);
+    expect(["NONE", "MET", "NOT_MET"]).toContain(stare);
+    expect(JSON.stringify(stare)).not.toContain("999");
+  });
+});
+
+describe("prețul urcă la rezervă când plafonul o acoperă", () => {
+  const tiers = [{ upToCents: null, stepCents: 1_000 }];
+
+  it("prima ofertă cu plafon peste rezervă duce prețul la rezervă", () => {
+    const out = computeBid({
+      bidderId: "a",
+      maxCents: 45_000,
+      startPriceCents: 12_000,
+      currentPriceCents: 12_000,
+      leader: null,
+      tiers,
+      reserveCents: 40_000,
+    });
+    expect(out.accepted).toBe(true);
+    if (out.accepted) expect(out.newPriceCents).toBe(40_000);
+  });
+
+  it("plafon sub rezervă: prețul rămâne unde e, rezerva neatinsă", () => {
+    const out = computeBid({
+      bidderId: "a",
+      maxCents: 30_000,
+      startPriceCents: 12_000,
+      currentPriceCents: 12_000,
+      leader: null,
+      tiers,
+      reserveCents: 40_000,
+    });
+    expect(out.accepted).toBe(true);
+    if (out.accepted) expect(out.newPriceCents).toBe(12_000);
+  });
+
+  it("fără rezervă, nimic nu se schimbă", () => {
+    const out = computeBid({
+      bidderId: "a",
+      maxCents: 45_000,
+      startPriceCents: 12_000,
+      currentPriceCents: 12_000,
+      leader: null,
+      tiers,
+      reserveCents: null,
+    });
+    if (out.accepted) expect(out.newPriceCents).toBe(12_000);
+  });
+
+  it("nu sare peste rezervă mai mult decât trebuie", () => {
+    const out = computeBid({
+      bidderId: "b",
+      maxCents: 100_000,
+      startPriceCents: 12_000,
+      currentPriceCents: 12_000,
+      leader: { bidderId: "a", maxCents: 20_000 },
+      tiers,
+      reserveCents: 40_000,
+    });
+    // ar fi urcat la 21.000 fara rezerva; cu rezerva, exact la 40.000
+    if (out.accepted) expect(out.newPriceCents).toBe(40_000);
   });
 });

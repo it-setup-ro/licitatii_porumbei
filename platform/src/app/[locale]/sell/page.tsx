@@ -32,6 +32,7 @@ export default async function SellPage({ params }: { params: Promise<{ locale: s
           assistedEnabled={settings.assistedListingEnabled}
           durationDays={settings.defaultDurationDays}
           defaultOfferedBy={user!.sellerCompany ?? user!.name}
+          reserveEnabled={settings.reservePriceEnabled}
         />
       )}
     </div>

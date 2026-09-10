@@ -31,6 +31,21 @@ export function minimumAcceptableMax(
   return currentPriceCents + incrementFor(currentPriceCents, tiers);
 }
 
+/**
+ * Starea pretului de rezerva, fara sa divulge suma.
+ *
+ * Cumparatorul afla doar daca s-a atins pragul, nu si care e — altfel suma ar
+ * ancora licitatia: multi nu ar mai licita sub ea, iar altii s-ar opri exact
+ * acolo.
+ */
+export function reserveState(
+  reservePriceCents: number | null,
+  currentPriceCents: number
+): "NONE" | "MET" | "NOT_MET" {
+  if (reservePriceCents === null) return "NONE";
+  return currentPriceCents >= reservePriceCents ? "MET" : "NOT_MET";
+}
+
 export type Leader = { bidderId: string; maxCents: number };
 
 export type BidInput = {
@@ -40,6 +55,8 @@ export type BidInput = {
   currentPriceCents: number;
   leader: Leader | null;
   tiers: IncrementTier[];
+  /** suma sub care vanzatorul nu vinde; null = fara rezerva */
+  reserveCents?: number | null;
 };
 
 export type BidOutcome =
@@ -56,8 +73,28 @@ export type BidOutcome =
       raisedOwnCeiling: boolean;
     };
 
+/**
+ * Cand plafonul liderului acopera pretul de rezerva, pretul vizibil urca direct
+ * la rezerva.
+ *
+ * Fara asta, un singur ofertant cu plafon de 450 pe un lot cu rezerva 400 ar
+ * lasa pretul la 120: platforma i-ar spune „rezerva neatinsa", desi omul e
+ * dispus sa plateasca peste ea, iar la final lotul nu s-ar vinde degeaba.
+ * Asa functioneaza si eBay.
+ */
+function urcaLaRezerva(
+  pret: number,
+  plafonLider: number,
+  reserveCents: number | null | undefined
+): number {
+  if (!reserveCents || pret >= reserveCents) return pret;
+  if (plafonLider < reserveCents) return pret;
+  return reserveCents;
+}
+
 export function computeBid(input: BidInput): BidOutcome {
-  const { bidderId, maxCents, startPriceCents, currentPriceCents, leader, tiers } = input;
+  const { bidderId, maxCents, startPriceCents, currentPriceCents, leader, tiers, reserveCents } =
+    input;
 
   // Liderul curent isi ridica plafonul
   if (leader && leader.bidderId === bidderId) {
@@ -71,7 +108,7 @@ export function computeBid(input: BidInput): BidOutcome {
     return {
       accepted: true,
       newLeader: { bidderId, maxCents },
-      newPriceCents: currentPriceCents,
+      newPriceCents: urcaLaRezerva(currentPriceCents, maxCents, reserveCents),
       outbidBidderId: null,
       callerIsLeading: true,
       raisedOwnCeiling: true,
@@ -88,7 +125,7 @@ export function computeBid(input: BidInput): BidOutcome {
     return {
       accepted: true,
       newLeader: { bidderId, maxCents },
-      newPriceCents: startPriceCents,
+      newPriceCents: urcaLaRezerva(startPriceCents, maxCents, reserveCents),
       outbidBidderId: null,
       callerIsLeading: true,
       raisedOwnCeiling: false,
@@ -104,7 +141,11 @@ export function computeBid(input: BidInput): BidOutcome {
     return {
       accepted: true,
       newLeader: { bidderId, maxCents },
-      newPriceCents: Math.min(maxCents, leader.maxCents + step),
+      newPriceCents: urcaLaRezerva(
+        Math.min(maxCents, leader.maxCents + step),
+        maxCents,
+        reserveCents
+      ),
       outbidBidderId: leader.bidderId,
       callerIsLeading: true,
       raisedOwnCeiling: false,
@@ -116,7 +157,11 @@ export function computeBid(input: BidInput): BidOutcome {
   return {
     accepted: true,
     newLeader: leader,
-    newPriceCents: Math.min(leader.maxCents, maxCents + step),
+    newPriceCents: urcaLaRezerva(
+      Math.min(leader.maxCents, maxCents + step),
+      leader.maxCents,
+      reserveCents
+    ),
     outbidBidderId: bidderId,
     callerIsLeading: false,
     raisedOwnCeiling: false,
