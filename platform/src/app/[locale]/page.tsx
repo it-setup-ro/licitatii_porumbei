@@ -93,7 +93,11 @@ export default async function HomePage({
             <h1 className="font-display mt-4 text-4xl font-bold leading-[1.05] text-white sm:text-6xl">
               {t("heroTitle")}
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">
+            {/* Deviza scrisa de mana, ca in macheta */}
+            <p className="font-script mt-3 text-2xl text-wing-yellow sm:text-3xl" data-testid="hero-motto">
+              {t("motto")}
+            </p>
+            <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/80">
               {t("heroSubtitle")}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">

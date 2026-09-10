@@ -40,6 +40,7 @@
   --color-wing-red: var(--wing-red);
   --font-sans: var(--font-body);
   --font-serif: var(--font-display);
+  --font-script: var(--font-script);
 }
 
 body {
@@ -50,6 +51,11 @@ body {
 
 h1, h2, h3, .font-display {
   font-family: var(--font-display), Georgia, serif;
+}
+
+/* Scrisul de mana, folosit doar la frazele de brand — nu la text curent. */
+.font-script {
+  font-family: var(--font-script), "Segoe Script", cursive;
 }
 
 /* Degrade-ul aripii din logo — folosit ca accent de brand */

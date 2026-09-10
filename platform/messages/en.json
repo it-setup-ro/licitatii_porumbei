@@ -44,7 +44,9 @@
     "moreInfo": "More information",
     "officialTime": "Official platform time (Bucharest)",
     "comingSoon": "coming soon",
-    "allArticles": "All articles"
+    "allArticles": "All articles",
+    "tagline": "More than a website. A community!",
+    "searchPlaceholder": "Search pigeon, ring, breeder…"
   },
   "home": {
     "heroTitle": "Passion brings people together!",
@@ -88,7 +90,8 @@
     "statLive": "Auctions running",
     "statLots": "Pigeons listed",
     "statsTitle": "Platform figures",
-    "statsHint": "Real numbers, read from the database — not estimates."
+    "statsHint": "Real numbers, read from the database — not estimates.",
+    "motto": "Champions fly together!"
   },
   "auction": {
     "statusLive": "Live",
@@ -163,7 +166,8 @@
     "story": "The pigeon's story",
     "similar": "Similar pigeons",
     "similarHint": "From the same breeder or the same line",
-    "mobileBidNow": "Bid"
+    "mobileBidNow": "Bid",
+    "photos": "Photos"
   },
   "pigeon": {
     "ring": "Ring number",
@@ -422,7 +426,13 @@
     "terms": "Terms & conditions",
     "privacy": "Privacy",
     "contact": "Contact",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "about": "Racing pigeon auctions between breeders, with verified pedigrees and specialist transport.",
+    "contactForm": "Send a message",
+    "useful": "Useful links",
+    "breeders": "Breeders",
+    "howItWorks": "How it works",
+    "motto": "Champions fly together!"
   },
   "articles": {
     "title": "Articles",

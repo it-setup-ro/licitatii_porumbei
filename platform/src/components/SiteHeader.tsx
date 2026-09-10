@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import LogoMark from "./LogoMark";
 import AccountMenu from "./AccountMenu";
 
@@ -74,6 +74,7 @@ export default function SiteHeader({
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const navRef = useRef<HTMLUListElement>(null);
+  const router = useRouter();
 
   // închide submeniul deschis la clic în afara navigației
   useEffect(() => {
@@ -153,7 +154,16 @@ export default function SiteHeader({
           </span>
         </Link>
 
-        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+        {/* Cautare — duce in pagina de licitatii, care stie deja `?q=`.
+            Pe telefon sta in panoul de meniu, ca sa nu inghesuim antetul. */}
+        <SearchBox
+          className="ml-auto hidden w-64 lg:block"
+          placeholder={t("searchPlaceholder")}
+          testid="header-search"
+          onSearch={(q) => router.push(`/auctions?q=${encodeURIComponent(q)}`)}
+        />
+
+        <div className="ml-auto flex items-center gap-1.5 lg:ml-3 sm:gap-2">
           {/* Coș */}
           <Link
             href="/cart"
@@ -372,6 +382,16 @@ export default function SiteHeader({
             onClick={() => setMobileOpen(false)}
           >
             <div className="space-y-1">
+              <div className="mb-3" onClick={(e) => e.stopPropagation()}>
+                <SearchBox
+                  placeholder={t("searchPlaceholder")}
+                  testid="m-search"
+                  onSearch={(q) => {
+                    setMobileOpen(false);
+                    router.push(`/auctions?q=${encodeURIComponent(q)}`);
+                  }}
+                />
+              </div>
               {items.map((item) =>
                 item.children ? (
                   <div key={item.testid} data-testid={`m-${item.testid.replace("nav-", "")}-group`}>
@@ -432,6 +452,60 @@ export default function SiteHeader({
         </>
       )}
     </header>
+  );
+}
+
+/** Casetă de căutare: un formular, nu un buton care deschide alt ecran. */
+function SearchBox({
+  placeholder,
+  testid,
+  onSearch,
+  className = "",
+}: {
+  placeholder: string;
+  testid: string;
+  onSearch: (q: string) => void;
+  className?: string;
+}) {
+  return (
+    <form
+      role="search"
+      className={`relative ${className}`}
+      onSubmit={(e) => {
+        e.preventDefault();
+        const q = new FormData(e.currentTarget).get("q");
+        if (typeof q === "string" && q.trim()) onSearch(q.trim());
+      }}
+    >
+      <input
+        name="q"
+        type="search"
+        placeholder={placeholder}
+        aria-label={placeholder}
+        data-testid={testid}
+        className="w-full rounded-full border border-ink/15 bg-white py-2 pl-4 pr-10 text-sm outline-none transition-colors focus:border-wing-blue"
+      />
+      <button
+        type="submit"
+        aria-label={placeholder}
+        data-testid={`${testid}-submit`}
+        className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full p-2 text-ink/50 hover:text-wing-blue"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+      </button>
+    </form>
   );
 }
 

@@ -60,6 +60,13 @@ const SETTING_SCHEMAS: Record<keyof PlatformSettings, z.ZodTypeAny> = {
   siteName: z.string().min(1).max(80),
   blogEnabled: z.boolean(),
   fancyCategoryEnabled: z.boolean(),
+  // Contact & retele (subsol). Sirul gol e permis: inseamna „nu afisa".
+  contactEmail: z.union([z.literal(""), z.string().email().max(120)]),
+  contactPhone: z.string().max(40),
+  contactCity: z.string().max(80),
+  facebookUrl: z.union([z.literal(""), z.string().url().max(200)]),
+  youtubeUrl: z.union([z.literal(""), z.string().url().max(200)]),
+  instagramUrl: z.union([z.literal(""), z.string().url().max(200)]),
   // Experienta
   winAnimationEnabled: z.boolean(),
   winSoundEnabled: z.boolean(),

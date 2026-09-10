@@ -182,17 +182,17 @@ export default async function AuctionDetailPage({
             )}
           </div>
 
-          <LotGallery media={pigeon.media} alt={pigeon.name} videoLabel={t("video")} />
-
-          {/* Pedigree scanat — imediat sub pozele porumbelului */}
-          {pigeon.pedigreeUrl && (
-            <PedigreeScan
-              url={pigeon.pedigreeUrl}
-              title={tp("pedigree")}
-              openLabel={tp("openPedigree")}
-              alt={`${tp("pedigree")} ${pigeon.name}`}
-            />
-          )}
+          <LotGallery
+            media={pigeon.media}
+            alt={pigeon.name}
+            pedigreeUrl={pigeon.pedigreeUrl}
+            labels={{
+              photos: t("photos"),
+              video: t("video"),
+              pedigree: tp("pedigree"),
+              openPedigree: tp("openPedigree"),
+            }}
+          />
         </div>
 
         {/* Coloana dreapta: licitare/cumparare, crescator, favorite */}
@@ -465,57 +465,6 @@ function Fact({ label, value, testid }: { label: string; value: string; testid?:
     <div data-testid={testid}>
       <p className="text-xs uppercase tracking-wide text-ink/50">{label}</p>
       <p className="font-semibold">{value}</p>
-    </div>
-  );
-}
-
-/**
- * Scanul pedigree-ului. Pozele se afiseaza direct; PDF-urile se deschid intr-o
- * fila noua (pe telefon, un PDF incorporat in pagina fie nu se randeaza, fie
- * blocheaza derularea) si se incorporeaza doar pe ecrane mari.
- */
-function PedigreeScan({
-  url,
-  title,
-  openLabel,
-  alt,
-}: {
-  url: string;
-  title: string;
-  openLabel: string;
-  alt: string;
-}) {
-  const isPdf = url.toLowerCase().endsWith(".pdf");
-
-  return (
-    <div data-testid="lot-pedigree">
-      <h2 className="font-display mb-3 text-xl font-bold">{title}</h2>
-      {isPdf ? (
-        <>
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-testid="pedigree-open"
-            className="inline-block rounded-xl border border-ink/20 bg-white px-5 py-3 text-sm font-semibold text-wing-blue hover:border-wing-blue"
-          >
-            📄 {openLabel}
-          </a>
-          {/* iframe, nu object: CSP-ul are object-src 'none' */}
-          <iframe
-            src={url}
-            title={alt}
-            className="mt-3 hidden h-[70vh] w-full rounded-2xl border border-ink/10 sm:block"
-          />
-        </>
-      ) : (
-        <ZoomableImage
-          src={url}
-          alt={alt}
-          testid="pedigree-open"
-          className="w-full rounded-2xl border border-ink/10 bg-white"
-        />
-      )}
     </div>
   );
 }

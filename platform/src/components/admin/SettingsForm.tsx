@@ -93,6 +93,18 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
       ],
     },
     {
+      // Apar in subsolul site-ului. Lasate goale, randurile nu se afiseaza.
+      title: "Contact & rețele",
+      fields: [
+        { key: "contactEmail", label: "E-mail de contact", type: "text" },
+        { key: "contactPhone", label: "Telefon", type: "text" },
+        { key: "contactCity", label: "Localitate", type: "text" },
+        { key: "facebookUrl", label: "Facebook (link complet)", type: "text" },
+        { key: "youtubeUrl", label: "YouTube (link complet)", type: "text" },
+        { key: "instagramUrl", label: "Instagram (link complet)", type: "text" },
+      ],
+    },
+    {
       title: t("groupUx"),
       fields: [
         { key: "winAnimationEnabled", label: "Animația stolului la câștig", type: "boolean" },

@@ -1,25 +1,202 @@
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import LogoMark from "./LogoMark";
 
-export default function SiteFooter({ siteName }: { siteName: string }) {
+/**
+ * Subsolul, după macheta clientului: patru coloane — cine suntem, contact,
+ * linkuri utile, informații — și o bandă de jos cu deviza.
+ *
+ * Datele de contact și rețelele vin din Setări, nu din cod. Cât timp sunt
+ * goale, rândurile lipsesc de tot: mai bine un subsol scurt decât un telefon
+ * inventat pe care sună cineva.
+ */
+
+export type FooterContact = {
+  email: string;
+  phone: string;
+  city: string;
+  facebook: string;
+  youtube: string;
+  instagram: string;
+};
+
+export default function SiteFooter({
+  siteName,
+  contact,
+}: {
+  siteName: string;
+  contact: FooterContact;
+}) {
   const t = useTranslations("footer");
+  const n = useTranslations("nav");
+
+  const social = [
+    { href: contact.facebook, label: "Facebook", icon: <IconFacebook /> },
+    { href: contact.youtube, label: "YouTube", icon: <IconYouTube /> },
+    { href: contact.instagram, label: "Instagram", icon: <IconInstagram /> },
+  ].filter((s) => s.href);
+
   return (
-    <footer className="mt-16 border-t border-ink/10 bg-ink text-ivory">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-10 text-sm md:flex-row md:justify-between">
-        <div className="flex items-center gap-2">
-          <LogoMark size={28} />
-          <span className="font-display font-bold">{siteName}</span>
+    <footer className="mt-16 bg-ink text-ivory" data-testid="site-footer">
+      <div className="wing-gradient h-1 w-full" />
+
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
+        {/* ── Cine suntem ── */}
+        <div>
+          <div className="flex items-center gap-2">
+            <LogoMark size={32} />
+            <span className="font-display text-lg font-bold">{siteName}</span>
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-ivory/70">{t("about")}</p>
+          {social.length > 0 && (
+            <div className="mt-4 flex gap-2" data-testid="footer-social">
+              {social.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  title={s.label}
+                  className="rounded-full bg-white/10 p-2.5 text-ivory transition-colors hover:bg-wing-blue"
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
-        <div className="flex gap-6 text-ivory/70">
-          <span className="hover:text-ivory cursor-pointer">{t("terms")}</span>
-          <span className="hover:text-ivory cursor-pointer">{t("privacy")}</span>
-          <span className="hover:text-ivory cursor-pointer">{t("contact")}</span>
+
+        {/* ── Contact ── */}
+        <div data-testid="footer-contact">
+          <h2 className="font-display text-sm font-bold uppercase tracking-wider text-wing-yellow">
+            {t("contact")}
+          </h2>
+          <ul className="mt-4 space-y-2.5 text-sm text-ivory/70">
+            {contact.email && (
+              <li>
+                <a href={`mailto:${contact.email}`} className="hover:text-ivory">
+                  ✉ {contact.email}
+                </a>
+              </li>
+            )}
+            {contact.phone && (
+              <li>
+                <a href={`tel:${contact.phone.replace(/\s/g, "")}`} className="hover:text-ivory">
+                  ☎ {contact.phone}
+                </a>
+              </li>
+            )}
+            {contact.city && <li>⌂ {contact.city}</li>}
+            <li>
+              <Link href="/contact" data-testid="footer-contact-page" className="hover:text-ivory">
+                {t("contactForm")} →
+              </Link>
+            </li>
+          </ul>
         </div>
-        <div className="text-ivory/50">
-          © {new Date().getFullYear()} {siteName}. {t("rights")}
+
+        {/* ── Linkuri utile ── */}
+        <FooterColumn
+          title={t("useful")}
+          testid="footer-useful"
+          links={[
+            { href: "/auctions", label: n("auctions") },
+            { href: "/fixed-price", label: n("fixedPrice") },
+            { href: "/products", label: n("products") },
+            { href: "/sellers", label: t("breeders") },
+            { href: "/articles", label: n("articles") },
+          ]}
+        />
+
+        {/* ── Informații ── */}
+        <FooterColumn
+          title={n("info")}
+          testid="footer-info"
+          links={[
+            { href: "/how-it-works", label: t("howItWorks") },
+            { href: "/info/regulament", label: n("infoRules") },
+            { href: "/info/info-licitatii", label: n("infoAuctions") },
+            { href: "/info/alte-info", label: n("infoOther") },
+            { href: "/shipping-agents", label: n("shippingAgents") },
+            { href: "/about", label: n("about") },
+          ]}
+        />
+      </div>
+
+      {/* ── Banda de jos ── */}
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-5 text-sm sm:flex-row sm:justify-between">
+          <p className="font-script text-lg text-wing-yellow" data-testid="footer-motto">
+            {t("motto")}
+          </p>
+          <p className="text-ivory/50">
+            © {new Date().getFullYear()} {siteName}. {t("rights")}
+          </p>
         </div>
       </div>
-      <div className="wing-gradient h-1 w-full" />
     </footer>
+  );
+}
+
+function FooterColumn({
+  title,
+  testid,
+  links,
+}: {
+  title: string;
+  testid: string;
+  links: { href: string; label: string }[];
+}) {
+  return (
+    <div data-testid={testid}>
+      <h2 className="font-display text-sm font-bold uppercase tracking-wider text-wing-yellow">
+        {title}
+      </h2>
+      <ul className="mt-4 space-y-2.5 text-sm text-ivory/70">
+        {links.map((l) => (
+          <li key={l.href}>
+            <Link href={l.href} className="hover:text-ivory">
+              {l.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* Pictograme, desenate aici ca sa nu adaugam o librarie pentru sase linii. */
+function IconFacebook() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z" />
+    </svg>
+  );
+}
+
+function IconYouTube() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1c.3-1.3.4-2.5.4-3.8s-.1-2.5-.4-3.8zM10 15V9l5.2 3z" />
+    </svg>
+  );
+}
+
+function IconInstagram() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden="true"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+    </svg>
   );
 }

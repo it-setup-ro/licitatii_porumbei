@@ -81,6 +81,7 @@ test.describe("Mărirea pozelor", () => {
 
   test("pedigree-ul se mărește la fel — acolo scrisul e mărunt", async ({ page }) => {
     await deschideLot(page);
+    await page.getByTestId("gallery-tab-pedigree").click();
     await page.getByTestId("pedigree-open").click();
     await expect(page.getByTestId("lightbox")).toBeVisible();
     await expect(page.getByTestId("lightbox-image")).toHaveAttribute("src", /pedigree/);

@@ -48,8 +48,9 @@ test.describe("Pagini publice & i18n", () => {
     await expect(page.getByTestId("fact-ring")).toContainText("RO 2023 445566");
     // „Reprodus de" e crescatorul de origine — diferit de contul care vinde
     await expect(page.getByTestId("fact-bred-by")).toContainText("Janssen Bros.");
-    // pedigree-ul scanat e vizibil direct; arborele si palmaresul stau sub buton
-    await expect(page.getByTestId("lot-pedigree")).toBeVisible();
+    // pedigree-ul scanat sta intr-o fila a galeriei; arborele si palmaresul, sub buton
+    await page.getByTestId("gallery-tab-pedigree").click();
+    await expect(page.getByTestId("pedigree-open")).toBeVisible();
     await page.locator('[data-testid="lot-more"] summary').click();
     await expect(page.getByTestId("pedigree")).toContainText("Blue Thunder");
     await expect(page.getByTestId("results-table")).toContainText("Satu Mare");

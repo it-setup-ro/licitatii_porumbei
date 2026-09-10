@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Playfair_Display, Inter, Caveat } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -15,6 +15,8 @@ import "../globals.css";
 
 const display = Playfair_Display({ variable: "--font-display", subsets: ["latin"] });
 const body = Inter({ variable: "--font-body", subsets: ["latin"] });
+/** Scrisul de mana din macheta: „Campioni zboara impreuna!", „O comunitate!" */
+const script = Caveat({ variable: "--font-script", subsets: ["latin", "latin-ext"], weight: ["600", "700"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
@@ -67,7 +69,7 @@ export default async function LocaleLayout({
   });
 
   return (
-    <html lang={locale} className={`${display.variable} ${body.variable} h-full antialiased`}>
+    <html lang={locale} className={`${display.variable} ${body.variable} ${script.variable} h-full antialiased`}>
       <body className="min-h-screen flex flex-col">
         <NextIntlClientProvider>
           <TopBar isLoggedIn={user !== null} isAdmin={user?.role === "ADMIN"} />
@@ -89,7 +91,17 @@ export default async function LocaleLayout({
             latestArticles={latestArticles}
           />
           <main className="flex-1">{children}</main>
-          <SiteFooter siteName={settings.siteName} />
+          <SiteFooter
+            siteName={settings.siteName}
+            contact={{
+              email: settings.contactEmail,
+              phone: settings.contactPhone,
+              city: settings.contactCity,
+              facebook: settings.facebookUrl,
+              youtube: settings.youtubeUrl,
+              instagram: settings.instagramUrl,
+            }}
+          />
         </NextIntlClientProvider>
       </body>
     </html>

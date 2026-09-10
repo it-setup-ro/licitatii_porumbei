@@ -47,6 +47,14 @@ export type PlatformSettings = {
   // Continut & brand
   siteName: string;
   blogEnabled: boolean;
+  /* Datele de contact si retelele — apar in subsol. Goale = randul lipseste,
+     ca sa nu scrie nimeni un telefon inventat pe pagina de start. */
+  contactEmail: string;
+  contactPhone: string;
+  contactCity: string;
+  facebookUrl: string;
+  youtubeUrl: string;
+  instagramUrl: string;
   fancyCategoryEnabled: boolean;
   // Experienta
   winAnimationEnabled: boolean;
@@ -103,6 +111,12 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   smsEnabled: false,
   siteName: "No.1 & Best Pigeons",
   blogEnabled: false,
+  contactEmail: "",
+  contactPhone: "",
+  contactCity: "",
+  facebookUrl: "",
+  youtubeUrl: "",
+  instagramUrl: "",
   fancyCategoryEnabled: false,
   winAnimationEnabled: true,
   winSoundEnabled: false,

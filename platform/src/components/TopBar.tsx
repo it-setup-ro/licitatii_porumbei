@@ -20,6 +20,12 @@ export default async function TopBar({
   return (
     <div className="border-b border-ink/10 bg-ink text-ivory" data-testid="top-bar">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-1.5 text-xs">
+        {/* Deviza platformei, ca in macheta. Se ascunde pe telefon: acolo
+            bara are deja ceas, limba si scurtatura de administrare. */}
+        <span className="hidden font-script text-base text-wing-yellow lg:inline" data-testid="top-tagline">
+          {t("tagline")}
+        </span>
+
         <div className="flex items-center gap-3">
           <LanguageSwitcher variant="dark" />
           {!isLoggedIn && (

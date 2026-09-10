@@ -44,7 +44,9 @@
     "moreInfo": "Mai multe informații",
     "officialTime": "Ora oficială a platformei (București)",
     "comingSoon": "în curând",
-    "allArticles": "Toate articolele"
+    "allArticles": "Toate articolele",
+    "tagline": "Mai mult decât un site. O comunitate!",
+    "searchPlaceholder": "Caută porumbel, serie, crescător…"
   },
   "home": {
     "heroTitle": "Pasiunea unește oameni!",
@@ -88,7 +90,8 @@
     "statLive": "Licitații în desfășurare",
     "statLots": "Porumbei listați",
     "statsTitle": "Cifrele platformei",
-    "statsHint": "Numere reale, actualizate din bază — nu estimări."
+    "statsHint": "Numere reale, actualizate din bază — nu estimări.",
+    "motto": "Campioni zboară împreună!"
   },
   "auction": {
     "statusLive": "Live",
@@ -163,7 +166,8 @@
     "story": "Povestea porumbelului",
     "similar": "Porumbei asemănători",
     "similarHint": "De la același crescător sau din aceeași linie",
-    "mobileBidNow": "Licitează"
+    "mobileBidNow": "Licitează",
+    "photos": "Foto"
   },
   "pigeon": {
     "ring": "Serie inel",
@@ -422,7 +426,13 @@
     "terms": "Termeni și condiții",
     "privacy": "Confidențialitate",
     "contact": "Contact",
-    "rights": "Toate drepturile rezervate."
+    "rights": "Toate drepturile rezervate.",
+    "about": "Licitații de porumbei voiajori, între crescători, cu pedigree verificat și transport specializat.",
+    "contactForm": "Trimite un mesaj",
+    "useful": "Link-uri utile",
+    "breeders": "Crescători",
+    "howItWorks": "Cum funcționează",
+    "motto": "Campioni zboară împreună!"
   },
   "articles": {
     "title": "Articole",

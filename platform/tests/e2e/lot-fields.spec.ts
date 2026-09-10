@@ -132,9 +132,14 @@ test.describe("Pedigree incarcat ca PDF", () => {
     await expect(page.getByTestId("lot-tagline")).toContainText("pedigree PDF");
     await expect(page.getByTestId("fact-bred-by")).toContainText("Hetzel Martin");
     await expect(page.getByTestId("fact-offered-by")).toContainText("Asociația de Test");
+    // galeria are cate o fila pentru fiecare fel de continut: poza, clip, pedigree
+    await expect(page.getByTestId("gallery-tab-photo")).toBeVisible();
+    await expect(page.getByTestId("gallery-tab-video")).toBeVisible();
+    await page.getByTestId("gallery-tab-video").click();
+    await expect(page.getByTestId("lot-video")).toBeVisible();
+
+    await page.getByTestId("gallery-tab-pedigree").click();
     await expect(page.getByTestId("pedigree-open")).toHaveAttribute("href", /\.pdf$/);
-    // galeria are si poza, si clipul
-    await expect(page.getByTestId("lot-thumb")).toHaveCount(2);
   });
 
   test("un fisier fals cu extensie .pdf e respins", async ({ page }) => {
@@ -186,21 +191,26 @@ test.describe("Pagina lotului", () => {
     await expect(page.getByTestId("bid-row")).toHaveCount(3);
   });
 
-  test("pedigree-ul vine imediat dupa poze, iar pretul inaintea descrierii", async ({ page }) => {
+  test("pedigree-ul e o filă în galerie, iar pretul e inaintea descrierii", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto("/ro/auctions");
     await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
 
     const galerie = (await page.getByTestId("lot-gallery").boundingBox())!;
-    const pedigree = (await page.getByTestId("lot-pedigree").boundingBox())!;
     const pret = (await page.getByTestId("current-price").boundingBox())!;
     const fisa = (await page.getByTestId("lot-facts").boundingBox())!;
     const descriere = (await page.getByTestId("lot-description").boundingBox())!;
 
-    // pedigree-ul urmeaza direct dupa poze, inaintea oricarui alt bloc
-    expect(pedigree.y).toBeGreaterThan(galerie.y);
-    expect(pedigree.y).toBeLessThan(fisa.y);
+    // pedigree-ul nu mai e o sectiune de derulat pana la ea: sta in acelasi
+    // cadru cu pozele, la un clic pe fila
+    const fila = page.getByTestId("gallery-tab-pedigree");
+    const filaBox = (await fila.boundingBox())!;
+    expect(filaBox.y).toBeGreaterThanOrEqual(galerie.y);
+    expect(filaBox.y).toBeLessThan(fisa.y);
+    await fila.click();
+    await expect(page.getByTestId("pedigree-open")).toBeVisible();
+
     // pretul ramane sus, inaintea descrierii lungi
     expect(pret.y).toBeLessThan(descriere.y);
 
