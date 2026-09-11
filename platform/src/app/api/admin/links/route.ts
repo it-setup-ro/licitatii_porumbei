@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { jsonOk, jsonError, handleApiError } from "@/lib/api";
+import { jsonOk, handleApiError, jsonValidationError } from "@/lib/api";
 
 /**
  * Linkurile externe din submeniul „Concursuri".
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
   try {
     const admin = await requireAdmin();
     const body = schema.safeParse(await req.json());
-    if (!body.success) return jsonError("VALIDATION", 422);
+    if (!body.success) return jsonValidationError(body.error);
     const { id, url, ...rest } = body.data;
     // gol => intrare inactivă, afișată cu „în curând"
     const data = { ...rest, url: url && url.length > 0 ? url : null };

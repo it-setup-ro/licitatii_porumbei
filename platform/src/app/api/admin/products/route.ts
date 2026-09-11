@@ -2,7 +2,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { MAX_MONEY_CENTS, SAFE_IMAGE_URL } from "@/lib/limits";
-import { jsonOk, jsonError, handleApiError } from "@/lib/api";
+import { jsonOk, jsonError, jsonValidationError, handleApiError } from "@/lib/api";
 
 const productSchema = z.object({
   id: z.string().max(40).optional(), // lipsă = produs nou
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
   try {
     const admin = await requireAdmin();
     const body = productSchema.safeParse(await req.json());
-    if (!body.success) return jsonError("VALIDATION", 422, { issues: body.error.issues.length });
+    if (!body.success) return jsonValidationError(body.error);
     const { id, imageUrl, ...rest } = body.data;
     const data = { ...rest, imageUrl: imageUrl || null };
 

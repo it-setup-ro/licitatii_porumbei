@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { jsonOk, jsonError, handleApiError } from "@/lib/api";
+import { jsonOk, jsonError, handleApiError, jsonValidationError } from "@/lib/api";
 
 const schema = z.object({
   slug: z.string().min(1).max(60),
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   try {
     const admin = await requireAdmin();
     const body = schema.safeParse(await req.json());
-    if (!body.success) return jsonError("VALIDATION", 422);
+    if (!body.success) return jsonValidationError(body.error);
     const { slug, ...data } = body.data;
 
     const existing = await prisma.contentPage.findUnique({ where: { slug } });

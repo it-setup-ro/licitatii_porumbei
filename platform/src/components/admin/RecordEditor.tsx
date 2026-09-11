@@ -21,7 +21,26 @@ export type FieldDef = {
   full?: boolean;
   /** marcat cu * si oprit de browser daca ramane gol */
   required?: boolean;
+  /** curata textul in forma de slug chiar in timp ce se scrie */
+  slugify?: boolean;
 };
+
+/**
+ * „Concursul Daniel 2026" -> „concursul-daniel-2026".
+ *
+ * Slug-ul are o regula stricta pe server (doar litere mici, cifre, liniuțe).
+ * In loc sa refuzam dupa salvare, corectam din mers: nimeni nu trebuie sa
+ * stie ce e un slug ca sa poata face un concurs.
+ */
+function toSlug(text: string): string {
+  return text
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "") // scoate diacriticele: ă -> a
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/-{2,}/g, "-")
+    .replace(/^-/, "");
+}
 
 export default function RecordEditor({
   endpoint,
@@ -44,16 +63,26 @@ export default function RecordEditor({
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** camp -> ce e gresit la el, venit de la server */
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const set = (key: string, value: unknown) => {
     setValues((v) => ({ ...v, [key]: value }));
     setSaved(false);
+    // eroarea de pe camp dispare de indata ce omul umbla la el
+    setFieldErrors((e) => {
+      if (!e[key]) return e;
+      const next = { ...e };
+      delete next[key];
+      return next;
+    });
   };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
     setError(null);
+    setFieldErrors({});
 
     // sumele se trimit în cenți; datele ca ISO
     const payload: Record<string, unknown> = { ...values };
@@ -75,19 +104,33 @@ export default function RecordEditor({
       setSaved(true);
       router.refresh();
       if (onSavedRedirect) router.push(onSavedRedirect);
+    } else if (data.fields && typeof data.fields === "object") {
+      // serverul spune exact ce campuri sunt gresite si de ce
+      const errs = data.fields as Record<string, string>;
+      setFieldErrors(errs);
+      const nume = Object.keys(errs)
+        .map((k) => fields.find((f) => f.key === k)?.label ?? k)
+        .join(", ");
+      setError(`Verifică: ${nume}. Explicația e scrisă sub fiecare câmp.`);
+      // ducem omul la primul camp cu problema — formularul e lung
+      const first = Object.keys(errs)[0];
+      document
+        .querySelector(`[data-testid="field-${first}"]`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
     } else {
       setError(
         data.error === "SLUG_TAKEN"
-          ? "Identificatorul (slug) este deja folosit."
-          : data.error === "END_BEFORE_START"
-            ? "Data de final trebuie să fie după cea de început."
-            : "Datele nu sunt valide. Verifică câmpurile."
+          ? "Identificatorul (slug) este deja folosit. Alege altul."
+          : "Datele nu sunt valide. Verifică câmpurile."
       );
     }
   };
 
-  const input =
-    "mt-1 w-full rounded-xl border border-ink/20 bg-ivory-soft px-3 py-2 text-sm outline-none focus:border-wing-blue";
+  const inputBase =
+    "mt-1 w-full rounded-xl border bg-ivory-soft px-3 py-2 text-sm outline-none focus:border-wing-blue";
+  /** campul gresit se vede si fara sa citesti: chenar rosu */
+  const inputFor = (key: string) =>
+    `${inputBase} ${fieldErrors[key] ? "border-wing-red" : "border-ink/20"}`;
 
   return (
     <form onSubmit={submit} className="space-y-4" data-testid="record-editor">
@@ -162,7 +205,7 @@ export default function RecordEditor({
                 required={f.required}
                 value={String(values[f.key] ?? "")}
                 onChange={(e) => set(f.key, e.target.value)}
-                className={input}
+                className={inputFor(f.key)}
               >
                 {f.options!.map((o) => (
                   <option key={o.value} value={o.value}>
@@ -178,7 +221,7 @@ export default function RecordEditor({
                 rows={f.rows ?? 6}
                 value={String(values[f.key] ?? "")}
                 onChange={(e) => set(f.key, e.target.value)}
-                className={input}
+                className={inputFor(f.key)}
               />
             ) : (
               <input
@@ -194,9 +237,17 @@ export default function RecordEditor({
                 }
                 step={f.type === "money" ? "0.01" : undefined}
                 value={String(values[f.key] ?? "")}
-                onChange={(e) => set(f.key, e.target.value)}
-                className={input}
+                onChange={(e) => set(f.key, f.slugify ? toSlug(e.target.value) : e.target.value)}
+                className={inputFor(f.key)}
               />
+            )}
+            {fieldErrors[f.key] && (
+              <p
+                className="mt-1 text-sm font-semibold text-wing-red"
+                data-testid={`field-error-${f.key}`}
+              >
+                {fieldErrors[f.key]}
+              </p>
             )}
             {f.hint && <p className="mt-1 text-xs text-ink/50">{f.hint}</p>}
           </div>

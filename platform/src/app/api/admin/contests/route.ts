@@ -2,7 +2,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { SAFE_IMAGE_URL } from "@/lib/limits";
-import { jsonOk, jsonError, handleApiError } from "@/lib/api";
+import { jsonOk, jsonError, jsonValidationError, handleApiError } from "@/lib/api";
 
 const schema = z.object({
   id: z.string().max(40).optional(),
@@ -10,14 +10,22 @@ const schema = z.object({
     .string()
     .min(2)
     .max(120)
-    .regex(/^[a-z0-9-]+$/),
+    .regex(
+      /^[a-z0-9-]+$/,
+      "Doar litere mici fără diacritice, cifre și liniuțe. Ex.: concursul-daniel-2026"
+    ),
   titleRo: z.string().min(3).max(200),
   titleEn: z.string().min(3).max(200),
   descRo: z.string().max(4000).optional(),
   descEn: z.string().max(4000).optional(),
   rulesRo: z.string().max(20_000).optional(),
   rulesEn: z.string().max(20_000).optional(),
-  coverUrl: z.string().max(300).regex(SAFE_IMAGE_URL).optional().or(z.literal("")),
+  coverUrl: z
+    .string()
+    .max(300)
+    .regex(SAFE_IMAGE_URL, "Alege poza cu butonul de mai jos; o adresă din alt site nu e acceptată.")
+    .optional()
+    .or(z.literal("")),
   startsAt: z.string().datetime(),
   endsAt: z.string().datetime(),
   status: z.enum(["UPCOMING", "ACTIVE", "FINISHED"]),
@@ -27,7 +35,7 @@ const schema = z.object({
   distanceKm: z.number().int().min(0).max(20_000).nullable().optional(),
   countryCode: z
     .string()
-    .regex(/^[A-Za-z]{2}$/)
+    .regex(/^[A-Za-z]{2}$/, "Exact două litere: RO, DE, HU…")
     .optional()
     .or(z.literal("")),
   boardingAt: z.string().datetime().optional().or(z.literal("")),
@@ -41,11 +49,15 @@ export async function POST(req: Request) {
   try {
     const admin = await requireAdmin();
     const body = schema.safeParse(await req.json());
-    if (!body.success) return jsonError("VALIDATION", 422);
+    if (!body.success) return jsonValidationError(body.error);
     const { id, coverUrl, startsAt, endsAt, boardingAt, releaseAt, countryCode, ...rest } =
       body.data;
 
-    if (new Date(endsAt) <= new Date(startsAt)) return jsonError("END_BEFORE_START", 400);
+    if (new Date(endsAt) <= new Date(startsAt)) {
+      return jsonError("VALIDATION", 422, {
+        fields: { endsAt: "Data de sfârșit trebuie să fie după cea de început." },
+      });
+    }
 
     const data = {
       ...rest,

@@ -16,7 +16,8 @@ const FIELDS: FieldDef[] = [
     label: "Identificator URL (slug)",
     type: "text",
     required: true,
-    hint: "Apare în adresă: /contests/nordhausen-2026. Doar litere mici, cifre și liniuțe.",
+    slugify: true,
+    hint: "Apare în adresă: /contests/nordhausen-2026. Se curăță singur în timp ce scrii — majusculele și diacriticele se potrivesc automat.",
   },
   {
     key: "status",

@@ -316,3 +316,53 @@ test.describe("Drumul până la concursuri", () => {
     await page.waitForURL(/\/contests$/);
   });
 });
+
+test.describe("Când ceva e greșit în formular", () => {
+  test("serverul spune care câmp și de ce, nu doar „datele nu sunt valide”", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    const res = await page.request.post("/api/admin/contests", {
+      data: {
+        slug: "Concursul-Daniel-2026", // majuscule: exact greșeala tipică
+        titleRo: "Concursul Daniel",
+        titleEn: "Daniel contest",
+        startsAt: new Date().toISOString(),
+        endsAt: new Date(Date.now() + 86_400_000).toISOString(),
+        status: "ACTIVE",
+        published: false,
+      },
+    });
+    expect(res.status()).toBe(422);
+    const body = await res.json();
+    expect(body.fields.slug, "explicația trebuie să fie la obiect").toContain("litere mici");
+  });
+
+  test("slug-ul se curăță singur în timp ce scrii", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/contests?new=1");
+    await page.getByTestId("field-slug").fill("Concursul Daniel 2026");
+    await expect(page.getByTestId("field-slug")).toHaveValue("concursul-daniel-2026");
+    // și diacriticele
+    await page.getByTestId("field-slug").fill("Cupa de Primăvară");
+    await expect(page.getByTestId("field-slug")).toHaveValue("cupa-de-primavara");
+  });
+
+  test("greșeala apare sub câmpul vinovat, cu chenar roșu", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/contests?new=1");
+
+    await page.getByTestId("field-slug").fill(`test-date-${Date.now()}`);
+    await page.getByTestId("field-titleRo").fill("Cu datele pe dos");
+    await page.getByTestId("field-titleEn").fill("Dates reversed");
+    // sfarsitul inaintea inceputului
+    await page.getByTestId("field-startsAt").fill("2026-10-11T16:53");
+    await page.getByTestId("field-endsAt").fill("2026-09-11T16:53");
+    await page.getByTestId("editor-save").click();
+
+    await expect(page.getByTestId("field-error-endsAt")).toContainText("după cea de început");
+    await expect(page.getByTestId("editor-error")).toContainText("Se încheie la");
+
+    // se repara si eroarea dispare
+    await page.getByTestId("field-endsAt").fill("2026-12-11T16:53");
+    await expect(page.getByTestId("field-error-endsAt")).toHaveCount(0);
+  });
+});

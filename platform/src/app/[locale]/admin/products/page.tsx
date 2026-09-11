@@ -19,6 +19,7 @@ const FIELDS: FieldDef[] = [
     label: "Identificator URL (slug)",
     type: "text",
     required: true,
+    slugify: true,
     hint: "litere mici, cifre, cratime — apare în adresă: /products/sac-transport",
   },
   { key: "category", label: "Categorie", type: "select", required: true, options: CATEGORY_OPTIONS },
