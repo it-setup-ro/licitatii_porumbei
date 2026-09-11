@@ -47,6 +47,11 @@ export default async function SellerProfilePage({
         <h1 className="font-display text-3xl font-bold" data-testid="seller-name">
           {seller.sellerCompany ?? seller.name}
         </h1>
+        {seller.sellerCity && (
+          <p className="mt-1 text-ink/60" data-testid="seller-city">
+            ⌂ {seller.sellerCity}
+          </p>
+        )}
         {stats._count > 0 && (
           <div className="mt-2 flex items-center gap-2">
             <StarRating rating={stats._avg.rating ?? 0} size={20} />

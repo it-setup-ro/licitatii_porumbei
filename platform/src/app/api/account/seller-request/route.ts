@@ -5,6 +5,7 @@ import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 
 const schema = z.object({
   sellerCompany: z.string().min(2).max(200),
+  sellerCity: z.string().max(80).optional(),
   sellerCui: z.string().max(40).optional(),
   sellerIban: z.string().min(10).max(40),
   sellerBio: z.string().max(2000).optional(),

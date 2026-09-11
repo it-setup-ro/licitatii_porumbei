@@ -75,8 +75,8 @@
     "featureProductsSub": "Everything you need",
     "featureCommunity": "A united community",
     "featureCommunitySub": "Passion without borders",
-    "breeders": "Pigeons at auction",
-    "breedersAll": "See all auctions",
+    "breeders": "Breeders with live auctions",
+    "breedersAll": "See all breeders",
     "lotsAtAuction": "{count, plural, one {one pigeon at auction} other {# pigeons at auction}}",
     "seeLots": "See the lots",
     "articles": "Latest articles",
@@ -272,7 +272,11 @@
     "noSales": "No sales yet.",
     "language": "Preferred language",
     "editLot": "Edit",
-    "lotLocked": "This lot is closed — it can no longer be changed."
+    "lotLocked": "This lot is closed — it can no longer be changed.",
+    "sellerCity": "Town / city",
+    "editSellerProfile": "Edit breeder details",
+    "sellerProfileSaved": "Details saved.",
+    "sellerProfileError": "Details could not be saved."
   },
   "notif": {
     "OUTBID": "You have been outbid. Current price: {price}.",
@@ -520,5 +524,11 @@
     "send": "Send message",
     "sent": "Your message has been sent. We will reply as soon as possible.",
     "error": "The message could not be sent. Please try again."
+  },
+  "sellers": {
+    "title": "Breeders",
+    "intro": "The lofts that put pigeons up for auction here. Open one to see its birds, record and reviews.",
+    "empty": "No approved breeder yet.",
+    "noLive": "No live auctions right now"
   }
 }

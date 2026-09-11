@@ -59,6 +59,7 @@ async function main() {
       role: "SELLER",
       sellerStatus: "APPROVED",
       sellerCompany: "Columbodromul Câmpeanu",
+      sellerCity: "Arad",
       sellerCui: "RO12345678",
       sellerIban: "RO49AAAA1B31007593840000",
       sellerBio:
@@ -78,6 +79,7 @@ async function main() {
       role: "SELLER",
       sellerStatus: "PENDING",
       sellerCompany: "Loft Porumbaru",
+      sellerCity: "Oradea",
       sellerIban: "RO12BBBB1B31007593840111",
       locale: "ro",
     },

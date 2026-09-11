@@ -75,8 +75,8 @@
     "featureProductsSub": "Tot ce ai nevoie",
     "featureCommunity": "O comunitate unită",
     "featureCommunitySub": "Pasiune fără granițe",
-    "breeders": "Porumbei în licitație",
-    "breedersAll": "Vezi toate licitațiile",
+    "breeders": "Crescători cu licitații active",
+    "breedersAll": "Vezi toți crescătorii",
     "lotsAtAuction": "{count, plural, one {un porumbel la licitație} few {# porumbei la licitație} other {# de porumbei la licitație}}",
     "seeLots": "Vezi licitațiile",
     "articles": "Ultimele articole",
@@ -272,7 +272,11 @@
     "noSales": "Nicio vânzare încă.",
     "language": "Limba preferată",
     "editLot": "Editează",
-    "lotLocked": "Lotul e închis — nu se mai poate modifica."
+    "lotLocked": "Lotul e închis — nu se mai poate modifica.",
+    "sellerCity": "Localitatea",
+    "editSellerProfile": "Editează datele crescătoriei",
+    "sellerProfileSaved": "Datele au fost salvate.",
+    "sellerProfileError": "Datele nu au putut fi salvate."
   },
   "notif": {
     "OUTBID": "Oferta ta a fost depășită. Prețul curent: {price}.",
@@ -520,5 +524,11 @@
     "send": "Trimite mesajul",
     "sent": "Mesajul a fost trimis. Îți răspundem în cel mai scurt timp.",
     "error": "Mesajul nu a putut fi trimis. Încearcă din nou."
+  },
+  "sellers": {
+    "title": "Crescători",
+    "intro": "Crescătoriile care scot porumbei la licitație pe platformă. Apasă pe una ca să-i vezi păsările, palmaresul și recenziile.",
+    "empty": "Deocamdată nu este niciun crescător aprobat.",
+    "noLive": "Fără licitații active acum"
   }
 }

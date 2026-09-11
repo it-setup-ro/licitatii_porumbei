@@ -54,16 +54,47 @@ export default async function HomePage({
     })(),
   ]);
 
-  const breeders = await prisma.user.findMany({
-    where: { id: { in: breederRows.map((r) => r.sellerId) } },
-    select: { id: true, name: true, sellerCompany: true },
+  const breederIds = breederRows.map((r) => r.sellerId);
+  const [breeders, breederLots] = await Promise.all([
+    prisma.user.findMany({
+      where: { id: { in: breederIds } },
+      select: { id: true, name: true, sellerCompany: true, sellerCity: true },
+    }),
+    // Poza de pe card e chiar poza unui lot de-al lui, aflat acum in licitatie.
+    // Asa nu punem pe prima pagina fotografii de crescatorii care nu exista.
+    prisma.auction.findMany({
+      where: { sellerId: { in: breederIds }, status: "LIVE" },
+      orderBy: { createdAt: "desc" },
+      select: {
+        sellerId: true,
+        pigeon: { select: { name: true, media: { where: { type: "IMAGE" }, take: 1 } } },
+      },
+    }),
+  ]);
+
+  type BreederCard = {
+    id: string;
+    name: string;
+    city: string | null;
+    photo: string | null;
+    photoAlt: string;
+    count: number;
+  };
+  const breederCards: BreederCard[] = breederRows.flatMap((r) => {
+    const u = breeders.find((b) => b.id === r.sellerId);
+    if (!u) return [];
+    const lot = breederLots.find((a) => a.sellerId === r.sellerId && a.pigeon.media.length > 0);
+    return [
+      {
+        id: u.id,
+        name: u.sellerCompany ?? u.name,
+        city: u.sellerCity,
+        photo: lot?.pigeon.media[0]?.url ?? null,
+        photoAlt: lot?.pigeon.name ?? "",
+        count: r._count._all,
+      },
+    ];
   });
-  const breederCards = breederRows
-    .map((r) => {
-      const u = breeders.find((b) => b.id === r.sellerId);
-      return u ? { id: u.id, name: u.sellerCompany ?? u.name, count: r._count._all } : null;
-    })
-    .filter((x): x is { id: string; name: string; count: number } => x !== null);
 
   const dateFmt = new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
     dateStyle: "medium",
@@ -73,15 +104,19 @@ export default async function HomePage({
     <div>
       {/* ───────────────── Hero ───────────────── */}
       <section className="relative isolate overflow-hidden" data-testid="hero">
-        {/* Fotografia de fundal e una dintre pozele platformei (CC0), estompata
-            sub un voal bleumarin: textul trebuie sa ramana lizibil pe orice ecran. */}
+        {/* Stol pe cer senin (CC0, vezi public/pigeons/SURSE.md). Pasarile stau
+            in dreapta, iar stanga e cer gol — exact unde cade textul. De aceea
+            voalul bleumarin e apasat doar in stanga si se stinge spre dreapta:
+            albastrul din poza e chiar culoarea din paleta noua, ar fi pacat
+            sa-l acoperim. Pe telefon textul trece peste tot cadrul, deci acolo
+            voalul e uniform. */}
         <div
           className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{ backgroundImage: "url(/pigeons/voiajor-vanat-bara.jpg)" }}
+          style={{ backgroundImage: "url(/pigeons/hero-stol.jpg)" }}
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/90 to-ink/60"
+          className="absolute inset-0 -z-10 bg-ink/70 lg:bg-gradient-to-r lg:from-ink lg:via-ink/80 lg:to-transparent"
           aria-hidden="true"
         />
 
@@ -162,7 +197,7 @@ export default async function HomePage({
             <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
               <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("breeders")}</h2>
               <Link
-                href="/auctions"
+                href="/sellers"
                 className="font-semibold text-wing-blue hover:underline"
                 data-testid="breeders-all"
               >
@@ -175,15 +210,33 @@ export default async function HomePage({
                   key={b.id}
                   href={`/sellers/${b.id}`}
                   data-testid="breeder-card"
-                  className="card-hover rounded-2xl border border-ink/10 bg-white p-5"
+                  className="card-hover overflow-hidden rounded-2xl border border-ink/10 bg-white"
                 >
-                  <p className="font-display text-lg font-bold leading-snug">{b.name}</p>
-                  <p className="mt-1 text-sm text-ink/60">
-                    {t("lotsAtAuction", { count: b.count })}
-                  </p>
-                  <span className="mt-4 inline-block rounded-xl border border-ink/15 px-4 py-2 text-sm font-semibold text-wing-blue">
-                    {t("seeLots")} →
-                  </span>
+                  {b.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={b.photo}
+                      alt={b.photoAlt}
+                      data-testid="breeder-photo"
+                      className="aspect-[4/3] w-full object-cover"
+                    />
+                  ) : (
+                    <div className="wing-gradient aspect-[4/3] w-full opacity-70" aria-hidden="true" />
+                  )}
+                  <div className="p-5">
+                    <p className="font-display text-lg font-bold leading-snug">{b.name}</p>
+                    {b.city && (
+                      <p className="mt-1 text-sm text-ink/60" data-testid="breeder-city">
+                        ⌂ {b.city}
+                      </p>
+                    )}
+                    <p className="mt-1 text-sm font-semibold text-wing-blue">
+                      {t("lotsAtAuction", { count: b.count })}
+                    </p>
+                    <span className="mt-4 inline-block rounded-xl border border-ink/15 px-4 py-2 text-sm font-semibold text-wing-blue">
+                      {t("seeLots")} →
+                    </span>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -212,7 +265,19 @@ export default async function HomePage({
 
       {/* ───────────── Concursul apropiat ───────────── */}
       {contest && (
-        <section className="bg-ink text-white" data-testid="contest-banner">
+        <section className="relative isolate overflow-hidden bg-ink text-white" data-testid="contest-banner">
+          {/* Banda cu stol (CC0). Poza sta in spate, foarte estompata: banda e
+              despre concurs, nu despre fotografie — dar scoate blocul plat din
+              mijlocul paginii. */}
+          <div
+            className="absolute inset-0 -z-10 bg-cover bg-center opacity-25"
+            style={{ backgroundImage: "url(/pigeons/banda-stol.jpg)" }}
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-ink/40"
+            aria-hidden="true"
+          />
           <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-6 px-4 py-8">
             <span className="text-5xl" aria-hidden="true">
               🏆

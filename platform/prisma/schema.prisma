@@ -25,6 +25,8 @@ model User {
   role             String    @default("BUYER") // BUYER | SELLER | ADMIN
   sellerStatus     String? // PENDING | APPROVED | REJECTED
   sellerCompany    String?
+  /// Localitatea crescatoriei. Apare pe cardul de pe prima pagina si pe profil.
+  sellerCity       String?
   sellerCui        String?
   sellerIban       String?
   sellerBio        String?

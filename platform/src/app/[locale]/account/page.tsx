@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import SellerRequestForm from "@/components/SellerRequestForm";
+import SellerProfileForm from "@/components/SellerProfileForm";
 import AccountNav from "@/components/AccountNav";
 import ChangePasswordForm from "@/components/ChangePasswordForm";
 
@@ -49,7 +50,16 @@ export default async function AccountPage({
               {t("adminCanSell")}
             </p>
           ) : user!.sellerStatus === "APPROVED" ? (
-            <p className="font-semibold text-green-700">✓ {t("sellerApproved")}</p>
+            <>
+              <p className="font-semibold text-green-700">✓ {t("sellerApproved")}</p>
+              <SellerProfileForm
+                initial={{
+                  sellerCompany: user!.sellerCompany ?? "",
+                  sellerCity: user!.sellerCity ?? "",
+                  sellerBio: user!.sellerBio ?? "",
+                }}
+              />
+            </>
           ) : user!.sellerStatus === "PENDING" ? (
             <p className="font-semibold text-wing-orange" data-testid="seller-pending">
               ⏳ {t("sellerPending")}

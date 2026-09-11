@@ -9,6 +9,7 @@ export default function SellerRequestForm() {
   const router = useRouter();
   const [form, setForm] = useState({
     sellerCompany: "",
+    sellerCity: "",
     sellerCui: "",
     sellerIban: "",
     sellerBio: "",
@@ -41,6 +42,16 @@ export default function SellerRequestForm() {
           data-testid="sr-company"
           value={form.sellerCompany}
           onChange={(e) => setForm((f) => ({ ...f, sellerCompany: e.target.value }))}
+          className="mt-1 w-full rounded-xl border border-ink/20 bg-ivory-soft px-4 py-2.5 outline-none focus:border-wing-blue"
+        />
+      </label>
+      <label className="block text-sm">
+        {/* Localitatea apare pe cardul de crescator de pe prima pagina */}
+        <span className="font-medium">{t("sellerCity")}</span>
+        <input
+          data-testid="sr-city"
+          value={form.sellerCity}
+          onChange={(e) => setForm((f) => ({ ...f, sellerCity: e.target.value }))}
           className="mt-1 w-full rounded-xl border border-ink/20 bg-ivory-soft px-4 py-2.5 outline-none focus:border-wing-blue"
         />
       </label>

@@ -72,3 +72,59 @@ test.describe("Subsolul", () => {
     await expect(contact.getByTestId("footer-contact-page")).toBeVisible();
   });
 });
+
+test.describe("Crescătorii", () => {
+  test("pagina de crescători arată cardurile cu poză și localitate", async ({ page }) => {
+    await page.goto("/ro/sellers");
+    await expect(page.getByTestId("sellers-title")).toContainText("Crescători");
+    const card = page.getByTestId("seller-card").filter({ hasText: "Columbodromul Câmpeanu" });
+    await expect(card).toBeVisible();
+    await expect(card.getByTestId("seller-card-city")).toContainText("Arad");
+    // poza vine de la un lot al lui, nu de la o crescatorie inventata
+    await expect(card.locator("img")).toBeVisible();
+
+    await card.click();
+    await page.waitForURL(/\/sellers\/[a-z0-9]+$/);
+    await expect(page.getByTestId("seller-name")).toContainText("Columbodromul Câmpeanu");
+    await expect(page.getByTestId("seller-city")).toContainText("Arad");
+  });
+
+  test("linkul „Crescători” din subsol chiar duce acolo", async ({ page }) => {
+    await page.goto("/ro");
+    await page.getByTestId("footer-useful").getByText("Crescători").click();
+    await page.waitForURL(/\/sellers$/);
+    await expect(page.getByTestId("sellers-title")).toBeVisible();
+  });
+
+  test("cardul de pe prima pagină are poză, localitate și numărul de loturi", async ({ page }) => {
+    await page.goto("/ro");
+    const card = page.getByTestId("breeder-card").first();
+    await expect(card).toBeVisible();
+    await expect(card.getByTestId("breeder-photo")).toBeVisible();
+    await expect(card).toContainText("la licitație");
+  });
+
+  test("crescătorul își poate corecta datele, dar nu IBAN-ul", async ({ page }) => {
+    await login(page, "seller@nbp.test", "seller1234");
+    await page.goto("/ro/account");
+    await page.getByTestId("sp-open").click();
+    await page.getByTestId("sp-city").fill("Arad");
+    await expect(page.getByTestId("sp-form")).not.toContainText("IBAN");
+    await page.getByTestId("sp-save").click();
+    await expect(page.getByTestId("sp-done")).toBeVisible();
+
+    // se si vede unde trebuie
+    await page.goto("/ro/sellers");
+    await expect(
+      page.getByTestId("seller-card").filter({ hasText: "Columbodromul Câmpeanu" })
+    ).toContainText("Arad");
+  });
+
+  test("un cumpărător nu poate schimba datele altui crescător", async ({ page }) => {
+    await login(page, "buyer1@nbp.test", "buyer1234");
+    const res = await page.request.post("/api/account/seller-profile", {
+      data: { sellerCompany: "Preluare ostilă", sellerCity: "X", sellerBio: "" },
+    });
+    expect(res.status()).toBe(403);
+  });
+});
