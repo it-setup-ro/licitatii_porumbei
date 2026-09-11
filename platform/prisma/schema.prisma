@@ -390,6 +390,23 @@ model Contest {
   status      String    @default("UPCOMING") // UPCOMING | ACTIVE | FINISHED
   published   Boolean   @default(false)
 
+  /// Datele de pe banda de pe prima pagina, in forma ceruta de client:
+  /// destinatia scrisa mare, distanta, steagul tarii, imbarcarea si lansarea.
+  /// Toate optionale — o banda arata doar rubricile completate.
+  destination     String?
+  distanceKm      Int?
+  /// Cod ISO de doua litere (DE, RO). Steagul se compune din el la afisare,
+  /// ca sa nu tinem emoji in baza.
+  countryCode     String?
+  boardingAt      DateTime?
+  boardingPlace   String?
+  releaseAt       DateTime?
+  /// Link catre o sursa de vreme pentru traseu (ex. windy.com). Fara el,
+  /// rubrica „Meteo pe traseu" nu apare — nu promitem ce n-avem.
+  weatherUrl      String?
+  sloganRo        String?
+  sloganEn        String?
+
   auctions Auction[]
 
   createdAt DateTime @default(now())
@@ -449,4 +466,22 @@ model ArticleMedia {
   sortIdx   Int     @default(0)
 
   @@index([articleId, sortIdx])
+}
+
+/// Abonat la newsletter.
+///
+/// GDPR: nu tinem doar adresa, ci si dovada consimtamantului — cand a bifat si
+/// ce scria in caseta bifata. Fara textul exact, „a fost de acord" nu se poate
+/// demonstra daca formularul se schimba intre timp.
+model NewsletterSubscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  locale         String    @default("ro")
+  consentAt      DateTime  @default(now())
+  consentText    String
+  /// Ajunge in linkul de dezabonare din fiecare e-mail. Aleator, nu ghicibil:
+  /// altfel oricine ar putea dezabona pe oricine cunoscandu-i adresa.
+  unsubToken     String    @unique
+  unsubscribedAt DateTime?
+  createdAt      DateTime  @default(now())
 }

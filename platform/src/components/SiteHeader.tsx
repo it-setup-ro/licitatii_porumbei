@@ -124,6 +124,19 @@ export default function SiteHeader({
       wide: true,
     },
     {
+      // „Comunitate" din macheta clientului. Nu duce nicaieri nou: aduna la un
+      // loc paginile despre oameni — articolele, crescatorii, despre noi.
+      href: "/sellers",
+      label: t("community"),
+      testid: "nav-community",
+      children: [
+        { href: "/articles", label: t("articles"), testid: "nav-community-articles" },
+        { href: "/sellers", label: t("breeders"), testid: "nav-community-breeders" },
+        { href: "/about", label: t("about"), testid: "nav-community-about" },
+      ],
+      submenuTestid: "community-submenu",
+    },
+    {
       href: "/info/regulament",
       label: t("info"),
       testid: "nav-info",
@@ -294,7 +307,7 @@ export default function SiteHeader({
                   onClick={() => setOpenMenu((v) => (v === item.testid ? null : item.testid))}
                   data-testid={item.testid}
                   aria-expanded={openMenu === item.testid}
-                  className="flex items-center gap-1 px-3 py-2.5 transition-colors hover:text-wing-orange"
+                  className="flex items-center gap-1 whitespace-nowrap px-2.5 py-2.5 transition-colors hover:text-wing-orange"
                 >
                   {item.label}
                   <Chevron open={openMenu === item.testid} />
@@ -336,7 +349,7 @@ export default function SiteHeader({
                 <Link
                   href={item.href}
                   data-testid={item.testid}
-                  className="block px-3 py-2.5 transition-colors hover:text-wing-orange"
+                  className="block whitespace-nowrap px-2.5 py-2.5 transition-colors hover:text-wing-orange"
                 >
                   {item.label}
                 </Link>

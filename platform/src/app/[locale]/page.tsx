@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/db";
 import { getAuctionsByStatus } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
+import ContestBanner from "@/components/ContestBanner";
 
 export const dynamic = "force-dynamic";
 
@@ -104,19 +105,17 @@ export default async function HomePage({
     <div>
       {/* ───────────────── Hero ───────────────── */}
       <section className="relative isolate overflow-hidden" data-testid="hero">
-        {/* Stol pe cer senin (CC0, vezi public/pigeons/SURSE.md). Pasarile stau
-            in dreapta, iar stanga e cer gol — exact unde cade textul. De aceea
-            voalul bleumarin e apasat doar in stanga si se stinge spre dreapta:
-            albastrul din poza e chiar culoarea din paleta noua, ar fi pacat
-            sa-l acoperim. Pe telefon textul trece peste tot cadrul, deci acolo
-            voalul e uniform. */}
+        {/* Fotografia trimisa de client (pics/hero_no1pigeon.png). Pasarea e in
+            dreapta, iar stanga e vale si cer — exact unde cade textul. De aceea
+            voalul bleumarin e apasat doar in stanga si se stinge spre dreapta.
+            Pe telefon textul trece peste tot cadrul, deci acolo voalul e uniform. */}
         <div
           className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{ backgroundImage: "url(/pigeons/hero-stol.jpg)" }}
+          style={{ backgroundImage: "url(/pigeons/hero-client.jpg)" }}
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 -z-10 bg-ink/70 lg:bg-gradient-to-r lg:from-ink lg:via-ink/80 lg:to-transparent"
+          className="absolute inset-0 -z-10 bg-ink/65 lg:bg-gradient-to-r lg:from-ink lg:via-ink/65 lg:to-transparent"
           aria-hidden="true"
         />
 
@@ -265,44 +264,33 @@ export default async function HomePage({
 
       {/* ───────────── Concursul apropiat ───────────── */}
       {contest && (
-        <section className="relative isolate overflow-hidden bg-ink text-white" data-testid="contest-banner">
-          {/* Banda cu stol (CC0). Poza sta in spate, foarte estompata: banda e
-              despre concurs, nu despre fotografie — dar scoate blocul plat din
-              mijlocul paginii. */}
-          <div
-            className="absolute inset-0 -z-10 bg-cover bg-center opacity-25"
-            style={{ backgroundImage: "url(/pigeons/banda-stol.jpg)" }}
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-ink/40"
-            aria-hidden="true"
-          />
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-6 px-4 py-8">
-            <span className="text-5xl" aria-hidden="true">
-              🏆
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-wing-yellow">
-                {currentLocale === "en" ? "Contest" : "Concurs"}
-              </p>
-              <h2 className="font-display text-2xl font-bold sm:text-3xl">
-                {currentLocale === "en" ? contest.titleEn : contest.titleRo}
-              </h2>
-              <p className="mt-1 text-sm text-white/70">
-                {t("contestFrom")} {dateFmt.format(contest.startsAt)} · {t("contestTo")}{" "}
-                {dateFmt.format(contest.endsAt)}
-              </p>
-            </div>
-            <Link
-              href={`/contests/${contest.slug}`}
-              data-testid="contest-cta"
-              className="rounded-full bg-wing-orange px-6 py-3 font-bold text-white hover:bg-wing-red"
-            >
-              {t("contestPage")} →
-            </Link>
-          </div>
-        </section>
+        <ContestBanner
+          locale={currentLocale}
+          contest={{
+            slug: contest.slug,
+            title: currentLocale === "en" ? contest.titleEn : contest.titleRo,
+            destination: contest.destination,
+            distanceKm: contest.distanceKm,
+            countryCode: contest.countryCode,
+            boardingAt: contest.boardingAt,
+            boardingPlace: contest.boardingPlace,
+            releaseAt: contest.releaseAt,
+            weatherUrl: contest.weatherUrl,
+            slogan: currentLocale === "en" ? contest.sloganEn : contest.sloganRo,
+            status: contest.status,
+          }}
+          labels={{
+            boarding: t("boarding"),
+            release: t("release"),
+            weather: t("weather"),
+            weatherSub: t("weatherSub"),
+            firstHome: t("firstHome"),
+            soon: t("soon"),
+            results: t("contestPage"),
+            cta: t("contestPage"),
+            at: t("atHour"),
+          }}
+        />
       )}
 
       <div className="mx-auto max-w-6xl space-y-16 px-4 py-14">

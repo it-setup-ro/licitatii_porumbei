@@ -29,7 +29,7 @@
     "menu": "Menu",
     "home": "Home",
     "articles": "Articles",
-    "contests": "Championship Contests",
+    "contests": "Races & Results",
     "info": "Information",
     "infoRules": "Rules",
     "infoAuctions": "Auction information",
@@ -46,7 +46,9 @@
     "comingSoon": "coming soon",
     "allArticles": "All articles",
     "tagline": "More than a website. A community!",
-    "searchPlaceholder": "Search pigeon, ring, breeder…"
+    "searchPlaceholder": "Search pigeon, ring, breeder…",
+    "community": "Community",
+    "breeders": "Breeders"
   },
   "home": {
     "heroTitle": "Passion brings people together!",
@@ -91,7 +93,14 @@
     "statLots": "Pigeons listed",
     "statsTitle": "Platform figures",
     "statsHint": "Real numbers, read from the database — not estimates.",
-    "motto": "Champions fly together!"
+    "motto": "Champions fly together!",
+    "boarding": "Loading",
+    "release": "Release",
+    "weather": "Weather en route",
+    "weatherSub": "Check conditions",
+    "firstHome": "First home",
+    "soon": "Soon",
+    "atHour": "At"
   },
   "auction": {
     "statusLive": "Live",
@@ -436,7 +445,20 @@
     "useful": "Useful links",
     "breeders": "Breeders",
     "howItWorks": "How it works",
-    "motto": "Champions fly together!"
+    "motto": "Champions fly together!",
+    "newsletterTitle": "News by email",
+    "newsletterIntro": "Auctions starting, new pigeons listed and race results — one short message, when there is something to say.",
+    "newsletterPlaceholder": "your email address",
+    "newsletterCta": "Subscribe",
+    "newsletterConsent": "I agree to receive email updates about auctions and pigeons. I can unsubscribe at any time using the link in every message.",
+    "newsletterDone": "Done. You are on the list — and you can unsubscribe at any time, from a link in every message.",
+    "newsletterError": "We could not save your address. Please try again.",
+    "newsletterTooMany": "Too many attempts from this connection. Please try later.",
+    "unsubTitle": "Unsubscribe from news",
+    "unsubIntro": "Press the button and you will not receive any more email from us.",
+    "unsubButton": "Unsubscribe",
+    "unsubDone": "You are off the list. No more email from us.",
+    "unsubBad": "This link is no longer valid. Perhaps you already used it."
   },
   "articles": {
     "title": "Articles",

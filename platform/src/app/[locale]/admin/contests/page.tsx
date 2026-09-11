@@ -31,6 +31,15 @@ const FIELDS: FieldDef[] = [
   { key: "rulesRo", label: "Regulament (RO)", type: "textarea", rows: 8 },
   { key: "rulesEn", label: "Regulament (EN)", type: "textarea", rows: 8 },
   { key: "coverUrl", label: "Imagine copertă", type: "text" },
+  // rubricile benzii de pe prima pagina
+  { key: "destination", label: "Destinația (scrisă mare pe bandă)", type: "text" },
+  { key: "distanceKm", label: "Distanța (km)", type: "number" },
+  { key: "countryCode", label: "Țara destinație (cod: DE, RO, HU…)", type: "text" },
+  { key: "boardingAt", label: "Îmbarcare — data și ora", type: "datetime" },
+  { key: "boardingPlace", label: "Îmbarcare — locul", type: "text" },
+  { key: "releaseAt", label: "Lansare — data și ora", type: "datetime" },
+  { key: "sloganRo", label: "Slogan bandă (RO)", type: "text" },
+  { key: "sloganEn", label: "Slogan bandă (EN)", type: "text" },
   { key: "published", label: "Publicat", type: "boolean" },
 ];
 
@@ -66,6 +75,14 @@ export default async function AdminContestsPage({
         rulesRo: editing.rulesRo ?? "",
         rulesEn: editing.rulesEn ?? "",
         coverUrl: editing.coverUrl ?? "",
+        destination: editing.destination ?? "",
+        distanceKm: editing.distanceKm ?? "",
+        countryCode: editing.countryCode ?? "",
+        boardingAt: editing.boardingAt ? toLocalInput(editing.boardingAt) : "",
+        boardingPlace: editing.boardingPlace ?? "",
+        releaseAt: editing.releaseAt ? toLocalInput(editing.releaseAt) : "",
+        sloganRo: editing.sloganRo ?? "",
+        sloganEn: editing.sloganEn ?? "",
         published: editing.published,
       }
     : {
@@ -80,6 +97,14 @@ export default async function AdminContestsPage({
         rulesRo: "",
         rulesEn: "",
         coverUrl: "",
+        destination: "",
+        distanceKm: "",
+        countryCode: "",
+        boardingAt: "",
+        boardingPlace: "",
+        releaseAt: "",
+        sloganRo: "",
+        sloganEn: "",
         published: false,
       };
 

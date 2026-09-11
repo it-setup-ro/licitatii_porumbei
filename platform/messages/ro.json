@@ -29,7 +29,7 @@
     "menu": "Meniu",
     "home": "Acasă",
     "articles": "Articole",
-    "contests": "Concursuri Campionat",
+    "contests": "Curse & Rezultate",
     "info": "Informații",
     "infoRules": "Regulament",
     "infoAuctions": "Informații licitații",
@@ -46,7 +46,9 @@
     "comingSoon": "în curând",
     "allArticles": "Toate articolele",
     "tagline": "Mai mult decât un site. O comunitate!",
-    "searchPlaceholder": "Caută porumbel, serie, crescător…"
+    "searchPlaceholder": "Caută porumbel, serie, crescător…",
+    "community": "Comunitate",
+    "breeders": "Crescători"
   },
   "home": {
     "heroTitle": "Pasiunea unește oameni!",
@@ -91,7 +93,14 @@
     "statLots": "Porumbei listați",
     "statsTitle": "Cifrele platformei",
     "statsHint": "Numere reale, actualizate din bază — nu estimări.",
-    "motto": "Campioni zboară împreună!"
+    "motto": "Campioni zboară împreună!",
+    "boarding": "Îmbarcare",
+    "release": "Lansare",
+    "weather": "Meteo pe traseu",
+    "weatherSub": "Urmărește condițiile",
+    "firstHome": "Primul sosit",
+    "soon": "În curând",
+    "atHour": "Ora:"
   },
   "auction": {
     "statusLive": "Live",
@@ -436,7 +445,20 @@
     "useful": "Link-uri utile",
     "breeders": "Crescători",
     "howItWorks": "Cum funcționează",
-    "motto": "Campioni zboară împreună!"
+    "motto": "Campioni zboară împreună!",
+    "newsletterTitle": "Noutăți pe e-mail",
+    "newsletterIntro": "Licitațiile care încep, porumbeii nou intrați și rezultatele curselor — un mesaj scurt, când e ceva de spus.",
+    "newsletterPlaceholder": "adresa ta de e-mail",
+    "newsletterCta": "Abonează-mă",
+    "newsletterConsent": "Sunt de acord să primesc pe e-mail noutăți despre licitații și porumbei. Mă pot dezabona oricând, dintr-un link aflat în fiecare mesaj.",
+    "newsletterDone": "Gata. Ești pe listă — și te poți dezabona oricând, dintr-un link aflat în fiecare mesaj.",
+    "newsletterError": "Nu am putut salva adresa. Mai încearcă o dată.",
+    "newsletterTooMany": "Prea multe încercări de pe aceeași conexiune. Încearcă mai târziu.",
+    "unsubTitle": "Dezabonare de la noutăți",
+    "unsubIntro": "Apasă butonul și nu mai primești niciun e-mail de la noi.",
+    "unsubButton": "Dezabonează-mă",
+    "unsubDone": "Te-am scos de pe listă. Nu mai primești e-mailuri de la noi.",
+    "unsubBad": "Linkul nu mai este valabil. Poate ai apăsat deja o dată."
   },
   "articles": {
     "title": "Articole",

@@ -24,19 +24,19 @@ Sunt porumbei reali, dar **nu sunt porumbeii din loturile demo** — datele lotu
 (nume, inel, palmares) sunt inventate. Înainte de lansare se înlocuiesc cu
 pozele reale ale păsărilor scoase la licitație.
 
-## Poze de fundal (`hero-stol.jpg`, `banda-stol.jpg`)
+## Poze de fundal (`hero-client.jpg`, `banda-cetate.jpg`)
 
-Stoluri de porumbei pe cer senin, fotografiate de Sonia Sevilla, publicate pe
-Wikimedia Commons sub **CC0 1.0** (fara obligatie de atribuire).
+Venite de la client, pe chat. Originalele sunt in `pics/`, la radacina
+proiectului; aici stau variantele optimizate pentru web.
 
-| Fisier | Original pe Wikimedia Commons | Decupaj |
+| Fisier | Original | Ce e |
 |---|---|---|
-| `hero-stol.jpg` | Pigeon racing - afternoon - Nishapur 11.JPG | 2200x1000, stolul ramane in dreapta, cerul liber in stanga pentru text |
-| `banda-stol.jpg` | Pigeon racing - afternoon - Nishapur 09.JPG | 2200x700 |
+| `hero-client.jpg` | `pics/hero_no1pigeon.png` | fundalul din capul paginii principale (2172x724, JPEG 80) |
+| `banda-cetate.jpg` | `pics/concurs_banner_complet.png` | decupaj din banda desenata de client — cetatea si porumbeii, fara butonul desenat in poza; sta in dreapta benzii de concurs |
 
-Sunt poze reale, dar nu de la o cursa de-a noastra. Cand avem fotografii
-proprii (lansare, columbodrom, crescatorie), se inlocuiesc — asta e tot ce
-trebuie schimbat, numele fisierelor raman.
+Banda de concurs nu e pusa ca poza, ci refacuta in cod: textele se traduc, iar
+datele (destinatie, distanta, imbarcare, lansare) vin din Administrare →
+Concursuri. Altfel, la fiecare concurs nou ar trebui desenata alta poza.
 
 ## Pedigree-uri (`pedigree-*.svg`)
 

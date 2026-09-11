@@ -22,6 +22,19 @@ const schema = z.object({
   endsAt: z.string().datetime(),
   status: z.enum(["UPCOMING", "ACTIVE", "FINISHED"]),
   published: z.boolean(),
+  // banda de pe prima pagina — toate optionale
+  destination: z.string().max(80).optional(),
+  distanceKm: z.number().int().min(0).max(20_000).nullable().optional(),
+  countryCode: z
+    .string()
+    .regex(/^[A-Za-z]{2}$/)
+    .optional()
+    .or(z.literal("")),
+  boardingAt: z.string().datetime().optional().or(z.literal("")),
+  boardingPlace: z.string().max(80).optional(),
+  releaseAt: z.string().datetime().optional().or(z.literal("")),
+  sloganRo: z.string().max(200).optional(),
+  sloganEn: z.string().max(200).optional(),
 });
 
 export async function POST(req: Request) {
@@ -29,7 +42,8 @@ export async function POST(req: Request) {
     const admin = await requireAdmin();
     const body = schema.safeParse(await req.json());
     if (!body.success) return jsonError("VALIDATION", 422);
-    const { id, coverUrl, startsAt, endsAt, ...rest } = body.data;
+    const { id, coverUrl, startsAt, endsAt, boardingAt, releaseAt, countryCode, ...rest } =
+      body.data;
 
     if (new Date(endsAt) <= new Date(startsAt)) return jsonError("END_BEFORE_START", 400);
 
@@ -38,6 +52,11 @@ export async function POST(req: Request) {
       coverUrl: coverUrl || null,
       startsAt: new Date(startsAt),
       endsAt: new Date(endsAt),
+      boardingAt: boardingAt ? new Date(boardingAt) : null,
+      releaseAt: releaseAt ? new Date(releaseAt) : null,
+      countryCode: countryCode ? countryCode.toUpperCase() : null,
+      // campul de numar trimite 0 cand e lasat gol; pe banda, 0 km n-are sens
+      distanceKm: rest.distanceKm ? rest.distanceKm : null,
     };
 
     const saved = id

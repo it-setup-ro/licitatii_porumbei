@@ -1,6 +1,6 @@
 # Stare proiect — No.1 & Best Pigeons
 
-**Ultima actualizare:** 24 august 2026
+**Ultima actualizare:** 11 septembrie 2026
 **Site live (test):** http://207.180.241.165:3000
 **Cod:** https://github.com/it-setup-ro/licitatii_porumbei (public, branch `main`)
 **Credențiale:** `credentiale-acces.md` (local, exclus din git)
@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 54 teste unitare + 160 teste end-to-end, toate verzi.
+**Stare: funcțională cap-coadă pentru testare.** 54 teste unitare + 180 teste end-to-end, toate verzi.
 
 ---
 
@@ -34,11 +34,19 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - **Articole** — blog bilingv, cu poze și clipuri
 - **Concursuri** — submeniu cu 6 linkuri către site-uri externe (clasamente, UNCR, FRSC, UCP)
 - **Meniuri strânse**: Articole (ultimele 5 articole + „Toate articolele"), Concursuri și Informații se desfac la clic — dropdown pe calculator, acordeon în panoul de pe telefon
+- **Pagina principală după macheta clientului**: hero cu fotografie și deviza scrisă de mână, bandă cu ce oferă platforma, crescători cu poză și localitate, licitații live, banda concursului, ultimele articole, cifre reale din baza de date
+- **Banda concursului** în forma cerută de client: trofeu, destinația scrisă mare, distanța cu țara, slogan, rubricile Îmbarcare / Lansare / Meteo pe traseu / Primul sosit și butonul auriu. Rubricile se completează din Administrare → Concursuri; cele goale nu apar
+- **Pedigree ca filă în galerie** — Foto / Video / Pedigree în același cadru, cu mărire la clic
+- **Căutare în antet** (nume, serie, crescător); pe telefon stă în meniul hamburger
+- **Pagina Crescători** — lista crescătoriilor, cu poza unui lot al lor, localitate, rating și câte loturi au în licitație
+- **Subsol bogat**: despre + rețele sociale, contact, link-uri utile, informații, abonare la noutăți, bandă de jos cu deviza
+- **Noutăți pe e-mail** — abonare cu acord GDPR (se păstrează data și textul bifat), dezabonare dintr-un link cu token, listă și export CSV în Administrare
 - **Pagini de conținut** — Regulament, Info licitații, Alte info, Transport, Despre noi, Contact (cu formular)
 - Bară de sus cu **ora oficială a platformei** (ora serverului — reper comun la închiderea licitațiilor)
 
 ### Cont
 - Înregistrare, autentificare, cerere de cont crescător (aprobată manual de admin)
+- **Datele crescătoriei** (denumire, localitate, prezentare) se corectează din Contul meu. IBAN-ul și CUI-ul nu — o schimbare tăcută de cont bancar e tiparul unei fraude; acelea rămân la admin
 - **Parola**: buton de arătat/ascuns la autentificare, înregistrare și resetare; „Am uitat parola" cu link valabil o oră, de unică folosință; schimbarea parolei din Contul meu (cu parola veche)
 - Ofertele mele, favorite, cumpărături, vânzări, loturile mele, comenzi magazin, notificări
 - **Caseta de cont** (iconița din antet): autentificare/înregistrare când ești delogat; cont + ieșire când ești logat — totul într-un singur loc
@@ -48,7 +56,8 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - **Utilizatori** (căutare + buton „Link de resetare" pentru cine nu primește e-mailul) și **E-mailuri trimise** (jurnalul din care se citesc linkurile cât timp e-mailul nu e conectat)
 - **Navigație grupată** în administrare (Moderare / Conținut / Platformă), cu numărul de așteptări lângă fiecare secțiune de moderat: coloană pe calculator, un rând + panoul „Secțiuni" pe telefon
 - Setări platformă (~40 de parametri, cu audit trail), aprobare vânzători, moderare loturi și recenzii
-- Produse, Articole, Concursuri, Pagini, Linkuri, Mesaje de contact
+- Produse, Articole, Concursuri, Pagini, Linkuri, Mesaje de contact, Newsletter (cu export CSV)
+- **Contact & rețele** în Setări (e-mail, telefon, localitate, Facebook, YouTube, Instagram) — apar în subsol doar dacă sunt completate
 - **Compozitor de articole** stil rețea socială: titlu + text + foto/video; slug, rezumat și versiunea EN se generează automat
 - **Selector de fișiere identic peste tot** (articole, listare porumbel, produse): pe telefon „Fă o poză" / „Filmează" deschid camera; pe calculator doar alegerea din fișiere
 - **Formularul de listare** în ordinea cerută: serie/an/sex → nume → descriere → pedigree → foto → video → reprodus de → oferit de → preț; restul pliat sub „Alte detalii"
@@ -70,7 +79,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 | 9 | SMS | Pregătit, dezactivat (decizia D16) | mai târziu |
 | 10 | **Oprește uneltele de test** înainte de public | Setări → 🧪 Unelte de test → oprește „Închide în 1 minut". Butonul dispare din Loturi, iar ruta refuză cererile | Daniel |
 
-**Cerut de client, nefăcut încă:** pagina principală după macheta trimisă (hero, carduri de crescători, banner de concurs, cifre, subsol bogat) — e de câteva ori mai mult decât pagina lotului și merită făcută după ce se validează pagina asta.
+**Așteptăm de la client:** fotografia de hero trimisă pe chat (`assets-client/`), datele de contact și linkurile de rețele sociale (se pun în Setări), adresa pentru codul QR din subsol (are sens după ce avem domeniul).
 
 **Rămase deschise din `open-questions.md`:** verificare marcă OSIM/EUIPO (există deja BestPigeons.ro), achiziția domeniului, bugetul SMS.
 
@@ -83,8 +92,8 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 cd platform
 npm run dev              # http://localhost:3000
 npm run db:seed          # readuce datele demo
-npm test                 # 30 teste unitare
-npm run test:e2e         # 85 teste end-to-end
+npm test                 # 54 teste unitare
+npm run test:e2e         # 180 teste end-to-end
 node scripts/mobile-audit.mjs   # audit de layout pe telefon
 ```
 

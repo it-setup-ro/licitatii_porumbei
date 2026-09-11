@@ -113,6 +113,16 @@ export async function seedSections(
       endsAt: new Date(now + 60 * D),
       status: "UPCOMING",
       published: true,
+      // rubricile benzii de pe prima pagina, in forma ceruta de client
+      destination: "Nordhausen",
+      distanceKm: 1000,
+      countryCode: "DE",
+      boardingAt: new Date(now + 5 * D),
+      boardingPlace: "România",
+      releaseAt: new Date(new Date(now + 7 * D).setHours(6, 30, 0, 0)),
+      weatherUrl: "https://www.windy.com/",
+      sloganRo: "Un concurs. O comunitate. Aceeași pasiune.",
+      sloganEn: "One contest. One community. The same passion.",
     },
   });
 

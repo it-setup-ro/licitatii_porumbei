@@ -60,6 +60,7 @@ function groups(): Group[] {
       items: [
         { href: "/admin/settings", label: "Setări", icon: <IconGear /> },
         { href: "/admin/messages", label: "Mesaje", icon: <IconMail />, count: "messages" },
+        { href: "/admin/newsletter", label: "Newsletter", icon: <IconSend /> },
         { href: "/admin/emails", label: "E-mailuri", icon: <IconSend /> },
         { href: "/admin/audit", label: "Jurnal", icon: <IconList /> },
       ],

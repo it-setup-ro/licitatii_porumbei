@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import LogoMark from "./LogoMark";
+import NewsletterForm from "./NewsletterForm";
 
 /**
  * Subsolul, după macheta clientului: patru coloane — cine suntem, contact,
@@ -122,6 +123,13 @@ export default function SiteFooter({
             { href: "/about", label: n("about") },
           ]}
         />
+      </div>
+
+      {/* ── Noutati pe e-mail ── */}
+      <div className="border-t border-white/10">
+        <div className="mx-auto max-w-6xl px-4 py-8">
+          <NewsletterForm />
+        </div>
       </div>
 
       {/* ── Banda de jos ── */}

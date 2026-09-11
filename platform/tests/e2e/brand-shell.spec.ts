@@ -128,3 +128,111 @@ test.describe("Crescătorii", () => {
     expect(res.status()).toBe(403);
   });
 });
+
+test.describe("Noutăți pe e-mail", () => {
+  const adresa = () => `abonat-${Date.now()}@example.com`;
+
+  test("nu se poate abona fără bifă, se poate cu ea", async ({ page }) => {
+    await page.goto("/ro");
+    const email = adresa();
+    await page.getByTestId("newsletter-email").fill(email);
+
+    // fara acord, butonul nu e apasabil — consimtamantul nu se presupune
+    await expect(page.getByTestId("newsletter-submit")).toBeDisabled();
+    await page.getByTestId("newsletter-consent").check();
+    await expect(page.getByTestId("newsletter-submit")).toBeEnabled();
+    await page.getByTestId("newsletter-submit").click();
+    await expect(page.getByTestId("newsletter-done")).toBeVisible();
+
+    // adresa ajunge in administrare, cu acordul ei
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/newsletter");
+    await expect(page.getByTestId("subscribers-table")).toContainText(email);
+    await expect(page.getByTestId("newsletter-counts")).toContainText("activi");
+  });
+
+  test("serverul refuză o abonare fără acord, oricât de bine ar arăta cererea", async ({
+    page,
+  }) => {
+    await page.goto("/ro");
+    const res = await page.request.post("/api/newsletter", {
+      data: { email: adresa(), consent: false, locale: "ro" },
+    });
+    expect(res.status()).toBe(422);
+  });
+
+  test("exportul CSV e doar pentru admin", async ({ page }) => {
+    await page.goto("/ro");
+    const anonim = await page.request.get("/api/admin/newsletter/export");
+    expect(anonim.status(), "un vizitator nu descarcă lista").toBeGreaterThanOrEqual(400);
+
+    await login(page, "admin@nbp.test", "admin1234");
+    const res = await page.request.get("/api/admin/newsletter/export");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toContain("text/csv");
+    expect(await res.text()).toContain("text_acord");
+  });
+
+  test("un link de dezabonare stricat spune asta, nu da eroare", async ({ page }) => {
+    await page.goto("/ro/newsletter/unsubscribe?token=inventat-de-cineva");
+    await page.getByTestId("unsub-button").click();
+    await expect(page.getByTestId("unsub-bad")).toBeVisible();
+  });
+});
+
+test.describe("Meniul, după machetă", () => {
+  test("„Comunitate” adună paginile despre oameni", async ({ page }) => {
+    await page.goto("/ro");
+    await page.getByTestId("nav-community").click();
+    const sub = page.getByTestId("community-submenu");
+    await expect(sub.getByTestId("nav-community-articles")).toBeVisible();
+    await expect(sub.getByTestId("nav-community-about")).toBeVisible();
+    await sub.getByTestId("nav-community-breeders").click();
+    await page.waitForURL(/\/sellers$/);
+    await expect(page.getByTestId("sellers-title")).toBeVisible();
+  });
+
+  test("„Curse & Rezultate” e vechiul meniu de concursuri, cu linkurile lui", async ({ page }) => {
+    await page.goto("/ro");
+    const intrare = page.getByTestId("nav-contests");
+    await expect(intrare).toContainText("Curse");
+    await intrare.click();
+    await expect(page.getByTestId("contests-submenu")).toBeVisible();
+  });
+});
+
+test.describe("Banda de concurs", () => {
+  test("arată destinația, distanța, îmbarcarea și lansarea", async ({ page }) => {
+    await page.goto("/ro");
+    const banda = page.getByTestId("contest-banner");
+    await expect(banda.getByTestId("contest-destination")).toContainText("Nordhausen");
+    await expect(banda).toContainText("1.000 KM");
+    // codul tarii devine nume — pe Windows emoji-ul de steag nu are desen
+    await expect(banda).toContainText("Germania");
+    await expect(banda).toContainText("Îmbarcare");
+    await expect(banda).toContainText("Lansare");
+    await expect(banda.getByTestId("contest-cta")).toBeVisible();
+
+    // banda intra in pagina, nu taie butonul
+    const rand = banda.locator("div.flex").first();
+    const { scroll, client } = await rand.evaluate((el) => ({
+      scroll: el.scrollWidth,
+      client: el.clientWidth,
+    }));
+    expect(scroll, "banda iese din cadru").toBeLessThanOrEqual(client + 1);
+  });
+
+  test("butonul duce la pagina concursului", async ({ page }) => {
+    await page.goto("/ro");
+    await page.getByTestId("contest-cta").click();
+    await page.waitForURL(/\/contests\/[a-z0-9-]+$/);
+    await expect(page.getByTestId("contest-title")).toBeVisible();
+  });
+
+  test("în engleză, rubricile se traduc", async ({ page }) => {
+    await page.goto("/en");
+    const banda = page.getByTestId("contest-banner");
+    await expect(banda).toContainText("Release");
+    await expect(banda).toContainText("Germany");
+  });
+});
