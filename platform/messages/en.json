@@ -177,7 +177,9 @@
     "similar": "Similar pigeons",
     "similarHint": "From the same breeder or the same line",
     "mobileBidNow": "Bid",
-    "photos": "Photos"
+    "photos": "Photos",
+    "foundInTab": "{count, plural, one {One result under “{tab}”} other {# results under “{tab}”}}",
+    "noSearchResults": "No pigeon found for “{q}”."
   },
   "pigeon": {
     "ring": "Ring number",

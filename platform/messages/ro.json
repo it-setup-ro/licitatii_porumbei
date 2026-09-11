@@ -177,7 +177,9 @@
     "similar": "Porumbei asemănători",
     "similarHint": "De la același crescător sau din aceeași linie",
     "mobileBidNow": "Licitează",
-    "photos": "Foto"
+    "photos": "Foto",
+    "foundInTab": "{count, plural, one {Un rezultat la „{tab}”} few {# rezultate la „{tab}”} other {# de rezultate la „{tab}”}}",
+    "noSearchResults": "Niciun porumbel găsit pentru „{q}”."
   },
   "pigeon": {
     "ring": "Serie inel",
