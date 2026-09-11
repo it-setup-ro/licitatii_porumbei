@@ -366,3 +366,107 @@ test.describe("Când ceva e greșit în formular", () => {
     await expect(page.getByTestId("field-error-endsAt")).toHaveCount(0);
   });
 });
+
+test.describe("Care concurs ajunge pe prima pagină", () => {
+  const zi = 86_400_000;
+
+  async function creeaza(
+    page: import("@playwright/test").Page,
+    date: Record<string, unknown>
+  ) {
+    const res = await page.request.post("/api/admin/contests", { data: date });
+    expect((await res.json()).ok, JSON.stringify(date)).toBe(true);
+  }
+
+  test("cel ales din administrare bate regula automată", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    const acum = Date.now();
+    const alesSlug = `ales-${acum}`;
+
+    // unul in desfasurare, care ar castiga automat
+    await creeaza(page, {
+      slug: `curge-${acum}`,
+      titleRo: "Concurs în desfășurare",
+      titleEn: "Running contest",
+      startsAt: new Date(acum - 2 * zi).toISOString(),
+      endsAt: new Date(acum + 5 * zi).toISOString(),
+      status: "ACTIVE",
+      published: true,
+      destination: "Aiud",
+    });
+    // si unul viitor, ales anume pentru banda
+    await creeaza(page, {
+      slug: alesSlug,
+      titleRo: "Concursul ales",
+      titleEn: "Chosen contest",
+      startsAt: new Date(acum + 20 * zi).toISOString(),
+      endsAt: new Date(acum + 40 * zi).toISOString(),
+      status: "UPCOMING",
+      published: true,
+      featured: true,
+      destination: "Ostenda",
+    });
+
+    await page.goto("/ro");
+    await expect(page.getByTestId("contest-destination")).toHaveText("Ostenda");
+
+    // in administrare se vede care e pe prima pagina, fara sa deschizi site-ul
+    await page.goto("/ro/admin/contests");
+    const rand = page.locator("tr").filter({ hasText: "Concursul ales" });
+    await expect(rand.getByTestId("contest-on-home")).toBeVisible();
+  });
+
+  test("alegerea e una singură: noul ales îl stinge pe cel vechi", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    const acum = Date.now();
+    await creeaza(page, {
+      slug: `primul-ales-${acum}`,
+      titleRo: "Primul ales",
+      titleEn: "First chosen",
+      startsAt: new Date(acum + 2 * zi).toISOString(),
+      endsAt: new Date(acum + 9 * zi).toISOString(),
+      status: "UPCOMING",
+      published: true,
+      featured: true,
+      destination: "Praga",
+    });
+    await creeaza(page, {
+      slug: `al-doilea-ales-${acum}`,
+      titleRo: "Al doilea ales",
+      titleEn: "Second chosen",
+      startsAt: new Date(acum + 3 * zi).toISOString(),
+      endsAt: new Date(acum + 10 * zi).toISOString(),
+      status: "UPCOMING",
+      published: true,
+      featured: true,
+      destination: "Viena",
+    });
+
+    await page.goto("/ro/admin/contests");
+    await expect(page.getByTestId("contest-on-home")).toHaveCount(1);
+    await expect(
+      page.locator("tr").filter({ hasText: "Al doilea ales" }).getByTestId("contest-on-home")
+    ).toBeVisible();
+  });
+
+  test("o ciornă nu ajunge nicăieri", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    const slug = `ciorna-${Date.now()}`;
+    await creeaza(page, {
+      slug,
+      titleRo: "Ciornă de concurs",
+      titleEn: "Draft contest",
+      startsAt: new Date().toISOString(),
+      endsAt: new Date(Date.now() + 5 * zi).toISOString(),
+      status: "ACTIVE",
+      published: false,
+      featured: true,
+      destination: "Ascunsul",
+    });
+
+    await page.goto("/ro/contests");
+    await expect(page.getByTestId("contest-card").filter({ hasText: "Ciornă" })).toHaveCount(0);
+    await page.goto("/ro");
+    await expect(page.getByTestId("contest-banner")).not.toContainText("Ascunsul");
+  });
+});

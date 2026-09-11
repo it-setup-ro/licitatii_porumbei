@@ -389,6 +389,9 @@ model Contest {
   endsAt      DateTime
   status      String    @default("UPCOMING") // UPCOMING | ACTIVE | FINISHED
   published   Boolean   @default(false)
+  /// Concursul cu banda pe prima pagina. Unul singur: cand se pune pe unul, se
+  /// stinge de pe restul. Fara niciunul, se alege automat cel in desfasurare.
+  featured    Boolean   @default(false)
 
   /// Datele de pe banda de pe prima pagina, in forma ceruta de client:
   /// destinatia scrisa mare, distanta, steagul tarii, imbarcarea si lansarea.

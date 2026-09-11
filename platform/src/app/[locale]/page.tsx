@@ -40,10 +40,27 @@ export default async function HomePage({
       orderBy: { publishedAt: "desc" },
       take: 4,
     }),
-    prisma.contest.findFirst({
-      where: { published: true, endsAt: { gte: new Date() } },
-      orderBy: { startsAt: "asc" },
-    }),
+    // Banda de concurs: intai cel ales anume din administrare („Banda pe prima
+    // pagina"). Daca nu e ales niciunul, cel aflat acum in desfasurare, iar
+    // daca nu curge niciunul, urmatorul care incepe. Inainte era pur si simplu
+    // primul dupa data de start — cu doua concursuri, castiga vechiul si omul
+    // nu intelegea de ce nu-l vede pe al lui.
+    (async () => {
+      const acum = new Date();
+      const ales = await prisma.contest.findFirst({
+        where: { published: true, featured: true, endsAt: { gte: acum } },
+      });
+      if (ales) return ales;
+      const inCurs = await prisma.contest.findFirst({
+        where: { published: true, startsAt: { lte: acum }, endsAt: { gte: acum } },
+        orderBy: { endsAt: "asc" },
+      });
+      if (inCurs) return inCurs;
+      return prisma.contest.findFirst({
+        where: { published: true, startsAt: { gt: acum } },
+        orderBy: { startsAt: "asc" },
+      });
+    })(),
     (async () => {
       const [breeders, closed, running, lots] = await Promise.all([
         prisma.user.count({ where: { sellerStatus: "APPROVED" } }),

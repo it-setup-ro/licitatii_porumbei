@@ -101,6 +101,13 @@ const FIELDS: FieldDef[] = [
     type: "boolean",
     hint: "Cât e oprit, concursul se vede doar de aici. Pornit, apare pe site.",
   },
+  {
+    key: "featured",
+    label: "Banda pe prima pagină",
+    type: "boolean",
+    full: true,
+    hint: "Prima pagină arată o singură bandă. Pornește-l aici ca să fie acesta — se stinge singur de pe celelalte concursuri. Dacă nu alegi niciunul, se afișează cel aflat în desfășurare.",
+  },
 ];
 
 
@@ -121,6 +128,19 @@ export default async function AdminContestsPage({
   });
   const editing = sp.new ? null : contests.find((c) => c.id === sp.id);
 
+  // Care concurs ajunge pe prima pagina — aceeasi regula ca in pagina publica.
+  // Se arata in lista, ca sa nu mai fie nevoie sa deschizi site-ul ca sa afli.
+  const acum = new Date();
+  const publice = contests.filter((c) => c.published);
+  const pePrimaPagina =
+    publice.find((c) => c.featured && c.endsAt >= acum) ??
+    publice
+      .filter((c) => c.startsAt <= acum && c.endsAt >= acum)
+      .sort((a, b) => a.endsAt.getTime() - b.endsAt.getTime())[0] ??
+    publice
+      .filter((c) => c.startsAt > acum)
+      .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())[0];
+
   const now = new Date();
   const initial = editing
     ? {
@@ -136,6 +156,7 @@ export default async function AdminContestsPage({
         rulesRo: editing.rulesRo ?? "",
         rulesEn: editing.rulesEn ?? "",
         coverUrl: editing.coverUrl ?? "",
+        featured: editing.featured,
         destination: editing.destination ?? "",
         distanceKm: editing.distanceKm ?? "",
         countryCode: editing.countryCode ?? "",
@@ -158,6 +179,7 @@ export default async function AdminContestsPage({
         rulesRo: "",
         rulesEn: "",
         coverUrl: "",
+        featured: false,
         destination: "",
         distanceKm: "",
         countryCode: "",
@@ -191,11 +213,29 @@ export default async function AdminContestsPage({
                 <td className="px-4 py-2.5 text-ink/60">{c.status}</td>
                 <td className="px-4 py-2.5 text-ink/60">{c._count.auctions} loturi</td>
                 <td className="px-4 py-2.5">
-                  {!c.published && (
+                  {!c.published ? (
                     <span className="rounded bg-ink/10 px-2 py-0.5 text-xs font-bold">ciornă</span>
-                  )}
+                  ) : pePrimaPagina?.id === c.id ? (
+                    <span
+                      className="rounded bg-wing-orange/15 px-2 py-0.5 text-xs font-bold text-wing-orange"
+                      data-testid="contest-on-home"
+                    >
+                      ● pe prima pagină
+                    </span>
+                  ) : null}
                 </td>
                 <td className="px-4 py-2.5 text-right">
+                  {c.published && (
+                    <a
+                      href={`/${locale}/contests/${c.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="-my-1 mr-1 inline-block rounded-lg px-3 py-2 font-semibold text-ink/60 hover:bg-ink/5"
+                      data-testid="contest-view"
+                    >
+                      Vezi pe site ↗
+                    </a>
+                  )}
                   <a
                     href={`?id=${c.id}`}
                     className="-my-1 inline-block rounded-lg px-3 py-2 font-semibold text-wing-blue hover:bg-wing-blue/10 hover:underline"
@@ -220,18 +260,20 @@ export default async function AdminContestsPage({
           <>
             <p>
               <strong>Unde se vede.</strong> Cât timp „Publicat” e oprit, concursul se vede doar
-              aici — poți completa pe îndelete. Pornit, apare în <em>Curse &amp; Rezultate</em> →{" "}
-              <em>Concursuri</em> și, dacă nu s-a încheiat încă, ca bandă pe prima pagină.
+              aici — poți completa pe îndelete. Pornit, apare imediat în{" "}
+              <em>Curse &amp; Rezultate</em> → <em>Concursurile noastre</em> și are pagina lui.
             </p>
             <p className="mt-2">
-              <strong>Banda de pe prima pagină</strong> se compune din destinație, distanță, țară,
-              îmbarcare, lansare, link meteo și slogan. Rubricile necompletate pur și simplu nu
-              apar — nu rămâne niciun gol.
+              <strong>Prima pagină arată un singur concurs.</strong> Ca să fie acesta, pornește
+              „Banda pe prima pagină”, jos de tot — se stinge singură de pe celelalte. Dacă nu
+              alegi niciunul, se afișează cel aflat în desfășurare. În lista de sus vezi oricând
+              care e pe prima pagină acum.
             </p>
             <p className="mt-2">
-              <strong>Poza de copertă</strong> se alege de pe calculator sau de pe telefon, cu
-              butonul de mai jos. Apare sus în pagina concursului și pe card, în listă. Banda de pe
-              prima pagină nu o folosește: acolo desenul e fix.
+              <strong>Banda</strong> se compune din destinație, distanță, țară, îmbarcare, lansare,
+              link meteo și slogan; rubricile necompletate pur și simplu nu apar. <strong>Poza de
+              copertă</strong> se alege de pe calculator sau de pe telefon și apare sus în pagina
+              concursului și pe card — banda nu o folosește, acolo desenul e fix.
             </p>
           </>
         }

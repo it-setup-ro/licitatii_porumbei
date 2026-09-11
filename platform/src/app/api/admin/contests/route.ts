@@ -30,6 +30,7 @@ const schema = z.object({
   endsAt: z.string().datetime(),
   status: z.enum(["UPCOMING", "ACTIVE", "FINISHED"]),
   published: z.boolean(),
+  featured: z.boolean().optional(),
   // banda de pe prima pagina — toate optionale
   destination: z.string().max(80).optional(),
   distanceKm: z.number().int().min(0).max(20_000).nullable().optional(),
@@ -74,6 +75,15 @@ export async function POST(req: Request) {
     const saved = id
       ? await prisma.contest.update({ where: { id }, data })
       : await prisma.contest.create({ data });
+
+    // Banda de pe prima pagina e una singura: daca acesta a fost ales, ceilalti
+    // se sting. Altfel ar ramane doi „alesi" si ar decide iar intamplarea.
+    if (data.featured) {
+      await prisma.contest.updateMany({
+        where: { id: { not: saved.id }, featured: true },
+        data: { featured: false },
+      });
+    }
 
     await prisma.auditLog.create({
       data: {
