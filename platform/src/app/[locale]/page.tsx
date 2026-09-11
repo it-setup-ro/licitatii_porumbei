@@ -114,24 +114,29 @@ export default async function HomePage({
           style={{ backgroundImage: "url(/pigeons/hero-client.jpg)" }}
           aria-hidden="true"
         />
+        {/* Voalul e subtire: poza trebuie sa ramana luminoasa. Lizibilitatea o
+            tin umbrele de sub text, nu un strat gros de bleumarin peste tot. */}
         <div
-          className="absolute inset-0 -z-10 bg-ink/65 lg:bg-gradient-to-r lg:from-ink lg:via-ink/65 lg:to-transparent"
+          className="absolute inset-0 -z-10 bg-ink/30 lg:bg-gradient-to-r lg:from-ink/70 lg:via-ink/25 lg:to-transparent"
           aria-hidden="true"
         />
 
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 sm:py-24 lg:grid-cols-[1fr_auto] lg:items-center">
           <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-wing-yellow">
+            <p className="hero-shadow text-xs font-bold uppercase tracking-[0.25em] text-wing-yellow">
               {t("kicker")}
             </p>
-            <h1 className="font-display mt-4 text-4xl font-bold leading-[1.05] text-white sm:text-6xl">
+            <h1 className="font-display hero-shadow mt-4 text-4xl font-bold leading-[1.05] text-white sm:text-6xl">
               {t("heroTitle")}
             </h1>
             {/* Deviza scrisa de mana, ca in macheta */}
-            <p className="font-script mt-3 text-2xl text-wing-yellow sm:text-3xl" data-testid="hero-motto">
+            <p
+              className="font-script hero-shadow mt-3 text-2xl text-wing-yellow sm:text-3xl"
+              data-testid="hero-motto"
+            >
               {t("motto")}
             </p>
-            <p className="mt-4 max-w-xl text-lg leading-relaxed text-white/80">
+            <p className="hero-shadow mt-4 max-w-xl text-lg leading-relaxed text-white/90">
               {t("heroSubtitle")}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -153,7 +158,7 @@ export default async function HomePage({
           </div>
 
           <p
-            className="hidden text-right text-sm font-semibold uppercase leading-loose tracking-[0.2em] text-white/70 lg:block"
+            className="hero-shadow hidden text-right text-sm font-semibold uppercase leading-loose tracking-[0.2em] text-white/80 lg:block"
             data-testid="hero-keywords"
           >
             {t("keywords")
