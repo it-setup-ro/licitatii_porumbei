@@ -106,6 +106,7 @@ export default function SiteFooter({
             { href: "/fixed-price", label: n("fixedPrice") },
             { href: "/products", label: n("products") },
             { href: "/sellers", label: t("breeders") },
+            { href: "/contests", label: n("ourContests") },
             { href: "/articles", label: n("articles") },
           ]}
         />

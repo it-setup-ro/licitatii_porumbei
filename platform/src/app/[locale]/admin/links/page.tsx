@@ -5,8 +5,8 @@ import RecordEditor, { type FieldDef } from "@/components/admin/RecordEditor";
 export const dynamic = "force-dynamic";
 
 const FIELDS: FieldDef[] = [
-  { key: "labelRo", label: "Denumire (RO)", type: "text" },
-  { key: "labelEn", label: "Denumire (EN)", type: "text" },
+  { key: "labelRo", label: "Denumire (RO)", type: "text", required: true },
+  { key: "labelEn", label: "Denumire (EN)", type: "text", required: true },
   {
     key: "url",
     label: "Adresa site-ului",

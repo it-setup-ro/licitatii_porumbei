@@ -321,11 +321,24 @@ export default function SiteHeader({
                     onClick={() => setOpenMenu(null)}
                   >
                     {isContests(item)
-                      ? contestLinks.map((link) => (
-                          <li key={link.id}>
-                            <ExternalItem link={link} locale={locale} soonLabel={t("comingSoon")} />
-                          </li>
-                        ))
+                      ? [
+                          // concursurile organizate de platforma, inaintea site-urilor
+                          // externe: pana acum nu se ajungea la ele din meniu deloc
+                          <li key="ours">
+                            <Link
+                              href="/contests"
+                              data-testid="nav-our-contests"
+                              className="block truncate rounded-lg px-3 py-2 font-semibold text-wing-blue hover:bg-ink/5"
+                            >
+                              {t("ourContests")}
+                            </Link>
+                          </li>,
+                          ...contestLinks.map((link) => (
+                            <li key={link.id}>
+                              <ExternalItem link={link} locale={locale} soonLabel={t("comingSoon")} />
+                            </li>
+                          )),
+                        ]
                       : item.children.map((child, i) => (
                           <li key={`${child.testid}-${i}`}>
                             <Link
@@ -424,15 +437,24 @@ export default function SiteHeader({
                     {openGroup === item.testid && (
                       <div className="ml-4 border-l border-ink/10 pl-2">
                         {isContests(item)
-                          ? contestLinks.map((link) => (
-                              <ExternalItem
-                                key={link.id}
-                                link={link}
-                                locale={locale}
-                                soonLabel={t("comingSoon")}
-                                mobile
-                              />
-                            ))
+                          ? [
+                              <MobileLink
+                                key="ours"
+                                href="/contests"
+                                label={t("ourContests")}
+                                testid="m-our-contests"
+                                accent
+                              />,
+                              ...contestLinks.map((link) => (
+                                <ExternalItem
+                                  key={link.id}
+                                  link={link}
+                                  locale={locale}
+                                  soonLabel={t("comingSoon")}
+                                  mobile
+                                />
+                              )),
+                            ]
                           : item.children.map((child, i) => (
                               <MobileLink
                                 key={`${child.testid}-${i}`}

@@ -50,8 +50,18 @@ export default async function ContestsPage({
                 key={c.id}
                 href={`/contests/${c.slug}`}
                 data-testid="contest-card"
-                className="card-hover block rounded-2xl border border-ink/10 bg-white p-6"
+                className="card-hover block overflow-hidden rounded-2xl border border-ink/10 bg-white"
               >
+                {c.coverUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={c.coverUrl}
+                    alt={title}
+                    data-testid="contest-card-cover"
+                    className="aspect-[16/5] w-full object-cover"
+                  />
+                )}
+                <div className="p-6">
                 <div className="flex flex-wrap items-center gap-3">
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${
@@ -71,6 +81,7 @@ export default async function ContestsPage({
                     {c._count.auctions} × {t("lots").toLowerCase()}
                   </p>
                 )}
+                </div>
               </Link>
             );
           })}

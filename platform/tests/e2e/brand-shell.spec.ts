@@ -236,3 +236,83 @@ test.describe("Banda de concurs", () => {
     await expect(banda).toContainText("Germany");
   });
 });
+
+test.describe("Concurs nou, din administrare", () => {
+  test("formularul arată ce e obligatoriu și explică unde se vede", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/contests?new=1");
+
+    await expect(page.getByTestId("editor-help")).toContainText("Unde se vede");
+    await expect(page.getByTestId("editor-required-note")).toContainText("obligatorii");
+
+    // campurile cerute de server sunt si marcate in pagina
+    for (const key of ["slug", "titleRo", "titleEn", "startsAt", "endsAt"]) {
+      await expect(page.getByTestId(`field-${key}`), `lipsește * la ${key}`).toHaveAttribute(
+        "required",
+        ""
+      );
+    }
+    // coperta se alege cu selectorul de fisiere, nu se scrie o adresa de mana
+    await expect(page.getByTestId("record-editor")).toContainText("Poze JPG/PNG/WebP");
+  });
+
+  test("un concurs cu copertă o arată în listă și în pagina lui", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    const slug = `test-e2e-${Date.now()}`;
+    const zi = 86_400_000;
+    const res = await page.request.post("/api/admin/contests", {
+      data: {
+        slug,
+        titleRo: "Concurs cu copertă",
+        titleEn: "Contest with cover",
+        startsAt: new Date(Date.now() + 30 * zi).toISOString(),
+        endsAt: new Date(Date.now() + 60 * zi).toISOString(),
+        status: "UPCOMING",
+        published: true,
+        coverUrl: "/pigeons/hero-client.jpg",
+      },
+    });
+    expect((await res.json()).ok).toBe(true);
+
+    await page.goto("/ro/contests");
+    const card = page.getByTestId("contest-card").filter({ hasText: "Concurs cu copertă" });
+    await expect(card.getByTestId("contest-card-cover")).toBeVisible();
+
+    await card.click();
+    await page.waitForURL(new RegExp(`/contests/${slug}$`));
+    await expect(page.getByTestId("contest-cover")).toBeVisible();
+  });
+
+  test("o adresă de poză din afara site-ului e refuzată", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    const res = await page.request.post("/api/admin/contests", {
+      data: {
+        slug: `test-extern-${Date.now()}`,
+        titleRo: "Copertă externă",
+        titleEn: "External cover",
+        startsAt: new Date().toISOString(),
+        endsAt: new Date(Date.now() + 86_400_000).toISOString(),
+        status: "UPCOMING",
+        published: false,
+        coverUrl: "https://example.com/poza.jpg",
+      },
+    });
+    expect(res.status()).toBe(422);
+  });
+});
+
+test.describe("Drumul până la concursuri", () => {
+  test("din meniu: Curse & Rezultate → Concursurile noastre", async ({ page }) => {
+    await page.goto("/ro");
+    await page.getByTestId("nav-contests").click();
+    await page.getByTestId("nav-our-contests").click();
+    await page.waitForURL(/\/contests$/);
+    await expect(page.getByTestId("contest-card").first()).toBeVisible();
+  });
+
+  test("și din subsol", async ({ page }) => {
+    await page.goto("/ro");
+    await page.getByTestId("footer-useful").getByText("Concursurile noastre").click();
+    await page.waitForURL(/\/contests$/);
+  });
+});

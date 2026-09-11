@@ -51,6 +51,16 @@ export default async function ContestPage({
       <h1 className="font-display mt-3 text-3xl font-bold" data-testid="contest-title">
         {title}
       </h1>
+
+      {contest.coverUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={contest.coverUrl}
+          alt={title}
+          data-testid="contest-cover"
+          className="mt-5 aspect-[16/6] w-full rounded-2xl border border-ink/10 object-cover"
+        />
+      )}
       {desc && <p className="mt-3 leading-relaxed text-ink/80">{desc}</p>}
 
       {rules && (

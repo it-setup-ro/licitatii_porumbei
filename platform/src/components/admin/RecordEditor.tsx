@@ -19,6 +19,8 @@ export type FieldDef = {
   hint?: string;
   rows?: number;
   full?: boolean;
+  /** marcat cu * si oprit de browser daca ramane gol */
+  required?: boolean;
 };
 
 export default function RecordEditor({
@@ -26,12 +28,15 @@ export default function RecordEditor({
   fields,
   initial,
   title,
+  help,
   onSavedRedirect,
 }: {
   endpoint: string;
   fields: FieldDef[];
   initial: Record<string, unknown>;
   title: string;
+  /** doua-trei randuri despre ce se completeaza aici si unde se vede rezultatul */
+  help?: React.ReactNode;
   onSavedRedirect?: string;
 }) {
   const router = useRouter();
@@ -88,11 +93,33 @@ export default function RecordEditor({
     <form onSubmit={submit} className="space-y-4" data-testid="record-editor">
       <h2 className="font-display text-xl font-bold">{title}</h2>
 
+      {help && (
+        <div
+          className="rounded-2xl border border-wing-blue/25 bg-wing-blue/5 p-4 text-sm leading-relaxed text-ink/80"
+          data-testid="editor-help"
+        >
+          {help}
+        </div>
+      )}
+
+      {fields.some((f) => f.required) && (
+        <p className="text-sm text-ink/60" data-testid="editor-required-note">
+          Câmpurile cu <span className="font-bold text-wing-red">*</span> sunt obligatorii.
+          Restul se pot completa mai târziu.
+        </p>
+      )}
+
       <div className="grid gap-4 rounded-2xl border border-ink/10 bg-white p-5 sm:grid-cols-2">
         {fields.map((f) => (
           <div key={f.key} className={f.full || f.type === "textarea" ? "sm:col-span-2" : ""}>
             <label className="text-sm font-medium" htmlFor={`f-${f.key}`}>
               {f.label}
+              {f.required && (
+                <span className="font-bold text-wing-red" aria-hidden="true">
+                  {" "}
+                  *
+                </span>
+              )}
             </label>
 
             {f.type === "image" ? (
@@ -132,6 +159,7 @@ export default function RecordEditor({
               <select
                 id={`f-${f.key}`}
                 data-testid={`field-${f.key}`}
+                required={f.required}
                 value={String(values[f.key] ?? "")}
                 onChange={(e) => set(f.key, e.target.value)}
                 className={input}
@@ -146,6 +174,7 @@ export default function RecordEditor({
               <textarea
                 id={`f-${f.key}`}
                 data-testid={`field-${f.key}`}
+                required={f.required}
                 rows={f.rows ?? 6}
                 value={String(values[f.key] ?? "")}
                 onChange={(e) => set(f.key, e.target.value)}
@@ -155,6 +184,7 @@ export default function RecordEditor({
               <input
                 id={`f-${f.key}`}
                 data-testid={`field-${f.key}`}
+                required={f.required}
                 type={
                   f.type === "number" || f.type === "money"
                     ? "number"

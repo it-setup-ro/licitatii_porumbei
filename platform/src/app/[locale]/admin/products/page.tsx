@@ -14,17 +14,28 @@ const CATEGORY_OPTIONS = [
 ];
 
 const FIELDS: FieldDef[] = [
-  { key: "slug", label: "Identificator URL (slug)", type: "text", hint: "litere mici, cifre, cratime" },
-  { key: "category", label: "Categorie", type: "select", options: CATEGORY_OPTIONS },
-  { key: "nameRo", label: "Denumire (RO)", type: "text" },
-  { key: "nameEn", label: "Denumire (EN)", type: "text" },
+  {
+    key: "slug",
+    label: "Identificator URL (slug)",
+    type: "text",
+    required: true,
+    hint: "litere mici, cifre, cratime — apare în adresă: /products/sac-transport",
+  },
+  { key: "category", label: "Categorie", type: "select", required: true, options: CATEGORY_OPTIONS },
+  { key: "nameRo", label: "Denumire (RO)", type: "text", required: true },
+  { key: "nameEn", label: "Denumire (EN)", type: "text", required: true },
   { key: "descRo", label: "Descriere (RO)", type: "textarea", rows: 3 },
   { key: "descEn", label: "Descriere (EN)", type: "textarea", rows: 3 },
-  { key: "priceCents", label: "Preț (EUR)", type: "money" },
+  { key: "priceCents", label: "Preț (EUR)", type: "money", required: true },
   { key: "stock", label: "Stoc", type: "number" },
   { key: "imageUrl", label: "Imagine", type: "image", full: true },
   { key: "sortIdx", label: "Ordine afișare", type: "number" },
-  { key: "active", label: "Activ în magazin", type: "boolean" },
+  {
+    key: "active",
+    label: "Activ în magazin",
+    type: "boolean",
+    hint: "Oprit, produsul nu apare în magazin.",
+  },
 ];
 
 export default async function AdminProductsPage({

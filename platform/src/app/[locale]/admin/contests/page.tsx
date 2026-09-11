@@ -11,37 +11,97 @@ function toLocalInput(d: Date) {
 }
 
 const FIELDS: FieldDef[] = [
-  { key: "slug", label: "Identificator URL (slug)", type: "text" },
+  {
+    key: "slug",
+    label: "Identificator URL (slug)",
+    type: "text",
+    required: true,
+    hint: "Apare în adresă: /contests/nordhausen-2026. Doar litere mici, cifre și liniuțe.",
+  },
   {
     key: "status",
     label: "Stare",
     type: "select",
+    required: true,
+    hint: "„În curând” până la lansare, „În desfășurare” cât zboară, „Încheiat” după sosiri.",
     options: [
       { value: "UPCOMING", label: "În curând" },
       { value: "ACTIVE", label: "În desfășurare" },
       { value: "FINISHED", label: "Încheiat" },
     ],
   },
-  { key: "titleRo", label: "Titlu (RO)", type: "text" },
-  { key: "titleEn", label: "Titlu (EN)", type: "text" },
-  { key: "startsAt", label: "Începe la", type: "datetime" },
-  { key: "endsAt", label: "Se încheie la", type: "datetime" },
+  {
+    key: "titleRo",
+    label: "Titlu (RO)",
+    type: "text",
+    required: true,
+    hint: "Ex.: Concurs Național. Pe bandă apare deasupra destinației, scris mai mic.",
+  },
+  { key: "titleEn", label: "Titlu (EN)", type: "text", required: true },
+  {
+    key: "startsAt",
+    label: "Începe la",
+    type: "datetime",
+    required: true,
+    hint: "De la data asta concursul e considerat pornit.",
+  },
+  {
+    key: "endsAt",
+    label: "Se încheie la",
+    type: "datetime",
+    required: true,
+    hint: "Banda de pe prima pagină dispare singură după data asta.",
+  },
   { key: "descRo", label: "Descriere (RO)", type: "textarea", rows: 4 },
   { key: "descEn", label: "Descriere (EN)", type: "textarea", rows: 4 },
   { key: "rulesRo", label: "Regulament (RO)", type: "textarea", rows: 8 },
   { key: "rulesEn", label: "Regulament (EN)", type: "textarea", rows: 8 },
-  { key: "coverUrl", label: "Imagine copertă", type: "text" },
-  // rubricile benzii de pe prima pagina
-  { key: "destination", label: "Destinația (scrisă mare pe bandă)", type: "text" },
-  { key: "distanceKm", label: "Distanța (km)", type: "number" },
-  { key: "countryCode", label: "Țara destinație (cod: DE, RO, HU…)", type: "text" },
+  {
+    // selector de fisiere, ca la produse si articole: se alege o poza de pe
+    // calculator sau de pe telefon, nu se scrie o adresa de mana
+    key: "coverUrl",
+    label: "Imagine copertă",
+    type: "image",
+    full: true,
+    hint: "Se alege de pe calculator sau de pe telefon. Apare lată, sus în pagina concursului și pe cardul din lista de concursuri — o poză pe lat (ex. 1600×600) arată cel mai bine.",
+  },
+  {
+    key: "destination",
+    label: "Destinația (scrisă mare pe bandă)",
+    type: "text",
+    hint: "Ex.: Nordhausen. Cuvântul auriu, cel mai mare de pe bandă.",
+  },
+  { key: "distanceKm", label: "Distanța (km)", type: "number", hint: "Ex.: 1000 → „1.000 KM”." },
+  {
+    key: "countryCode",
+    label: "Țara destinație (cod: DE, RO, HU…)",
+    type: "text",
+    hint: "Două litere. Se transformă singur în numele țării: DE → Germania.",
+  },
   { key: "boardingAt", label: "Îmbarcare — data și ora", type: "datetime" },
-  { key: "boardingPlace", label: "Îmbarcare — locul", type: "text" },
+  { key: "boardingPlace", label: "Îmbarcare — locul", type: "text", hint: "Ex.: România" },
   { key: "releaseAt", label: "Lansare — data și ora", type: "datetime" },
-  { key: "sloganRo", label: "Slogan bandă (RO)", type: "text" },
+  {
+    key: "weatherUrl",
+    label: "Link meteo pe traseu",
+    type: "text",
+    hint: "Ex.: https://www.windy.com/. Fără el, rubrica „Meteo pe traseu” nu apare pe bandă.",
+  },
+  {
+    key: "sloganRo",
+    label: "Slogan bandă (RO)",
+    type: "text",
+    hint: "Rândul mic de sub distanță. Ex.: Un concurs. O comunitate. Aceeași pasiune.",
+  },
   { key: "sloganEn", label: "Slogan bandă (EN)", type: "text" },
-  { key: "published", label: "Publicat", type: "boolean" },
+  {
+    key: "published",
+    label: "Publicat",
+    type: "boolean",
+    hint: "Cât e oprit, concursul se vede doar de aici. Pornit, apare pe site.",
+  },
 ];
+
 
 export default async function AdminContestsPage({
   params,
@@ -155,6 +215,25 @@ export default async function AdminContestsPage({
         title={editing ? `Editează: ${editing.titleRo}` : "Concurs nou"}
         initial={initial}
         fields={FIELDS}
+        help={
+          <>
+            <p>
+              <strong>Unde se vede.</strong> Cât timp „Publicat” e oprit, concursul se vede doar
+              aici — poți completa pe îndelete. Pornit, apare în <em>Curse &amp; Rezultate</em> →{" "}
+              <em>Concursuri</em> și, dacă nu s-a încheiat încă, ca bandă pe prima pagină.
+            </p>
+            <p className="mt-2">
+              <strong>Banda de pe prima pagină</strong> se compune din destinație, distanță, țară,
+              îmbarcare, lansare, link meteo și slogan. Rubricile necompletate pur și simplu nu
+              apar — nu rămâne niciun gol.
+            </p>
+            <p className="mt-2">
+              <strong>Poza de copertă</strong> se alege de pe calculator sau de pe telefon, cu
+              butonul de mai jos. Apare sus în pagina concursului și pe card, în listă. Banda de pe
+              prima pagină nu o folosește: acolo desenul e fix.
+            </p>
+          </>
+        }
       />
     </div>
   );

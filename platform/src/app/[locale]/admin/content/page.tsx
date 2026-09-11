@@ -61,16 +61,17 @@ export default async function AdminContentPage({
             bodyEn: active.bodyEn,
           }}
           fields={[
-            { key: "titleRo", label: "Titlu (RO)", type: "text" },
-            { key: "titleEn", label: "Titlu (EN)", type: "text" },
+            { key: "titleRo", label: "Titlu (RO)", type: "text", required: true },
+            { key: "titleEn", label: "Titlu (EN)", type: "text", required: true },
             {
               key: "bodyRo",
               label: "Conținut (RO)",
               type: "textarea",
               rows: 14,
+              required: true,
               hint: "Folosește „## " + "Titlu” pentru subtitluri și un rând gol între paragrafe.",
             },
-            { key: "bodyEn", label: "Conținut (EN)", type: "textarea", rows: 14 },
+            { key: "bodyEn", label: "Conținut (EN)", type: "textarea", rows: 14, required: true },
           ]}
         />
       )}
