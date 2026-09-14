@@ -18,6 +18,8 @@ import { Link, usePathname } from "@/i18n/navigation";
  */
 
 export type AdminCounts = {
+  /** conturi noi care așteaptă aprobarea */
+  accounts: number;
   sellers: number;
   lots: number;
   reviews: number;
@@ -37,11 +39,20 @@ type Group = { label: string; items: Item[] };
 function groups(): Group[] {
   return [
     {
+      // licitațiile pe crescători și loturi — ce folosește administratorul zilnic
+      label: "Licitații",
+      items: [
+        { href: "/admin/sales", label: "Licitații pe loturi", icon: <IconGavel /> },
+        { href: "/admin/breeders", label: "Crescători", icon: <IconBird /> },
+      ],
+    },
+    {
       label: "Moderare",
       items: [
         { href: "/admin/sellers", label: "Vânzători", icon: <IconUser />, count: "sellers" },
         { href: "/admin/lots", label: "Loturi", icon: <IconLot />, count: "lots" },
         { href: "/admin/reviews", label: "Recenzii", icon: <IconStar />, count: "reviews" },
+        { href: "/admin/accounts", label: "Conturi de aprobat", icon: <IconUsers />, count: "accounts" },
         { href: "/admin/users", label: "Utilizatori", icon: <IconUsers /> },
       ],
     },
@@ -60,6 +71,7 @@ function groups(): Group[] {
       label: "Platformă",
       items: [
         { href: "/admin/settings", label: "Setări", icon: <IconGear /> },
+        { href: "/admin/admins", label: "Administratori", icon: <IconUser /> },
         { href: "/admin/messages", label: "Mesaje", icon: <IconMail />, count: "messages" },
         { href: "/admin/newsletter", label: "Newsletter", icon: <IconSend /> },
         { href: "/admin/emails", label: "E-mailuri", icon: <IconSend /> },
@@ -309,6 +321,24 @@ function IconTruck() {
       <path d="M14 9h4l3 3.5V16h-7" />
       <circle cx="7.5" cy="17.5" r="1.8" />
       <circle cx="17" cy="17.5" r="1.8" />
+    </svg>
+  );
+}
+
+function IconGavel() {
+  return (
+    <svg {...ico}>
+      <path d="m14 3 7 7-3 3-7-7z" />
+      <path d="M11.5 5.5 5 12l7 7 6.5-6.5" />
+      <path d="M3 21h8" />
+    </svg>
+  );
+}
+
+function IconBird() {
+  return (
+    <svg {...ico}>
+      <path d="M3 17c3 .5 5.5-.4 7.4-2.1 1.5-1.4 2.6-3.3 3.6-5.1.9-1.6 2-3.1 3.5-3.9 1.1-.6 2.4-.8 3.5-.4-.6 1.1-1.5 1.8-2.4 2.4 1 .2 2 .1 3-.3-.6 1.2-1.6 2-2.8 2.5-1 3.9-3.9 6.9-7.5 7.9-2.6.7-5.3.5-8.3-1Z" />
     </svg>
   );
 }

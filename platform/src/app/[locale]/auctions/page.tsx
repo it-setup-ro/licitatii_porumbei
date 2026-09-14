@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import { cardInclude, toCardData } from "@/lib/queries";
 import { normalizeSearch, DIACRITICE_DIN, DIACRITICE_IN } from "@/lib/search";
 import AuctionCard from "@/components/AuctionCard";
+import SaleCard from "@/components/SaleCard";
+import { getVisibleSales } from "@/lib/sales";
 
 export const dynamic = "force-dynamic";
 
@@ -76,6 +78,12 @@ export default async function AuctionsPage({
     take: 60,
   });
 
+  // Licitațiile crescătorilor din fila curentă, deasupra porumbeilor. La căutare
+  // nu se arată: omul caută un porumbel anume.
+  const ts = await getTranslations("sales");
+  const saleStatusForTab = status === "LIVE" ? "LIVE" : status === "SCHEDULED" ? "UPCOMING" : "CLOSED";
+  const sales = q ? [] : (await getVisibleSales()).filter((s) => s.status === saleStatusForTab);
+
   const tabs = [
     { key: "LIVE", label: t("statusLive") },
     { key: "SCHEDULED", label: t("statusScheduled") },
@@ -110,6 +118,18 @@ export default async function AuctionsPage({
           />
         </form>
       </div>
+
+      {sales.length > 0 && (
+        <section className="mb-10" data-testid="sales-section">
+          <h2 className="font-display text-2xl font-bold">{ts("sectionTitle")}</h2>
+          <p className="mb-4 mt-1 text-sm text-ink/60">{ts("sectionIntro")}</p>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {sales.map((s) => (
+              <SaleCard key={s.slug} sale={s} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {auctions.length === 0 ? (
         <div className="py-16 text-center" data-testid="no-results">

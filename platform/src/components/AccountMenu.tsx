@@ -25,9 +25,12 @@ export default function AccountMenu({
   user,
   unreadCount,
   variant,
+  sellEnabled = true,
 }: {
   user: AccountUser;
   unreadCount: number;
+  /** fluxul vechi, prin care crescătorii își puneau singuri porumbeii */
+  sellEnabled?: boolean;
   /** "icon" = buton rotund (telefon); "full" = nume sau butoane text (desktop) */
   variant: "icon" | "full";
 }) {
@@ -58,7 +61,8 @@ export default function AccountMenu({
     router.refresh();
   };
 
-  const canSell = user && (user.role === "ADMIN" || user.sellerStatus === "APPROVED");
+  const canSell =
+    sellEnabled && user && (user.role === "ADMIN" || user.sellerStatus === "APPROVED");
 
   // Pe desktop, vizitatorul nelogat vede direct cele doua butoane — e mai clar
   // decat sa ascunda autentificarea sub un meniu.

@@ -9,4 +9,6 @@ export default function globalSetup() {
   execSync("npx prisma migrate deploy", { cwd: root, env, stdio: "inherit" });
   // seed-ul goleste si repopuleaza toate tabelele — resetul efectiv al datelor de test
   execSync("npx tsx prisma/seed.ts", { cwd: root, env, stdio: "inherit" });
+  // setarile cu care au fost scrise testele existente (vezi fisierul)
+  execSync("npx tsx tests/e2e/fixtures/pin-test-settings.ts", { cwd: root, env, stdio: "inherit" });
 }

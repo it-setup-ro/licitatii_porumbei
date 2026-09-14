@@ -10,15 +10,21 @@ import { z } from "zod";
  * divulge cine e.
  */
 
-/** Litere, cifre, cratimă și underscore. Fără spații, fără diacritice. */
-export const NICKNAME_RE = /^[A-Za-z0-9_-]{3,20}$/;
+/**
+ * Porecla e liberă, cum a cerut clientul: „poreclă / nume / cod". Litere, și cu
+ * diacritice, cifre, spații, punct, cratimă, underscore; 2–30 de caractere.
+ * Începe și se termină cu literă sau cifră, ca să nu existe „Ionut" și
+ * „Ionut_" care arată la fel în istoric.
+ */
+export const NICKNAME_RE = /^[\p{L}\p{N}][\p{L}\p{N} ._-]{0,28}[\p{L}\p{N}]$/u;
 
 export const nicknameSchema = z
   .string()
   .trim()
-  .min(3, "Minim 3 caractere")
-  .max(20, "Maxim 20 de caractere")
-  .regex(NICKNAME_RE, "Doar litere, cifre, - și _ (fără spații sau diacritice)");
+  .min(2, "Minim 2 caractere")
+  .max(30, "Maxim 30 de caractere")
+  .regex(NICKNAME_RE, "Litere, cifre, spații, punct, - și _; începe și se termină cu literă sau cifră")
+  .refine((s) => !/\s{2,}/.test(s), "Un singur spațiu între cuvinte");
 
 const DIACRITICE: Record<string, string> = {
   ă: "a", â: "a", î: "i", ș: "s", ş: "s", ț: "t", ţ: "t",

@@ -11,6 +11,7 @@ import SiteHeader from "@/components/SiteHeader";
 import TopBar from "@/components/TopBar";
 import { cartItemCount } from "@/lib/cart";
 import SiteFooter from "@/components/SiteFooter";
+import AccountStatusBanner from "@/components/AccountStatusBanner";
 import "../globals.css";
 
 const display = Playfair_Display({ variable: "--font-display", subsets: ["latin"] });
@@ -89,7 +90,14 @@ export default async function LocaleLayout({
             cartCount={cartCount}
             contestLinks={contestLinks}
             latestArticles={latestArticles}
+            sellEnabled={settings.breederSelfServiceEnabled}
           />
+          {user &&
+            settings.accountApprovalRequired &&
+            user.role !== "ADMIN" &&
+            user.accountStatus !== "APPROVED" && (
+              <AccountStatusBanner status={user.accountStatus} />
+            )}
           <main className="flex-1">{children}</main>
           <SiteFooter
             siteName={settings.siteName}

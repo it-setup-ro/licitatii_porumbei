@@ -19,6 +19,7 @@ import { describeTraits, parseTraits } from "@/lib/pigeon-traits";
 import StarRating from "@/components/StarRating";
 import ZoomableImage from "@/components/ZoomableImage";
 import WatchButton from "@/components/WatchButton";
+import { lotLabel } from "@/lib/lots";
 
 /**
  * Pagina unui lot, in structura de pe pipa.be:
@@ -57,6 +58,7 @@ export default async function AuctionDetailPage({
         },
       },
       bids: { orderBy: { createdAt: "desc" }, take: 100, include: { bidder: true } },
+      lot: { include: { sale: { include: { breeder: true } } } },
       _count: { select: { bids: true } },
     },
   });
@@ -65,6 +67,12 @@ export default async function AuctionDetailPage({
   const [settings, user] = await Promise.all([getSettings(), getCurrentUser()]);
   const pigeon = auction.pigeon;
   const seller = pigeon.seller;
+  // Porumbeii din licitațiile pe loturi îi introduce administratorul; vânzătorul
+  // pe care îl vede cumpărătorul e crescătorul licitației, nu contul adminului.
+  const lotSale = auction.lot?.sale ?? null;
+  const breeder = lotSale?.breeder ?? null;
+  const lotLabelText =
+    auction.lot && auction.lotPosition ? lotLabel(auction.lot.number, auction.lotPosition) : null;
 
   const sellerStats = await prisma.review.aggregate({
     where: { sellerId: seller.id, status: "VISIBLE" },
@@ -88,10 +96,15 @@ export default async function AuctionDetailPage({
     where: {
       status: "LIVE",
       id: { not: auction.id },
-      OR: [
-        { sellerId: auction.sellerId },
-        ...(pigeon.strain ? [{ pigeon: { strain: pigeon.strain } }] : []),
-      ],
+      // din același lot, dacă face parte dintr-unul; altfel de la același vânzător sau linie
+      ...(auction.lotId
+        ? { lotId: auction.lotId }
+        : {
+            OR: [
+              { sellerId: auction.sellerId },
+              ...(pigeon.strain ? [{ pigeon: { strain: pigeon.strain } }] : []),
+            ],
+          }),
     },
     include: cardInclude,
     orderBy: { endsAt: "asc" },
@@ -99,7 +112,7 @@ export default async function AuctionDetailPage({
   });
   // Numele sub care apare contul care vinde. Cand „Oferit de" spune acelasi
   // lucru, nu-l mai repetam in fisa — ar arata ca doua informatii diferite.
-  const sellerLabel = seller.sellerCompany ?? seller.name;
+  const sellerLabel = breeder?.name ?? seller.sellerCompany ?? seller.name;
   const tagline = currentLocale === "en" ? pigeon.taglineEn : pigeon.taglineRo;
   const desc = currentLocale === "en" ? pigeon.descEn : pigeon.descRo;
 
@@ -160,6 +173,25 @@ export default async function AuctionDetailPage({
         <div className="space-y-8 lg:col-start-1 lg:row-start-1">
           {/* Serie inel · nume · rand scurt */}
           <div>
+            {lotSale && lotLabelText && (
+              <nav
+                className="mb-2 flex flex-wrap items-center gap-x-2 text-sm"
+                data-testid="lot-breadcrumb"
+              >
+                <Link
+                  href={`/sales/${lotSale.slug}`}
+                  className="font-semibold text-wing-blue hover:underline"
+                >
+                  {currentLocale === "en" ? lotSale.titleEn : lotSale.titleRo}
+                </Link>
+                <span aria-hidden="true" className="text-ink/30">
+                  ›
+                </span>
+                <span className="font-display font-bold" data-testid="lot-label">
+                  {t("lotLabel", { label: lotLabelText })}
+                </span>
+              </nav>
+            )}
             {/* Identitatea, pe un rand: serie · an · sex. Erau doar in fisa de mai
                 jos, iar cine se uita la un lot vrea sa le vada langa nume. */}
             <p
@@ -224,8 +256,18 @@ export default async function AuctionDetailPage({
               userIsLeading={leadingBid?.bidderId === user?.id}
               winAnimationEnabled={settings.winAnimationEnabled}
               winSoundEnabled={settings.winSoundEnabled}
-              snipeMinutes={settings.snipeWindowMinutes}
-              extensionMinutes={settings.extensionMinutes}
+              snipeMinutes={auction.lot?.snipeWindowMinutes ?? settings.snipeWindowMinutes}
+              extensionMinutes={auction.lot?.extensionMinutes ?? settings.extensionMinutes}
+              accountBlocked={
+                user &&
+                settings.accountApprovalRequired &&
+                user.role !== "ADMIN" &&
+                user.accountStatus !== "APPROVED"
+                  ? user.accountStatus === "REJECTED"
+                    ? "REJECTED"
+                    : "PENDING"
+                  : null
+              }
             />
           )}
 
@@ -255,10 +297,28 @@ export default async function AuctionDetailPage({
             {pigeon.pedigreeUrl && <Trust label={t("trustPedigree")} />}
             <Trust label={t("trustPayment")} />
             <Trust label={t("trustShipping")} />
-            {seller.sellerStatus === "APPROVED" && <Trust label={t("trustSeller")} />}
+            {(breeder || seller.sellerStatus === "APPROVED") && <Trust label={t("trustSeller")} />}
           </ul>
 
-          {/* Crescatorul (contul de pe platforma) */}
+          {/* Crescatorul: al licitatiei pe loturi, sau contul care vinde (fluxul vechi) */}
+          {breeder && lotSale ? (
+            <div className="rounded-2xl border border-ink/10 bg-white p-5" data-testid="breeder-box">
+              <p className="text-xs uppercase tracking-wide text-ink/50">{t("seller")}</p>
+              <p className="font-display mt-1 text-lg font-bold">{breeder.name}</p>
+              {(breeder.city || breeder.country) && (
+                <p className="text-sm text-ink/60">
+                  ⌂ {[breeder.city, breeder.country].filter(Boolean).join(", ")}
+                </p>
+              )}
+              <Link
+                href={`/sales/${lotSale.slug}`}
+                className="mt-3 inline-block text-sm font-semibold text-wing-blue hover:underline"
+                data-testid="breeder-sale-link"
+              >
+                {t("allBreederPigeons")} →
+              </Link>
+            </div>
+          ) : (
           <div className="rounded-2xl border border-ink/10 bg-white p-5" data-testid="seller-card">
             <p className="text-xs uppercase tracking-wide text-ink/50">{t("seller")}</p>
             <p className="font-display mt-1 text-lg font-bold">{sellerLabel}</p>
@@ -278,6 +338,7 @@ export default async function AuctionDetailPage({
               {t("viewSellerProfile")} →
             </Link>
           </div>
+          )}
         </div>
 
         <div className="space-y-8 lg:col-start-1 lg:row-start-2">

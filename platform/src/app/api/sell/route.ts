@@ -75,6 +75,11 @@ const schema = z.object({
 export async function POST(req: Request) {
   try {
     const seller = await requireApprovedSeller();
+    // Clientul: porumbeii îi pun doar administratorii. Fluxul vechi rămâne doar
+    // pentru ei, cât timp nu e pornit din Setări.
+    if (seller.role !== "ADMIN" && !(await getSettings()).breederSelfServiceEnabled) {
+      return jsonError("BREEDER_SELF_SERVICE_OFF", 403);
+    }
     const body = schema.safeParse(await req.json());
     if (!body.success) return jsonError("VALIDATION", 422);
     const d = body.data;

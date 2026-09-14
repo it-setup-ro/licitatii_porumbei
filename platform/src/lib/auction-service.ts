@@ -11,6 +11,7 @@ import {
 export { reserveState };
 import { emitAuctionEvent } from "./events";
 import { notify } from "./notify";
+import { notifyLotsEnding } from "./lot-notices";
 
 /**
  * Serviciul de licitatii: leaga logica pura (bidding.ts) de DB.
@@ -28,7 +29,9 @@ export type PlaceBidResult =
         | "OWN_AUCTION"
         | "BELOW_MINIMUM"
         | "BID_LIMIT_EXCEEDED"
-        | "SELLER_NOT_ALLOWED";
+        | "SELLER_NOT_ALLOWED"
+        | "ACCOUNT_PENDING"
+        | "ACCOUNT_REJECTED";
       minimumCents?: number;
       limitCents?: number;
     };
@@ -70,6 +73,12 @@ async function placeBidOnce(
 
   const bidder = await prisma.user.findUnique({ where: { id: bidderId } });
   if (!bidder || bidder.suspendedAt) return { ok: false, error: "NOT_FOUND" };
+
+  // Conturile noi le aprobă administratorul înainte să poată licita.
+  if (settings.accountApprovalRequired && bidder.role !== "ADMIN") {
+    if (bidder.accountStatus === "REJECTED") return { ok: false, error: "ACCOUNT_REJECTED" };
+    if (bidder.accountStatus !== "APPROVED") return { ok: false, error: "ACCOUNT_PENDING" };
+  }
 
   // Limita pentru conturi noi (KYC hibrid, client-decisions B8)
   const limit =
@@ -126,14 +135,16 @@ async function placeBidOnce(
       return;
     }
 
-    // Anti-sniping
+    // Anti-sniping. Porumbeii dintr-un lot folosesc regulile înghețate la
+    // pornirea lotului, nu pe cele de acum din Setări.
+    const lot = auction.lotId ? await tx.lot.findUnique({ where: { id: auction.lotId } }) : null;
     const newEndsAt = computeExtension({
       now,
       endsAt: auction.endsAt,
-      snipeWindowMinutes: settings.snipeWindowMinutes,
-      extensionMinutes: settings.extensionMinutes,
+      snipeWindowMinutes: lot?.snipeWindowMinutes ?? settings.snipeWindowMinutes,
+      extensionMinutes: lot?.extensionMinutes ?? settings.extensionMinutes,
       extensionsCount: auction.extensionsCount,
-      maxExtensions: settings.maxExtensions,
+      maxExtensions: lot?.maxExtensions ?? settings.maxExtensions,
     });
 
     if (outcome.raisedOwnCeiling && leadingBid) {
@@ -268,6 +279,8 @@ async function notifyEndingSoon(now: Date) {
     where: {
       status: "LIVE",
       endingNotifiedAt: null,
+      // porumbeii din loturi primesc un singur aviz pe lot, grupat (lot-notices)
+      lotId: null,
       endsAt: { gt: now, lte: prag },
     },
     include: { pigeon: true },
@@ -303,6 +316,13 @@ async function notifyEndingSoon(now: Date) {
 export async function sweepAuctions(): Promise<{ started: number; closed: number }> {
   const now = new Date();
 
+  // loturile programate pornesc la ora lor; porumbeii lor pornesc mai jos,
+  // odată cu celelalte licitații programate
+  await prisma.lot.updateMany({
+    where: { status: "SCHEDULED", startsAt: { lte: now } },
+    data: { status: "LIVE" },
+  });
+
   const toStart = await prisma.auction.findMany({
     where: { status: "SCHEDULED", startsAt: { lte: now } },
   });
@@ -315,6 +335,7 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
   });
 
   await notifyEndingSoon(now);
+  await notifyLotsEnding(now);
 
   let closed = 0;
   for (const auction of due) {
@@ -349,8 +370,14 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
       });
 
       if (adjudecat && winningBid) {
-        const commissionPercent =
-          fresh.listingType === "ASSISTED"
+        // Porumbeii dintr-un lot: comisionul stabilit pe licitația crescătorului.
+        const saleOfLot = fresh.lotId
+          ? (await tx.lot.findUnique({ where: { id: fresh.lotId }, include: { sale: true } }))
+              ?.sale
+          : null;
+        const commissionPercent = saleOfLot
+          ? saleOfLot.commissionPercent
+          : fresh.listingType === "ASSISTED"
             ? settings.commissionPercent + settings.assistedExtraPercent
             : settings.commissionPercent;
         await tx.order.create({
@@ -414,5 +441,23 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
       }
     }
   }
+  // Un lot se închide când nu mai are niciun porumbel deschis: prelungirile pot
+  // ține unii porumbei după ora lotului.
+  const lotsDue = await prisma.lot.findMany({
+    where: { status: "LIVE", endsAt: { lte: now } },
+    select: { id: true },
+  });
+  for (const lot of lotsDue) {
+    const open = await prisma.auction.count({
+      where: { lotId: lot.id, status: { in: ["LIVE", "SCHEDULED"] } },
+    });
+    if (open === 0) {
+      await prisma.lot.update({
+        where: { id: lot.id },
+        data: { status: "CLOSED", closedAt: new Date() },
+      });
+    }
+  }
+
   return { started: toStart.length, closed };
 }

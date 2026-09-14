@@ -1,5 +1,6 @@
 import { prisma } from "./db";
 import type { AuctionCardData } from "@/components/AuctionCard";
+import { lotLabel } from "./lots";
 
 type AuctionWithCard = {
   id: string;
@@ -20,11 +21,14 @@ type AuctionWithCard = {
     media: { url: string }[];
   };
   _count: { bids: number };
+  lotPosition?: number | null;
+  lot?: { number: number } | null;
 };
 
 export const cardInclude = {
   pigeon: { include: { media: { orderBy: { sortIdx: "asc" as const }, take: 1 } } },
   _count: { select: { bids: true } },
+  lot: { select: { number: true } },
 };
 
 export function toCardData(a: AuctionWithCard): AuctionCardData {
@@ -37,6 +41,7 @@ export function toCardData(a: AuctionWithCard): AuctionCardData {
     startsAt: a.startsAt,
     endsAt: a.endsAt,
     bidCount: a._count.bids,
+    lotLabel: a.lot && a.lotPosition ? lotLabel(a.lot.number, a.lotPosition) : null,
     pigeon: {
       name: a.pigeon.name,
       taglineRo: a.pigeon.taglineRo,

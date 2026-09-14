@@ -179,7 +179,8 @@ export function computeExtension(params: {
 }): Date | null {
   const { now, endsAt, snipeWindowMinutes, extensionMinutes, extensionsCount, maxExtensions } =
     params;
-  if (extensionsCount >= maxExtensions) return null;
+  // 0 = fără limită: „până nu mai licitează nimeni" (cerința clientului)
+  if (maxExtensions > 0 && extensionsCount >= maxExtensions) return null;
   const msLeft = endsAt.getTime() - now.getTime();
   if (msLeft <= 0) return null;
   if (msLeft > snipeWindowMinutes * 60_000) return null;

@@ -13,44 +13,58 @@ datasource db {
 }
 
 model User {
-  id               String    @id @default(cuid())
-  email            String    @unique
-  passwordHash     String
-  name             String
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  passwordHash        String
+  name                String
   /// Numele sub care apare in istoricul ofertelor. Public — numele real nu
   /// se arata niciodata acolo.
-  nickname         String?   @unique
-  phone            String?
-  locale           String    @default("ro")
-  role             String    @default("BUYER") // BUYER | SELLER | ADMIN
-  sellerStatus     String? // PENDING | APPROVED | REJECTED
-  sellerCompany    String?
+  nickname            String?   @unique
+  phone               String?
+  /// Adresa, cerută la înregistrare de la licitațiile pe loturi.
+  addressStreet       String?
+  addressCity         String?
+  addressCounty       String?
+  addressPostalCode   String?
+  addressCountry      String?
+  locale              String    @default("ro")
+  role                String    @default("BUYER") // BUYER | SELLER | ADMIN
+  sellerStatus        String? // PENDING | APPROVED | REJECTED
+  sellerCompany       String?
   /// Localitatea crescatoriei. Apare pe cardul de pe prima pagina si pe profil.
-  sellerCity       String?
-  sellerCui        String?
-  sellerIban       String?
-  sellerBio        String?
-  emailVerifiedAt  DateTime?
-  phoneVerifiedAt  DateTime?
-  bidLimitOverride Int? // in centi; null = limita default platforma pt conturi noi
-  completedOrders  Int       @default(0)
-  suspendedAt      DateTime?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  sellerCity          String?
+  sellerCui           String?
+  sellerIban          String?
+  sellerBio           String?
+  emailVerifiedAt     DateTime?
+  phoneVerifiedAt     DateTime?
+  bidLimitOverride    Int? // in centi; null = limita default platforma pt conturi noi
+  completedOrders     Int       @default(0)
+  suspendedAt         DateTime?
+  /// Aprobarea contului de către administrator: PENDING | APPROVED | REJECTED.
+  /// Conturile de dinainte rămân aprobate — valoarea implicită e APPROVED.
+  accountStatus       String    @default("APPROVED")
+  accountReviewedAt   DateTime?
+  accountReviewedById String?
+  accountRejectReason String?
+  /// A bifat „Vreau să primesc un aviz când se încheie o licitație".
+  notifyAuctionEnding Boolean   @default(false)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 
   pigeons         Pigeon[]
   bids            Bid[]
   watchlist       WatchItem[]
-  ordersAsBuyer   Order[]        @relation("buyer")
-  ordersAsSeller  Order[]        @relation("seller")
-  reviewsGiven    Review[]       @relation("reviewAuthor")
-  reviewsReceived Review[]       @relation("reviewSeller")
+  ordersAsBuyer   Order[]              @relation("buyer")
+  ordersAsSeller  Order[]              @relation("seller")
+  reviewsGiven    Review[]             @relation("reviewAuthor")
+  reviewsReceived Review[]             @relation("reviewSeller")
   notifications   Notification[]
   auditLogs       AuditLog[]
   resetTokens     PasswordResetToken[]
-  auctionsWon     Auction[]      @relation("winner")
-  approvedLots    Auction[]      @relation("approver")
-  shopOrders      ShopOrder[]    @relation("shopBuyer")
+  auctionsWon     Auction[]            @relation("winner")
+  approvedLots    Auction[]            @relation("approver")
+  shopOrders      ShopOrder[]          @relation("shopBuyer")
 }
 
 /// Link de resetare a parolei. In baza se tine doar amprenta (sha256) —
@@ -71,28 +85,28 @@ model PasswordResetToken {
 }
 
 model Pigeon {
-  id          String  @id @default(cuid())
-  sellerId    String
-  seller      User    @relation(fields: [sellerId], references: [id])
-  ringNumber  String // ex: RO 2024 123456
-  birthYear   Int
-  sex         String // M | F | U
-  color       String?
-  strain      String? // linia/rasa (ex. Janssen, Van Loon)
-  category    String  @default("RACING") // RACING | FANCY
+  id           String  @id @default(cuid())
+  sellerId     String
+  seller       User    @relation(fields: [sellerId], references: [id])
+  ringNumber   String // ex: RO 2024 123456
+  birthYear    Int
+  sex          String // M | F | U
+  color        String?
+  strain       String? // linia/rasa (ex. Janssen, Van Loon)
+  category     String  @default("RACING") // RACING | FANCY
   /// Numele porumbelului, ca pe pipa.be ("Mittwoch"). Nu se traduce.
-  name        String
+  name         String
   /// Randul scurt de sub nume ("1. As & Medalie de argint!"). Bilingv.
-  taglineRo   String?
-  taglineEn   String?
-  descRo      String?
-  descEn      String?
+  taglineRo    String?
+  taglineEn    String?
+  descRo       String?
+  descEn       String?
   /// Cine l-a reprodus (crescatorul de origine) si cine il ofera la licitatie.
   /// Text liber: de multe ori nu sunt conturi pe platforma.
-  bredBy      String?
-  offeredBy   String?
+  bredBy       String?
+  offeredBy    String?
   /// Scanul pedigree-ului (poza sau PDF). Arborele pe campuri ramane optional.
-  pedigreeUrl String?
+  pedigreeUrl  String?
   pedigreeJson String? // arbore genealogic serializat JSON (max 4 generatii)
   /// Caracteristicile din fisa de tip pipa (ochi, constitutie, aripa) — JSON,
   /// cu chei si valori dintr-o lista fixa (vezi src/lib/pigeon-traits.ts)
@@ -165,15 +179,21 @@ model Auction {
   approvedById         String?
   approvedBy           User?     @relation("approver", fields: [approvedById], references: [id])
   closedAt             DateTime?
+  /// Lotul din care face parte. null = licitație individuală, din fluxul vechi.
+  lotId                String?
+  lot                  Lot?      @relation(fields: [lotId], references: [id])
+  /// Poziția în lot: 4 → „Lotul 1.04".
+  lotPosition          Int?
 
-  bids      Bid[]
-  watchers  WatchItem[]
-  order     Order?
+  bids     Bid[]
+  watchers WatchItem[]
+  order    Order?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([status, endsAt])
+  @@index([lotId])
 }
 
 model Bid {
@@ -192,34 +212,34 @@ model Bid {
 
 model WatchItem {
   userId    String
-  user      User    @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   auctionId String
-  auction   Auction @relation(fields: [auctionId], references: [id])
+  auction   Auction  @relation(fields: [auctionId], references: [id])
   createdAt DateTime @default(now())
 
   @@id([userId, auctionId])
 }
 
 model Order {
-  id               String    @id @default(cuid())
-  auctionId        String    @unique
-  auction          Auction   @relation(fields: [auctionId], references: [id])
-  buyerId          String
-  buyer            User      @relation("buyer", fields: [buyerId], references: [id])
-  sellerId         String
-  seller           User      @relation("seller", fields: [sellerId], references: [id])
-  amountCents      Int // pretul de adjudecare
-  commissionCents  Int // comisionul platformei (din vanzator)
-  currency         String    @default("EUR")
-  status           String    @default("PENDING_PAYMENT") // PENDING_PAYMENT | PAID | SHIPPED | DELIVERED | DISPUTED | CANCELLED
-  paymentRef       String?
-  paidAt           DateTime?
-  payoutStatus     String    @default("PENDING") // PENDING | SCHEDULED | RELEASED
-  payoutAt         DateTime?
-  shippingNote     String?
-  review           Review?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  id              String    @id @default(cuid())
+  auctionId       String    @unique
+  auction         Auction   @relation(fields: [auctionId], references: [id])
+  buyerId         String
+  buyer           User      @relation("buyer", fields: [buyerId], references: [id])
+  sellerId        String
+  seller          User      @relation("seller", fields: [sellerId], references: [id])
+  amountCents     Int // pretul de adjudecare
+  commissionCents Int // comisionul platformei (din vanzator)
+  currency        String    @default("EUR")
+  status          String    @default("PENDING_PAYMENT") // PENDING_PAYMENT | PAID | SHIPPED | DELIVERED | DISPUTED | CANCELLED
+  paymentRef      String?
+  paidAt          DateTime?
+  payoutStatus    String    @default("PENDING") // PENDING | SCHEDULED | RELEASED
+  payoutAt        DateTime?
+  shippingNote    String?
+  review          Review?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
 
 model Review {
@@ -248,14 +268,14 @@ model Review {
 }
 
 model Notification {
-  id        String    @id @default(cuid())
-  userId    String
-  user      User      @relation(fields: [userId], references: [id])
-  type      String // OUTBID | AUCTION_ENDING | AUCTION_WON | AUCTION_LOST | SELLER_SOLD | LOT_APPROVED | LOT_REJECTED | ORDER_PAID | SELLER_APPROVED | REVIEW_RECEIVED
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  type       String // OUTBID | AUCTION_ENDING | AUCTION_WON | AUCTION_LOST | SELLER_SOLD | LOT_APPROVED | LOT_REJECTED | ORDER_PAID | SELLER_APPROVED | REVIEW_RECEIVED
   paramsJson String // parametri pt randare localizata
-  link      String?
-  readAt    DateTime?
-  createdAt DateTime  @default(now())
+  link       String?
+  readAt     DateTime?
+  createdAt  DateTime  @default(now())
 
   @@index([userId, readAt])
 }
@@ -293,19 +313,19 @@ model AuditLog {
 
 /// Produse pentru columbofili (hrana, vitamine, accesorii, inele).
 model Product {
-  id          String  @id @default(cuid())
-  slug        String  @unique
-  nameRo      String
-  nameEn      String
-  descRo      String?
-  descEn      String?
-  category    String  @default("FEED") // FEED | SUPPLEMENTS | ACCESSORIES | RINGS | OTHER
-  priceCents  Int
-  currency    String  @default("EUR")
-  stock       Int     @default(0)
-  imageUrl    String?
-  active      Boolean @default(true)
-  sortIdx     Int     @default(0)
+  id         String  @id @default(cuid())
+  slug       String  @unique
+  nameRo     String
+  nameEn     String
+  descRo     String?
+  descEn     String?
+  category   String  @default("FEED") // FEED | SUPPLEMENTS | ACCESSORIES | RINGS | OTHER
+  priceCents Int
+  currency   String  @default("EUR")
+  stock      Int     @default(0)
+  imageUrl   String?
+  active     Boolean @default(true)
+  sortIdx    Int     @default(0)
 
   items ShopOrderItem[]
 
@@ -341,16 +361,16 @@ model ShopOrder {
 }
 
 model ShopOrderItem {
-  id            String    @id @default(cuid())
-  shopOrderId   String
-  shopOrder     ShopOrder @relation(fields: [shopOrderId], references: [id], onDelete: Cascade)
-  productId     String
-  product       Product   @relation(fields: [productId], references: [id])
+  id           String    @id @default(cuid())
+  shopOrderId  String
+  shopOrder    ShopOrder @relation(fields: [shopOrderId], references: [id], onDelete: Cascade)
+  productId    String
+  product      Product   @relation(fields: [productId], references: [id])
   /// Denumirea si pretul se copiaza la momentul comenzii — daca produsul se
   /// schimba ulterior, comanda ramane cu ce a cumparat clientul efectiv.
-  nameSnapshot  String
-  priceCents    Int
-  quantity      Int
+  nameSnapshot String
+  priceCents   Int
+  quantity     Int
 }
 
 /// Articole editoriale (blog), bilingve.
@@ -367,51 +387,51 @@ model Article {
   authorName  String    @default("No.1 & Best Pigeons")
   publishedAt DateTime?
 
-  media ArticleMedia[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  media     ArticleMedia[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 
   @@index([publishedAt])
 }
 
 /// Concursuri / campionate organizate de platforma, cu loturi dedicate.
 model Contest {
-  id          String    @id @default(cuid())
-  slug        String    @unique
-  titleRo     String
-  titleEn     String
-  descRo      String?
-  descEn      String?
-  rulesRo     String?
-  rulesEn     String?
-  coverUrl    String?
-  startsAt    DateTime
-  endsAt      DateTime
-  status      String    @default("UPCOMING") // UPCOMING | ACTIVE | FINISHED
-  published   Boolean   @default(false)
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  titleRo   String
+  titleEn   String
+  descRo    String?
+  descEn    String?
+  rulesRo   String?
+  rulesEn   String?
+  coverUrl  String?
+  startsAt  DateTime
+  endsAt    DateTime
+  status    String   @default("UPCOMING") // UPCOMING | ACTIVE | FINISHED
+  published Boolean  @default(false)
   /// Concursul cu banda pe prima pagina. Unul singur: cand se pune pe unul, se
   /// stinge de pe restul. Fara niciunul, se alege automat cel in desfasurare.
-  featured    Boolean   @default(false)
+  featured  Boolean  @default(false)
 
   /// Datele de pe banda de pe prima pagina, in forma ceruta de client:
   /// destinatia scrisa mare, distanta, steagul tarii, imbarcarea si lansarea.
   /// Toate optionale — o banda arata doar rubricile completate.
-  destination     String?
+  destination   String?
   /// Capătul de jos al distanței; singurul, când nu e interval.
-  distanceKm      Int?
+  distanceKm    Int?
   /// Capătul de sus, când crescătorii au distanțe diferite: „170-240 km".
-  distanceMaxKm   Int?
+  distanceMaxKm Int?
   /// Cod ISO de doua litere (DE, RO). Steagul se compune din el la afisare,
   /// ca sa nu tinem emoji in baza.
-  countryCode     String?
-  boardingAt      DateTime?
-  boardingPlace   String?
-  releaseAt       DateTime?
+  countryCode   String?
+  boardingAt    DateTime?
+  boardingPlace String?
+  releaseAt     DateTime?
   /// Link catre o sursa de vreme pentru traseu (ex. windy.com). Fara el,
   /// rubrica „Meteo pe traseu" nu apare — nu promitem ce n-avem.
-  weatherUrl      String?
-  sloganRo        String?
-  sloganEn        String?
+  weatherUrl    String?
+  sloganRo      String?
+  sloganEn      String?
 
   auctions Auction[]
 
@@ -432,13 +452,13 @@ model ContentPage {
 
 /// Mesaje trimise din formularul de contact.
 model ContactMessage {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
   email     String
   subject   String
   message   String
   handledAt DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
   @@index([handledAt])
 }
@@ -513,4 +533,74 @@ model ShippingAgent {
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+/// Crescătorul care vinde, ca profil. Nu are cont pe site: datele le primește
+/// administratorul pe e-mail și le introduce el.
+model Breeder {
+  id        String   @id @default(cuid())
+  name      String
+  city      String?
+  country   String?
+  photoUrl  String?
+  storyRo   String?
+  storyEn   String?
+  resultsRo String?
+  resultsEn String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sales Sale[]
+}
+
+/// Licitația unui crescător — „Licitația Burca Ionuț". Până la 5 loturi.
+/// Perioada nu se ține aici: vine din loturi, ca să nu existe două ore care se
+/// contrazic.
+model Sale {
+  id                String   @id @default(cuid())
+  slug              String   @unique
+  breederId         String
+  breeder           Breeder  @relation(fields: [breederId], references: [id])
+  titleRo           String
+  titleEn           String
+  descRo            String?
+  descEn            String?
+  coverUrl          String?
+  /// Comisionul reținut crescătorului, în procente. Cumpărătorul nu îl vede și
+  /// nu plătește nimic în plus, deci se poate schimba și după pornire.
+  commissionPercent Float    @default(12)
+  createdById       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  lots Lot[]
+}
+
+/// Un lot: până la 20 de porumbei care pornesc și se închid împreună.
+model Lot {
+  id                 String    @id @default(cuid())
+  saleId             String
+  sale               Sale      @relation(fields: [saleId], references: [id])
+  number             Int
+  startsAt           DateTime
+  endsAt             DateTime
+  status             String    @default("DRAFT") // DRAFT | SCHEDULED | LIVE | CLOSED
+  /// Regulile de prelungire, înghețate la „Start lot": o schimbare în Setări
+  /// nu atinge un lot deja pornit.
+  snipeWindowMinutes Int?
+  extensionMinutes   Int?
+  /// 0 = fără limită
+  maxExtensions      Int?
+  startedAt          DateTime?
+  startedById        String?
+  /// Când a plecat avizul „se încheie în 30 de minute" — o singură dată pe lot.
+  endingNotifiedAt   DateTime?
+  closedAt           DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  auctions Auction[]
+
+  @@unique([saleId, number])
+  @@index([status, endsAt])
 }

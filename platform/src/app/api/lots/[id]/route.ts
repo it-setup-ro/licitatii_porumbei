@@ -12,6 +12,7 @@ import { sanitizeTraits } from "@/lib/pigeon-traits";
 import { editScope, needsReapproval, changedFields, appendNote } from "@/lib/lot-editing";
 import { notify } from "@/lib/notify";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
+import { lotIsLocked } from "@/lib/lots";
 
 /**
  * Modificarea unui lot de către crescător (sau de către admin, care poate orice).
@@ -88,6 +89,17 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     );
     if (scope === "NONE") return jsonError("LOT_LOCKED", 400);
 
+    // Porumbeii din licitațiile pe loturi îi modifică doar administratorii, iar
+    // după pornirea lotului nu se mai schimbă nimic din ce ține de licitare.
+    let lotStarted = false;
+    if (auction.lotId) {
+      if (!isAdmin) return jsonError("FORBIDDEN", 403);
+      const lot = await prisma.lot.findUnique({ where: { id: auction.lotId } });
+      lotStarted = Boolean(lot && lotIsLocked(lot.status, lot.startsAt, new Date()));
+    } else if (!isAdmin && !(await getSettings()).breederSelfServiceEnabled) {
+      return jsonError("BREEDER_SELF_SERVICE_OFF", 403);
+    }
+
     const payload = await req.json();
 
     // ─── lot cu oferte: doar adăugiri ───
@@ -141,6 +153,24 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     const settings = await getSettings();
     if (d.startPriceCents < settings.minStartPriceCents) {
       return jsonError("START_PRICE_TOO_LOW", 400, { minimumCents: settings.minStartPriceCents });
+    }
+
+    if (lotStarted) {
+      const mesaj = "Lotul a pornit: nu se mai schimbă.";
+      const blocate: Record<string, string> = {};
+      if (d.ringNumber !== auction.pigeon.ringNumber) blocate.ringNumber = mesaj;
+      if (d.birthYear !== auction.pigeon.birthYear) blocate.birthYear = mesaj;
+      if (d.sex !== auction.pigeon.sex) blocate.sex = mesaj;
+      if (d.startPriceCents !== auction.startPriceCents) blocate.startPriceCents = mesaj;
+      if (
+        d.reservePriceCents !== undefined &&
+        (d.reservePriceCents ?? null) !== (auction.reservePriceCents ?? null)
+      ) {
+        blocate.reservePriceCents = mesaj;
+      }
+      if (Object.keys(blocate).length > 0) {
+        return jsonError("LOT_STARTED", 409, { fields: blocate });
+      }
     }
 
     const before = {

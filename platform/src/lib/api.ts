@@ -36,13 +36,18 @@ export function handleApiError(e: unknown) {
  * Textele sunt in romana pentru ca panoul de administrare e in romana.
  */
 export function jsonValidationError(err: ZodError) {
+  return jsonError("VALIDATION", 422, { fields: validationFields(err) });
+}
+
+/** Perechile camp -> explicatie dintr-o validare esuata. */
+export function validationFields(err: ZodError): Record<string, string> {
   const fields: Record<string, string> = {};
   for (const issue of err.issues) {
     const key = issue.path.join(".");
     if (!key || fields[key]) continue; // prima problema de pe camp e destul
     fields[key] = explainIssue(issue);
   }
-  return jsonError("VALIDATION", 422, { fields });
+  return fields;
 }
 
 function explainIssue(issue: ZodIssue): string {

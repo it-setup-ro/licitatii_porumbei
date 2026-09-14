@@ -71,6 +71,17 @@ export type PlatformSettings = {
   invoiceSeries: string;
   /** UNELTE DE TEST — se sting de aici cand platforma intra pe public */
   testShortenEnabled: boolean;
+  // Licitatii pe crescatori si loturi
+  /** cati porumbei incap intr-un lot */
+  lotMaxPigeons: number;
+  /** cate loturi are o licitatie de crescator */
+  saleMaxLots: number;
+  /** cu cate minute inainte de finalul unui lot pleaca avizul */
+  endingNoticeMinutes: number;
+  /** conturile noi asteapta aprobarea administratorului inainte sa liciteze */
+  accountApprovalRequired: boolean;
+  /** crescatorii isi pot pune singuri porumbeii (fluxul vechi, oprit) */
+  breederSelfServiceEnabled: boolean;
 };
 
 export const DEFAULT_SETTINGS: PlatformSettings = {
@@ -85,9 +96,11 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   defaultDurationDays: 14,
   sellerChoosesDuration: false,
   reservePriceEnabled: true,
-  snipeWindowMinutes: 2,
-  extensionMinutes: 2,
-  maxExtensions: 50,
+  // cerinta clientului: o oferta in ultimele 10 minute prelungeste cu 10
+  snipeWindowMinutes: 10,
+  extensionMinutes: 10,
+  // 0 = fara limita: „pana nu mai liciteaza nimeni"
+  maxExtensions: 0,
   increments: [
     { upToCents: 10_000, stepCents: 500 }, // sub 100 EUR: pas 5
     { upToCents: 50_000, stepCents: 1_000 }, // 100–500: pas 10
@@ -131,6 +144,12 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   invoiceSeries: "NBP",
   // activ cat timp platforma e in testare; se stinge din Setari inainte de lansare
   testShortenEnabled: true,
+  lotMaxPigeons: 20,
+  saleMaxLots: 5,
+  endingNoticeMinutes: 30,
+  accountApprovalRequired: true,
+  // clientul: „Porumbeii îi pune doar ADMINISTRATORUL. Exclus să pună altcineva!"
+  breederSelfServiceEnabled: false,
 };
 
 type Cache = { value: PlatformSettings; at: number } | null;

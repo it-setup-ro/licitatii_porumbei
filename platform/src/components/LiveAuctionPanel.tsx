@@ -39,6 +39,8 @@ type Props = {
   winSoundEnabled: boolean;
   snipeMinutes: number;
   extensionMinutes: number;
+  /** contul nu e încă aprobat de administrator: vede licitația, dar nu licitează */
+  accountBlocked?: "PENDING" | "REJECTED" | null;
 };
 
 export default function LiveAuctionPanel(props: Props) {
@@ -190,7 +192,8 @@ export default function LiveAuctionPanel(props: Props) {
     }
   };
 
-  const canBid = status === "LIVE" && props.userId && !props.userIsSeller;
+  const canBid =
+    status === "LIVE" && props.userId && !props.userIsSeller && !props.accountBlocked;
 
   return (
     <div
@@ -375,6 +378,17 @@ export default function LiveAuctionPanel(props: Props) {
               })}
             </p>
           </div>
+        )}
+
+        {status === "LIVE" && props.userId && props.accountBlocked && (
+          <p
+            className="mt-5 rounded-xl border border-wing-blue/30 bg-wing-blue/5 px-4 py-3 text-sm"
+            data-testid="account-pending-notice"
+          >
+            {props.accountBlocked === "REJECTED"
+              ? t("errACCOUNT_REJECTED")
+              : t("errACCOUNT_PENDING")}
+          </p>
         )}
 
         {status === "LIVE" && !props.userId && (

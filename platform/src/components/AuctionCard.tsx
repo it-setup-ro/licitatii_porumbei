@@ -12,6 +12,8 @@ export type AuctionCardData = {
   startsAt: Date;
   endsAt: Date;
   bidCount: number;
+  /** „1.04" — porumbeii din licitațiile pe loturi */
+  lotLabel?: string | null;
   pigeon: {
     name: string;
     taglineRo: string | null;
@@ -61,6 +63,14 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
         </span>
       </div>
       <div className="space-y-2 p-4">
+        {auction.lotLabel && (
+          <p
+            className="text-xs font-bold uppercase tracking-wide text-wing-blue"
+            data-testid="card-lot-label"
+          >
+            {t("lotLabel", { label: auction.lotLabel })}
+          </p>
+        )}
         <h3 className="font-display text-lg font-bold leading-snug">{title}</h3>
         {tagline && (
           <p className="line-clamp-2 text-sm font-medium text-wing-orange">{tagline}</p>

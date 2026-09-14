@@ -6,7 +6,10 @@ test.describe("Pagini publice & i18n", () => {
     await expect(page.getByTestId("hero")).toBeVisible();
     await expect(page.getByTestId("feature-strip")).toBeVisible();
     await expect(page.getByTestId("breeders-strip")).toBeVisible();
-    await expect(page.getByTestId("section-live")).toContainText("Fulger Albastru");
+    // Secțiunea arată doar cele 6 licitații care se închid primele. Ce porumbei
+    // sunt acolo depinde de ce au creat testele rulate înainte (baza e comună),
+    // deci se verifică doar că secțiunea are carduri, nu un nume anume.
+    await expect(page.getByTestId("section-live").getByTestId("auction-card").first()).toBeVisible();
     await expect(page.getByTestId("home-articles")).toBeVisible();
     await expect(page.getByTestId("home-stats")).toBeVisible();
   });
@@ -19,11 +22,14 @@ test.describe("Pagini publice & i18n", () => {
     await page.getByTestId("lang-en").click();
     await expect(page).toHaveURL(/\/en$/);
     await expect(page.locator("h1")).toContainText("Passion brings people together");
-    // numele porumbelului ramane acelasi in ambele limbi; se traduce rubrica
-    await expect(page.getByTestId("section-live")).toContainText("Fulger Albastru");
-    await expect(page.getByTestId("section-live")).toContainText("Long Distance Arad");
     await page.getByTestId("lang-ro").click();
     await expect(page.locator("h1")).toContainText("Pasiunea unește oameni");
+
+    // numele porumbelului ramane acelasi in ambele limbi; se traduce rubrica
+    await page.goto("/en/auctions?q=445566");
+    const card = page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" });
+    await expect(card).toBeVisible();
+    await expect(card).toContainText("Long Distance Arad");
   });
 
   test("lista de licitatii cu taburi si cautare", async ({ page }) => {

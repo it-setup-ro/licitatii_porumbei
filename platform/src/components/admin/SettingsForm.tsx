@@ -47,7 +47,7 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
       fields: [
         { key: "snipeWindowMinutes", label: "Fereastră anti-sniping (min)", type: "number" },
         { key: "extensionMinutes", label: "Prelungire (min)", type: "number" },
-        { key: "maxExtensions", label: "Prelungiri maxime", type: "number" },
+        { key: "maxExtensions", label: "Prelungiri maxime (0 = fără limită)", type: "number" },
         { key: "newAccountBidLimitCents", label: "Limită conturi noi (cenți)", type: "number" },
         { key: "bidGuaranteeEnabled", label: "Garanții de licitare active", type: "boolean" },
         { key: "bidGuaranteeThresholdCents", label: "Prag garanție (cenți)", type: "number" },
@@ -82,6 +82,29 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
       fields: [
         { key: "emailEnabled", label: "E-mail activ", type: "boolean" },
         { key: "smsEnabled", label: "SMS activ (pregătit, dezactivat la lansare)", type: "boolean" },
+      ],
+    },
+    {
+      // Cerințele clientului din septembrie 2026
+      title: "Licitații pe loturi",
+      fields: [
+        { key: "lotMaxPigeons", label: "Porumbei într-un lot (maximum)", type: "number" },
+        { key: "saleMaxLots", label: "Loturi într-o licitație (maximum)", type: "number" },
+        {
+          key: "endingNoticeMinutes",
+          label: "Avizul de final pleacă cu (minute înainte)",
+          type: "number",
+        },
+        {
+          key: "accountApprovalRequired",
+          label: "Conturile noi așteaptă aprobarea înainte să liciteze",
+          type: "boolean",
+        },
+        {
+          key: "breederSelfServiceEnabled",
+          label: "Crescătorii își pot pune singuri porumbeii (fluxul vechi)",
+          type: "boolean",
+        },
       ],
     },
     {

@@ -179,7 +179,11 @@
     "mobileBidNow": "Bid",
     "photos": "Photos",
     "foundInTab": "{count, plural, one {One result under “{tab}”} other {# results under “{tab}”}}",
-    "noSearchResults": "No pigeon found for “{q}”."
+    "noSearchResults": "No pigeon found for “{q}”.",
+    "errACCOUNT_PENDING": "Your account is waiting for the administrator's approval. You can bid once it is approved.",
+    "errACCOUNT_REJECTED": "Your account was not approved for bidding. Please write to us from the contact page.",
+    "lotLabel": "Lot {label}",
+    "allBreederPigeons": "All pigeons in this auction"
   },
   "pigeon": {
     "ring": "Ring number",
@@ -252,9 +256,23 @@
     "samePassword": "The new password is the same as the old one.",
     "cancel": "Cancel",
     "nickname": "Public name (nickname)",
-    "nicknameHint": "The name you appear under in the bid history. Your real name is never shown there. Letters, digits, - and _.",
-    "errNickname": "Invalid nickname: 3–20 characters, only letters, digits, - and _.",
-    "errNICKNAME_TAKEN": "That nickname is taken. Please choose another."
+    "nicknameHint": "The name shown with your bids: a nickname, a name or a code. Your real name never appears there.",
+    "errNickname": "Nickname: 2 to 30 characters — letters, digits, spaces, dot, - and _.",
+    "errNICKNAME_TAKEN": "That nickname is taken. Please choose another.",
+    "addressTitle": "Address (for delivering the pigeons)",
+    "addressStreet": "Street and number",
+    "addressCity": "Town / city",
+    "addressCounty": "County / region",
+    "addressPostalCode": "Postal code",
+    "addressCountry": "Country",
+    "addressHint": "The administrator needs these to contact you and send you the pigeons after payment.",
+    "notifyEndingLabel": "Email me a notice when an auction is ending",
+    "notifyEndingHint": "30 minutes before the end. You can unsubscribe at any time.",
+    "pendingTitle": "Your account has been created",
+    "pendingText": "Your account is waiting for the administrator's approval. Until then you can browse the auctions; you can bid once approved, and you will receive an email when it is.",
+    "pendingBrowse": "Browse the auctions",
+    "approvalNote": "New accounts are approved by the administrator. Until then you can browse the auctions, but not bid.",
+    "errCheckFields": "Please check the fields marked in red."
   },
   "account": {
     "title": "My account",
@@ -288,7 +306,18 @@
     "sellerCity": "Town / city",
     "editSellerProfile": "Edit breeder details",
     "sellerProfileSaved": "Details saved.",
-    "sellerProfileError": "Details could not be saved."
+    "sellerProfileError": "Details could not be saved.",
+    "contactTitle": "Phone and address",
+    "saveProfile": "Save",
+    "profileSaved": "Your details have been saved.",
+    "profileError": "Your details could not be saved.",
+    "pendingBanner": "Your account is waiting for the administrator's approval. You can browse the auctions; you can bid once approved.",
+    "rejectedBanner": "Your account was not approved for bidding. For details, please write to us from the contact page.",
+    "statusLabel": "Account status",
+    "statusApproved": "Approved — you can bid",
+    "statusPending": "Waiting for the administrator's approval",
+    "statusRejected": "Not approved for bidding",
+    "nicknameLabel": "Nickname"
   },
   "notif": {
     "OUTBID": "You have been outbid. Current price: {price}.",
@@ -303,7 +332,11 @@
     "SELLER_REJECTED": "Your seller application was rejected.",
     "REVIEW_RECEIVED": "You received a new review ({rating}/5).",
     "LOT_EDITED_BY_ADMIN": "Lot “{lot}” was corrected by an administrator.",
-    "RESERVE_NOT_MET": "Auction “{lot}” ended at {price}, below your reserve price. The pigeon was not sold."
+    "RESERVE_NOT_MET": "Auction “{lot}” ended at {price}, below your reserve price. The pigeon was not sold.",
+    "ACCOUNT_APPROVED": "Your account has been approved. You can now bid.",
+    "ACCOUNT_REJECTED": "Your account was not approved for bidding.",
+    "LOTS_ENDING": "{count, plural, one {One lot ends} other {# lots end}} in {minutes} minutes.",
+    "LOTS_ENDING_BIDDER": "The pigeons you bid on close in {minutes} minutes."
   },
   "sell": {
     "title": "List a pigeon",
@@ -359,7 +392,9 @@
     "editReapproval": "The lot went back for approval, because you changed important details.",
     "editFailed": "Could not save. Please check the fields.",
     "reservePrice": "Reserve price ({currency}) — optional",
-    "reserveHint": "The amount below which you will not sell. Buyers do NOT see it — only whether it has been met. Leave empty to sell at any price."
+    "reserveHint": "The amount below which you will not sell. Buyers do NOT see it — only whether it has been met. Leave empty to sell at any price.",
+    "editLotStarted": "The lot has started: ring, year, sex and prices can no longer change. The rest can still be corrected.",
+    "closedForBreeders": "Pigeons are listed for auction by the administrators only. If you want to sell, please write to us from the contact page."
   },
   "orders": {
     "title": "Order",
@@ -562,5 +597,36 @@
     "agents": "Agents",
     "website": "Website",
     "empty": "No transporter or agent added yet."
+  },
+  "sales": {
+    "breederAuction": "Breeder auction",
+    "pigeons": "Pigeons",
+    "lots": "Lots",
+    "average": "Current average per pigeon",
+    "endsAtLabel": "Ends",
+    "startsAtLabel": "Starts",
+    "endedAt": "Ended",
+    "aboutBreeder": "About the breeder — {name}",
+    "results": "Results",
+    "viewGrid": "Grid",
+    "viewList": "List",
+    "lotTitle": "Lot {number}",
+    "lotStatusLIVE": "Bidding open",
+    "lotStatusSCHEDULED": "Scheduled",
+    "lotStatusCLOSED": "Closed",
+    "statusLIVE": "Live",
+    "statusUPCOMING": "Coming soon",
+    "statusCLOSED": "Ended",
+    "startsIn": "Starts in",
+    "endsIn": "Ends in",
+    "lotsCount": "{count, plural, one {one lot} other {# lots}}",
+    "pigeonsCount": "{count, plural, one {one pigeon} other {# pigeons}}",
+    "sectionTitle": "Breeder auctions",
+    "sectionIntro": "Each auction belongs to one breeder and is split into lots that close at their own time.",
+    "unsubTitle": "Auction ending notices",
+    "unsubIntro": "Press the button and you will no longer receive emails when an auction is ending. Notices about pigeons you bid on stay on.",
+    "unsubButton": "Stop these notices",
+    "unsubDone": "Done. You will no longer receive auction ending notices.",
+    "unsubBad": "This link is no longer valid."
   }
 }

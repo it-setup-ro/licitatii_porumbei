@@ -80,6 +80,12 @@ const SETTING_SCHEMAS: Record<keyof PlatformSettings, z.ZodTypeAny> = {
   companyBank: z.string().max(120),
   companyVatPayer: z.boolean(),
   invoiceSeries: z.string().max(20),
+  // Licitatii pe loturi
+  lotMaxPigeons: z.number().int().min(1).max(100),
+  saleMaxLots: z.number().int().min(1).max(50),
+  endingNoticeMinutes: z.number().int().min(5).max(1440),
+  accountApprovalRequired: z.boolean(),
+  breederSelfServiceEnabled: z.boolean(),
 };
 
 const schema = z.object({ updates: z.record(z.string(), z.unknown()) });

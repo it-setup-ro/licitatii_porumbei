@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
+import { getSettings } from "@/lib/settings";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 
 const schema = z.object({
@@ -15,6 +16,9 @@ export async function POST(req: Request) {
   try {
     const user = await requireUser();
     if (user.role === "ADMIN") return jsonError("FORBIDDEN", 403);
+    if (!(await getSettings()).breederSelfServiceEnabled) {
+      return jsonError("BREEDER_SELF_SERVICE_OFF", 403);
+    }
     if (user.sellerStatus === "APPROVED") return jsonError("ALREADY_SELLER", 400);
 
     const body = schema.safeParse(await req.json());

@@ -1,6 +1,6 @@
 # Stare proiect — No.1 & Best Pigeons
 
-**Ultima actualizare:** 11 septembrie 2026
+**Ultima actualizare:** 14 septembrie 2026
 **Site live (test):** http://207.180.241.165:3000
 **Cod:** https://github.com/it-setup-ro/licitatii_porumbei (public, branch `main`)
 **Credențiale:** `credentiale-acces.md` (local, exclus din git)
@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 54 teste unitare + 180 teste end-to-end, toate verzi.
+**Stare: funcțională cap-coadă pentru testare.** 113 teste unitare + 228 teste end-to-end, toate verzi (14 sept 2026).
 
 ---
 
@@ -44,6 +44,17 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - **Pagini de conținut** — Regulament, Info licitații, Alte info, Transport, Despre noi, Contact (cu formular)
 - Bară de sus cu **ora oficială a platformei** (ora serverului — reper comun la închiderea licitațiilor)
 
+### Licitații pe loturi (faza 1 din `CERINTE-LICITATII-PE-PARTI.md` v4)
+- **Structura clientului**: licitația unui crescător → până la 5 loturi → până la 20 de porumbei, numerotați „Lotul 1.01". Crescătorul e un profil (nume, localitate, poveste, rezultate), fără cont
+- **Doar administratorii pun porumbei** (Administrare → Licitații pe loturi). Varianta cu crescătorul care își pune singur porumbeii există, dar e oprită din Setări („breederSelfServiceEnabled")
+- **Fiecare lot are ora lui de start și de final și butonul „Start lot"**. Un lot pornit rămâne pornit: orele, prețul și porumbeii nu se mai schimbă. Un lot cu ora de start în viitor devine „Programat" și pornește singur
+- **Prelungirea 10 / 10, nelimitată**, setabilă din Setări și înghețată pe lot în momentul pornirii
+- **Comisionul se stabilește pe fiecare licitație** (5, 10, 15, 23 %…); plata se face în afara site-ului
+- **Pagina publică a licitației** `/sales/<slug>`: copertă, crescător, câți porumbei, media curentă, loturile pliabile cu cronometru, comutator Grilă / Listă. Loturile în ciornă nu se văd. Pe pagina porumbelului: calea „Licitația › Lotul 1.01" și crescătorul în locul contului de admin
+- **Avizul de 30 de minute**: un singur e-mail pe om, oricâte loturi s-ar închide. Cine a licitat primește lista porumbeilor lui și dacă e pe primul loc; cine a bifat avizele primește un aviz general, cu link de dezabonare semnat
+- **Conturile noi se aprobă de admin** (Administrare → Conturi de aprobat). Înregistrarea cere nume, telefon, adresă, e-mail și nickname; până la aprobare contul vede tot, dar nu licitează
+- **Administratori** se adaugă și se retrag din Administrare → Administratori (nu te poți retrage singur, nici pe ultimul)
+
 ### Cont
 - Înregistrare, autentificare, cerere de cont crescător (aprobată manual de admin)
 - **Datele crescătoriei** (denumire, localitate, prezentare) se corectează din Contul meu. IBAN-ul și CUI-ul nu — o schimbare tăcută de cont bancar e tiparul unei fraude; acelea rămân la admin
@@ -72,7 +83,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 | 2 | **Plăți reale (Stripe)** | Acum sunt simulate — oricine poate marca o comandă „plătită" fără să plătească. Abstracția există în `src/lib/payments.ts` | Daniel (cont Stripe) |
 | 3 | **Schimbă parola PostgreSQL locală** | A fost publică pe GitHub și rămâne în istoricul git | Daniel |
 | 4 | **Șterge conturile demo** înainte de public | `admin@nbp.test/admin1234` e scris în README | Daniel |
-| 5 | **E-mail real** | Acum notificările se scriu doar în tabelul `EmailLog`, vizibil în Administrare → E-mailuri. **Resetarea parolei depinde de asta**: până atunci, linkul se ia din acea pagină sau se generează din Utilizatori. De ales: Resend / Brevo / SES | Daniel |
+| 5 | **E-mail real** | Codul e gata: orice e-mail se scrie în Administrare → E-mailuri și, dacă în `.env` există `SMTP_URL` (+ `SMTP_FROM`), pleacă și prin SMTP (`src/lib/mailer.ts`). Merge cu orice furnizor: Brevo, SES, Mailgun, contul firmei. **Resetarea parolei, aprobarea conturilor și avizul de 30 de minute depind de asta** | Daniel (alege furnizorul, pune datele în `.env`) |
 | 6 | Avocat (T&C, GDPR) și contabil (TVA, e-Factura, DAC7) | Vezi `client-decisions.md` secțiunea E | Daniel |
 | 7 | Upload imagini pe stocare externă (S3) | Doar dacă se trece pe mai multe servere | mai târziu |
 | 8 | Redis pentru actualizările live | Doar la scalare pe mai multe instanțe | mai târziu |
@@ -171,3 +182,5 @@ platform/src/
 | 10 sep | Paletă nouă (alb / bleu cer / auriu / bleumarin), zona de licitație refăcută, preț de rezervă, nickname-uri, porumbei similari, bară fixă pe telefon |
 | 10 sep | Bară de progres la încărcare; reparat: suma minimă nu se actualiza pe al doilea ecran |
 | 29 aug | Editarea loturilor de către crescător; clipuri până la 5 min (300 MB, scrise direct pe disc); an+sex în antetul lotului; mărirea pozelor |
+| 11 sep | Pagina principală după macheta clientului, banda concursului, newsletter GDPR, căutare fără diacritice, transportatori și agenți ca listă de carduri |
+| 14 sep | Faza 1 a licitațiilor pe loturi: crescător → licitație → loturi cu „Start lot", prelungire 10/10 înghețată, comision pe licitație, conturi aprobate de admin, pagina publică a licitației, avizul de 30 de minute, trimitere SMTP |

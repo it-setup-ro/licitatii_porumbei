@@ -131,8 +131,8 @@ export default function LotEditForm({
     setError(
       data.error === "START_PRICE_TOO_LOW"
         ? t("startPriceMin", { min: formatMoney(data.minimumCents, currency, locale) })
-        : data.error === "LOT_LOCKED"
-          ? t("editFailed")
+        : data.error === "LOT_STARTED"
+          ? t("editLotStarted")
           : t("editFailed")
     );
   };

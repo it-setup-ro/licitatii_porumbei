@@ -179,7 +179,11 @@
     "mobileBidNow": "Licitează",
     "photos": "Foto",
     "foundInTab": "{count, plural, one {Un rezultat la „{tab}”} few {# rezultate la „{tab}”} other {# de rezultate la „{tab}”}}",
-    "noSearchResults": "Niciun porumbel găsit pentru „{q}”."
+    "noSearchResults": "Niciun porumbel găsit pentru „{q}”.",
+    "errACCOUNT_PENDING": "Contul tău așteaptă aprobarea administratorului. Vei putea licita după ce e aprobat.",
+    "errACCOUNT_REJECTED": "Contul tău nu a fost aprobat pentru licitare. Scrie-ne din pagina de contact.",
+    "lotLabel": "Lotul {label}",
+    "allBreederPigeons": "Toți porumbeii licitației"
   },
   "pigeon": {
     "ring": "Serie inel",
@@ -252,9 +256,23 @@
     "samePassword": "Parola nouă e aceeași cu cea veche.",
     "cancel": "Renunță",
     "nickname": "Nume public (nickname)",
-    "nicknameHint": "Numele sub care apari în istoricul ofertelor. Numele tău real nu se arată acolo niciodată. Litere, cifre, - și _.",
-    "errNickname": "Nickname invalid: 3–20 caractere, doar litere, cifre, - și _.",
-    "errNICKNAME_TAKEN": "Nickname-ul e deja luat. Alege altul."
+    "nicknameHint": "Numele care apare la oferte: poreclă, nume sau cod. Numele tău real nu apare acolo.",
+    "errNickname": "Porecla: între 2 și 30 de caractere — litere, cifre, spații, punct, - și _.",
+    "errNICKNAME_TAKEN": "Nickname-ul e deja luat. Alege altul.",
+    "addressTitle": "Adresa (pentru livrarea porumbeilor)",
+    "addressStreet": "Strada și numărul",
+    "addressCity": "Localitatea",
+    "addressCounty": "Județul",
+    "addressPostalCode": "Codul poștal",
+    "addressCountry": "Țara",
+    "addressHint": "Administratorul are nevoie de ele ca să te contacteze și să-ți trimită porumbeii după plată.",
+    "notifyEndingLabel": "Vreau să primesc un aviz pe e-mail când se încheie o licitație",
+    "notifyEndingHint": "Cu 30 de minute înainte de final. Te poți dezabona oricând.",
+    "pendingTitle": "Contul a fost creat",
+    "pendingText": "Contul tău așteaptă aprobarea administratorului. Până atunci poți vedea licitațiile; vei putea licita după aprobare și vei primi un e-mail când contul e aprobat.",
+    "pendingBrowse": "Vezi licitațiile",
+    "approvalNote": "Contul nou îl aprobă administratorul. Până atunci poți vedea licitațiile, dar nu poți licita.",
+    "errCheckFields": "Verifică câmpurile marcate cu roșu."
   },
   "account": {
     "title": "Contul meu",
@@ -288,7 +306,18 @@
     "sellerCity": "Localitatea",
     "editSellerProfile": "Editează datele crescătoriei",
     "sellerProfileSaved": "Datele au fost salvate.",
-    "sellerProfileError": "Datele nu au putut fi salvate."
+    "sellerProfileError": "Datele nu au putut fi salvate.",
+    "contactTitle": "Telefon și adresă",
+    "saveProfile": "Salvează",
+    "profileSaved": "Datele au fost salvate.",
+    "profileError": "Datele nu s-au putut salva.",
+    "pendingBanner": "Contul tău așteaptă aprobarea administratorului. Poți vedea licitațiile; vei putea licita după aprobare.",
+    "rejectedBanner": "Contul tău nu a fost aprobat pentru licitare. Pentru detalii, scrie-ne din pagina de contact.",
+    "statusLabel": "Starea contului",
+    "statusApproved": "Aprobat — poți licita",
+    "statusPending": "Așteaptă aprobarea administratorului",
+    "statusRejected": "Neaprobat pentru licitare",
+    "nicknameLabel": "Porecla"
   },
   "notif": {
     "OUTBID": "Oferta ta a fost depășită. Prețul curent: {price}.",
@@ -303,7 +332,11 @@
     "SELLER_REJECTED": "Cererea de cont vânzător a fost respinsă.",
     "REVIEW_RECEIVED": "Ai primit o recenzie nouă ({rating}/5).",
     "LOT_EDITED_BY_ADMIN": "Lotul „{lot}” a fost corectat de administrator.",
-    "RESERVE_NOT_MET": "Licitația „{lot}” s-a încheiat la {price}, sub prețul de rezervă. Porumbelul nu s-a vândut."
+    "RESERVE_NOT_MET": "Licitația „{lot}” s-a încheiat la {price}, sub prețul de rezervă. Porumbelul nu s-a vândut.",
+    "ACCOUNT_APPROVED": "Contul tău a fost aprobat. Acum poți licita.",
+    "ACCOUNT_REJECTED": "Contul tău nu a fost aprobat pentru licitare.",
+    "LOTS_ENDING": "{count, plural, one {Un lot se încheie} few {# loturi se încheie} other {# de loturi se încheie}} în {minutes} de minute.",
+    "LOTS_ENDING_BIDDER": "Porumbeii pe care ai licitat se închid în {minutes} de minute."
   },
   "sell": {
     "title": "Listează un porumbel",
@@ -359,7 +392,9 @@
     "editReapproval": "Lotul s-a întors la aprobare, pentru că ai schimbat date importante.",
     "editFailed": "Nu s-a putut salva. Verifică datele.",
     "reservePrice": "Preț de rezervă ({currency}) — opțional",
-    "reserveHint": "Suma sub care nu vinzi. Cumpărătorii NU o văd — li se arată doar dacă a fost atinsă sau nu. Lasă gol dacă vinzi la orice preț."
+    "reserveHint": "Suma sub care nu vinzi. Cumpărătorii NU o văd — li se arată doar dacă a fost atinsă sau nu. Lasă gol dacă vinzi la orice preț.",
+    "editLotStarted": "Lotul a pornit: seria, anul, sexul și prețurile nu se mai schimbă. Restul fișei se poate corecta.",
+    "closedForBreeders": "Porumbeii se pun la licitație doar de către administratori. Dacă vrei să vinzi, scrie-ne din pagina de contact."
   },
   "orders": {
     "title": "Comandă",
@@ -562,5 +597,36 @@
     "agents": "Agenți",
     "website": "Site",
     "empty": "Deocamdată nu este adăugat niciun transportator sau agent."
+  },
+  "sales": {
+    "breederAuction": "Licitația crescătorului",
+    "pigeons": "Porumbei",
+    "lots": "Loturi",
+    "average": "Media curentă pe porumbel",
+    "endsAtLabel": "Se încheie",
+    "startsAtLabel": "Începe",
+    "endedAt": "S-a încheiat",
+    "aboutBreeder": "Despre crescător — {name}",
+    "results": "Rezultate",
+    "viewGrid": "Grilă",
+    "viewList": "Listă",
+    "lotTitle": "Lotul {number}",
+    "lotStatusLIVE": "Se licitează",
+    "lotStatusSCHEDULED": "Programat",
+    "lotStatusCLOSED": "Încheiat",
+    "statusLIVE": "Live",
+    "statusUPCOMING": "În curând",
+    "statusCLOSED": "Încheiată",
+    "startsIn": "Începe în",
+    "endsIn": "Se încheie în",
+    "lotsCount": "{count, plural, one {un lot} few {# loturi} other {# de loturi}}",
+    "pigeonsCount": "{count, plural, one {un porumbel} few {# porumbei} other {# de porumbei}}",
+    "sectionTitle": "Licitațiile crescătorilor",
+    "sectionIntro": "Fiecare licitație e a unui crescător, împărțită în loturi care se închid la ora lor.",
+    "unsubTitle": "Avizele de final de licitație",
+    "unsubIntro": "Apasă butonul și nu mai primești e-mailuri când se încheie o licitație. Avizele despre porumbeii pe care ai licitat rămân.",
+    "unsubButton": "Nu mai trimite aceste avize",
+    "unsubDone": "Gata. Nu mai primești avizele de final de licitație.",
+    "unsubBad": "Linkul nu mai este valabil."
   }
 }

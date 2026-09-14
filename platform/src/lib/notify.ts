@@ -1,5 +1,6 @@
 import { prisma } from "./db";
 import { getSettings } from "./settings";
+import { sendEmail } from "./mailer";
 
 /**
  * Notificari in-app + e-mail. In dev, e-mailul se scrie in EmailLog (si consola)
@@ -19,7 +20,11 @@ export type NotifyType =
   | "SELLER_REJECTED"
   | "REVIEW_RECEIVED"
   | "LOT_EDITED_BY_ADMIN"
-  | "RESERVE_NOT_MET";
+  | "RESERVE_NOT_MET"
+  | "ACCOUNT_APPROVED"
+  | "ACCOUNT_REJECTED"
+  | "LOTS_ENDING"
+  | "LOTS_ENDING_BIDDER";
 
 const EMAIL_SUBJECTS: Record<NotifyType, { ro: string; en: string }> = {
   OUTBID: { ro: "Oferta ta a fost depășită", en: "You have been outbid" },
@@ -36,6 +41,22 @@ const EMAIL_SUBJECTS: Record<NotifyType, { ro: string; en: string }> = {
   RESERVE_NOT_MET: {
     ro: "Licitația s-a încheiat sub prețul de rezervă",
     en: "The auction ended below the reserve price",
+  },
+  LOTS_ENDING: {
+    ro: "Se încheie o licitație în curând",
+    en: "An auction is ending soon",
+  },
+  LOTS_ENDING_BIDDER: {
+    ro: "Porumbeii pe care ai licitat se închid în curând",
+    en: "The pigeons you bid on are closing soon",
+  },
+  ACCOUNT_APPROVED: {
+    ro: "Contul tău a fost aprobat — poți licita",
+    en: "Your account has been approved — you can bid",
+  },
+  ACCOUNT_REJECTED: {
+    ro: "Contul tău nu a fost aprobat pentru licitare",
+    en: "Your account was not approved for bidding",
   },
   LOT_EDITED_BY_ADMIN: {
     ro: "Un lot al tău a fost corectat de administrator",
@@ -66,10 +87,7 @@ export async function notify(
         .map(([k, v]) => `${k}: ${v}`)
         .join("\n") +
       (link ? `\n\n${link}` : "");
-    await prisma.emailLog.create({ data: { toEmail: user.email, subject, body } });
-    if (process.env.NODE_ENV === "development") {
-      console.log(`[email -> ${user.email}] ${subject}`);
-    }
+    await sendEmail({ to: user.email, subject, text: body });
   }
   // SMS: intentionat neimplementat la lansare — canalul primar e e-mail (D16).
   // Integrarea (Twilio/SMSLink) se ataseaza aici cand settings.smsEnabled devine true.

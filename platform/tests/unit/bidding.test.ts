@@ -221,3 +221,19 @@ describe("computeExtension — anti-sniping", () => {
     expect(endsAt.toISOString()).toBe("2026-01-01T17:15:00.000Z");
   });
 });
+
+describe("computeExtension — fără limită de prelungiri", () => {
+  it("cu limita 0, se prelungește de câte ori e nevoie", () => {
+    const endsAt = new Date("2026-09-20T20:00:00Z");
+    const now = new Date("2026-09-20T19:55:00Z");
+    const r = computeExtension({
+      now,
+      endsAt,
+      snipeWindowMinutes: 10,
+      extensionMinutes: 10,
+      extensionsCount: 500,
+      maxExtensions: 0,
+    });
+    expect(r).toEqual(new Date("2026-09-20T20:10:00Z"));
+  });
+});

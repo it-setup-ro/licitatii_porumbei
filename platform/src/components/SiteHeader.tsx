@@ -60,6 +60,7 @@ export default function SiteHeader({
   cartCount,
   contestLinks,
   latestArticles,
+  sellEnabled = true,
 }: {
   siteName: string;
   user: HeaderUser;
@@ -67,6 +68,8 @@ export default function SiteHeader({
   cartCount: number;
   contestLinks: ExternalNavLink[];
   latestArticles: ArticleNavLink[];
+  /** „+ Vinde un porumbel" — doar cât fluxul crescătorilor e pornit din Setări */
+  sellEnabled?: boolean;
 }) {
   const t = useTranslations("nav");
   const locale = useLocale();
@@ -93,7 +96,8 @@ export default function SiteHeader({
     };
   }, [mobileOpen]);
 
-  const canSell = user && (user.role === "ADMIN" || user.sellerStatus === "APPROVED");
+  const canSell =
+    sellEnabled && user && (user.role === "ADMIN" || user.sellerStatus === "APPROVED");
 
   const articleChildren: SubItem[] = [
     ...latestArticles.map((a) => ({
@@ -212,7 +216,7 @@ export default function SiteHeader({
 
           {/* Caseta de cont (telefon) — autentificare SI iesire in acelasi loc */}
           <div className="lg:hidden">
-            <AccountMenu user={user} unreadCount={unreadCount} variant="icon" />
+            <AccountMenu user={user} unreadCount={unreadCount} variant="icon" sellEnabled={sellEnabled} />
           </div>
 
           {/* Clopoțel notificări */}
@@ -253,7 +257,7 @@ export default function SiteHeader({
 
           {/* Caseta de cont (desktop) */}
           <div className="hidden lg:block">
-            <AccountMenu user={user} unreadCount={unreadCount} variant="full" />
+            <AccountMenu user={user} unreadCount={unreadCount} variant="full" sellEnabled={sellEnabled} />
           </div>
 
           <button
