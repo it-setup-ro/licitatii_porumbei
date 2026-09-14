@@ -394,7 +394,16 @@
     "reservePrice": "Reserve price ({currency}) — optional",
     "reserveHint": "The amount below which you will not sell. Buyers do NOT see it — only whether it has been met. Leave empty to sell at any price.",
     "editLotStarted": "The lot has started: ring, year, sex and prices can no longer change. The rest can still be corrected.",
-    "closedForBreeders": "Pigeons are listed for auction by the administrators only. If you want to sell, please write to us from the contact page."
+    "closedForBreeders": "Pigeons are listed for auction by the administrators only. If you want to sell, please write to us from the contact page.",
+    "saleModeLabel": "How the pigeon is sold",
+    "modeAuction": "Auction",
+    "modeFixed": "Fixed price",
+    "fixedSection": "Fixed price",
+    "fixedPrice": "Price ({currency})",
+    "fixedUntilSold": "The pigeon stays on the site until it sells. The first buyer takes it.",
+    "submitPost": "Save and post",
+    "postedLive": "The pigeon has been posted and is now listed under Fixed price.",
+    "viewPosted": "View the pigeon"
   },
   "orders": {
     "title": "Order",
@@ -627,6 +636,7 @@
     "unsubIntro": "Press the button and you will no longer receive emails when an auction is ending. Notices about pigeons you bid on stay on.",
     "unsubButton": "Stop these notices",
     "unsubDone": "Done. You will no longer receive auction ending notices.",
-    "unsubBad": "This link is no longer valid."
+    "unsubBad": "This link is no longer valid.",
+    "lotCardTitle": "{breeder} – Lot {number}"
   }
 }

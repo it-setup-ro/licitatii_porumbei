@@ -152,6 +152,7 @@ export default async function SalePage({
                   open={open}
                   className="overflow-hidden rounded-2xl border border-ink/10 bg-white"
                   data-testid="sale-lot"
+                  id={`lot-${lot.number}`}
                 >
                   <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-3 px-5 py-4">
                     <span className="flex flex-wrap items-center gap-3">

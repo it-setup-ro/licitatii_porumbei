@@ -394,7 +394,16 @@
     "reservePrice": "Preț de rezervă ({currency}) — opțional",
     "reserveHint": "Suma sub care nu vinzi. Cumpărătorii NU o văd — li se arată doar dacă a fost atinsă sau nu. Lasă gol dacă vinzi la orice preț.",
     "editLotStarted": "Lotul a pornit: seria, anul, sexul și prețurile nu se mai schimbă. Restul fișei se poate corecta.",
-    "closedForBreeders": "Porumbeii se pun la licitație doar de către administratori. Dacă vrei să vinzi, scrie-ne din pagina de contact."
+    "closedForBreeders": "Porumbeii se pun la licitație doar de către administratori. Dacă vrei să vinzi, scrie-ne din pagina de contact.",
+    "saleModeLabel": "Cum se vinde porumbelul",
+    "modeAuction": "Licitație",
+    "modeFixed": "Preț fix",
+    "fixedSection": "Preț fix",
+    "fixedPrice": "Preț ({currency})",
+    "fixedUntilSold": "Porumbelul rămâne pe site până se vinde. Primul cumpărător îl ia.",
+    "submitPost": "Salvează și postează",
+    "postedLive": "Porumbelul a fost postat și se vede acum la Preț fix.",
+    "viewPosted": "Vezi porumbelul"
   },
   "orders": {
     "title": "Comandă",
@@ -627,6 +636,7 @@
     "unsubIntro": "Apasă butonul și nu mai primești e-mailuri când se încheie o licitație. Avizele despre porumbeii pe care ai licitat rămân.",
     "unsubButton": "Nu mai trimite aceste avize",
     "unsubDone": "Gata. Nu mai primești avizele de final de licitație.",
-    "unsubBad": "Linkul nu mai este valabil."
+    "unsubBad": "Linkul nu mai este valabil.",
+    "lotCardTitle": "{breeder} – Lotul {number}"
   }
 }

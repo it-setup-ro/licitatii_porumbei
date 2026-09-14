@@ -50,6 +50,8 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - **Fiecare lot are ora lui de start și de final și butonul „Start lot"**. Un lot pornit rămâne pornit: orele, prețul și porumbeii nu se mai schimbă. Un lot cu ora de start în viitor devine „Programat" și pornește singur
 - **Prelungirea 10 / 10, nelimitată**, setabilă din Setări și înghețată pe lot în momentul pornirii
 - **Comisionul se stabilește pe fiecare licitație** (5, 10, 15, 23 %…); plata se face în afara site-ului
+- **În lista de licitații, câte un card pe lot**, cu zilele și orele lui („Burca Ionuț – Lotul 1 · 15.09 14:00 → 20.09 21:00"); cardul duce la lotul lui pe pagina licitației
+- **Preț fix postat de admin**: în formularul „+ Vinde", comutatorul „Licitație / Preț fix"; cu preț fix rămâne o singură căsuță de preț, iar „Salvează și postează" îl pune imediat la Preț fix, până se vinde. Porumbeii cu preț fix nu mai apar în lista de licitații. Butonul „+ Vinde" rămâne vizibil pentru admini și când crescătorii nu pot lista
 - **Pagina publică a licitației** `/sales/<slug>`: copertă, crescător, câți porumbei, media curentă, loturile pliabile cu cronometru, comutator Grilă / Listă. Loturile în ciornă nu se văd. Pe pagina porumbelului: calea „Licitația › Lotul 1.01" și crescătorul în locul contului de admin
 - **Avizul de 30 de minute**: un singur e-mail pe om, oricâte loturi s-ar închide. Cine a licitat primește lista porumbeilor lui și dacă e pe primul loc; cine a bifat avizele primește un aviz general, cu link de dezabonare semnat
 - **Conturile noi se aprobă de admin** (Administrare → Conturi de aprobat). Înregistrarea cere nume, telefon, adresă, e-mail și nickname; până la aprobare contul vede tot, dar nu licitează

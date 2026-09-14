@@ -15,12 +15,25 @@ export default async function FixedPricePage({
   const t = await getTranslations("fixed");
   const currentLocale = await getLocale();
 
-  const lots = await prisma.auction.findMany({
-    where: { saleMode: "FIXED", status: { in: ["LIVE", "CLOSED"] } },
-    include: { pigeon: { include: { media: { orderBy: { sortIdx: "asc" }, take: 1 } } } },
-    orderBy: [{ status: "asc" }, { createdAt: "desc" }],
-    take: 60,
-  });
+  // Întâi cei de vânzare, apoi cei vânduți — fiecare grup cu cei mai noi primii.
+  // Ordonarea după stare în bază e alfabetică („CLOSED" < „LIVE") și punea
+  // porumbeii vânduți înaintea celor pe care omul îi poate cumpăra.
+  const include = { pigeon: { include: { media: { orderBy: { sortIdx: "asc" as const }, take: 1 } } } };
+  const [available, sold] = await Promise.all([
+    prisma.auction.findMany({
+      where: { saleMode: "FIXED", status: "LIVE" },
+      include,
+      orderBy: { createdAt: "desc" },
+      take: 60,
+    }),
+    prisma.auction.findMany({
+      where: { saleMode: "FIXED", status: "CLOSED" },
+      include,
+      orderBy: { closedAt: "desc" },
+      take: 24,
+    }),
+  ]);
+  const lots = [...available, ...sold];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">

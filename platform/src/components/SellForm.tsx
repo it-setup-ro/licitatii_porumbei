@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatMoney } from "@/lib/money";
+import { Link } from "@/i18n/navigation";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 import TraitsEditor from "@/components/TraitsEditor";
 import type { PigeonTraits } from "@/lib/pigeon-traits";
@@ -28,6 +29,7 @@ export default function SellForm({
   durationDays,
   defaultOfferedBy,
   reserveEnabled,
+  isAdmin = false,
 }: {
   currency: string;
   minStartCents: number;
@@ -39,6 +41,8 @@ export default function SellForm({
   defaultOfferedBy: string;
   /** platforma permite pret de rezerva */
   reserveEnabled: boolean;
+  /** adminul postează direct porumbeii cu preț fix, fără aprobare */
+  isAdmin?: boolean;
 }) {
   const t = useTranslations("sell");
   const tp = useTranslations("pigeon");
@@ -57,6 +61,7 @@ export default function SellForm({
     offeredBy: defaultOfferedBy,
     color: "",
     strain: "",
+    saleMode: "AUCTION",
     startPrice: "",
     reservePrice: "",
     listingType: "SELF",
@@ -69,7 +74,7 @@ export default function SellForm({
   const [results, setResults] = useState<ResultRow[]>([]);
   const [traits, setTraits] = useState<PigeonTraits>({});
   const [showEn, setShowEn] = useState(false);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<null | { live: boolean; auctionId: string }>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -86,7 +91,7 @@ export default function SellForm({
         ...form,
         birthYear: Number(form.birthYear),
         startPriceCents: Math.round(Number(form.startPrice.replace(",", ".")) * 100),
-        reservePriceCents: form.reservePrice
+        reservePriceCents: form.saleMode === "AUCTION" && form.reservePrice
           ? Math.round(Number(form.reservePrice.replace(",", ".")) * 100)
           : undefined,
         pedigreeUrl: pedigree[0]?.url ?? "",
@@ -105,7 +110,7 @@ export default function SellForm({
     });
     const data = await res.json();
     setBusy(false);
-    if (data.ok) setDone(true);
+    if (data.ok) setDone({ live: data.status === "LIVE", auctionId: data.auctionId });
     else if (data.error === "START_PRICE_TOO_LOW")
       setError(t("startPriceMin", { min: formatMoney(data.minimumCents, currency, locale) }));
     else setError(data.error);
@@ -113,12 +118,21 @@ export default function SellForm({
 
   if (done) {
     return (
-      <p
+      <div
         className="rounded-2xl border border-green-300 bg-green-50 p-5 font-medium text-green-800"
         data-testid="sell-success"
       >
-        ✓ {t("submitted")}
-      </p>
+        ✓ {done.live ? t("postedLive") : t("submitted")}
+        {done.live && (
+          <Link
+            href={`/auctions/${done.auctionId}`}
+            data-testid="sell-view-link"
+            className="mt-3 block font-semibold text-wing-blue hover:underline"
+          >
+            {t("viewPosted")} →
+          </Link>
+        )}
+      </div>
     );
   }
 
@@ -311,11 +325,38 @@ export default function SellForm({
         </div>
       </section>
 
-      {/* 9. Pretul de pornire */}
+      {/* 9. Licitație sau preț fix, apoi prețul */}
       <section className={section}>
-        <h2 className="font-display text-xl font-bold">{t("auctionSection")}</h2>
+        <h2 className="font-display text-xl font-bold">
+          {form.saleMode === "FIXED" ? t("fixedSection") : t("auctionSection")}
+        </h2>
+        <div
+          role="radiogroup"
+          aria-label={t("saleModeLabel")}
+          className="flex gap-1 rounded-full border border-ink/15 p-1 text-sm"
+        >
+          {(["AUCTION", "FIXED"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              role="radio"
+              aria-checked={form.saleMode === m}
+              onClick={() => set("saleMode", m)}
+              data-testid={m === "FIXED" ? "sf-mode-fixed" : "sf-mode-auction"}
+              className={`flex-1 rounded-full px-4 py-2 font-semibold ${
+                form.saleMode === m ? "bg-ink text-ivory" : "hover:bg-ink/5"
+              }`}
+            >
+              {m === "FIXED" ? t("modeFixed") : t("modeAuction")}
+            </button>
+          ))}
+        </div>
         <label className="block text-sm">
-          <span className="font-medium">{t("startPrice", { currency })}</span>
+          <span className="font-medium">
+            {form.saleMode === "FIXED"
+              ? t("fixedPrice", { currency })
+              : t("startPrice", { currency })}
+          </span>
           <input
             required
             type="number"
@@ -330,7 +371,7 @@ export default function SellForm({
             {t("startPriceMin", { min: formatMoney(minStartCents, currency, locale) })}
           </span>
         </label>
-        {reserveEnabled && (
+        {reserveEnabled && form.saleMode === "AUCTION" && (
           <label className="block text-sm">
             <span className="font-medium">{t("reservePrice", { currency })}</span>
             <input
@@ -344,7 +385,9 @@ export default function SellForm({
             <span className="text-xs text-ink/50">{t("reserveHint")}</span>
           </label>
         )}
-        <p className="text-xs text-ink/50">{t("duration", { days: durationDays })}</p>
+        <p className="text-xs text-ink/50" data-testid="sf-duration">
+          {form.saleMode === "FIXED" ? t("fixedUntilSold") : t("duration", { days: durationDays })}
+        </p>
       </section>
 
       {/* Restul informatiilor — pliate, ca formularul sa nu sperie */}
@@ -523,7 +566,7 @@ export default function SellForm({
         data-testid="sell-submit"
         className="w-full rounded-xl bg-ink py-3 font-bold text-ivory hover:bg-wing-orange disabled:opacity-50"
       >
-        {t("submit")}
+        {form.saleMode === "FIXED" && isAdmin ? t("submitPost") : t("submit")}
       </button>
     </form>
   );

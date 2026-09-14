@@ -66,11 +66,16 @@ const schema = z.object({
   /** suma sub care crescatorul nu vinde; ramane ascunsa cumparatorilor */
   reservePriceCents: z.number().int().positive().max(MAX_MONEY_CENTS).optional(),
   listingType: z.enum(["SELF", "ASSISTED"]).default("SELF"),
+  /** licitație sau preț fix (clientul, „Punctul 9") */
+  saleMode: z.enum(["AUCTION", "FIXED"]).default("AUCTION"),
   shippingMode: z.enum(["SELLER", "PICKUP"]).default("SELLER"),
   dnaSexGuaranteed: z.boolean().default(false),
   media: z.array(mediaSchema).max(12).default([]),
   results: z.array(resultSchema).max(30).default([]),
 });
+
+/** Prețul fix stă pe site până se vinde; data de final e doar o plasă de siguranță. */
+const FIXED_PRICE_YEARS = 10;
 
 export async function POST(req: Request) {
   try {
@@ -101,8 +106,14 @@ export async function POST(req: Request) {
     }
 
     // Durata: setata de platforma (client-decisions D15); startul efectiv il da adminul la aprobare.
-    const startsAt = new Date(Date.now() + 24 * 3_600_000);
-    const endsAt = new Date(startsAt.getTime() + settings.defaultDurationDays * 86_400_000);
+    // Clientul, „Punctul 9": porumbelul cu preț fix se salvează și se postează.
+    // Îl pune adminul, deci nu mai așteaptă o aprobare.
+    const fixed = d.saleMode === "FIXED";
+    const postNow = fixed && seller.role === "ADMIN";
+    const startsAt = postNow ? new Date() : new Date(Date.now() + 24 * 3_600_000);
+    const endsAt = fixed
+      ? new Date(startsAt.getTime() + FIXED_PRICE_YEARS * 365 * 86_400_000)
+      : new Date(startsAt.getTime() + settings.defaultDurationDays * 86_400_000);
 
     const pigeon = await prisma.pigeon.create({
       data: {
@@ -134,12 +145,15 @@ export async function POST(req: Request) {
         auction: {
           create: {
             sellerId: seller.id,
-            status: "PENDING_APPROVAL",
+            status: postNow ? "LIVE" : "PENDING_APPROVAL",
+            saleMode: d.saleMode,
+            ...(fixed ? { currentPriceCents: d.startPriceCents } : {}),
+            ...(postNow ? { approvedAt: new Date(), approvedById: seller.id } : {}),
             listingType: d.listingType,
             currency: settings.platformCurrency,
             startPriceCents: d.startPriceCents,
             reservePriceCents:
-              settings.reservePriceEnabled && d.reservePriceCents && d.reservePriceCents > d.startPriceCents
+              !fixed && settings.reservePriceEnabled && d.reservePriceCents && d.reservePriceCents > d.startPriceCents
                 ? d.reservePriceCents
                 : null,
             startsAt,
@@ -154,7 +168,11 @@ export async function POST(req: Request) {
       include: { auction: true },
     });
 
-    return jsonOk({ pigeonId: pigeon.id, auctionId: pigeon.auction?.id });
+    return jsonOk({
+      pigeonId: pigeon.id,
+      auctionId: pigeon.auction?.id,
+      status: pigeon.auction?.status,
+    });
   } catch (e) {
     return handleApiError(e);
   }

@@ -62,7 +62,8 @@ export default function AccountMenu({
   };
 
   const canSell =
-    sellEnabled && user && (user.role === "ADMIN" || user.sellerStatus === "APPROVED");
+    // adminul listează oricând; crescătorii doar dacă e pornit din Setări
+    user && (user.role === "ADMIN" || (sellEnabled && user.sellerStatus === "APPROVED"));
 
   // Pe desktop, vizitatorul nelogat vede direct cele doua butoane — e mai clar
   // decat sa ascunda autentificarea sub un meniu.

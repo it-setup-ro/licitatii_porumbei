@@ -48,6 +48,7 @@ export default async function SellPage({ params }: { params: Promise<{ locale: s
           durationDays={settings.defaultDurationDays}
           defaultOfferedBy={user!.sellerCompany ?? user!.name}
           reserveEnabled={settings.reservePriceEnabled}
+          isAdmin={user!.role === "ADMIN"}
         />
       )}
     </div>

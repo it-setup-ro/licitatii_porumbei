@@ -121,7 +121,9 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
     await expect(page).toHaveURL(new RegExp(`/ro/sales/${s.slug}$`));
   });
 
-  test("lista de licitații arată licitația crescătorului în fila potrivită", async ({ page }) => {
+  test("lista de licitații arată câte un card pe lot, cu datele lui, în fila potrivită", async ({
+    page,
+  }) => {
     test.setTimeout(90_000);
     await login(page, "admin@nbp.test", "admin1234");
     const s = await sale(page);
@@ -132,13 +134,26 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
       status: "SCHEDULED",
     });
 
+    // al doilea lot al aceluiași crescător, cu alte zile — ca în exemplul clientului
+    const l2 = await lot(page, s.saleId, new Date(Date.now() + 2 * 24 * 60 * MIN), new Date(Date.now() + 3 * 24 * 60 * MIN));
+    await pigeon(page, l2, "Al doilea lot Test");
+    expect((await post(page.request, `/api/admin/sale-lots/${l2}/start`)).body.ok).toBe(true);
+
     await page.goto("/ro/auctions?status=SCHEDULED");
-    const card = page.getByTestId("sale-card").filter({ hasText: s.title });
-    await expect(card).toBeVisible();
-    await expect(card).toContainText("un lot");
+    const cards = page.getByTestId("lot-card").filter({ hasText: s.breeder });
+    await expect(cards).toHaveCount(2);
+    await expect(cards.filter({ hasText: "Lotul 1" })).toContainText("un porumbel");
+    await expect(cards.filter({ hasText: "Lotul 2" })).toBeVisible();
+    // fiecare card are datele lotului lui
+    const d1 = await cards.filter({ hasText: "Lotul 1" }).getByTestId("lot-card-dates").textContent();
+    const d2 = await cards.filter({ hasText: "Lotul 2" }).getByTestId("lot-card-dates").textContent();
+    expect(d1).not.toBe(d2);
+
+    await cards.filter({ hasText: "Lotul 2" }).click();
+    await expect(page).toHaveURL(new RegExp(`/ro/sales/${s.slug}#lot-2$`));
 
     await page.goto("/ro/auctions?status=LIVE");
-    await expect(page.getByTestId("sale-card").filter({ hasText: s.title })).toHaveCount(0);
+    await expect(page.getByTestId("lot-card").filter({ hasText: s.breeder })).toHaveCount(0);
 
     // o licitație doar cu loturi în ciornă nu are pagină publică
     const ciorna = await sale(page);
