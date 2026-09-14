@@ -1,15 +1,16 @@
 # Cerințe — licitații pe părți, după modelul PIPA
 
-**Versiunea 2** · 14 septembrie 2026
-**Pornește de la:** mesajele vocale ale clientului (pigeon2–4), documentul generat din video, licitația Frații Alpdag de pe PIPA și platforma construită până acum.
+**Versiunea 3** · 14 septembrie 2026, după răspunsurile clientului
+**Pornește de la:** mesajele vocale (pigeon2–4), documentul generat din video, licitația Frații Alpdag de pe PIPA, răspunsurile scrise ale clientului din 14 septembrie și platforma construită până acum.
 
-> **Ce s-a schimbat față de documentul din video**
-> 1. Crescătorul **poate pregăti** porumbeii, dar nimic nu ajunge pe site fără administrator. Administratorul poate introduce și el porumbei în numele crescătorului. *(propunere — de confirmat cu clientul)*
-> 2. **Prelungirea** se setează, nu mai e fixată la 10 minute: o valoare pentru tot site-ul, care se poate schimba pe o licitație anume.
-> 3. **Taxele** se setează: pentru tot site-ul, cu posibilitatea de a le schimba pe o licitație anume. Se afișează înainte de licitare și se îngheață la pornirea părții.
-> 4. **„Închiderea mai devreme" se înlocuiește** cu retragerea unui porumbel și anularea unei licitații, ambele fără câștigător. *(clientul a cerut-o explicit în pigeon2 — de discutat cu el)*
+> **Ce s-a hotărât în versiunea 3**
+> 1. **Porumbeii îi pun doar administratorii** — „Admin 1 și Admin 2. Exclus să pună altcineva!" Fluxul prin care crescătorii își puneau singuri porumbeii se oprește.
+> 2. **Fiecare parte are dată și oră de început și de sfârșit**, puse de administrator. Partea pornește singură la ora de început, cu toți porumbeii deodată.
+> 3. **„O dată licitația începută, rămâne începută."** Nu se oprește, nu se închide mai devreme, orele nu se mai mută.
+> 4. **Prelungirea: 10 minute la o ofertă în ultimele 10 minute**, de câte ori e nevoie, până nu mai licitează nimeni.
+> 5. **Aviz cu 30 de minute înainte de final:** tuturor celor cu cont, iar celor care au licitat, special, pentru porumbeii lor.
 >
-> Marcajele din text: **[CONFIRMAT]** = spus de client · **[PROPUNERE]** = de confirmat cu clientul · **[EXISTĂ]** = deja construit pe platformă
+> Marcajele din text: **[CONFIRMAT]** = spus de client · **[DE ÎNTREBAT]** = încă deschis · **[EXISTĂ]** = deja construit
 
 ---
 
@@ -23,287 +24,271 @@ Crescător
                  └─ Oferte
 ```
 
-- **Crescătorul** e profilul celui care vinde: nume, localitate, țară, fotografie, poveste, rezultate.
+- **Crescătorul** e profilul celui care vinde, făcut de administrator: nume, localitate, țară, fotografie, poveste, rezultate. Nu are nevoie de cont pe site.
 - **Licitația** aparține unui singur crescător. **[CONFIRMAT]**
-- **Partea** grupează porumbeii care pornesc și se închid împreună. Fiecare parte are ora ei. **[CONFIRMAT]**
+- **Partea** grupează porumbeii care pornesc și se închid împreună. Fiecare parte are orele ei. **[CONFIRMAT]**
 - **Porumbelul** se licitează separat, cu prețul, istoricul și câștigătorul lui. **[CONFIRMAT]**
 - **Numerotarea** e automată, parte.poziție: `1.01`, `1.02`, `2.01`. Ordinea se poate schimba cât partea nu a pornit.
-- Pe site grupul se numește **„Partea"**, ca la PIPA, unde „lot" înseamnă un singur porumbel. *(de confirmat denumirea)*
+- Denumirea grupului pe site: „Partea" sau „Lotul". **[DE ÎNTREBAT]**
 
 ---
 
 ## 2. Cine ce face
 
-### 2.1. Administratorul **[CONFIRMAT]**
+### 2.1. Administratorii **[CONFIRMAT]**
+
+Clientul lucrează cu **doi administratori**, cu aceleași drepturi. Doar ei:
 
 - creează și editează crescători, licitații și părți;
-- adaugă porumbei în orice parte, inclusiv în numele unui crescător;
-- aprobă sau respinge porumbeii pregătiți de crescători;
-- **pornește partea** — singurul care o poate face;
-- retrage un porumbel sau anulează o licitație (vezi capitolul 6);
-- vede ofertele în timp real, câștigătorii și exportă rezultatele.
+- adaugă, modifică și ordonează porumbeii;
+- stabilesc data și ora de început și de sfârșit ale fiecărei părți;
+- văd ofertele în timp real, câștigătorii și exportă rezultatele.
 
-### 2.2. Crescătorul **[PROPUNERE]**
+**De construit:** pagina **Administratori**, din care un administrator dă sau ia drepturile de administrator unui cont. Acum al doilea administrator s-ar putea face doar direct din baza de date.
 
-**De ce propunem:** o parte cu 20 de porumbei înseamnă 20 de fișe, fiecare cu fotografii, fotografia ochiului, pedigree, video, rezultate și caracteristici. Dacă totul trece prin administrator, el devine gâtuirea platformei. Crescătorul are deja datele și pozele.
+**Fiecare acțiune rămâne în jurnal cu numele celui care a făcut-o** — cu doi administratori, trebuie să se știe cine a mutat ce. **[EXISTĂ]** jurnalul, cu autorul fiecărei acțiuni.
 
-**Ce rămâne neschimbat față de ce a cerut clientul:** nimic nu apare pe site fără administrator, iar partea o pornește doar el.
+### 2.2. Crescătorii
 
-Fluxul **în ambele sensuri**:
+- **Nu pot adăuga și nu pot modifica porumbei.** **[CONFIRMAT]**
+- Paginile prin care crescătorii își puneau singuri porumbeii („Vinde un porumbel", cererea de cont de crescător, editarea lotului de către crescător) **se opresc**.
+- Codul nu se șterge: rămâne oprit dintr-o setare, „Crescătorii pot adăuga porumbei: nu". **Nu se extinde** la structura nouă pe părți și nu se mai propune clientului. Dacă, după ce platforma merge, administratorii nu mai fac față introducerii datelor, subiectul se poate redeschide.
 
-| Pas | Cine | Ce se întâmplă |
-|---|---|---|
-| 1 | administratorul | creează licitația și părțile pentru crescător |
-| 2 | crescătorul **sau** administratorul | adaugă și completează fișele porumbeilor. Oricare dintre ei poate continua ce a început celălalt. |
-| 3 | crescătorul | trimite partea la verificare |
-| 4 | administratorul | corectează ce e nevoie, aprobă porumbeii |
-| 5 | administratorul | pornește partea — toți porumbeii intră deodată |
-| 6 | — | **după pornire, crescătorul nu mai poate modifica nimic.** Administratorul poate corecta doar greșeli (o literă din nume, o poză) și modificarea rămâne în jurnal. |
+### 2.3. Cumpărătorii **[EXISTĂ]**
 
-- Setare pe site: **„Crescătorii pot pregăti porumbei: da / nu"**. Pe „nu", doar administratorul introduce porumbei — exact varianta cerută acum de client.
-- **[EXISTĂ]** Formularul de porumbel, încărcarea de poze și video, aprobarea și regulile de modificare sunt deja construite. Propunerea le reorganizează, nu le reface.
-
-### 2.3. Cumpărătorul **[EXISTĂ]**
-
-Își face cont, își alege o poreclă, licitează, primește notificări, plătește.
+Își fac cont, își aleg o poreclă, licitează, primesc avize, plătesc.
 
 ---
 
 ## 3. Viața unei părți
 
 ```
-Ciornă → Trimisă la verificare → Aprobată → Activă → Închisă
-                                              ↘ (porumbel) Retras
-Licitație:  … → Anulată
+Ciornă → Programată → Activă → Închisă
 ```
 
-| Stare | Ce înseamnă |
-|---|---|
-| **Ciornă** | se completează. Nu se vede pe site. |
-| **Trimisă la verificare** | crescătorul a terminat, așteaptă administratorul. *(doar dacă propunerea 2.2 e acceptată)* |
-| **Aprobată** | gata de pornire. Se vede în previzualizare. |
-| **Activă** | se licitează. Ora de închidere nu se mai poate muta. |
-| **Închisă** | fiecare porumbel are câștigătorul lui, sau „nevândut". |
+| Stare | Ce înseamnă | Ce se mai poate schimba |
+|---|---|---|
+| **Ciornă** | se completează; nu se vede pe site | orice |
+| **Programată** | are ore stabilite; se vede pe site cu „Începe pe…" | orele și porumbeii, **până la ora de început** |
+| **Activă** | se licitează | **nimic** din ce privește licitarea |
+| **Închisă** | fiecare porumbel are câștigătorul lui, sau „nevândut" | nimic |
 
-### 3.1. Pornirea **[CONFIRMAT]**
+### 3.1. Programarea și pornirea **[CONFIRMAT]**
 
-- Un singur buton, **„Pornește partea"**, pune toți porumbeii din parte activi în aceeași clipă.
+- Administratorul stabilește pentru fiecare parte **data și ora de început** și **data și ora de sfârșit**.
+- Butonul **„Programează partea"** verifică dacă e completă, apoi o trece în „Programată".
+- **La ora de început, toți porumbeii din parte pornesc în aceeași clipă**, singuri, fără altă apăsare. Pentru pornire imediată, ora de început se pune pe acum.
 - Nu se poate porni un porumbel singur.
-- **Nu pornește o parte incompletă.** Fiecare porumbel trebuie să aibă cel puțin serie, an, sex, o fotografie și preț de pornire. Butonul arată exact ce lipsește și la care porumbel.
-- La pornire se **îngheață** taxele și regulile de prelungire (capitolele 4 și 5).
-- *(de confirmat)* Pornirea poate fi pe loc, sau programată pentru o dată și o oră.
+- **Nu se programează o parte incompletă.** Fiecare porumbel trebuie să aibă cel puțin serie, an, sex, o fotografie și preț de pornire. Butonul arată exact ce lipsește și la care porumbel.
 
-### 3.2. Închiderea **[CONFIRMAT]**
+### 3.2. După pornire **[CONFIRMAT]**
 
-- Toți porumbeii dintr-o parte au aceeași oră de închidere, ca la PIPA: Partea 1 la 12:30, Partea 2 la 13:00.
+> *„O dată licitația începută, rămâne începută."*
+
+- **Nu există buton de oprire sau de închidere mai devreme.**
+- Orele de început și de sfârșit **nu se mai pot modifica**.
+- Porumbeii nu se mai pot scoate din parte și nu se mai adaugă alții.
+- Administratorul poate corecta doar greșeli de prezentare — o literă din nume, o poză —, fără să atingă prețul, orele sau ofertele. Corectura rămâne în jurnal. **[EXISTĂ]** regulile de corectură după prima ofertă.
+
+**[DE ÎNTREBAT]** Ce se întâmplă dacă un porumbel moare sau se îmbolnăvește în timpul licitației? Regula de mai sus nu lasă nicio ieșire. Propunerea: administratorul îl poate **retrage**, fără câștigător, cu motiv scris și anunț către ofertanți, iar ceilalți porumbei continuă. Se construiește doar dacă o cere clientul.
+
+### 3.3. Închiderea **[CONFIRMAT]**
+
+- Toți porumbeii dintr-o parte au aceeași oră de sfârșit.
 - Fiecare porumbel se poate prelungi separat (capitolul 4). Cei fără oferte târzii se închid la ora stabilită.
 - La închidere, câștigătorul se stabilește automat. **[EXISTĂ]**
 
 ---
 
-## 4. Prelungirea în ultimele minute
+## 4. Prelungirea în ultimele minute **[CONFIRMAT]**
 
-**Regula:** o ofertă venită în ultimele **X** minute prelungește **doar acel porumbel** cu **Y** minute. Se repetă la fiecare ofertă nouă din intervalul prelungit.
+> *„Cine licitează pe un porumbel în ultimele 10 min o prelungește automat cu încă 10 min. Până nu mai licitează nimeni, și atunci rămâne câștigător."*
 
-| Setare | Unde | Valoare implicită |
-|---|---|---|
-| Fereastra X (câte minute înainte de final) | tot site-ul | 10 min — cerut de client |
-| Prelungirea Y (câte minute se adaugă) | tot site-ul | 10 min — cerut de client |
-| Limita de prelungiri | tot site-ul | fără limită, ca la PIPA |
-| Schimbarea valorilor de mai sus | **pe o licitație anume** | opțional |
+- O ofertă în ultimele **10 minute** prelungește **doar acel porumbel** cu **10 minute**.
+- Se repetă la fiecare ofertă nouă, **fără limită**.
+- Când trec 10 minute fără ofertă, porumbelul se închide, iar cel mai mare ofertant câștigă.
 
-**De ce pe licitație și nu pe parte:** părțile aceleiași licitații sunt aceeași vânzare, a aceluiași crescător. Reguli diferite între Partea 1 și Partea 2 l-ar încurca pe cumpărător fără niciun câștig.
+| Setare | Valoare implicită |
+|---|---|
+| Fereastra (câte minute înainte de final) | 10 |
+| Prelungirea (câte minute se adaugă) | 10 |
+| Limita de prelungiri | fără limită |
 
-**Regulă de corectitudine:** valorile se **îngheață la pornirea părții**. Schimbarea lor în Setări nu atinge licitațiile deja pornite — nimeni nu trebuie să afle la minutul 58 că regula s-a schimbat.
-
-**[EXISTĂ]** Setarea globală există deja (acum 2 minute / 2 minute). Rămân de adăugat modificarea pe licitație și înghețarea la pornire.
+- Valorile se schimbă din **Setări**. **[EXISTĂ]** setarea, acum 2 / 2 minute cu maximum 50 de prelungiri — de pus 10 / 10, fără limită.
+- Se **îngheață la programarea părții**: o schimbare în Setări nu atinge părțile deja programate sau pornite.
 
 ---
 
-## 5. Taxe
-
-### 5.1. Ce taxe există
+## 5. Taxe **[DE ÎNTREBAT]**
 
 | Taxă | Cine plătește | Formă | Exemplu |
 |---|---|---|---|
-| **Taxă de administrare** | cumpărătorul | sumă fixă pe porumbel | PIPA: 80 EUR |
-| **Comision cumpărător** | cumpărătorul | procent din prețul final | 0% |
-| **Comision vânzător** | crescătorul | procent din prețul final | 12% |
+| Taxă de administrare | cumpărătorul | sumă fixă pe porumbel | PIPA: 80 EUR |
+| Comision cumpărător | cumpărătorul | procent din prețul final | 0% |
+| Comision vânzător | crescătorul | procent din prețul final | 12% |
 
-**[EXISTĂ]** Toate trei există deja în Setări, la nivel de site.
+**[EXISTĂ]** Toate trei, în Setări, la nivel de site.
 
-### 5.2. Unde se setează — propunerea
+Propunerea rămâne:
+- **setate pe site**, cu posibilitatea unei **excepții pe licitație**, pentru un crescător cu alt contract;
+- **afișate lângă butonul „Licitează"**, înainte de ofertă;
+- **înghețate la programarea părții**.
 
-| Nivel | Folosință |
-|---|---|
-| **Site** | valorile implicite, pentru orice licitație nouă |
-| **Licitație** | **excepția negociată cu un crescător** — un crescător mare poate avea alt comision |
-| ~~Parte~~ | nu propunem — două porumbei unul lângă altul, din aceeași vânzare, cu taxe diferite ar ridica întrebări |
-
-### 5.3. Reguli
-
-- **Taxa se vede înainte de licitare**, lângă butonul „Licitează": *„Preț + 80 EUR taxă de administrare"*. Cumpărătorul trebuie să știe totalul înainte să se angajeze.
-- Taxele se **îngheață la pornirea părții**, ca și prelungirea.
-- Pe factură și în e-mailul de câștig apar separat: preț, taxă, total.
+Clientul trebuie să spună ce taxe există, cât sunt, și cine încasează plata (capitolul 13).
 
 ---
 
-## 6. Retragere și anulare — în locul „închiderii mai devreme"
-
-### 6.1. De ce nu propunem închiderea mai devreme
-
-- **Cele mai multe oferte vin în ultimele minute.** De aceea există prelungirea. Închiderea mai devreme ia exact momentul în care se formează prețul.
-- **E nedreaptă cu cei care au așteptat finalul**, cum e normal să așteptați la o licitație. Omul își face planul după ora anunțată.
-- **Se poate folosi abuziv:** crescătorul vede un preț care îi convine, cere închiderea, iar concurența nu mai apucă să liciteze. La prima astfel de situație, încrederea în platformă se pierde.
-- Clientul însuși spune în același mesaj: *„licitațiile au un timp stabilit, iar acel timp trebuie să rămână"*.
-
-### 6.2. Ce propunem în loc — situațiile reale
-
-| Situație | Acțiune | Rezultat |
-|---|---|---|
-| Porumbelul s-a îmbolnăvit, a murit, serie greșită, pedigree contestat | **Retrage porumbelul** | închis **fără câștigător**; ofertanții sunt anunțați; ceilalți porumbei continuă normal |
-| Crescătorul renunță, suspiciune de fraudă | **Anulează licitația** | toți porumbeii închiși **fără câștigător**; toți ofertanții anunțați |
-
-Pentru ambele: **motivul e obligatoriu**, apare pe pagina porumbelului și rămâne în jurnal.
-
-> **De discutat cu clientul:** în mesajul pigeon2 a cerut explicit să poată închide mai repede. Trebuie aflat la ce situație se gândea. Dacă e una din tabelul de mai sus, retragerea o acoperă. Dacă vrea totuși închidere cu câștigător, o construim — cu motiv obligatoriu, anunț către toți ofertanții și urmă în jurnal.
-
----
-
-## 7. Licitarea **[EXISTĂ]**
+## 6. Licitarea **[EXISTĂ]**
 
 - licitare separată pe fiecare porumbel;
-- **licitare automată cu plafon ascuns** — cumpărătorul spune până unde merge, sistemul licitează pentru el. La plafoane egale, câștigă cel care l-a pus primul;
+- **licitare automată cu plafon ascuns** — cumpărătorul spune până unde merge, sistemul licitează pentru el. La plafoane egale câștigă cel care l-a pus primul;
 - pasul minim după tabelul de trepte din Setări;
 - verificarea ofertei înainte de salvare;
 - actualizare pe loc, pe toate ecranele deschise;
 - istoric cu poreclă, nu cu numele real.
 
-**De adăugat:** pasul minim modificabil pe licitație (opțional, ca prelungirea și taxele).
-
 ---
 
-## 8. Paginile publice
+## 7. Paginile publice
 
-### 8.1. Lista licitațiilor
+### 7.1. Lista licitațiilor
 
-Carduri cu: copertă, titlul licitației, crescătorul, numărul de porumbei, data închiderii (a primei părți active), link. Mai multe licitații simultan, de la crescători diferiți. Sub listă, căutarea în toți porumbeii.
+Carduri cu: copertă, titlul licitației, crescătorul, numărul de porumbei, **„Începe pe…"** sau **„Se încheie pe…"**, link. Mai multe licitații simultan, de la crescători diferiți. Sub listă, căutarea în toți porumbeii.
 
-### 8.2. Pagina licitației
+### 7.2. Pagina licitației
 
-- **Prezentare:** copertă, titlu, subtitlu, descriere, informații despre crescător, număr de porumbei, **media curentă pe porumbel**, data închiderii, butoane de distribuire.
+- **Prezentare:** copertă, titlu, subtitlu, descriere, informații despre crescător, număr de porumbei, **media curentă pe porumbel**, orele, butoane de distribuire.
 - **Afișare:** comutator Grid / Listă și buton de filtrare.
-- **Părțile**, fiecare pliabilă, cu numele, numărul de porumbei, ora de închidere și cronometrul.
+- **Părțile**, fiecare pliabilă, cu numărul de porumbei, ora de început sau de sfârșit și cronometrul.
+- O parte **programată** se vede cu porumbeii ei, dar butonul de licitare apare abia la ora de început.
 
-### 8.3. Cardul porumbelului
+### 7.3. Cardul porumbelului
 
-Număr (`1.01`) · fotografie · fotografia ochiului · sex · serie inel · nume/titlu · descriere scurtă a performanțelor · crescător · ofertant · oferta curentă · porecla ofertantului · închidere · **„Licitează acum"**.
+Număr (`1.01`) · fotografie · fotografia ochiului · sex · serie inel · nume/titlu · descriere scurtă · crescător · ofertant · oferta curentă · porecla ofertantului · închidere · **„Licitează acum"**.
 
-### 8.4. Pagina porumbelului
+### 7.4. Pagina porumbelului
 
 | Secțiune | Stare |
 |---|---|
 | fotografie mare, serie, nume, sex, an, crescător, ofertant | **[EXISTĂ]** |
-| **fotografia ochiului**, separată | de adăugat |
+| fotografia ochiului, separată | de adăugat |
 | oferta curentă, buton, cronometru, istoric, „vezi toate ofertele" | **[EXISTĂ]** |
 | bara fixă cu preț și buton la derulare | **[EXISTĂ]** |
-| **taxa afișată lângă buton** | de adăugat |
-| caracteristici (ochi, constituție, aripă, penaj) | **[EXISTĂ]**, lista e fixă — de făcut configurabilă din administrare |
-| pedigree: poză sau PDF, mărire, arbore pe generații | **[EXISTĂ]** |
-| **descărcare pedigree** | de adăugat |
+| taxa afișată lângă buton | de adăugat, după răspunsul la taxe |
+| caracteristici (ochi, constituție, aripă, penaj) | **[EXISTĂ]**; de făcut configurabile din administrare |
+| pedigree: poză sau PDF, mărire, arbore | **[EXISTĂ]** |
+| descărcare pedigree | de adăugat |
 | galerie cu mărire, video în pagină | **[EXISTĂ]** |
-| **distribuire** (rețele, copiere link, e-mail) | de adăugat |
+| distribuire (rețele, copiere link, e-mail) | de adăugat |
 | legătura înapoi la licitație și parte | de adăugat |
 
 ---
 
-## 9. Căutare și filtre
+## 8. Căutare și filtre
 
 **[EXISTĂ]** Căutare în toți porumbeii, fără diferență de majuscule și diacritice, după nume, serie, linie, rubrică și crescător.
 
-**De adăugat — filtre:** crescător · licitație · parte · sex · an · preț minim / maxim · active / închise · data închiderii · **fără oferte** · **unde am licitat eu**.
+**De adăugat — filtre:** crescător · licitație · parte · sex · an · preț minim / maxim · active / închise · data închiderii · fără oferte · unde am licitat eu.
 
 ---
 
-## 10. Notificări
+## 9. Avize și notificări
+
+### 9.1. Cu 30 de minute înainte de final **[CONFIRMAT]**
+
+> *„Când o licitație se apropie de final, să fie dat mail cu 30 min înainte de final, notificare, tuturor celor care au cont! Ca să știe că se încheie licitația unui CRESCĂTOR. Iar la cei care au cont și au licitat, special, și porumbelul la care au licitat."*
+
+Două e-mailuri diferite, pentru fiecare parte care se apropie de final:
+
+| Cui | Ce primește |
+|---|---|
+| **Tuturor celor cu cont** | *„Licitația crescătorului X — Partea 1 se încheie în 30 de minute"*, cu link la licitație. **Un singur e-mail pe parte**, nu câte unul pe porumbel. |
+| **Celor care au licitat în acea parte** | *„Porumbeii pe care ai licitat se închid în 30 de minute"*, cu **lista porumbeilor lor**, oferta curentă și dacă sunt pe primul loc sau au fost depășiți. Primesc acest e-mail **în locul** celui general, nu pe amândouă. |
+
+- Cele 30 de minute sunt o **setare**, cu 30 implicit.
+- Avizul pleacă **o singură dată** pe parte, chiar dacă prelungirile mută ora de final.
+- **[EXISTĂ]** un aviz „se închide curând", dar pleacă cu 60 de minute înainte, câte unul pe fiecare porumbel, doar către ofertanți și cei care l-au pus la favorite. De refăcut după regula de mai sus.
+
+**Atenție la regulile de protecție a datelor.** E-mailul către *toți cei cu cont* e o reclamă pentru o licitație, nu un mesaj despre ceva ce au făcut ei. Propunerea:
+- la înregistrare, o bifă **nebifată** dinainte: *„Vreau să primesc un aviz când se încheie o licitație"*;
+- aceeași alegere în **Contul meu**, de schimbat oricând;
+- link de dezabonare în fiecare e-mail;
+- conturile existente, care n-au bifat nimic, primesc doar e-mailurile despre porumbeii pe care au licitat.
+
+E-mailul despre porumbeii pe care ai licitat e legat de o acțiune a ta și nu cere bifă.
+
+### 9.2. Celelalte avize
 
 | Moment | Stare |
 |---|---|
 | oferta mi-a fost depășită | **[EXISTĂ]** |
-| licitația se închide curând | **[EXISTĂ]** |
 | am câștigat / nu am câștigat | **[EXISTĂ]** |
-| **am plasat o ofertă** (confirmare) | de adăugat |
-| **porumbelul pe care am licitat s-a prelungit** | de adăugat |
-| **porumbelul a fost retras / licitația anulată** | de adăugat |
-| **partea mea a fost aprobată / are corecturi** (pentru crescător) | de adăugat, dacă e acceptată propunerea 2.2 |
+| am plasat o ofertă (confirmare) | de adăugat |
+| porumbelul pe care am licitat s-a prelungit | de adăugat |
 
 **E-mailul de câștig** conține: numele și seria, fotografia, pedigree-ul, prețul, taxele, totalul, datele de contact și instrucțiunile de plată și livrare.
 
-> **Dependență:** acum notificările se văd pe site și se scriu în jurnalul de e-mailuri, dar **nu pleacă e-mailuri reale**. Trebuie ales un serviciu de e-mail.
+### 9.3. Dependență critică
+
+**Acum nu pleacă e-mailuri reale.** Avizele se văd pe site și se scriu în jurnalul de e-mailuri din administrare. Regula clientului se bazează pe e-mail, deci **alegerea serviciului de e-mail trece în etapa 1**, nu la final.
 
 ---
 
-## 11. Panoul de administrare
+## 10. Panoul de administrare
 
+- **administratori**: dare și retragere de drepturi;
 - crescători: listă, adăugare, editare;
-- licitații: adăugare, copertă, descriere, **excepții pe licitație** (prelungire, taxe, pas minim);
-- părți: adăugare, ore, ordine;
-- porumbei: adăugare în parte, ordine, mutare între părți *(doar înainte de pornire)*;
-- verificare și aprobare *(dacă e acceptată propunerea 2.2)*;
+- licitații: adăugare, copertă, descriere, excepții de taxe pe licitație;
+- părți: ore de început și de sfârșit, ordine, **„Programează partea"**;
+- porumbei: adăugare în parte, ordine, mutare între părți — **doar înainte de ora de început**;
 - **previzualizare** exact cum va arăta pe site;
-- **„Pornește partea"**, cu verificarea completitudinii;
-- retragere porumbel / anulare licitație, cu motiv;
-- **ofertele în timp real**, câștigătorii;
-- **export rezultate** în Excel;
-- retrimiterea notificărilor;
-- import porumbei din Excel *(etapa 3; e nevoie de un fișier exemplu de la client)*.
+- ofertele în timp real, câștigătorii;
+- export rezultate în Excel;
+- retrimiterea avizelor;
+- import porumbei din Excel *(etapa 3; e nevoie de un fișier exemplu)*.
 
 ---
 
-## 12. Datele unui porumbel
+## 11. Datele unui porumbel
 
-ID intern · număr în parte · serie inel · țară · an · sex · nume · descriere · rezultate · crescător · ofertant · fotografie principală · **fotografia ochiului** · fotografii suplimentare · video · pedigree · caracteristici · preț de pornire · ofertă curentă · ora închiderii · stare (*ciornă, aprobat, activ, prelungit, închis, retras*) · motivul retragerii · câștigător · sumă finală · taxe înghețate.
-
----
-
-## 13. Criterii de acceptare
-
-1. Administratorul creează un crescător, o licitație pentru el și mai multe părți.
-2. Fiecare parte are ora ei de închidere.
-3. Porumbeii se numerotează automat `1.01`, `1.02`, … și se pot reordona înainte de pornire.
-4. O parte incompletă nu pornește, iar butonul spune ce lipsește.
-5. „Pornește partea" activează toți porumbeii în aceeași clipă.
-6. După pornire, ora de închidere nu se mai poate muta.
-7. Fiecare porumbel se licitează separat, cu licitare automată și istoric.
-8. Taxa se vede lângă butonul de licitare, înainte de ofertă.
-9. O ofertă în fereastra finală prelungește doar acel porumbel, cu valorile înghețate la pornire.
-10. Schimbarea setărilor globale nu atinge părțile deja pornite.
-11. Retragerea unui porumbel îl închide fără câștigător și îi anunță pe ofertanți; ceilalți continuă.
-12. La final, câștigătorul e stabilit automat și primește toate datele, taxele și instrucțiunile.
-13. Totul funcționează pe calculator, tabletă și telefon.
-14. *(propunerea 2.2)* Crescătorul pregătește o parte, administratorul o corectează și o aprobă, după pornire crescătorul nu mai poate modifica.
+ID intern · număr în parte · serie inel · țară · an · sex · nume · descriere · rezultate · crescător · ofertant · fotografie principală · fotografia ochiului · fotografii suplimentare · video · pedigree · caracteristici · preț de pornire · ofertă curentă · ora închiderii · stare (*ciornă, programat, activ, prelungit, închis*) · câștigător · sumă finală · taxe înghețate.
 
 ---
 
-## 14. Etape
+## 12. Criterii de acceptare
+
+1. Doi administratori pot lucra în paralel; jurnalul arată cine a făcut fiecare modificare.
+2. Un crescător, un cumpărător sau un vizitator **nu poate** adăuga sau modifica porumbei — nici din pagini, nici direct prin cereri către server.
+3. Administratorul creează un crescător, o licitație pentru el și mai multe părți, fiecare cu data și ora de început și de sfârșit.
+4. Porumbeii se numerotează automat `1.01`, `1.02`, … și se reordonează înainte de pornire.
+5. O parte incompletă nu se poate programa, iar butonul spune ce lipsește.
+6. La ora de început, toți porumbeii din parte pornesc în aceeași clipă, fără altă apăsare.
+7. După pornire, orele nu se pot schimba, iar partea nu se poate opri.
+8. O ofertă în ultimele 10 minute prelungește doar acel porumbel cu 10 minute, de câte ori e nevoie; fără oferte 10 minute, porumbelul se închide cu câștigător.
+9. Schimbarea setărilor nu atinge părțile deja programate sau pornite.
+10. Cu 30 de minute înainte de final pleacă un singur aviz pe parte către cei cu cont care au ales să-l primească, iar ofertanții primesc lista porumbeilor lor.
+11. La final, câștigătorul e stabilit automat și primește toate datele și instrucțiunile.
+12. Totul funcționează pe calculator, tabletă și telefon.
+
+---
+
+## 13. Etape
 
 | Etapa | Conținut | Ce poate testa clientul |
 |---|---|---|
-| **1** | structura (capitolul 1), stările și pornirea (3), prelungirea înghețată (4), pagina licitației și a porumbelului (8), administrarea de bază (11), mutarea datelor de test existente | o licitație cap-coadă: creare → părți → porumbei → pornire → licitare → închidere |
-| **2** | taxe pe licitație și afișarea lor (5), retragere și anulare (6), fotografia ochiului, distribuire, descărcare pedigree, filtrele (9) | licitare cu taxe vizibile, filtre |
-| **3** | fluxul crescătorului (2.2, dacă e acceptat), notificările noi (10), export, ofertele în timp real, import Excel | lucrul împreună cu un crescător |
-| **4** | e-mailuri reale | depinde de alegerea serviciului |
+| **1** | structura (1); administratorii și oprirea fluxului crescătorilor (2); programarea, pornirea automată și blocarea după pornire (3); prelungirea 10 / 10 (4); pagina licitației și a porumbelului (7); administrarea de bază (10); avizul de 30 de minute (9.1); **serviciul de e-mail**; mutarea datelor de test existente | o licitație cap-coadă: creare → părți → porumbei → programare → pornire automată → licitare → prelungire → aviz → închidere |
+| **2** | taxe și afișarea lor (5); fotografia ochiului, distribuire, descărcare pedigree; filtrele (8) | licitare cu taxe vizibile, filtre |
+| **3** | export, ofertele în timp real, import Excel, avizele noi (9.2) | lucru la volum |
 
 ---
 
-## 15. De confirmat cu clientul
+## 14. Încă de întrebat clientul
 
-1. **Crescătorii pregătesc porumbeii**, iar el doar verifică și pornește partea (2.2)? Sau rămâne doar el?
-2. **Închiderea mai devreme:** la ce situație se gândea? Îi ajung retragerea porumbelului și anularea licitației (6.2)?
-3. **Pornirea:** pe loc, programată, sau ambele?
-4. **Valorile implicite:** prelungirea 10 / 10 minute sau 5 / 5 ca la PIPA? Taxa de administrare — există, și cât? Comisionul vânzătorului — cât?
-5. **Plata:** o încasează platforma, sau plătesc direct între ei?
-6. **Denumirea grupului:** „Partea" sau „Lotul"?
-7. **Porecla ofertantului:** o aprobă el, ca la PIPA?
-8. **Prețul fix și prețul de rezervă**, construite deja: rămân?
-9. Un **fișier Excel exemplu** cu porumbei, pentru import.
+1. **Plata:** o încasează platforma și îi dă banii crescătorului, sau câștigătorul plătește direct crescătorului?
+2. **Taxele:** există taxă de administrare pe porumbel, ca la PIPA? Cât e comisionul crescătorului?
+3. **Un porumbel mort sau bolnav** în timpul licitației: îl poate retrage administratorul, fără câștigător?
+4. **Avizul de 30 de minute pentru toți:** ok cu bifa la înregistrare, pe care omul o alege el?
+5. **Denumirea grupului:** „Partea" sau „Lotul"?
+6. **Porecla ofertantului:** o aprobă administratorul, ca la PIPA?
+7. **Prețul fix și prețul de rezervă**, construite deja: rămân?
+8. Un **fișier Excel exemplu** cu porumbei, pentru import.
