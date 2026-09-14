@@ -2,6 +2,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { SAFE_IMAGE_URL } from "@/lib/limits";
+import { parseDistance } from "@/lib/distance";
 import { jsonOk, jsonError, jsonValidationError, handleApiError } from "@/lib/api";
 
 const schema = z.object({
@@ -33,7 +34,8 @@ const schema = z.object({
   featured: z.boolean().optional(),
   // banda de pe prima pagina — toate optionale
   destination: z.string().max(80).optional(),
-  distanceKm: z.number().int().min(0).max(20_000).nullable().optional(),
+  // „200" sau „170-240" — crescătorii nu pleacă toți din același loc
+  distance: z.string().max(40).optional(),
   countryCode: z
     .string()
     .regex(/^[A-Za-z]{2}$/, "Exact două litere: RO, DE, HU…")
@@ -51,8 +53,24 @@ export async function POST(req: Request) {
     const admin = await requireAdmin();
     const body = schema.safeParse(await req.json());
     if (!body.success) return jsonValidationError(body.error);
-    const { id, coverUrl, startsAt, endsAt, boardingAt, releaseAt, countryCode, ...rest } =
-      body.data;
+    const {
+      id,
+      coverUrl,
+      startsAt,
+      endsAt,
+      boardingAt,
+      releaseAt,
+      countryCode,
+      distance,
+      ...rest
+    } = body.data;
+
+    const interval = parseDistance(distance ?? "");
+    if (interval === "INVALID") {
+      return jsonError("VALIDATION", 422, {
+        fields: { distance: "Scrie un număr (200) sau un interval (170-240), în kilometri." },
+      });
+    }
 
     if (new Date(endsAt) <= new Date(startsAt)) {
       return jsonError("VALIDATION", 422, {
@@ -68,8 +86,8 @@ export async function POST(req: Request) {
       boardingAt: boardingAt ? new Date(boardingAt) : null,
       releaseAt: releaseAt ? new Date(releaseAt) : null,
       countryCode: countryCode ? countryCode.toUpperCase() : null,
-      // campul de numar trimite 0 cand e lasat gol; pe banda, 0 km n-are sens
-      distanceKm: rest.distanceKm ? rest.distanceKm : null,
+      distanceKm: interval?.min ?? null,
+      distanceMaxKm: interval?.max ?? null,
     };
 
     const saved = id

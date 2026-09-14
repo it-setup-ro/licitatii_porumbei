@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import RecordEditor, { type FieldDef } from "@/components/admin/RecordEditor";
+import { distanceToInput } from "@/lib/distance";
 
 export const dynamic = "force-dynamic";
 
@@ -72,7 +73,12 @@ const FIELDS: FieldDef[] = [
     type: "text",
     hint: "Ex.: Nordhausen. Cuvântul auriu, cel mai mare de pe bandă.",
   },
-  { key: "distanceKm", label: "Distanța (km)", type: "number", hint: "Ex.: 1000 → „1.000 KM”." },
+  {
+    key: "distance",
+    label: "Distanța (km)",
+    type: "text",
+    hint: "Un număr (1000) sau un interval (170-240), când crescătorii pleacă din locuri diferite.",
+  },
   {
     key: "countryCode",
     label: "Țara destinație (cod: DE, RO, HU…)",
@@ -158,7 +164,7 @@ export default async function AdminContestsPage({
         coverUrl: editing.coverUrl ?? "",
         featured: editing.featured,
         destination: editing.destination ?? "",
-        distanceKm: editing.distanceKm ?? "",
+        distance: distanceToInput(editing.distanceKm, editing.distanceMaxKm),
         countryCode: editing.countryCode ?? "",
         boardingAt: editing.boardingAt ? toLocalInput(editing.boardingAt) : "",
         boardingPlace: editing.boardingPlace ?? "",
@@ -181,7 +187,7 @@ export default async function AdminContestsPage({
         coverUrl: "",
         featured: false,
         destination: "",
-        distanceKm: "",
+        distance: "",
         countryCode: "",
         boardingAt: "",
         boardingPlace: "",

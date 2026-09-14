@@ -293,6 +293,7 @@ export default async function HomePage({
             title: currentLocale === "en" ? contest.titleEn : contest.titleRo,
             destination: contest.destination,
             distanceKm: contest.distanceKm,
+            distanceMaxKm: contest.distanceMaxKm,
             countryCode: contest.countryCode,
             boardingAt: contest.boardingAt,
             boardingPlace: contest.boardingPlace,

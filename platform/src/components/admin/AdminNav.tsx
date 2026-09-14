@@ -53,6 +53,7 @@ function groups(): Group[] {
         { href: "/admin/contests", label: "Concursuri", icon: <IconTrophy /> },
         { href: "/admin/content", label: "Pagini", icon: <IconPage /> },
         { href: "/admin/links", label: "Linkuri", icon: <IconLink /> },
+        { href: "/admin/agents", label: "Transport & agenți", icon: <IconTruck /> },
       ],
     },
     {
@@ -301,6 +302,17 @@ function IconArticle() {
     </svg>
   );
 }
+function IconTruck() {
+  return (
+    <svg {...ico}>
+      <path d="M3 16V6h11v10" />
+      <path d="M14 9h4l3 3.5V16h-7" />
+      <circle cx="7.5" cy="17.5" r="1.8" />
+      <circle cx="17" cy="17.5" r="1.8" />
+    </svg>
+  );
+}
+
 function IconBox() {
   return (
     <svg {...ico}>

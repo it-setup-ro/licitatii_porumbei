@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { formatDistance } from "@/lib/distance";
 
 /**
  * Banda concursului de pe prima pagina, dupa macheta clientului: trofeu,
@@ -14,6 +15,7 @@ export type BannerContest = {
   title: string;
   destination: string | null;
   distanceKm: number | null;
+  distanceMaxKm: number | null;
   countryCode: string | null;
   boardingAt: Date | null;
   boardingPlace: string | null;
@@ -139,7 +141,7 @@ export default function ContestBanner({
               )}
               {contest.distanceKm ? (
                 <p className="font-display mt-1.5 flex flex-wrap items-center gap-2 text-2xl font-bold leading-none">
-                  {new Intl.NumberFormat(loc).format(contest.distanceKm)} KM
+                  {formatDistance(contest.distanceKm, contest.distanceMaxKm, loc)} KM
                   {contest.countryCode && (
                     <span className="rounded-full border border-wing-yellow/40 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-wing-yellow">
                       {countryName(contest.countryCode, loc)}

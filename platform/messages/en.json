@@ -555,5 +555,12 @@
     "intro": "The lofts that put pigeons up for auction here. Open one to see its birds, record and reviews.",
     "empty": "No approved breeder yet.",
     "noLive": "No live auctions right now"
+  },
+  "agents": {
+    "title": "Shipping and agents",
+    "transporters": "Transporters",
+    "agents": "Agents",
+    "website": "Website",
+    "empty": "No transporter or agent added yet."
   }
 }

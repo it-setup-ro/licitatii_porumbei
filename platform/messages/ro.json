@@ -555,5 +555,12 @@
     "intro": "Crescătoriile care scot porumbei la licitație pe platformă. Apasă pe una ca să-i vezi păsările, palmaresul și recenziile.",
     "empty": "Deocamdată nu este niciun crescător aprobat.",
     "noLive": "Fără licitații active acum"
+  },
+  "agents": {
+    "title": "Transport și Agenți",
+    "transporters": "Transportatori",
+    "agents": "Agenți",
+    "website": "Site",
+    "empty": "Deocamdată nu este adăugat niciun transportator sau agent."
   }
 }

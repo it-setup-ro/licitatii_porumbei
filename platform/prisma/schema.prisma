@@ -397,7 +397,10 @@ model Contest {
   /// destinatia scrisa mare, distanta, steagul tarii, imbarcarea si lansarea.
   /// Toate optionale — o banda arata doar rubricile completate.
   destination     String?
+  /// Capătul de jos al distanței; singurul, când nu e interval.
   distanceKm      Int?
+  /// Capătul de sus, când crescătorii au distanțe diferite: „170-240 km".
+  distanceMaxKm   Int?
   /// Cod ISO de doua litere (DE, RO). Steagul se compune din el la afisare,
   /// ca sa nu tinem emoji in baza.
   countryCode     String?
@@ -487,4 +490,27 @@ model NewsletterSubscriber {
   unsubToken     String    @unique
   unsubscribedAt DateTime?
   createdAt      DateTime  @default(now())
+}
+
+/// Transportatorii și agenții din pagina „Transport și Agenți".
+///
+/// O listă, nu un bloc de text: după primul transportator nu mai era loc
+/// pentru al doilea. Fiecare are cardul lui și se pot adăuga oricâți.
+model ShippingAgent {
+  id        String   @id @default(cuid())
+  kind      String   @default("TRANSPORT") // TRANSPORT | AGENT
+  name      String
+  /// județe, țări sau trasee acoperite
+  zone      String?
+  descRo    String?
+  descEn    String?
+  phone     String?
+  whatsapp  String?
+  email     String?
+  website   String?
+  logoUrl   String?
+  sortIdx   Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

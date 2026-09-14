@@ -325,6 +325,35 @@ export async function seedSections(
 
   // ── Linkuri externe pentru submeniul „Concursuri" ──────────────────────
   // Sunt editabile din admin: cand apar clasamentele 2027, se schimba doar URL-ul.
+  // ── Transportatori și agenți (cardurile din „Transport și Agenți") ──────
+  await prisma.shippingAgent.createMany({
+    data: [
+      {
+        kind: "TRANSPORT",
+        name: "Transport Demo Porumbei",
+        zone: "România ↔ Germania, Belgia, Olanda",
+        descRo:
+          "Transport săptămânal cu boxe ventilate. Preluare de la crescător, livrare la cumpărător.",
+        descEn:
+          "Weekly transport in ventilated crates. Collection from the breeder, delivery to the buyer.",
+        phone: "0723 000 111",
+        whatsapp: "0723 000 111",
+        email: "transport@nbp.test",
+        website: "https://example.com",
+        sortIdx: 1,
+      },
+      {
+        kind: "AGENT",
+        name: "Agent Demo Arad",
+        zone: "Arad, Timiș, Bihor",
+        descRo: "Punct de colectare pentru vestul țării.",
+        phone: "+40 744 000 222",
+        sortIdx: 2,
+      },
+      { kind: "AGENT", name: "Agent ascuns", zone: "Test", active: false, sortIdx: 3 },
+    ],
+  });
+
   await prisma.externalLink.createMany({
     data: [
       {

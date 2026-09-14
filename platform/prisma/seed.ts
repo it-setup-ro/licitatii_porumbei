@@ -25,6 +25,7 @@ async function main() {
     prisma.bid.deleteMany(),
     prisma.auction.deleteMany(),
     prisma.contest.deleteMany(),
+    prisma.shippingAgent.deleteMany(),
     prisma.pigeonResult.deleteMany(),
     prisma.mediaAsset.deleteMany(),
     prisma.pigeon.deleteMany(),
