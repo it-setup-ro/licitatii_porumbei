@@ -55,19 +55,6 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
       ],
     },
     {
-      title: t("groupPayments"),
-      fields: [
-        { key: "paymentProvider", label: "Procesator", type: "select", options: ["mock", "stripe"] },
-        {
-          key: "payoutMode",
-          label: "Momentul payout-ului",
-          type: "select",
-          options: ["IMMEDIATE", "AFTER_DAYS", "ON_DELIVERY"],
-        },
-        { key: "payoutAfterDays", label: "Zile până la payout", type: "number" },
-      ],
-    },
-    {
       title: t("groupShipping"),
       fields: [
         { key: "platformShippingEnabled", label: "Transport asistat de platformă", type: "boolean" },

@@ -81,7 +81,16 @@ test.describe("Ciclul de viata al unei licitatii", () => {
     // pretul final: prima oferta a stabilit pretul de pornire (120), iar
     // ridicarea propriului plafon nu misca pretul vizibil
     await expect(buyer.getByTestId("order-amount")).toContainText("120");
-    await buyer.getByTestId("pay-button").click();
+    // faza 2: nu se mai plătește pe site — cumpărătorul vede datele de plată,
+    // iar administratorul marchează plata
+    await expect(buyer.getByTestId("payment-instructions")).toBeVisible();
+    await expect(buyer.locator('[data-testid="pay-button"]')).toHaveCount(0);
+    const orderId = buyer.url().split("/").pop()!;
+    const platit = await admin.request.post(`/api/admin/orders/${orderId}`, {
+      data: { action: "PAID", method: "TRANSFER" },
+    });
+    expect((await platit.json()).ok).toBe(true);
+    await buyer.reload();
     await expect(buyer.getByTestId("order-status")).toContainText("Plătită");
 
     // 7) Recenzie dupa tranzactie
@@ -101,8 +110,12 @@ test.describe("Ciclul de viata al unei licitatii", () => {
     await seller.goto("/ro/account/sales");
     const saleRow = seller.getByTestId("sale-row").filter({ hasText: "Săgeata E2E" });
     await expect(saleRow).toContainText("Comision");
-    await saleRow.getByTestId("order-action-ship").click();
-    await expect(saleRow).toContainText("Expediată");
+    const predat = await admin.request.post(`/api/admin/orders/${orderId}`, {
+      data: { action: "DELIVERED", carrier: "Curier test" },
+    });
+    expect((await predat.json()).ok).toBe(true);
+    await seller.reload();
+    await expect(saleRow).toContainText("Predată");
 
     await ctxSeller.close();
     await ctxAdmin.close();

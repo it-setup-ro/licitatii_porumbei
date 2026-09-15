@@ -1,3 +1,4 @@
+import SettlementSection from "@/components/admin/SettlementSection";
 import { getFxInfo } from "@/lib/fx";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
@@ -140,6 +141,13 @@ export default async function AdminSalePage({
           Licitația are deja {settings.saleMaxLots} loturi, cât permit Setările.
         </p>
       )}
+
+      <SettlementSection
+        group={{ saleId: sale.id }}
+        title={sale.breeder.name}
+        subtitle={`Comisionul licitației: ${sale.commissionPercent}%. Intră doar porumbeii plătiți și nedecontați.`}
+        currency={settings.platformCurrency}
+      />
     </div>
   );
 }

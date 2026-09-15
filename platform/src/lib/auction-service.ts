@@ -12,6 +12,7 @@ export { reserveState };
 import { emitAuctionEvent } from "./events";
 import { notify } from "./notify";
 import { notifyLotsEnding } from "./lot-notices";
+import { notifyBuyerWithPaymentDetails } from "./orders";
 
 /**
  * Serviciul de licitatii: leaga logica pura (bidding.ts) de DB.
@@ -418,12 +419,22 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
       }
 
       if (final.winnerId) {
-        await notify(
-          final.winnerId,
-          "AUCTION_WON",
-          { lot: lotName, priceCents: final.currentPriceCents },
-          `/auctions/${final.id}`
-        );
+        // faza 2: câștigătorul primește suma și datele de plată ale firmei, cu
+        // legătura spre comanda lui
+        const winOrder = await prisma.order.findUnique({
+          where: { auctionId: final.id },
+          select: { id: true },
+        });
+        if (winOrder) {
+          await notifyBuyerWithPaymentDetails(winOrder.id, "WON");
+        } else {
+          await notify(
+            final.winnerId,
+            "AUCTION_WON",
+            { lot: lotName, priceCents: final.currentPriceCents },
+            `/auctions/${final.id}`
+          );
+        }
         await notify(
           final.sellerId,
           "SELLER_SOLD",

@@ -9,13 +9,11 @@ export async function register() {
   g.__sweeperStarted = true;
 
   const { sweepAuctions } = await import("./lib/auction-service");
-  const { releaseDuePayouts } = await import("./lib/payments");
   const { refreshBnrRate } = await import("./lib/fx");
 
   setInterval(async () => {
     try {
       await sweepAuctions();
-      await releaseDuePayouts();
     } catch (e) {
       console.error("[sweeper]", e);
     }

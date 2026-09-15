@@ -4,7 +4,6 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/money";
 import AccountNav from "@/components/AccountNav";
-import OrderActions from "@/components/OrderActions";
 
 export const dynamic = "force-dynamic";
 
@@ -46,13 +45,11 @@ export default async function SalesPage({ params }: { params: Promise<{ locale: 
                     {formatMoney(o.amountCents, o.currency, currentLocale)} ·{" "}
                     {to("commission")}: {formatMoney(o.commissionCents, o.currency, currentLocale)}
                   </p>
-                  <p className="text-xs text-ink/50">Payout: {o.payoutStatus}</p>
                 </div>
                 <span className="rounded-full bg-ink/5 px-3 py-1 text-xs font-bold">
                   {to(`status${o.status}` as "statusPAID")}
                 </span>
               </div>
-              {o.status === "PAID" && <OrderActions orderId={o.id} action="SHIP" />}
             </div>
           ))}
         </div>

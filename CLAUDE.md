@@ -18,6 +18,7 @@ Platformă de licitații de porumbei pentru Daniel (intermediar) și clientul lu
 | Porumbelul | `lib/pigeon.ts` (`yearFromRing`, `SEX_SYMBOL`), `lib/pigeon-traits.ts`, `lib/lot-editing.ts` |
 | Pagini porumbel / listare | `app/[locale]/auctions/[id]/page.tsx`, `components/LiveAuctionPanel.tsx`, `BuyNowPanel.tsx`, `SellForm.tsx`, `LotEditForm.tsx`, `AuctionCard.tsx` |
 | Conturi, aprobare, admini | `app/api/auth/register`, `app/[locale]/admin/accounts`, `lib/address.ts`, `lib/nickname.ts` |
+| Comenzi, plată în afara site-ului, decont (faza 2) | `lib/orders.ts` (Plătit / Predat / anulare / decont, e-mail cu datele de plată), `lib/settlement-math.ts` (pur), `lib/payment-instructions.ts` (pur); admin: `app/[locale]/admin/orders`, `admin/settlements`, `components/admin/SettlementSection.tsx`, export `app/api/admin/settlements/export` (exceljs); cumpărător: `app/[locale]/orders/[id]` |
 | E-mail și notificări | `lib/mailer.ts` (EmailLog + SMTP din `SMTP_URL`), `lib/notify.ts` (tipuri + subiecte), `lib/newsletter.ts` |
 | Erori pe câmpuri | `lib/api.ts` (`jsonValidationError`, `validationFields`) |
 | Sweeper (15 s) | `instrumentation.ts` |

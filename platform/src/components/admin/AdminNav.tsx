@@ -24,6 +24,8 @@ export type AdminCounts = {
   lots: number;
   reviews: number;
   messages: number;
+  /** vânzări care așteaptă plata */
+  unpaid: number;
 };
 
 type Item = {
@@ -44,6 +46,8 @@ function groups(): Group[] {
       items: [
         { href: "/admin/sales", label: "Licitații pe loturi", icon: <IconGavel /> },
         { href: "/admin/breeders", label: "Crescători", icon: <IconBird /> },
+        { href: "/admin/orders", label: "Vânzări și plăți", icon: <IconBox />, count: "unpaid" },
+        { href: "/admin/settlements", label: "Deconturi", icon: <IconList /> },
       ],
     },
     {

@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { notify } from "@/lib/notify";
+import { notifyBuyerWithPaymentDetails } from "@/lib/orders";
 import { rateLimit } from "@/lib/rate-limit";
 import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/api";
 
@@ -57,6 +58,9 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
         currency: auction.currency,
       },
     });
+
+    // faza 2: cumpărătorul primește suma și datele de plată ale firmei
+    await notifyBuyerWithPaymentDetails(order.id, "BOUGHT");
 
     await notify(
       auction.sellerId,

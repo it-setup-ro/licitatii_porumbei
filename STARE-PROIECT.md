@@ -63,6 +63,13 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - **Conturile noi se aprobă de admin** (Administrare → Conturi de aprobat). Înregistrarea cere nume, telefon, adresă, e-mail și nickname; până la aprobare contul vede tot, dar nu licitează
 - **Administratori** se adaugă și se retrag din Administrare → Administratori (nu te poți retrage singur, nici pe ultimul)
 
+### Plata în afara site-ului (faza 2 din `CERINTE-LICITATII-PE-PARTI.md`, capitolul 6)
+- **Nu se mai plătește pe site**: butonul „Plătește" și plata simulată au fost scoase
+- **Câștigătorul** (și cumpărătorul la preț fix) primește pe site și pe e-mail: porumbelul (Lotul 1.04, nume, serie), suma în lei cu echivalentul în €, datele de plată ale firmei din Setări (denumire, IBAN, bancă), mențiunea că se poate plăti și numerar, regula „porumbeii se predau după plată" și telefonul. Fără IBAN completat, i se spune că datele îi vin de la administrator
+- **Administrare → Vânzări și plăți**: toți porumbeii vânduți, pe file (așteaptă plata / plătite / predate / anulate), cu căutare. Butoane: **Plătit** (transfer sau numerar, cu data), **Predat** (cu transportatorul), **Anulează – nu a plătit** (cumpărătorul e anunțat) și retragerea ultimului marcaj, cât porumbelul nu e decontat. Numărul vânzărilor neplătite apare în meniu
+- **Decontul**: pe pagina fiecărei licitații de crescător și în Administrare → Deconturi (acolo și prețul fix, pe „Oferit de"). Arată total vândut (doar plătiți), comisionul și suma de plătit crescătorului; neplătiții apar separat. „Marchează decontat" închide suma, iar porumbeii plătiți mai târziu intră în decontul următor. **Descarcă Excel** (.xlsx)
+- Fiecare marcaj (plătit, predat, anulat, decont) rămâne în Jurnal
+
 ### Cont
 - Înregistrare, autentificare, cerere de cont crescător (aprobată manual de admin)
 - **Datele crescătoriei** (denumire, localitate, prezentare) se corectează din Contul meu. IBAN-ul și CUI-ul nu — o schimbare tăcută de cont bancar e tiparul unei fraude; acelea rămân la admin
@@ -88,7 +95,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 | # | Ce | De ce contează | Cine decide |
 |---|---|---|---|
 | 1 | **Domeniu + HTTPS** | Acum parolele circulă necriptat. După: `COOKIE_SECURE=true` în `.env` de pe server | Daniel (cumpără domeniul) |
-| 2 | **Plăți reale (Stripe)** | Acum sunt simulate — oricine poate marca o comandă „plătită" fără să plătească. Abstracția există în `src/lib/payments.ts` | Daniel (cont Stripe) |
+| 2 | **Datele de plată ale firmei** | Plata se face în contul firmei sau numerar (faza 2); fără IBAN în Setări → Facturare (denumire, IBAN, bancă) și telefon în Contact, câștigătorul nu primește contul. Stripe nu mai e necesar | Daniel / clientul |
 | 3 | **Schimbă parola PostgreSQL locală** | A fost publică pe GitHub și rămâne în istoricul git | Daniel |
 | 4 | **Șterge conturile demo** înainte de public | `admin@nbp.test/admin1234` e scris în README | Daniel |
 | 5 | **E-mail real** | Codul e gata: orice e-mail se scrie în Administrare → E-mailuri și, dacă în `.env` există `SMTP_URL` (+ `SMTP_FROM`), pleacă și prin SMTP (`src/lib/mailer.ts`). Merge cu orice furnizor: Brevo, SES, Mailgun, contul firmei. **Resetarea parolei, aprobarea conturilor și avizul de 30 de minute depind de asta** | Daniel (alege furnizorul, pune datele în `.env`) |
@@ -193,4 +200,5 @@ platform/src/
 | 10 sep | Bară de progres la încărcare; reparat: suma minimă nu se actualiza pe al doilea ecran |
 | 29 aug | Editarea loturilor de către crescător; clipuri până la 5 min (300 MB, scrise direct pe disc); an+sex în antetul lotului; mărirea pozelor |
 | 11 sep | Pagina principală după macheta clientului, banda concursului, newsletter GDPR, căutare fără diacritice, transportatori și agenți ca listă de carduri |
+| 15 sep | Lei cu € alături (curs BNR + manual), fără an, semne de sex, porumbel indisponibil, acord la înregistrare, Brevo gratuit; porumbeii de test mutați în „Licitație de test"; faza 2: plata în afara site-ului, Vânzări și plăți, deconturi cu Excel |
 | 14 sep | Faza 1 a licitațiilor pe loturi: crescător → licitație → loturi cu „Start lot", prelungire 10/10 înghețată, comision pe licitație, conturi aprobate de admin, pagina publică a licitației, avizul de 30 de minute, trimitere SMTP |

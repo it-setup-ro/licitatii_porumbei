@@ -25,7 +25,9 @@ export type NotifyType =
   | "ACCOUNT_REJECTED"
   | "LOTS_ENDING"
   | "LOTS_ENDING_BIDDER"
-  | "PIGEON_UNAVAILABLE";
+  | "PIGEON_UNAVAILABLE"
+  | "PAYMENT_INSTRUCTIONS"
+  | "ORDER_CANCELLED";
 
 const EMAIL_SUBJECTS: Record<NotifyType, { ro: string; en: string }> = {
   OUTBID: { ro: "Oferta ta a fost depășită", en: "You have been outbid" },
@@ -51,6 +53,14 @@ const EMAIL_SUBJECTS: Record<NotifyType, { ro: string; en: string }> = {
     ro: "Porumbeii pe care ai licitat se închid în curând",
     en: "The pigeons you bid on are closing soon",
   },
+  PAYMENT_INSTRUCTIONS: {
+    ro: "Datele de plată pentru porumbelul cumpărat",
+    en: "Payment details for the pigeon you bought",
+  },
+  ORDER_CANCELLED: {
+    ro: "Vânzarea a fost anulată",
+    en: "The sale has been cancelled",
+  },
   PIGEON_UNAVAILABLE: {
     ro: "Porumbelul câștigat nu mai este disponibil",
     en: "The pigeon you won is no longer available",
@@ -73,7 +83,9 @@ export async function notify(
   userId: string,
   type: NotifyType,
   params: Record<string, string | number>,
-  link?: string
+  link?: string,
+  /** textul e-mailului, când lista de parametri nu ajunge (ex. datele de plată) */
+  opts: { emailText?: string } = {}
 ) {
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user) return;
@@ -87,6 +99,7 @@ export async function notify(
     const locale = user.locale === "en" ? "en" : "ro";
     const subject = EMAIL_SUBJECTS[type][locale];
     const body =
+      opts.emailText ??
       `${subject}\n\n` +
       Object.entries(params)
         .map(([k, v]) => `${k}: ${v}`)

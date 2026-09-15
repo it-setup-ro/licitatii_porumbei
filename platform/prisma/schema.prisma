@@ -243,6 +243,19 @@ model Order {
   review          Review?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  /// Faza 2 — plata în afara site-ului, marcată de administrator
+  paymentMethod   String? // TRANSFER | CASH
+  paidMarkedById  String?
+  deliveredAt     DateTime?
+  deliveredById   String?
+  /// transportatorul, la predare (opțional)
+  carrier         String?
+  cancelledAt     DateTime?
+  cancelReason    String?
+  settlementId    String?
+  settlement      Settlement? @relation(fields: [settlementId], references: [id])
+
+  @@index([settlementId])
 }
 
 model Review {
@@ -606,4 +619,26 @@ model Lot {
 
   @@unique([saleId, number])
   @@index([status, endsAt])
+}
+
+/// Decontul cu crescătorul (faza 2): porumbeii plătiți dintr-o licitație de
+/// crescător sau, la preț fix, cei cu același „Oferit de". Sumele rămân cele
+/// din ziua decontului.
+model Settlement {
+  id              String   @id @default(cuid())
+  kind            String // SALE | FIXED
+  saleId          String?
+  offeredBy       String?
+  currency        String   @default("RON")
+  totalCents      Int
+  commissionCents Int
+  payoutCents     Int
+  orderCount      Int
+  note            String?
+  settledById     String?
+  settledAt       DateTime @default(now())
+  orders          Order[]
+
+  @@index([saleId])
+  @@index([offeredBy])
 }
