@@ -59,12 +59,12 @@ export default async function FixedPricePage({
                 data-testid="fixed-card"
                 className="card-hover block overflow-hidden rounded-2xl border border-ink/10 bg-white"
               >
-                <div className="relative aspect-[4/3] bg-ivory-soft">
+                <div className="relative aspect-[4/3] bg-white">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={lot.pigeon.media[0]?.url ?? "/pigeons/p1.svg"}
                     alt={title}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain"
                   />
                   <span
                     className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${
@@ -86,7 +86,7 @@ export default async function FixedPricePage({
                       {formatMoney(lot.startPriceCents, lot.currency, currentLocale)}
                     </p>
                     {eurRate && (
-                      <p className="text-xs font-medium text-ink/50" data-testid="price-equiv">
+                      <p className="mt-1 w-fit text-xs inline-block rounded-full bg-wing-blue px-2.5 py-0.5 font-bold text-white" data-testid="price-equiv">
                         {equivalentLabel(lot.startPriceCents, lot.currency, currentLocale, eurRate)}
                       </p>
                     )}

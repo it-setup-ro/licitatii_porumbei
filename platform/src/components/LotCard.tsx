@@ -52,10 +52,10 @@ export default async function LotCard({ lot }: { lot: LotCardData }) {
       data-testid="lot-card"
       className="card-hover block overflow-hidden rounded-2xl border border-ink/10 bg-white"
     >
-      <div className="relative aspect-[16/9] bg-ivory-soft">
+      <div className="relative aspect-[16/9] bg-white">
         {lot.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={lot.imageUrl} alt={saleTitle} className="h-full w-full object-cover" />
+          <img src={lot.imageUrl} alt={saleTitle} className="h-full w-full object-contain" />
         ) : (
           <div className="wing-gradient h-full w-full opacity-70" aria-hidden="true" />
         )}

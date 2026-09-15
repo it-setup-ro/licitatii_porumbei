@@ -44,8 +44,9 @@ export async function getLotCards(
       saleTitleEn: l.sale.titleEn,
       breederName: l.sale.breeder.name,
       breederPlace: [l.sale.breeder.city, l.sale.breeder.country].filter(Boolean).join(", ") || null,
-      // primul porumbel cu poză, altfel coperta licitației, altfel poza crescătorului
-      imageUrl: firstPhoto ?? l.sale.coverUrl ?? l.sale.breeder.photoUrl ?? null,
+      // Clientul: „aici să apară poza cu crescătorul, nu cu porumbel din loturi".
+      // Poza crescătorului, altfel coperta licitației; porumbelul doar dacă nu e nimic.
+      imageUrl: l.sale.breeder.photoUrl ?? l.sale.coverUrl ?? firstPhoto ?? null,
       pigeonCount: l.auctions.length,
       status: l.status as LotCardData["status"],
       startsAt: l.startsAt,

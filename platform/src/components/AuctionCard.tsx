@@ -40,6 +40,7 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
     auction.bidCount > 0 || auction.status === "CLOSED"
       ? auction.currentPriceCents
       : auction.startPriceCents;
+  const live = auction.status === "LIVE";
 
   const badge =
     auction.status === "LIVE"
@@ -54,12 +55,15 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
       className="card-hover block overflow-hidden rounded-2xl border border-ink/10 bg-white"
       data-testid="auction-card"
     >
-      <div className="relative aspect-[4/3] bg-ivory-soft">
+      {/* Poza întreagă, fără colțuri tăiate: clientul pune pe poze palmaresul,
+          adresa și steagul chiar la margini, care dispăreau la decupare. */}
+      <div className="relative aspect-[4/3] bg-white">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={auction.pigeon.imageUrl ?? "/pigeons/p1.svg"}
           alt={title}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain"
+          data-testid="card-image"
         />
         <span
           className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${badge.cls}`}
@@ -80,9 +84,9 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
         {tagline && (
           <p className="line-clamp-2 text-sm font-medium text-wing-orange">{tagline}</p>
         )}
-        <p className="text-xs text-ink/60">
+        <p className="text-xs font-semibold text-ink">
           {sexSymbol && (
-            <span className="mr-1 font-bold text-ink/70" data-testid="card-sex">
+            <span className="mr-1 font-bold" data-testid="card-sex">
               {sexSymbol}
             </span>
           )}
@@ -91,7 +95,7 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
         </p>
         <div className="flex items-end justify-between pt-1">
           <div>
-            <p className="text-xs uppercase tracking-wide text-ink/50">
+            <p className="text-xs font-bold uppercase tracking-wide text-ink">
               {auction.status === "CLOSED"
                 ? auction.bidCount > 0
                   ? t("soldFor")
@@ -106,15 +110,21 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
                   {formatMoney(price, auction.currency, locale)}
                 </p>
                 {eurRate && (
-                  <p className="text-xs font-medium text-ink/50" data-testid="price-equiv">
-                    {equivalentLabel(price, auction.currency, locale, eurRate)}
+                  <p className="mt-1">
+                    <span
+                      className="inline-block rounded-full bg-wing-blue px-2.5 py-0.5 text-xs font-bold text-white"
+                      data-testid="price-equiv"
+                    >
+                      {equivalentLabel(price, auction.currency, locale, eurRate)}
+                    </span>
                   </p>
                 )}
               </>
             )}
           </div>
-          <div className="text-right">
-            <p className="text-xs uppercase tracking-wide text-ink/50">
+          {/* „Se închide în" cu roșu — clientul: să sară în ochi cât timp mai e */}
+          <div className={`text-right ${live ? "text-wing-red" : "text-ink"}`} data-testid="card-time">
+            <p className="text-xs font-bold uppercase tracking-wide">
               {auction.status === "SCHEDULED"
                 ? t("startsIn")
                 : auction.status === "CLOSED"
@@ -122,15 +132,17 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
                   : t("endsIn")}
             </p>
             {auction.status !== "CLOSED" ? (
-              <Countdown
-                target={(auction.status === "SCHEDULED"
-                  ? auction.startsAt
-                  : auction.endsAt
-                ).toISOString()}
-                compact
-              />
+              <span className="font-bold">
+                <Countdown
+                  target={(auction.status === "SCHEDULED"
+                    ? auction.startsAt
+                    : auction.endsAt
+                  ).toISOString()}
+                  compact
+                />
+              </span>
             ) : (
-              <span className="text-sm text-ink/50">
+              <span className="text-sm font-semibold">
                 {new Intl.DateTimeFormat(locale === "ro" ? "ro-RO" : "en-GB", {
                   dateStyle: "medium",
                 }).format(auction.endsAt)}
@@ -138,7 +150,7 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
             )}
           </div>
         </div>
-        <p className="text-xs text-ink/50">{t("bidsCount", { count: auction.bidCount })}</p>
+        <p className="text-xs font-semibold text-ink">{t("bidsCount", { count: auction.bidCount })}</p>
       </div>
     </Link>
   );

@@ -240,7 +240,7 @@ export default function LiveAuctionPanel(props: Props) {
           {fmt(bidCount > 0 || status === "CLOSED" ? priceCents : props.startPriceCents)}
         </p>
         {props.eurRate ? (
-          <p className="text-sm font-medium text-ink/50" data-testid="price-equiv">
+          <p className="mt-1 w-fit text-sm inline-block rounded-full bg-wing-blue px-2.5 py-0.5 font-bold text-white" data-testid="price-equiv">
             {equivalentLabel(
               bidCount > 0 || status === "CLOSED" ? priceCents : props.startPriceCents,
               props.currency,

@@ -230,7 +230,7 @@ export default async function SalePage({
                                   {formatMoney(price, a.currency, currentLocale)}
                                 </span>
                                 {eurRate && (
-                                  <span className="block text-xs text-ink/50" data-testid="price-equiv">
+                                  <span className="mt-0.5 ml-auto block w-fit text-xs inline-block rounded-full bg-wing-blue px-2.5 py-0.5 font-bold text-white" data-testid="price-equiv">
                                     {equivalentLabel(price, a.currency, currentLocale, eurRate)}
                                   </span>
                                 )}

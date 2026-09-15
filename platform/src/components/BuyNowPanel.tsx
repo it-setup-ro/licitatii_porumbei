@@ -56,7 +56,7 @@ export default function BuyNowPanel({
         {price}
       </p>
       {eurRate ? (
-        <p className="text-sm font-medium text-ink/50" data-testid="price-equiv">
+        <p className="mt-1 w-fit text-sm inline-block rounded-full bg-wing-blue px-2.5 py-0.5 font-bold text-white" data-testid="price-equiv">
           {equivalentLabel(priceCents, currency, locale, eurRate)}
         </p>
       ) : null}
