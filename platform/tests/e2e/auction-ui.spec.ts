@@ -116,7 +116,7 @@ test.describe("Prețul de rezervă", () => {
     await page.goto(`/ro/auctions/${id}`);
     await expect(page.getByTestId("reserve-state")).toContainText("nu a fost atins");
     // suma nu apare nicaieri in pagina
-    await expect(page.locator("body")).not.toContainText("400 EUR");
+    await expect(page.locator("body")).not.toContainText("400 €");
 
     const ctx = await browser.newContext({ locale: "ro-RO" });
     const buyer = await ctx.newPage();
@@ -161,7 +161,7 @@ test.describe("Restul paginii", () => {
 
     await page.mouse.wheel(0, 2500);
     await expect(page.getByTestId("sticky-bid-bar")).toBeVisible();
-    await expect(page.getByTestId("sticky-price")).toContainText("EUR");
+    await expect(page.getByTestId("sticky-price")).toContainText("€");
 
     // apasarea te duce inapoi la panou
     await page.getByTestId("sticky-bid-button").click();

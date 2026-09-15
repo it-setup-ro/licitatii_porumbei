@@ -56,4 +56,10 @@ describe("lei și euro", () => {
   it("leii se scriu „lei”, nu „RON”", () => {
     expect(formatMoney(150_000, "RON", "ro")).toBe("1.500 lei");
   });
+
+  it("euro are semnul €, oricare ar fi datele ICU ale serverului", () => {
+    expect(formatMoney(57_500, "EUR", "ro")).toBe("575 €");
+    expect(formatMoney(57_550, "EUR", "en")).toBe("€575.50");
+    expect(equivalentLabel(120_900, "RON", "ro", 5.2567)).toBe("≈ 230 €");
+  });
 });
