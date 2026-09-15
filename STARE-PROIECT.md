@@ -26,6 +26,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - **Nickname public** în istoricul ofertelor (numele real nu apare niciodată acolo)
 - **Porumbei asemănători** la finalul paginii lotului
 - **Bară de progres** la încărcarea fișierelor, cu procent și cât s-a trimis din cât
+- **Mai multe poze deodată**: pe telefon se deschide galeria (selecție multiplă); pozele mari se micșorează în browser la 2560 px (JPEG) înainte de urcare, iar fiecare fișier urcă separat — unul greșit sau prea mare nu le mai oprește pe celelalte, iar mesajul spune care n-a mers
 - **Mărirea pozelor** la clic, inclusiv pedigree-ul (unde scrisul e mărunt)
 - **Fișa detaliată a porumbelului** (ca pe pipa): ochi, specializare, constituție (11 rânduri), aripă și penaj (6 rânduri) — toate opționale, afișate sub „Toate detaliile". Lista e în `src/lib/pigeon-traits.ts`
 - **Licitații** cu proxy-bidding (plafon secret), anti-sniping (+5 min), actualizare live pe ecranul tuturor fără refresh, închidere automată cu desemnarea câștigătorului și animația stolului de porumbei

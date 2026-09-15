@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import UploadProgress, { type UploadState } from "./UploadProgress";
+import { RECOMPRESS_OVER_BYTES, targetImageSize } from "@/lib/image-size";
 
 /**
  * Alegerea fisierelor — aceeasi peste tot: articole, listare porumbel, produse.
@@ -66,6 +67,49 @@ function readDuration(file: File): Promise<number> {
   });
 }
 
+/**
+ * Micșorează o poză în browser înainte de urcare.
+ *
+ * Clientul alegea mai multe poze deodată, dar pozele de telefon trec des de
+ * 5 MB — una singură prea mare făcea să pice tot lotul, și omul ajungea să le
+ * urce una câte una. Aici pozele mari se reduc la 2560 px pe latura lungă și se
+ * salvează JPEG; cele mici și în format obișnuit pleacă neatinse. Dacă browserul
+ * nu poate citi poza (format necunoscut), pleacă așa cum e și decide serverul.
+ */
+async function prepareImage(file: File): Promise<File> {
+  const isHeic = /\.(heic|heif)$/i.test(file.name) || /heic|heif/i.test(file.type);
+  if (!file.type.startsWith("image/") && !isHeic) return file;
+  if (file.type === "image/gif") return file;
+
+  let bitmap: ImageBitmap;
+  try {
+    bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+  } catch {
+    return file;
+  }
+  const size = targetImageSize(bitmap.width, bitmap.height);
+  const usual = ["image/jpeg", "image/png", "image/webp"].includes(file.type);
+  if (!size.resized && usual && file.size <= RECOMPRESS_OVER_BYTES) {
+    bitmap.close();
+    return file;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = size.width;
+  canvas.height = size.height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    bitmap.close();
+    return file;
+  }
+  ctx.drawImage(bitmap, 0, 0, size.width, size.height);
+  bitmap.close();
+  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.85));
+  if (!blob) return file;
+  const base = file.name.replace(/\.[^.]+$/, "") || "poza";
+  return new File([blob], `${base}.jpg`, { type: "image/jpeg", lastModified: file.lastModified });
+}
+
 export default function MediaPicker({
   value,
   onChange,
@@ -118,64 +162,54 @@ export default function MediaPicker({
       }
     }
 
-    // Clipurile se trimit unul cate unul, ca atare: serverul le scrie pe disc pe
-    // masura ce vin. Un clip de cinci minute are sute de MB — trimis in acelasi
-    // pachet cu restul, ar fi trebuit tinut intreg in memorie, si de partea
-    // noastra, si a serverului.
-    const videos = chosen.filter((f) => f.type.startsWith("video/"));
-    const rest = chosen.filter((f) => !f.type.startsWith("video/"));
+    // Fiecare fișier pleacă separat, pe rând: o poză prea mare sau într-un format
+    // necunoscut nu le mai oprește pe celelalte, iar progresul arată „2 din 5".
+    // Clipurile se trimit ca atare, în corpul cererii: serverul le scrie pe disc pe
+    // măsură ce vin, fără să țină sute de MB în memorie.
+    type Failure = { name: string; error?: string; isVideo?: boolean; isDoc?: boolean };
+    const reason = (out: Failure) =>
+      out.error === "FILE_TOO_LARGE"
+        ? out.isVideo
+          ? "Clipul e prea mare (maxim 300 MB). Filmează mai scurt sau la calitate mai mică."
+          : out.isDoc
+            ? "PDF-ul e prea mare (maxim 10 MB)."
+            : "Poza e prea mare (maxim 5 MB)."
+        : out.error === "INVALID_TYPE"
+          ? `Format neacceptat. Poze: JPG, PNG, WebP.${allowVideo ? " Video: MP4, WebM, MOV." : ""}${allowPdf ? " Document: PDF." : ""}`
+          : "Încărcarea a eșuat. Încearcă din nou.";
 
     try {
       const uploaded: PickedMedia[] = [];
-      let failure: { error?: string; isVideo?: boolean; isDoc?: boolean } | null = null;
+      const failures: Failure[] = [];
 
-      // clipurile: unul cate unul, ca sa se vada progresul pe fiecare
-      const pasi = videos.length + (rest.length > 0 ? 1 : 0);
-      let pas = 0;
+      for (const [i, original] of chosen.entries()) {
+        const numar = i + 1;
+        const isVideo = original.type.startsWith("video/");
+        const f = isVideo ? original : await prepareImage(original);
+        setProgress({ index: numar, total: chosen.length, sent: 0, size: f.size, name: original.name });
+        const onProgress = (sent: number, size: number) =>
+          setProgress({ index: numar, total: chosen.length, sent, size, name: original.name });
 
-      for (const f of videos) {
-        pas++;
-        const numar = pas;
-        setProgress({ index: numar, total: pasi, sent: 0, size: f.size, name: f.name });
-        const out = await upload(f, f.type || "application/octet-stream", (sent, size) =>
-          setProgress({ index: numar, total: pasi, sent, size, name: f.name })
-        );
-        if (out.ok && out.files) uploaded.push(...out.files);
-        else {
-          failure = out;
-          break;
+        let out;
+        if (isVideo) {
+          out = await upload(f, f.type || "application/octet-stream", onProgress);
+        } else {
+          const data = new FormData();
+          data.append("files", f);
+          out = await upload(data, null, onProgress);
         }
-      }
-
-      if (!failure && rest.length > 0) {
-        pas++;
-        const numar = pas;
-        const data = new FormData();
-        for (const f of rest) data.append("files", f);
-        const total = rest.reduce((n, f) => n + f.size, 0);
-        const eticheta = rest.length === 1 ? rest[0].name : `${rest.length} fișiere`;
-        setProgress({ index: numar, total: pasi, sent: 0, size: total, name: eticheta });
-        const out = await upload(data, null, (sent, size) =>
-          setProgress({ index: numar, total: pasi, sent, size, name: eticheta })
-        );
         if (out.ok && out.files) uploaded.push(...out.files);
-        else failure = out;
+        else failures.push({ name: original.name, ...out });
       }
 
       if (uploaded.length > 0) onChange([...value, ...uploaded].slice(0, maxFiles));
 
-      if (failure) {
-        const out = failure;
+      if (failures.length === 1 && chosen.length === 1) {
+        setError(reason(failures[0]));
+      } else if (failures.length > 0) {
         setError(
-          out.error === "FILE_TOO_LARGE"
-            ? out.isVideo
-              ? "Clipul e prea mare (maxim 300 MB). Filmează mai scurt sau la calitate mai mică."
-              : out.isDoc
-                ? "PDF-ul e prea mare (maxim 10 MB)."
-                : "Poza e prea mare (maxim 5 MB)."
-            : out.error === "INVALID_TYPE"
-              ? `Format neacceptat. Poze: JPG, PNG, WebP.${allowVideo ? " Video: MP4, WebM, MOV." : ""}${allowPdf ? " Document: PDF." : ""}`
-              : "Încărcarea a eșuat. Încearcă din nou."
+          `Nu s-au putut urca ${failures.length} din ${chosen.length}: ` +
+            failures.map((x) => `${x.name} — ${reason(x)}`).join(" ")
         );
       }
     } catch {
@@ -211,7 +245,9 @@ export default function MediaPicker({
         ref={filesRef}
         type="file"
         accept={[
-          allowImages ? "image/jpeg,image/png,image/webp," : "",
+          // image/* deschide galeria pe telefon, unde se bifează ușor mai multe poze;
+          // formatul real îl verifică serverul, după conținut
+          allowImages ? "image/*," : "",
           allowVideo ? "video/mp4,video/webm,video/quicktime," : "",
           allowPdf ? "application/pdf," : "",
         ]
@@ -309,6 +345,12 @@ export default function MediaPicker({
           `${allowImages ? "; c" : "C"}lipuri MP4/WebM/MOV până la ${MAX_VIDEO_SECONDS / 60} minute (300 MB)`}
         {allowPdf && "; PDF până la 10 MB"}. Maxim{" "}
         {maxFiles} {maxFiles === 1 ? "fișier" : "fișiere"}.
+        {maxFiles > 1 && remaining > 1 && (
+          <span className="font-semibold text-ink/60" data-testid="media-multi-hint">
+            {" "}
+            Poți alege mai multe deodată.
+          </span>
+        )}
       </p>
 
       {error && (

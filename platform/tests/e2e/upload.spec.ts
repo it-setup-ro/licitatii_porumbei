@@ -30,6 +30,26 @@ test.describe("Upload poze de pe calculator (formular listare)", () => {
     await expect(picker.getByTestId("media-previews")).toHaveCount(0);
   });
 
+  test("mai multe poze alese deodată urcă toate; una greșită nu le oprește pe celelalte", async ({ page }) => {
+    await login(page, "seller@nbp.test", "seller1234");
+    await page.goto("/ro/sell");
+
+    const picker = page.getByTestId("sf-photos-picker");
+    await expect(picker.getByTestId("media-multi-hint")).toContainText("mai multe deodată");
+    // Playwright nu amestecă fișiere de pe disc cu conținut din memorie: toate din memorie
+    const png = (await import("fs")).readFileSync(FIXTURE);
+    await picker.getByTestId("media-input-files").setInputFiles([
+      { name: "poza-1.png", mimeType: "image/png", buffer: png },
+      { name: "nu-e-poza.txt", mimeType: "text/plain", buffer: Buffer.from("text, nu imagine") },
+      { name: "poza-2.png", mimeType: "image/png", buffer: png },
+    ]);
+
+    // cele două poze bune apar, iar mesajul spune exact care fișier n-a mers
+    await expect(picker.getByTestId("media-previews").locator("img")).toHaveCount(2);
+    await expect(picker.getByTestId("media-error")).toContainText("Nu s-au putut urca 1 din 3");
+    await expect(picker.getByTestId("media-error")).toContainText("nu-e-poza.txt");
+  });
+
   test("poza urcata ajunge pe lotul publicat", async ({ page }) => {
     test.setTimeout(120_000);
     await login(page, "seller@nbp.test", "seller1234");
