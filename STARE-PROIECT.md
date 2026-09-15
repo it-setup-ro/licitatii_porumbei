@@ -98,6 +98,8 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 | 9 | SMS | Pregătit, dezactivat (decizia D16) | mai târziu |
 | 10 | **Oprește uneltele de test** înainte de public | Setări → 🧪 Unelte de test → oprește „Închide în 1 minut". Butonul dispare din Loturi, iar ruta refuză cererile | Daniel |
 
+**La finalul dezvoltării (cerut de Daniel, 15 sept):** după ce se încheie dezvoltarea și toate testele, platforma se împachetează pentru livrare, cu instrucțiuni complete: necesarul tehnic (server, Node, PostgreSQL, domeniu, HTTPS), instalare și actualizare, copii de siguranță, configurarea e-mailului în Brevo (expeditor, cheie SMTP, `scripts/set-smtp.sh`), setările de pornire și conturile de administrator.
+
 **Așteptăm de la client:** fotografia de hero trimisă pe chat (`assets-client/`), datele de contact și linkurile de rețele sociale (se pun în Setări), adresa pentru codul QR din subsol (are sens după ce avem domeniul).
 
 **Rămase deschise din `open-questions.md`:** verificare marcă OSIM/EUIPO (există deja BestPigeons.ro), achiziția domeniului, bugetul SMS.
