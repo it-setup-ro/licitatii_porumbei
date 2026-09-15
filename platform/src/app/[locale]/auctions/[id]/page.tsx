@@ -1,3 +1,5 @@
+import UnavailableButton from "@/components/admin/UnavailableButton";
+import { getEurRate } from "@/lib/fx";
 import { notFound } from "next/navigation";
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
@@ -64,7 +66,11 @@ export default async function AuctionDetailPage({
   });
   if (!auction || ["DRAFT", "PENDING_APPROVAL", "REJECTED"].includes(auction.status)) notFound();
 
-  const [settings, user] = await Promise.all([getSettings(), getCurrentUser()]);
+  const [settings, user, eurRate] = await Promise.all([
+    getSettings(),
+    getCurrentUser(),
+    getEurRate(),
+  ]);
   const pigeon = auction.pigeon;
   const seller = pigeon.seller;
   // Porumbeii din licitațiile pe loturi îi introduce administratorul; vânzătorul
@@ -200,8 +206,6 @@ export default async function AuctionDetailPage({
             >
               <span>{pigeon.ringNumber}</span>
               <span aria-hidden="true">·</span>
-              <span data-testid="lot-year">{pigeon.birthYear}</span>
-              <span aria-hidden="true">·</span>
               <span data-testid="lot-sex">{tp(`sex${pigeon.sex}` as "sexM")}</span>
             </p>
             <h1 className="font-display mt-1 text-3xl font-bold" data-testid="lot-title">
@@ -237,6 +241,7 @@ export default async function AuctionDetailPage({
               sold={auction.status !== "LIVE"}
               userId={user?.id ?? null}
               userIsSeller={user?.id === auction.sellerId}
+              eurRate={eurRate}
             />
           ) : (
             <LiveAuctionPanel
@@ -256,6 +261,7 @@ export default async function AuctionDetailPage({
               userIsLeading={leadingBid?.bidderId === user?.id}
               winAnimationEnabled={settings.winAnimationEnabled}
               winSoundEnabled={settings.winSoundEnabled}
+              eurRate={eurRate}
               snipeMinutes={auction.lot?.snipeWindowMinutes ?? settings.snipeWindowMinutes}
               extensionMinutes={auction.lot?.extensionMinutes ?? settings.extensionMinutes}
               accountBlocked={
@@ -283,6 +289,20 @@ export default async function AuctionDetailPage({
               })()}
             </div>
           )}
+
+          {auction.unavailableAt && (
+            <div
+              className="rounded-2xl border border-wing-red/30 bg-wing-red/5 p-4 text-sm font-semibold text-wing-red"
+              data-testid="pigeon-unavailable"
+            >
+              {t("unavailableNotice")}
+            </div>
+          )}
+
+          {user?.role === "ADMIN" &&
+            auction.status === "CLOSED" &&
+            auction.winnerId &&
+            !auction.unavailableAt && <UnavailableButton auctionId={auction.id} />}
 
           {user && auction.status === "LIVE" && (
             <WatchButton auctionId={auction.id} initialWatching={watching} />

@@ -13,7 +13,6 @@ test.describe("Fisa detaliata a porumbelului", () => {
     await page.goto("/ro/sell");
 
     await page.getByTestId("sf-ring").fill("RO 2025 707070");
-    await page.getByTestId("sf-year").fill("2025");
     await page.getByTestId("sf-name").fill("Fisa Completa");
     await page.getByTestId("sf-start-price").fill("140");
 

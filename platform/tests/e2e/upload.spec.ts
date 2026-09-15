@@ -36,7 +36,6 @@ test.describe("Upload poze de pe calculator (formular listare)", () => {
     await page.goto("/ro/sell");
 
     await page.getByTestId("sf-ring").fill("RO 2025 888002");
-    await page.getByTestId("sf-year").fill("2025");
     await page.getByTestId("sf-name").fill("Aripă de Foc");
     const photos = page.getByTestId("sf-photos-picker");
     await photos.getByTestId("media-input-files").setInputFiles(FIXTURE);

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { formatMoney } from "@/lib/money";
 import { Link } from "@/i18n/navigation";
+import PriceInput from "@/components/PriceInput";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 import TraitsEditor from "@/components/TraitsEditor";
 import type { PigeonTraits } from "@/lib/pigeon-traits";
@@ -30,6 +31,7 @@ export default function SellForm({
   defaultOfferedBy,
   reserveEnabled,
   isAdmin = false,
+  eurRate = null,
 }: {
   currency: string;
   minStartCents: number;
@@ -43,6 +45,8 @@ export default function SellForm({
   reserveEnabled: boolean;
   /** adminul postează direct porumbeii cu preț fix, fără aprobare */
   isAdmin?: boolean;
+  /** lei pentru un euro — pentru căsuța din cealaltă monedă */
+  eurRate?: number | null;
 }) {
   const t = useTranslations("sell");
   const tp = useTranslations("pigeon");
@@ -50,7 +54,6 @@ export default function SellForm({
 
   const [form, setForm] = useState({
     ringNumber: "",
-    birthYear: new Date().getFullYear() - 1,
     sex: "M",
     name: "",
     taglineRo: "",
@@ -89,7 +92,6 @@ export default function SellForm({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
-        birthYear: Number(form.birthYear),
         startPriceCents: Math.round(Number(form.startPrice.replace(",", ".")) * 100),
         reservePriceCents: form.saleMode === "AUCTION" && form.reservePrice
           ? Math.round(Number(form.reservePrice.replace(",", ".")) * 100)
@@ -145,7 +147,7 @@ export default function SellForm({
       {/* 1. Serie · an · sex */}
       <section className={section}>
         <h2 className="font-display text-xl font-bold">{t("identitySection")}</h2>
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2">
           <label className="block text-sm">
             <span className="font-medium">{tp("ring")}</span>
             <input
@@ -154,17 +156,6 @@ export default function SellForm({
               value={form.ringNumber}
               onChange={(e) => set("ringNumber", e.target.value)}
               placeholder="RO 2024 123456"
-              className={input}
-            />
-          </label>
-          <label className="block text-sm">
-            <span className="font-medium">{tp("year")}</span>
-            <input
-              required
-              type="number"
-              data-testid="sf-year"
-              value={form.birthYear}
-              onChange={(e) => set("birthYear", e.target.value)}
               className={input}
             />
           </label>
@@ -351,39 +342,39 @@ export default function SellForm({
             </button>
           ))}
         </div>
-        <label className="block text-sm">
+        <div className="block text-sm">
           <span className="font-medium">
             {form.saleMode === "FIXED"
               ? t("fixedPrice", { currency })
               : t("startPrice", { currency })}
           </span>
-          <input
-            required
-            type="number"
-            step="1"
-            min={minStartCents / 100}
-            data-testid="sf-start-price"
+          <PriceInput
+            currency={currency}
+            eurRate={eurRate}
             value={form.startPrice}
-            onChange={(e) => set("startPrice", e.target.value)}
-            className={input}
+            onChange={(v) => set("startPrice", v)}
+            testid="sf-start-price"
+            inputClassName={input}
+            required
+            min={minStartCents / 100}
           />
           <span className="text-xs text-ink/50">
             {t("startPriceMin", { min: formatMoney(minStartCents, currency, locale) })}
           </span>
-        </label>
+        </div>
         {reserveEnabled && form.saleMode === "AUCTION" && (
-          <label className="block text-sm">
+          <div className="block text-sm">
             <span className="font-medium">{t("reservePrice", { currency })}</span>
-            <input
-              type="number"
-              step="1"
-              data-testid="sf-reserve-price"
+            <PriceInput
+              currency={currency}
+              eurRate={eurRate}
               value={form.reservePrice}
-              onChange={(e) => set("reservePrice", e.target.value)}
-              className={input}
+              onChange={(v) => set("reservePrice", v)}
+              testid="sf-reserve-price"
+              inputClassName={input}
             />
             <span className="text-xs text-ink/50">{t("reserveHint")}</span>
-          </label>
+          </div>
         )}
         <p className="text-xs text-ink/50" data-testid="sf-duration">
           {form.saleMode === "FIXED" ? t("fixedUntilSold") : t("duration", { days: durationDays })}

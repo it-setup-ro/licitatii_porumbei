@@ -12,7 +12,6 @@ async function lotCuOferte(page: Page, sufix: string, rezerva?: number) {
   await login(page, "seller@nbp.test", "seller1234");
   await page.goto("/ro/sell");
   await page.getByTestId("sf-ring").fill(`RO 2025 ${sufix}`);
-  await page.getByTestId("sf-year").fill("2025");
   await page.getByTestId("sf-name").fill(nume);
   await page.getByTestId("sf-start-price").fill("120");
   if (rezerva !== undefined) await page.getByTestId("sf-reserve-price").fill(String(rezerva));

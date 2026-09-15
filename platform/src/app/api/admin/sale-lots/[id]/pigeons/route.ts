@@ -1,3 +1,4 @@
+import { yearFromRing } from "@/lib/pigeon";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
@@ -19,7 +20,8 @@ const schema = z.object({
     .number({ message: "Scrie anul." })
     .int()
     .min(1990, "An prea vechi.")
-    .max(2100, "An în viitor."),
+    .max(2100, "An în viitor.")
+    .optional(),
   sex: z.enum(["M", "F", "U"], { message: "Alege sexul." }),
   name: z.string().trim().min(2, "Scrie numele porumbelului.").max(120),
   startPriceCents: z
@@ -68,7 +70,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
         // porumbeii din loturi îi introduce administratorul; crescătorul e în licitație
         sellerId: admin.id,
         ringNumber: d.ringNumber,
-        birthYear: d.birthYear,
+        birthYear: d.birthYear ?? yearFromRing(d.ringNumber),
         sex: d.sex,
         name: d.name,
         category: "RACING",

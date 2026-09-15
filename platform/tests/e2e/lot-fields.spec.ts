@@ -21,7 +21,6 @@ test.describe("Formularul de listare", () => {
 
     for (const id of [
       "sf-ring",
-      "sf-year",
       "sf-sex",
       "sf-name",
       "sf-tagline",
@@ -92,7 +91,6 @@ test.describe("Pedigree incarcat ca PDF", () => {
 
     // lotul complet: poza, clip si pedigree
     await page.getByTestId("sf-ring").fill("RO 2025 909090");
-    await page.getByTestId("sf-year").fill("2025");
     await page.getByTestId("sf-name").fill("Pedigree PDF Test");
     await page.getByTestId("sf-tagline").fill("Lot de test cu pedigree PDF");
     await page.getByTestId("sf-bred-by").fill("Hetzel Martin");

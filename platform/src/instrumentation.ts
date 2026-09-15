@@ -10,6 +10,7 @@ export async function register() {
 
   const { sweepAuctions } = await import("./lib/auction-service");
   const { releaseDuePayouts } = await import("./lib/payments");
+  const { refreshBnrRate } = await import("./lib/fx");
 
   setInterval(async () => {
     try {
@@ -17,6 +18,12 @@ export async function register() {
       await releaseDuePayouts();
     } catch (e) {
       console.error("[sweeper]", e);
+    }
+    try {
+      // cursul BNR: se încearcă cel mult o dată pe oră
+      await refreshBnrRate();
+    } catch (e) {
+      console.error("[curs BNR]", e);
     }
   }, 15_000);
 }

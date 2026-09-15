@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
+import PriceInput from "@/components/PriceInput";
 import { isoToLocalInput, localInputToIso } from "@/lib/local-datetime";
 
 /**
@@ -59,7 +60,7 @@ const STATUS: Record<string, { label: string; cls: string }> = {
   CLOSED: { label: "închis", cls: "bg-ink/10 text-ink/60" },
 };
 
-const SEX_LABEL: Record<string, string> = { M: "Mascul", F: "Femelă", U: "Nedeterminat" };
+const SEX_LABEL: Record<string, string> = { M: "♂ Mascul", F: "♀ Femelă", U: "Pui / nedeterminat" };
 
 export default function LotAdminPanel({
   saleId,
@@ -67,12 +68,14 @@ export default function LotAdminPanel({
   locale,
   currency,
   maxPigeons,
+  eurRate = null,
 }: {
   saleId: string;
   lot: LotAdminData;
   locale: string;
   currency: string;
   maxPigeons: number;
+  eurRate?: number | null;
 }) {
   const router = useRouter();
   const draft = lot.status === "DRAFT";
@@ -190,7 +193,6 @@ export default function LotAdminPanel({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ringNumber: add.ring,
-        birthYear: Number(add.year),
         sex: add.sex,
         name: add.name,
         startPriceCents: toCents(add.price),
@@ -314,7 +316,7 @@ export default function LotAdminPanel({
                   <td className="px-2 py-2">
                     <p className="font-semibold">{p.name}</p>
                     <p className="text-xs text-ink/50">
-                      {p.ringNumber} · {p.birthYear} · {SEX_LABEL[p.sex] ?? p.sex}
+                      {p.ringNumber} · {SEX_LABEL[p.sex] ?? p.sex}
                     </p>
                   </td>
                   <td className="px-2 py-2">
@@ -413,17 +415,12 @@ export default function LotAdminPanel({
               {addErrors.ringNumber && <span className="mt-1 block text-xs text-wing-red">{addErrors.ringNumber}</span>}
             </label>
             <label className="text-sm font-medium">
-              Anul <span className="font-bold text-wing-red">*</span>
-              <input required type="number" value={add.year} onChange={(e) => setAdd({ ...add, year: e.target.value })} data-testid="lot-add-year" className={inputFor("birthYear")} placeholder="2025" />
-              {addErrors.birthYear && <span className="mt-1 block text-xs text-wing-red">{addErrors.birthYear}</span>}
-            </label>
-            <label className="text-sm font-medium">
               Sexul <span className="font-bold text-wing-red">*</span>
               <select required value={add.sex} onChange={(e) => setAdd({ ...add, sex: e.target.value })} data-testid="lot-add-sex" className={inputFor("sex")}>
                 <option value="">— alege —</option>
-                <option value="M">Mascul</option>
-                <option value="F">Femelă</option>
-                <option value="U">Nedeterminat</option>
+                <option value="M">♂ Mascul</option>
+                <option value="F">♀ Femelă</option>
+                <option value="U">Pui / nedeterminat</option>
               </select>
               {addErrors.sex && <span className="mt-1 block text-xs text-wing-red">{addErrors.sex}</span>}
             </label>
@@ -432,16 +429,16 @@ export default function LotAdminPanel({
               <input required value={add.name} onChange={(e) => setAdd({ ...add, name: e.target.value })} data-testid="lot-add-name" className={inputFor("name")} />
               {addErrors.name && <span className="mt-1 block text-xs text-wing-red">{addErrors.name}</span>}
             </label>
-            <label className="text-sm font-medium">
-              Preț de pornire ({currency}) <span className="font-bold text-wing-red">*</span>
-              <input required inputMode="decimal" value={add.price} onChange={(e) => setAdd({ ...add, price: e.target.value })} data-testid="lot-add-price" className={inputFor("startPriceCents")} />
+            <div className="text-sm font-medium">
+              Preț de pornire <span className="font-bold text-wing-red">*</span>
+              <PriceInput currency={currency} eurRate={eurRate} value={add.price} onChange={(v) => setAdd({ ...add, price: v })} testid="lot-add-price" inputClassName={inputFor("startPriceCents")} required />
               {addErrors.startPriceCents && <span className="mt-1 block text-xs text-wing-red">{addErrors.startPriceCents}</span>}
-            </label>
-            <label className="text-sm font-medium">
-              Preț de rezervă ({currency})
-              <input inputMode="decimal" value={add.reserve} onChange={(e) => setAdd({ ...add, reserve: e.target.value })} data-testid="lot-add-reserve" className={inputFor("reservePriceCents")} />
+            </div>
+            <div className="text-sm font-medium">
+              Preț de rezervă
+              <PriceInput currency={currency} eurRate={eurRate} value={add.reserve} onChange={(v) => setAdd({ ...add, reserve: v })} testid="lot-add-reserve" inputClassName={inputFor("reservePriceCents")} />
               <span className="mt-1 block text-xs text-ink/50">Opțional. Suma rămâne ascunsă.</span>
-            </label>
+            </div>
             <div className="flex items-end">
               <button type="submit" disabled={busy !== null} data-testid="lot-add-submit" className="w-full rounded-xl bg-ink px-4 py-2.5 font-bold text-ivory hover:bg-wing-orange disabled:opacity-50">
                 {busy === "add" ? "…" : "+ Adaugă"}

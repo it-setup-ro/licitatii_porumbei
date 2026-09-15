@@ -45,7 +45,6 @@ test.describe("Preț fix — postat de administrator", () => {
       await page.getByTestId("sf-ring").fill(ring);
       await expect(page.getByTestId("sf-ring")).toHaveValue(ring, { timeout: 1_000 });
     }).toPass({ timeout: 15_000 });
-    await page.getByTestId("sf-year").fill("2025");
     await page.getByTestId("sf-name").fill(name);
     await page.getByTestId("sf-bred-by").fill("Burca Ionuț");
 

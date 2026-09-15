@@ -35,7 +35,8 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
         { key: "buyerPremiumPercent", label: "Buyer's premium (%)", type: "number" },
         { key: "adminFeeEnabled", label: "Taxă administrativă activă", type: "boolean" },
         { key: "adminFeeCents", label: "Taxă administrativă (cenți)", type: "number" },
-        { key: "platformCurrency", label: "Moneda platformei", type: "select", options: ["EUR", "RON"] },
+        { key: "platformCurrency", label: "Moneda platformei (RON = lei)", type: "select", options: ["EUR", "RON"] },
+        { key: "currencyEquivalentEnabled", label: "Arată echivalentul în cealaltă monedă (lei / €)", type: "boolean" },
         { key: "minStartPriceCents", label: "Preț minim de pornire (cenți)", type: "number" },
         { key: "defaultDurationDays", label: "Durata licitației (zile)", type: "number" },
         { key: "sellerChoosesDuration", label: "Vânzătorul alege durata", type: "boolean" },
@@ -94,6 +95,11 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
           key: "endingNoticeMinutes",
           label: "Avizul de final pleacă cu (minute înainte)",
           type: "number",
+        },
+        {
+          key: "endingNoticeGeneralEnabled",
+          label: "Avizul de 30 de minute și la cei care n-au licitat (consumă mult din planul de e-mail)",
+          type: "boolean",
         },
         {
           key: "accountApprovalRequired",

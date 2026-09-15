@@ -1,3 +1,5 @@
+import { equivalentLabel } from "@/lib/fx-math";
+import { getEurRate } from "@/lib/fx";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -45,6 +47,7 @@ export default async function SalePage({
     getSettings(),
   ]);
   if (!sale || sale.lots.length === 0) notFound();
+  const eurRate = await getEurRate();
 
   const title = en ? sale.titleEn : sale.titleRo;
   const desc = en ? (sale.descEn ?? sale.descRo) : sale.descRo;
@@ -96,7 +99,15 @@ export default async function SalePage({
         <Stat label={t("lots")} value={String(sale.lots.length)} />
         <Stat
           label={t("average")}
-          value={media !== null ? formatMoney(media, settings.platformCurrency, currentLocale) : "—"}
+          value={
+            media !== null
+              ? `${formatMoney(media, settings.platformCurrency, currentLocale)}${
+                  eurRate
+                    ? ` (${equivalentLabel(media, settings.platformCurrency, currentLocale, eurRate)})`
+                    : ""
+                }`
+              : "—"
+          }
           testid="sale-average"
         />
         {period && (
@@ -211,13 +222,18 @@ export default async function SalePage({
                               <span className="min-w-0 flex-1">
                                 <span className="block font-semibold">{a.pigeon.name}</span>
                                 <span className="block text-xs text-ink/50">
-                                  {a.pigeon.ringNumber} · {a.pigeon.birthYear}
+                                  {a.pigeon.ringNumber}
                                 </span>
                               </span>
                               <span className="text-right">
                                 <span className="block font-bold text-wing-orange">
                                   {formatMoney(price, a.currency, currentLocale)}
                                 </span>
+                                {eurRate && (
+                                  <span className="block text-xs text-ink/50" data-testid="price-equiv">
+                                    {equivalentLabel(price, a.currency, currentLocale, eurRate)}
+                                  </span>
+                                )}
                                 <span className="block text-xs text-ink/50">
                                   {ta("bidsCount", { count: a._count.bids })}
                                 </span>

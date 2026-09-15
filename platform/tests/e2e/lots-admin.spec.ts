@@ -132,7 +132,6 @@ test.describe("Licitații pe loturi — din administrare", () => {
     await expect(lot.getByTestId("lot-status")).toHaveText("ciornă");
 
     await lot.getByTestId("lot-add-ring").fill(`RO 2025 ${id.slice(-6)}`);
-    await lot.getByTestId("lot-add-year").fill("2025");
     await lot.getByTestId("lot-add-sex").selectOption("F");
     await lot.getByTestId("lot-add-name").fill("Cuca lui Niță");
     await lot.getByTestId("lot-add-price").fill("150");

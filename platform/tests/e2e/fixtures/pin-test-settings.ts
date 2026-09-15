@@ -17,6 +17,8 @@ const PINS: Record<string, unknown> = {
   maxExtensions: 50,
   accountApprovalRequired: false,
   breederSelfServiceEnabled: true,
+  // echivalentul lei / € e verificat de testul lui; celelalte rămân pe EUR simplu
+  currencyEquivalentEnabled: false,
 };
 
 const prisma = new PrismaClient();

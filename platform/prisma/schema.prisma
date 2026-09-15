@@ -171,6 +171,9 @@ model Auction {
   /// Suma sub care vanzatorul nu vinde. Ascunsa cumparatorilor: se arata doar
   /// daca a fost atinsa sau nu. null = licitatie fara pret de rezerva.
   reservePriceCents    Int?
+  /** porumbelul s-a îmbolnăvit sau a murit după licitație (clientul, Punctul 5) */
+  unavailableAt        DateTime?
+  unavailableReason    String?
   reserveNotMet        Boolean   @default(false)
   dnaSexGuaranteed     Boolean   @default(false)
   shippingMode         String    @default("SELLER") // SELLER | PICKUP | PLATFORM

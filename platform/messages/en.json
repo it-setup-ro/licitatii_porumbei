@@ -183,15 +183,16 @@
     "errACCOUNT_PENDING": "Your account is waiting for the administrator's approval. You can bid once it is approved.",
     "errACCOUNT_REJECTED": "Your account was not approved for bidding. Please write to us from the contact page.",
     "lotLabel": "Lot {label}",
-    "allBreederPigeons": "All pigeons in this auction"
+    "allBreederPigeons": "All pigeons in this auction",
+    "unavailableNotice": "This pigeon is no longer available after the auction (it fell ill or died). The winner has been notified."
   },
   "pigeon": {
     "ring": "Ring number",
     "year": "Birth year",
     "sex": "Sex",
-    "sexM": "Cock",
-    "sexF": "Hen",
-    "sexU": "Unknown",
+    "sexM": "♂ Cock",
+    "sexF": "♀ Hen",
+    "sexU": "Youngster / undetermined",
     "color": "Color",
     "strain": "Strain / breed line",
     "category": "Category",
@@ -266,8 +267,8 @@
     "addressPostalCode": "Postal code",
     "addressCountry": "Country",
     "addressHint": "The administrator needs these to contact you and send you the pigeons after payment.",
-    "notifyEndingLabel": "Email me a notice when an auction is ending",
-    "notifyEndingHint": "30 minutes before the end. You can unsubscribe at any time.",
+    "notifyEndingLabel": "I agree to receive information emails: auction announcements, notifications, articles and news",
+    "notifyEndingHint": "Optional. You can unsubscribe at any time using the link in every email.",
     "pendingTitle": "Your account has been created",
     "pendingText": "Your account is waiting for the administrator's approval. Until then you can browse the auctions; you can bid once approved, and you will receive an email when it is.",
     "pendingBrowse": "Browse the auctions",
@@ -336,7 +337,8 @@
     "ACCOUNT_APPROVED": "Your account has been approved. You can now bid.",
     "ACCOUNT_REJECTED": "Your account was not approved for bidding.",
     "LOTS_ENDING": "{count, plural, one {One lot ends} other {# lots end}} in {minutes} minutes.",
-    "LOTS_ENDING_BIDDER": "The pigeons you bid on close in {minutes} minutes."
+    "LOTS_ENDING_BIDDER": "The pigeons you bid on close in {minutes} minutes.",
+    "PIGEON_UNAVAILABLE": "The pigeon {lot} is no longer available after the auction. It cannot be handed over and the order has been cancelled."
   },
   "sell": {
     "title": "List a pigeon",

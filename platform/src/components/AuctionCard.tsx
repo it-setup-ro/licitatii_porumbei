@@ -2,6 +2,9 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
 import Countdown from "./Countdown";
+import { getEurRate } from "@/lib/fx";
+import { equivalentLabel } from "@/lib/fx-math";
+import { SEX_SYMBOL } from "@/lib/pigeon";
 
 export type AuctionCardData = {
   id: string;
@@ -29,7 +32,9 @@ export type AuctionCardData = {
 export default async function AuctionCard({ auction }: { auction: AuctionCardData }) {
   const t = await getTranslations("auction");
   const locale = await getLocale();
+  const eurRate = await getEurRate();
   const title = auction.pigeon.name;
+  const sexSymbol = SEX_SYMBOL[auction.pigeon.sex] ?? "";
   const tagline = locale === "en" ? auction.pigeon.taglineEn : auction.pigeon.taglineRo;
   const price =
     auction.bidCount > 0 || auction.status === "CLOSED"
@@ -76,7 +81,12 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
           <p className="line-clamp-2 text-sm font-medium text-wing-orange">{tagline}</p>
         )}
         <p className="text-xs text-ink/60">
-          {auction.pigeon.ringNumber} · {auction.pigeon.birthYear}
+          {sexSymbol && (
+            <span className="mr-1 font-bold text-ink/70" data-testid="card-sex">
+              {sexSymbol}
+            </span>
+          )}
+          {auction.pigeon.ringNumber}
           {auction.pigeon.strain ? ` · ${auction.pigeon.strain}` : ""}
         </p>
         <div className="flex items-end justify-between pt-1">
@@ -91,9 +101,16 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
                   : t("startPrice")}
             </p>
             {(auction.status !== "CLOSED" || auction.bidCount > 0) && (
-              <p className="text-xl font-bold text-wing-orange">
-                {formatMoney(price, auction.currency, locale)}
-              </p>
+              <>
+                <p className="text-xl font-bold text-wing-orange">
+                  {formatMoney(price, auction.currency, locale)}
+                </p>
+                {eurRate && (
+                  <p className="text-xs font-medium text-ink/50" data-testid="price-equiv">
+                    {equivalentLabel(price, auction.currency, locale, eurRate)}
+                  </p>
+                )}
+              </>
             )}
           </div>
           <div className="text-right">

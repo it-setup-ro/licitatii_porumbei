@@ -1,3 +1,5 @@
+import { equivalentLabel } from "@/lib/fx-math";
+import { getEurRate } from "@/lib/fx";
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/money";
@@ -34,6 +36,7 @@ export default async function FixedPricePage({
     }),
   ]);
   const lots = [...available, ...sold];
+  const eurRate = await getEurRate();
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -74,7 +77,7 @@ export default async function FixedPricePage({
                 <div className="space-y-2 p-4">
                   <h2 className="font-display text-lg font-bold leading-snug">{title}</h2>
                   <p className="text-xs text-ink/60">
-                    {lot.pigeon.ringNumber} · {lot.pigeon.birthYear}
+                    {lot.pigeon.ringNumber}
                     {lot.pigeon.strain ? ` · ${lot.pigeon.strain}` : ""}
                   </p>
                   <div>
@@ -82,6 +85,11 @@ export default async function FixedPricePage({
                     <p className="text-xl font-bold text-wing-orange">
                       {formatMoney(lot.startPriceCents, lot.currency, currentLocale)}
                     </p>
+                    {eurRate && (
+                      <p className="text-xs font-medium text-ink/50" data-testid="price-equiv">
+                        {equivalentLabel(lot.startPriceCents, lot.currency, currentLocale, eurRate)}
+                      </p>
+                    )}
                   </div>
                 </div>
               </Link>

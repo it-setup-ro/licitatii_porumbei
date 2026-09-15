@@ -17,6 +17,15 @@ export type PlatformSettings = {
   adminFeeEnabled: boolean;
   adminFeeCents: number;
   platformCurrency: "EUR" | "RON";
+  /** lângă fiecare preț apare echivalentul în cealaltă monedă (lei / €) */
+  currencyEquivalentEnabled: boolean;
+  /** de unde se ia cursul euro: BNR, zilnic, sau cel scris de administrator */
+  fxMode: "BNR" | "MANUAL";
+  /** lei pentru un euro, scris de administrator */
+  fxManualRate: number;
+  /** ultimul curs BNR preluat și ziua lui — le scrie serverul, nu formularul */
+  fxBnrRate: number;
+  fxBnrDate: string;
   minStartPriceCents: number;
   defaultDurationDays: number;
   sellerChoosesDuration: boolean;
@@ -78,6 +87,11 @@ export type PlatformSettings = {
   saleMaxLots: number;
   /** cu cate minute inainte de finalul unui lot pleaca avizul */
   endingNoticeMinutes: number;
+  /**
+   * avizul general „se încheie o licitație" și la cei care n-au licitat. Oprit:
+   * pe planul gratuit de e-mail (300 / zi) pleacă doar la cei care au licitat.
+   */
+  endingNoticeGeneralEnabled: boolean;
   /** conturile noi asteapta aprobarea administratorului inainte sa liciteze */
   accountApprovalRequired: boolean;
   /** crescatorii isi pot pune singuri porumbeii (fluxul vechi, oprit) */
@@ -92,6 +106,11 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   adminFeeEnabled: false,
   adminFeeCents: 0,
   platformCurrency: "EUR",
+  currencyEquivalentEnabled: true,
+  fxMode: "BNR",
+  fxManualRate: 0,
+  fxBnrRate: 0,
+  fxBnrDate: "",
   minStartPriceCents: 10_000, // 100 EUR
   defaultDurationDays: 14,
   sellerChoosesDuration: false,
@@ -147,6 +166,7 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   lotMaxPigeons: 20,
   saleMaxLots: 5,
   endingNoticeMinutes: 30,
+  endingNoticeGeneralEnabled: false,
   accountApprovalRequired: true,
   // clientul: „Porumbeii îi pune doar ADMINISTRATORUL. Exclus să pună altcineva!"
   breederSelfServiceEnabled: false,

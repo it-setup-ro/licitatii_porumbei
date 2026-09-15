@@ -21,8 +21,7 @@ test.describe("Antetul lotului", () => {
     await deschideLot(page);
     const antet = page.getByTestId("lot-ring");
     await expect(antet).toContainText("RO 2023 445566");
-    await expect(page.getByTestId("lot-year")).toHaveText("2023");
-    await expect(page.getByTestId("lot-sex")).toHaveText("Mascul");
+    await expect(page.getByTestId("lot-sex")).toHaveText("♂ Mascul");
 
     // sunt deasupra numelui, nu pierdute mai jos în pagină
     const y = async (id: string) => (await page.getByTestId(id).boundingBox())!.y;
@@ -33,7 +32,7 @@ test.describe("Antetul lotului", () => {
     await page.goto("/en/auctions");
     await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
-    await expect(page.getByTestId("lot-sex")).toHaveText("Cock");
+    await expect(page.getByTestId("lot-sex")).toHaveText("♂ Cock");
   });
 
   test("nu se mai repetă în fișa de dedesubt", async ({ page }) => {

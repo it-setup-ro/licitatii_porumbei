@@ -4,6 +4,8 @@ import { buildEndingNotices, type EndingLot, type EndingNotice } from "./lots";
 import { sendEmail } from "./mailer";
 import { formatMoney } from "./money";
 import { endingUnsubscribeUrl } from "./ending-unsubscribe";
+import { getEurRate } from "./fx";
+import { equivalentLabel } from "./fx-math";
 
 /**
  * Avizul „se încheie în 30 de minute", pentru loturi.
@@ -73,9 +75,11 @@ export async function notifyLotsEnding(now: Date): Promise<number> {
     where: { notifyAuctionEnding: true, suspendedAt: null },
     select: { id: true },
   });
+  // Pe planul gratuit de e-mail, avizul pleacă doar la cei care au licitat;
+  // cei care doar au bifat avizele îl primesc când e pornit din Setări.
   const notices = buildEndingNotices(
     ending,
-    optedIn.map((u) => u.id)
+    settings.endingNoticeGeneralEnabled ? optedIn.map((u) => u.id) : []
   );
 
   const users = await prisma.user.findMany({
@@ -94,6 +98,7 @@ export async function notifyLotsEnding(now: Date): Promise<number> {
       locale,
       minutes: settings.endingNoticeMinutes,
       currency: settings.platformCurrency,
+      eurRate: await getEurRate(),
       titles,
       unsubscribeUrl: notice.kind === "GENERAL" ? endingUnsubscribeUrl(user.id, locale) : null,
     });
@@ -122,6 +127,7 @@ export function renderEndingEmail(
     locale: "ro" | "en";
     minutes: number;
     currency: string;
+    eurRate?: number | null;
     titles: Map<string, { ro: string; en: string }>;
     unsubscribeUrl: string | null;
   }
@@ -132,7 +138,11 @@ export function renderEndingEmail(
     timeStyle: "short",
     timeZone: "Europe/Bucharest",
   });
-  const bani = (c: number) => formatMoney(c, ctx.currency, ctx.locale);
+  const bani = (c: number) => {
+    const suma = formatMoney(c, ctx.currency, ctx.locale);
+    const eq = ctx.eurRate ? equivalentLabel(c, ctx.currency, ctx.locale, ctx.eurRate) : null;
+    return eq ? `${suma} (${eq})` : suma;
+  };
 
   const subject =
     notice.kind === "BIDDER"

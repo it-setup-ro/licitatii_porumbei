@@ -183,15 +183,16 @@
     "errACCOUNT_PENDING": "Contul tău așteaptă aprobarea administratorului. Vei putea licita după ce e aprobat.",
     "errACCOUNT_REJECTED": "Contul tău nu a fost aprobat pentru licitare. Scrie-ne din pagina de contact.",
     "lotLabel": "Lotul {label}",
-    "allBreederPigeons": "Toți porumbeii licitației"
+    "allBreederPigeons": "Toți porumbeii licitației",
+    "unavailableNotice": "Porumbelul nu mai este disponibil după licitație (s-a îmbolnăvit sau a murit). Câștigătorul a fost anunțat."
   },
   "pigeon": {
     "ring": "Serie inel",
     "year": "An naștere",
     "sex": "Sex",
-    "sexM": "Mascul",
-    "sexF": "Femelă",
-    "sexU": "Nedeterminat",
+    "sexM": "♂ Mascul",
+    "sexF": "♀ Femelă",
+    "sexU": "Pui / nedeterminat",
     "color": "Culoare",
     "strain": "Linie / rasă",
     "category": "Categorie",
@@ -266,8 +267,8 @@
     "addressPostalCode": "Codul poștal",
     "addressCountry": "Țara",
     "addressHint": "Administratorul are nevoie de ele ca să te contacteze și să-ți trimită porumbeii după plată.",
-    "notifyEndingLabel": "Vreau să primesc un aviz pe e-mail când se încheie o licitație",
-    "notifyEndingHint": "Cu 30 de minute înainte de final. Te poți dezabona oricând.",
+    "notifyEndingLabel": "Sunt de acord să primesc e-mailuri de informare: anunțuri de licitații, notificări, articole și noutăți",
+    "notifyEndingHint": "Opțional. Te poți dezabona oricând, dintr-un link aflat în fiecare e-mail.",
     "pendingTitle": "Contul a fost creat",
     "pendingText": "Contul tău așteaptă aprobarea administratorului. Până atunci poți vedea licitațiile; vei putea licita după aprobare și vei primi un e-mail când contul e aprobat.",
     "pendingBrowse": "Vezi licitațiile",
@@ -336,7 +337,8 @@
     "ACCOUNT_APPROVED": "Contul tău a fost aprobat. Acum poți licita.",
     "ACCOUNT_REJECTED": "Contul tău nu a fost aprobat pentru licitare.",
     "LOTS_ENDING": "{count, plural, one {Un lot se încheie} few {# loturi se încheie} other {# de loturi se încheie}} în {minutes} de minute.",
-    "LOTS_ENDING_BIDDER": "Porumbeii pe care ai licitat se închid în {minutes} de minute."
+    "LOTS_ENDING_BIDDER": "Porumbeii pe care ai licitat se închid în {minutes} de minute.",
+    "PIGEON_UNAVAILABLE": "Porumbelul {lot} nu mai este disponibil după licitație. Nu poți intra în posesia lui, iar comanda a fost anulată."
   },
   "sell": {
     "title": "Listează un porumbel",

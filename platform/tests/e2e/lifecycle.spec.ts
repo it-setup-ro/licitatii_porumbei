@@ -15,7 +15,6 @@ test.describe("Ciclul de viata al unei licitatii", () => {
     await login(seller, "seller@nbp.test", "seller1234");
     await seller.goto("/ro/sell");
     await seller.getByTestId("sf-ring").fill("RO 2025 777001");
-    await seller.getByTestId("sf-year").fill("2025");
     await seller.getByTestId("sf-name").fill("Săgeata E2E");
     await seller.getByTestId("sf-tagline").fill("Lot de test — ciclu complet");
     // restul campurilor stau sub „Alte detalii"

@@ -13,7 +13,6 @@ async function listeazaLot(page: Page, sufix: string) {
   const nume = `Edit ${sufix}`;
   await page.goto("/ro/sell");
   await page.getByTestId("sf-ring").fill(`RO 2025 ${sufix}`);
-  await page.getByTestId("sf-year").fill("2025");
   await page.getByTestId("sf-name").fill(nume);
   await page.getByTestId("sf-tagline").fill("Rând scurt inițial");
   await page.getByTestId("sf-desc-ro").fill("Descriere inițială.");

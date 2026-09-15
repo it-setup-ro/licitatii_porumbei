@@ -1,9 +1,19 @@
 export function formatMoney(cents: number, currency: string, locale: string): string {
+  const fractions = {
+    minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
+    maximumFractionDigits: 2,
+  };
+  // Intl scrie „RON"; clientul și cumpărătorii spun „lei"
+  if (currency === "RON") {
+    const n = new Intl.NumberFormat(locale === "ro" ? "ro-RO" : "en-GB", fractions).format(
+      cents / 100
+    );
+    return `${n} lei`;
+  }
   return new Intl.NumberFormat(locale === "ro" ? "ro-RO" : "en-GB", {
     style: "currency",
     currency,
-    minimumFractionDigits: cents % 100 === 0 ? 0 : 2,
-    maximumFractionDigits: 2,
+    ...fractions,
   }).format(cents / 100);
 }
 

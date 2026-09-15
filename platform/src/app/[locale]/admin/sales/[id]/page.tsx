@@ -1,3 +1,4 @@
+import { getEurRate } from "@/lib/fx";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
@@ -72,6 +73,8 @@ export default async function AdminSalePage({
   const status = saleStatus(sale.lots);
   const lastLot = sale.lots[sale.lots.length - 1];
 
+  const eurRate = await getEurRate();
+
   return (
     <div>
       <a
@@ -121,6 +124,7 @@ export default async function AdminSalePage({
             locale={locale}
             currency={settings.platformCurrency}
             maxPigeons={settings.lotMaxPigeons}
+            eurRate={eurRate}
           />
         ))}
       </div>

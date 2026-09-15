@@ -1,3 +1,4 @@
+import { yearFromRing } from "@/lib/pigeon";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireApprovedSeller } from "@/lib/auth";
@@ -47,7 +48,8 @@ const mediaSchema = z.object({
 
 const schema = z.object({
   ringNumber: z.string().min(3).max(40),
-  birthYear: z.number().int().min(1990).max(2100),
+  // clientul: „e suficient inelul" — anul se deduce din serie
+  birthYear: z.number().int().min(1990).max(2100).optional(),
   sex: z.enum(["M", "F", "U"]),
   color: z.string().max(60).optional(),
   strain: z.string().max(120).optional(),
@@ -119,7 +121,7 @@ export async function POST(req: Request) {
       data: {
         sellerId: seller.id,
         ringNumber: d.ringNumber,
-        birthYear: d.birthYear,
+        birthYear: d.birthYear ?? yearFromRing(d.ringNumber),
         sex: d.sex,
         color: d.color,
         strain: d.strain,

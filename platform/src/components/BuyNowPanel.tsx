@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
+import { equivalentLabel } from "@/lib/fx-math";
 
 /** Panoul de cumpărare pentru loturile cu preț fix (fără licitație). */
 export default function BuyNowPanel({
@@ -13,6 +14,7 @@ export default function BuyNowPanel({
   sold,
   userId,
   userIsSeller,
+  eurRate = null,
 }: {
   auctionId: string;
   priceCents: number;
@@ -20,6 +22,7 @@ export default function BuyNowPanel({
   sold: boolean;
   userId: string | null;
   userIsSeller: boolean;
+  eurRate?: number | null;
 }) {
   const t = useTranslations("fixed");
   const locale = useLocale();
@@ -52,6 +55,11 @@ export default function BuyNowPanel({
       <p className="text-3xl font-bold text-wing-orange" data-testid="fixed-price">
         {price}
       </p>
+      {eurRate ? (
+        <p className="text-sm font-medium text-ink/50" data-testid="price-equiv">
+          {equivalentLabel(priceCents, currency, locale, eurRate)}
+        </p>
+      ) : null}
 
       {sold ? (
         <p

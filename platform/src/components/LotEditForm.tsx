@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
+import PriceInput from "@/components/PriceInput";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 import TraitsEditor from "@/components/TraitsEditor";
 import type { PigeonTraits } from "@/lib/pigeon-traits";
@@ -46,12 +47,14 @@ export default function LotEditForm({
   isAdmin,
   currency,
   minStartCents,
+  eurRate = null,
 }: {
   lot: LotEditData;
   scope: EditScope;
   isAdmin: boolean;
   currency: string;
   minStartCents: number;
+  eurRate?: number | null;
 }) {
   const t = useTranslations("sell");
   const tp = useTranslations("pigeon");
@@ -88,7 +91,6 @@ export default function LotEditForm({
         }
       : {
           ringNumber: form.ringNumber,
-          birthYear: Number(form.birthYear),
           sex: form.sex,
           name: form.name,
           taglineRo: form.taglineRo,
@@ -227,7 +229,7 @@ export default function LotEditForm({
         <>
           <section className={section}>
             <h2 className="font-display text-xl font-bold">{t("identitySection")}</h2>
-            <div className="grid gap-3 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2">
               <label className="block text-sm">
                 <span className="font-medium">{tp("ring")}</span>
                 <input
@@ -235,17 +237,6 @@ export default function LotEditForm({
                   data-testid="edit-ring"
                   value={form.ringNumber}
                   onChange={(e) => set("ringNumber", e.target.value)}
-                  className={input}
-                />
-              </label>
-              <label className="block text-sm">
-                <span className="font-medium">{tp("year")}</span>
-                <input
-                  required
-                  type="number"
-                  data-testid="edit-year"
-                  value={form.birthYear}
-                  onChange={(e) => set("birthYear", e.target.value)}
                   className={input}
                 />
               </label>
@@ -342,22 +333,22 @@ export default function LotEditForm({
 
           <section className={section}>
             <h2 className="font-display text-xl font-bold">{t("auctionSection")}</h2>
-            <label className="block text-sm">
+            <div className="block text-sm">
               <span className="font-medium">{t("startPrice", { currency })}</span>
-              <input
+              <PriceInput
+                currency={currency}
+                eurRate={eurRate}
+                value={String(form.startPrice)}
+                onChange={(v) => set("startPrice", v)}
+                testid="edit-start-price"
+                inputClassName={input}
                 required
-                type="number"
-                step="1"
                 min={minStartCents / 100}
-                data-testid="edit-start-price"
-                value={form.startPrice}
-                onChange={(e) => set("startPrice", e.target.value)}
-                className={input}
               />
               <span className="text-xs text-ink/50">
                 {t("startPriceMin", { min: formatMoney(minStartCents, currency, locale) })}
               </span>
-            </label>
+            </div>
           </section>
 
           <details className="rounded-2xl border border-ink/10 bg-white" data-testid="edit-more">

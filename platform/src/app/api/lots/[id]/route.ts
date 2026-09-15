@@ -1,3 +1,4 @@
+import { yearFromRing } from "@/lib/pigeon";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
@@ -37,7 +38,7 @@ const resultSchema = z.object({
 /** Ce se poate trimite la o modificare completă. */
 const fullSchema = z.object({
   ringNumber: z.string().min(3).max(40),
-  birthYear: z.number().int().min(1990).max(2100),
+  birthYear: z.number().int().min(1990).max(2100).optional(),
   sex: z.enum(["M", "F", "U"]),
   name: z.string().min(2).max(120),
   taglineRo: z.string().max(200).optional(),
@@ -159,7 +160,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
       const mesaj = "Lotul a pornit: nu se mai schimbă.";
       const blocate: Record<string, string> = {};
       if (d.ringNumber !== auction.pigeon.ringNumber) blocate.ringNumber = mesaj;
-      if (d.birthYear !== auction.pigeon.birthYear) blocate.birthYear = mesaj;
+      if ((d.birthYear ?? (d.ringNumber === auction.pigeon.ringNumber ? auction.pigeon.birthYear : yearFromRing(d.ringNumber))) !== auction.pigeon.birthYear) blocate.birthYear = mesaj;
       if (d.sex !== auction.pigeon.sex) blocate.sex = mesaj;
       if (d.startPriceCents !== auction.startPriceCents) blocate.startPriceCents = mesaj;
       if (
@@ -181,7 +182,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     };
     const changed = changedFields(before, {
       ringNumber: d.ringNumber,
-      birthYear: d.birthYear,
+      birthYear: (d.birthYear ?? (d.ringNumber === auction.pigeon.ringNumber ? auction.pigeon.birthYear : yearFromRing(d.ringNumber))),
       sex: d.sex,
       startPriceCents: d.startPriceCents,
     });
@@ -198,7 +199,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
         where: { id: auction.pigeonId },
         data: {
           ringNumber: d.ringNumber,
-          birthYear: d.birthYear,
+          birthYear: (d.birthYear ?? (d.ringNumber === auction.pigeon.ringNumber ? auction.pigeon.birthYear : yearFromRing(d.ringNumber))),
           sex: d.sex,
           name: d.name,
           taglineRo: d.taglineRo || null,

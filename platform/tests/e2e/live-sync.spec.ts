@@ -31,7 +31,6 @@ async function lotActiv(page: Page, sufix: string) {
   await login(page, "seller@nbp.test", "seller1234");
   await page.goto("/ro/sell");
   await page.getByTestId("sf-ring").fill(`RO 2025 ${sufix}`);
-  await page.getByTestId("sf-year").fill("2025");
   await page.getByTestId("sf-name").fill(nume);
   await page.getByTestId("sf-start-price").fill("120");
   await page.getByTestId("sell-submit").click();

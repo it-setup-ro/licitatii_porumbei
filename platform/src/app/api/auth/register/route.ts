@@ -1,3 +1,4 @@
+import { consentTextFor, newUnsubToken } from "@/lib/newsletter";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { hashPassword, createSessionCookie } from "@/lib/auth";
@@ -29,7 +30,10 @@ const schema = z.object({
   nickname: nicknameSchema,
   phone: z.string().max(40).optional(),
   locale: z.enum(["ro", "en"]).default("ro"),
-  /** „Vreau un aviz când se încheie o licitație" — pornește nebifat */
+  /**
+   * Clientul, Punctul 6: „sunt de acord să primesc mail de info / notificări
+   * licitații, articole, știri". Pornește nebifat; bifat, abonează și la noutăți.
+   */
   notifyAuctionEnding: z.boolean().default(false),
   wantsSeller: z.boolean().default(false),
   sellerCompany: z.string().max(200).optional(),
@@ -100,6 +104,15 @@ export async function POST(req: Request) {
         sellerIban: wantsSeller ? d.sellerIban : null,
       },
     });
+
+    if (d.notifyAuctionEnding) {
+      const consentText = consentTextFor(d.locale);
+      await prisma.newsletterSubscriber.upsert({
+        where: { email: d.email },
+        update: { locale: d.locale, consentAt: new Date(), consentText, unsubscribedAt: null },
+        create: { email: d.email, locale: d.locale, consentText, unsubToken: newUnsubToken() },
+      });
+    }
 
     await createSessionCookie(user.id, user.role);
     return jsonOk({ userId: user.id, role: user.role, accountStatus: user.accountStatus });

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
+import { equivalentLabel } from "@/lib/fx-math";
 import Countdown from "./Countdown";
 import WinCelebration from "./WinCelebration";
 
@@ -41,6 +42,8 @@ type Props = {
   extensionMinutes: number;
   /** contul nu e încă aprobat de administrator: vede licitația, dar nu licitează */
   accountBlocked?: "PENDING" | "REJECTED" | null;
+  /** lei pentru un euro — echivalentul de sub preț */
+  eurRate?: number | null;
 };
 
 export default function LiveAuctionPanel(props: Props) {
@@ -236,6 +239,16 @@ export default function LiveAuctionPanel(props: Props) {
         >
           {fmt(bidCount > 0 || status === "CLOSED" ? priceCents : props.startPriceCents)}
         </p>
+        {props.eurRate ? (
+          <p className="text-sm font-medium text-ink/50" data-testid="price-equiv">
+            {equivalentLabel(
+              bidCount > 0 || status === "CLOSED" ? priceCents : props.startPriceCents,
+              props.currency,
+              locale,
+              props.eurRate
+            )}
+          </p>
+        ) : null}
 
         <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink/70">
           <span data-testid="bidder-count" className="flex items-center gap-1.5">

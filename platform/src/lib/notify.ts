@@ -24,7 +24,8 @@ export type NotifyType =
   | "ACCOUNT_APPROVED"
   | "ACCOUNT_REJECTED"
   | "LOTS_ENDING"
-  | "LOTS_ENDING_BIDDER";
+  | "LOTS_ENDING_BIDDER"
+  | "PIGEON_UNAVAILABLE";
 
 const EMAIL_SUBJECTS: Record<NotifyType, { ro: string; en: string }> = {
   OUTBID: { ro: "Oferta ta a fost depășită", en: "You have been outbid" },
@@ -49,6 +50,10 @@ const EMAIL_SUBJECTS: Record<NotifyType, { ro: string; en: string }> = {
   LOTS_ENDING_BIDDER: {
     ro: "Porumbeii pe care ai licitat se închid în curând",
     en: "The pigeons you bid on are closing soon",
+  },
+  PIGEON_UNAVAILABLE: {
+    ro: "Porumbelul câștigat nu mai este disponibil",
+    en: "The pigeon you won is no longer available",
   },
   ACCOUNT_APPROVED: {
     ro: "Contul tău a fost aprobat — poți licita",
