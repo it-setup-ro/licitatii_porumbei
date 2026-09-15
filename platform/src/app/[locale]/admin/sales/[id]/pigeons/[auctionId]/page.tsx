@@ -1,4 +1,4 @@
-import { getEurRate } from "@/lib/fx";
+import { getFxInfo } from "@/lib/fx";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
@@ -68,7 +68,7 @@ export default async function AdminLotPigeonPage({
     startPrice: String(auction.startPriceCents / 100),
   };
 
-  const eurRate = await getEurRate();
+  const fx = await getFxInfo();
 
   return (
     <div className="max-w-2xl">
@@ -99,7 +99,7 @@ export default async function AdminLotPigeonPage({
         isAdmin
         currency={settings.platformCurrency}
         minStartCents={settings.minStartPriceCents}
-        eurRate={eurRate}
+        fx={fx}
       />
     </div>
   );

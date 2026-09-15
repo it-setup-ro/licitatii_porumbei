@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
 import PriceInput from "@/components/PriceInput";
+import type { FxInfo } from "@/lib/fx-math";
 import { isoToLocalInput, localInputToIso } from "@/lib/local-datetime";
 
 /**
@@ -68,14 +69,14 @@ export default function LotAdminPanel({
   locale,
   currency,
   maxPigeons,
-  eurRate = null,
+  fx = null,
 }: {
   saleId: string;
   lot: LotAdminData;
   locale: string;
   currency: string;
   maxPigeons: number;
-  eurRate?: number | null;
+  fx?: FxInfo | null;
 }) {
   const router = useRouter();
   const draft = lot.status === "DRAFT";
@@ -431,12 +432,12 @@ export default function LotAdminPanel({
             </label>
             <div className="text-sm font-medium">
               Preț de pornire <span className="font-bold text-wing-red">*</span>
-              <PriceInput currency={currency} eurRate={eurRate} value={add.price} onChange={(v) => setAdd({ ...add, price: v })} testid="lot-add-price" inputClassName={inputFor("startPriceCents")} required />
+              <PriceInput currency={currency} fx={fx} canChangeRate value={add.price} onChange={(v) => setAdd({ ...add, price: v })} testid="lot-add-price" inputClassName={inputFor("startPriceCents")} required />
               {addErrors.startPriceCents && <span className="mt-1 block text-xs text-wing-red">{addErrors.startPriceCents}</span>}
             </div>
             <div className="text-sm font-medium">
               Preț de rezervă
-              <PriceInput currency={currency} eurRate={eurRate} value={add.reserve} onChange={(v) => setAdd({ ...add, reserve: v })} testid="lot-add-reserve" inputClassName={inputFor("reservePriceCents")} />
+              <PriceInput currency={currency} fx={fx} showRate={false} value={add.reserve} onChange={(v) => setAdd({ ...add, reserve: v })} testid="lot-add-reserve" inputClassName={inputFor("reservePriceCents")} />
               <span className="mt-1 block text-xs text-ink/50">Opțional. Suma rămâne ascunsă.</span>
             </div>
             <div className="flex items-end">

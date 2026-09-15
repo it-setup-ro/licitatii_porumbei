@@ -405,7 +405,11 @@
     "fixedUntilSold": "The pigeon stays on the site until it sells. The first buyer takes it.",
     "submitPost": "Save and post",
     "postedLive": "The pigeon has been posted and is now listed under Fixed price.",
-    "viewPosted": "View the pigeon"
+    "viewPosted": "View the pigeon",
+    "rateLine": "Rate: €1 = {rate} lei",
+    "rateBnr": "NBR, {date}",
+    "rateManual": "set by an administrator",
+    "rateChange": "change the rate"
   },
   "orders": {
     "title": "Order",

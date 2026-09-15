@@ -9,6 +9,9 @@ import { formatMoney } from "./money";
 
 export type Currency = "RON" | "EUR";
 
+/** Cursul folosit acum: valoarea, dacă e scris de admin, și ziua cursului BNR. */
+export type FxInfo = { rate: number; manual: boolean; date: string | null };
+
 /** Cursul euro și ziua lui, din fișierul BNR (curs.bnr.ro/nbrfxrates.xml). */
 export function parseBnrEur(xml: string): { rate: number; date: string } | null {
   const date = xml.match(/<Cube\s+date="(\d{4}-\d{2}-\d{2})"/)?.[1];

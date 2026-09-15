@@ -1,4 +1,4 @@
-import { getEurRate } from "@/lib/fx";
+import { getFxInfo } from "@/lib/fx";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -32,7 +32,7 @@ export default async function SellPage({ params }: { params: Promise<{ locale: s
     );
   }
 
-  const eurRate = await getEurRate();
+  const fx = await getFxInfo();
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -52,7 +52,7 @@ export default async function SellPage({ params }: { params: Promise<{ locale: s
           defaultOfferedBy={user!.sellerCompany ?? user!.name}
           reserveEnabled={settings.reservePriceEnabled}
           isAdmin={user!.role === "ADMIN"}
-          eurRate={eurRate}
+          fx={fx}
         />
       )}
     </div>

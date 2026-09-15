@@ -83,6 +83,12 @@ test.describe("Lei și euro", () => {
       }).toPass({ timeout: 15_000 });
       await other.fill("1000");
       await expect(base).toHaveValue("200");
+      // cursul folosit stă sub căsuțe, cu legătura spre Setări pentru admin
+      await expect(page.getByTestId("sf-start-price-rate")).toContainText("1 € = 5,0000 lei");
+      await expect(page.getByTestId("sf-start-price-rate")).toContainText("administrator");
+      await page.getByTestId("sf-start-price-rate-change").click();
+      await expect(page).toHaveURL(/\/ro\/admin\/settings#curs$/);
+      await expect(page.getByTestId("fx-card")).toBeVisible();
 
       // lângă preț, pe pagina porumbelului și pe card
       const { auctionId } = await livePigeon(page);

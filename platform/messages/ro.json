@@ -405,7 +405,11 @@
     "fixedUntilSold": "Porumbelul rămâne pe site până se vinde. Primul cumpărător îl ia.",
     "submitPost": "Salvează și postează",
     "postedLive": "Porumbelul a fost postat și se vede acum la Preț fix.",
-    "viewPosted": "Vezi porumbelul"
+    "viewPosted": "Vezi porumbelul",
+    "rateLine": "Curs: 1 € = {rate} lei",
+    "rateBnr": "BNR, {date}",
+    "rateManual": "scris de administrator",
+    "rateChange": "schimbă cursul"
   },
   "orders": {
     "title": "Comandă",

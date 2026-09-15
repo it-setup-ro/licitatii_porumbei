@@ -54,7 +54,7 @@ export default function FxRateCard({
   const day = bnrDate ? new Date(`${bnrDate}T12:00:00Z`).toLocaleDateString("ro-RO") : null;
 
   return (
-    <section className="mb-8 rounded-2xl border border-ink/10 bg-white p-6" data-testid="fx-card">
+    <section id="curs" className="mb-8 scroll-mt-24 rounded-2xl border border-ink/10 bg-white p-6" data-testid="fx-card">
       <h2 className="font-display text-xl font-bold">Curs valutar (lei / €)</h2>
       <p className="mt-1 text-sm text-ink/60">
         Lângă fiecare preț apare echivalentul în cealaltă monedă, iar în formulare căsuțele de lei

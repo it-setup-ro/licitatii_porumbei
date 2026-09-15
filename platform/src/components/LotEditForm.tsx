@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
 import PriceInput from "@/components/PriceInput";
+import type { FxInfo } from "@/lib/fx-math";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 import TraitsEditor from "@/components/TraitsEditor";
 import type { PigeonTraits } from "@/lib/pigeon-traits";
@@ -47,14 +48,14 @@ export default function LotEditForm({
   isAdmin,
   currency,
   minStartCents,
-  eurRate = null,
+  fx = null,
 }: {
   lot: LotEditData;
   scope: EditScope;
   isAdmin: boolean;
   currency: string;
   minStartCents: number;
-  eurRate?: number | null;
+  fx?: FxInfo | null;
 }) {
   const t = useTranslations("sell");
   const tp = useTranslations("pigeon");
@@ -337,7 +338,8 @@ export default function LotEditForm({
               <span className="font-medium">{t("startPrice", { currency })}</span>
               <PriceInput
                 currency={currency}
-                eurRate={eurRate}
+                fx={fx}
+                canChangeRate={isAdmin}
                 value={String(form.startPrice)}
                 onChange={(v) => set("startPrice", v)}
                 testid="edit-start-price"

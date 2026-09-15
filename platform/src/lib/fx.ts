@@ -1,6 +1,6 @@
 import https from "node:https";
 import { getSettings, setSetting } from "./settings";
-import { parseBnrEur } from "./fx-math";
+import { parseBnrEur, type FxInfo } from "./fx-math";
 
 /**
  * Fișierul BNR, cerut cu TLS 1.2.
@@ -37,12 +37,19 @@ function getBnrXml(): Promise<{ status: number; body: string }> {
 /** BNR a mutat fișierul: vechiul www.bnr.ro/nbrfxrates.xml duce acum la prima pagină. */
 export const BNR_URL = "https://curs.bnr.ro/nbrfxrates.xml";
 
-/** Lei pentru un euro, sau null dacă echivalentul e oprit sau nu există încă un curs. */
-export async function getEurRate(): Promise<number | null> {
+/** Cursul folosit acum, cu sursa lui — pentru rândul „Curs: 1 € = … lei" din formulare. */
+export async function getFxInfo(): Promise<FxInfo | null> {
   const s = await getSettings();
   if (!s.currencyEquivalentEnabled) return null;
-  if (s.fxMode === "MANUAL" && s.fxManualRate > 0) return s.fxManualRate;
-  return s.fxBnrRate > 0 ? s.fxBnrRate : null;
+  if (s.fxMode === "MANUAL" && s.fxManualRate > 0) {
+    return { rate: s.fxManualRate, manual: true, date: null };
+  }
+  return s.fxBnrRate > 0 ? { rate: s.fxBnrRate, manual: false, date: s.fxBnrDate || null } : null;
+}
+
+/** Lei pentru un euro, sau null dacă echivalentul e oprit sau nu există încă un curs. */
+export async function getEurRate(): Promise<number | null> {
+  return (await getFxInfo())?.rate ?? null;
 }
 
 const g = globalThis as unknown as { __bnrAttemptAt?: number };

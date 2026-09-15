@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { formatMoney } from "@/lib/money";
 import { Link } from "@/i18n/navigation";
 import PriceInput from "@/components/PriceInput";
+import type { FxInfo } from "@/lib/fx-math";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 import TraitsEditor from "@/components/TraitsEditor";
 import type { PigeonTraits } from "@/lib/pigeon-traits";
@@ -31,7 +32,7 @@ export default function SellForm({
   defaultOfferedBy,
   reserveEnabled,
   isAdmin = false,
-  eurRate = null,
+  fx = null,
 }: {
   currency: string;
   minStartCents: number;
@@ -45,8 +46,8 @@ export default function SellForm({
   reserveEnabled: boolean;
   /** adminul postează direct porumbeii cu preț fix, fără aprobare */
   isAdmin?: boolean;
-  /** lei pentru un euro — pentru căsuța din cealaltă monedă */
-  eurRate?: number | null;
+  /** cursul lei / € — pentru căsuța din cealaltă monedă și rândul cu cursul */
+  fx?: FxInfo | null;
 }) {
   const t = useTranslations("sell");
   const tp = useTranslations("pigeon");
@@ -350,7 +351,8 @@ export default function SellForm({
           </span>
           <PriceInput
             currency={currency}
-            eurRate={eurRate}
+            fx={fx}
+            canChangeRate={isAdmin}
             value={form.startPrice}
             onChange={(v) => set("startPrice", v)}
             testid="sf-start-price"
@@ -367,7 +369,8 @@ export default function SellForm({
             <span className="font-medium">{t("reservePrice", { currency })}</span>
             <PriceInput
               currency={currency}
-              eurRate={eurRate}
+              fx={fx}
+              showRate={false}
               value={form.reservePrice}
               onChange={(v) => set("reservePrice", v)}
               testid="sf-reserve-price"
