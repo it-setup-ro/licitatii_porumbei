@@ -67,6 +67,9 @@ export default defineConfig({
       NEXT_DIST_DIR: ".next-e2e",
       // suita creeaza multe conturi; limita reala (5/ora) ramane activa in productie
       RATE_LIMIT_REGISTER_PER_HOUR: "200",
+      // bifa „Nu sunt robot": browserele de test nu rezolvă provocări;
+      // verificarea serverului e acoperită de testele unitare
+      CAPTCHA_DISABLED: "1",
     },
     stdout: "pipe",
     stderr: "pipe",

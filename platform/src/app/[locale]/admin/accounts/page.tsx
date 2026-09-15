@@ -97,7 +97,7 @@ export default async function AdminAccountsPage({
                     {u.name}
                     {u.nickname && (
                       <span className="ml-2 font-body text-sm font-normal text-ink/60">
-                        porecla: <strong>{u.nickname}</strong>
+                        utilizator: <strong>{u.nickname}</strong>
                       </span>
                     )}
                   </p>
@@ -106,6 +106,14 @@ export default async function AdminAccountsPage({
                     {u.phone ? ` · ${u.phone}` : ""}
                   </p>
                   <p className="text-ink/70">{adresa || <em className="text-ink/40">fără adresă</em>}</p>
+                  {u.accountType === "COMPANY" && (
+                    <p className="mt-1 text-ink/70" data-testid="account-company">
+                      Persoană juridică: <strong>{u.companyName}</strong> · CUI {u.companyCui} · Reg. Com.{" "}
+                      {u.companyRegCom} · sediu: {u.companyAddress}
+                      {u.companyBank ? ` · ${u.companyBank}` : ""}
+                      {u.companyIban ? ` · ${u.companyIban}` : ""}
+                    </p>
+                  )}
                   <p className="mt-1 text-xs text-ink/40">
                     cont făcut {dateFmt.format(u.createdAt)}
                     {u.accountRejectReason ? ` · motiv respingere: ${u.accountRejectReason}` : ""}

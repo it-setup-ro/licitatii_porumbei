@@ -11,6 +11,8 @@ const LABELS: Record<string, string> = {
   "transport-agenti": "Transport și Agenți",
   "despre-noi": "Despre noi",
   contact: "Contact",
+  "termeni-si-conditii": "Termeni și condiții",
+  "politica-de-confidentialitate": "Politica de confidențialitate",
 };
 
 export default async function AdminContentPage({

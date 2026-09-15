@@ -4,13 +4,18 @@ import { verifyPassword, createSessionCookie } from "@/lib/auth";
 import { clientIp, rateLimit, resetLimit } from "@/lib/rate-limit";
 import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/api";
 
+/**
+ * Autentificarea, cu e-mailul sau cu numele de utilizator — clientul a cerut
+ * „nume de utilizator", ca pe celelalte site-uri de licitații. Câmpul din cerere
+ * se numește tot `email`, ca aplicațiile și testele existente să meargă mai departe.
+ */
 const schema = z.object({
-  email: z.string().email().toLowerCase().max(200),
+  email: z.string().trim().min(2).max(200),
   password: z.string().min(1).max(200),
 });
 
-// Anti-bruteforce: 10 incercari / 15 min per IP si 5 per adresa de email.
-// Limita pe email opreste atacul distribuit pe mai multe IP-uri catre un cont.
+// Anti-bruteforce: 10 incercari / 15 min per IP si 5 per cont.
+// Limita pe cont opreste atacul distribuit pe mai multe IP-uri catre acelasi cont.
 const WINDOW_MS = 15 * 60_000;
 
 export async function POST(req: Request) {
@@ -18,24 +23,29 @@ export async function POST(req: Request) {
     const body = schema.safeParse(await req.json());
     if (!body.success) return jsonError("VALIDATION", 422);
 
+    const identifier = body.data.email.toLowerCase();
     const ipKey = `login:ip:${clientIp(req)}`;
-    const emailKey = `login:email:${body.data.email}`;
+    const accountKey = `login:email:${identifier}`;
     for (const [key, max] of [
       [ipKey, 10],
-      [emailKey, 5],
+      [accountKey, 5],
     ] as const) {
       const check = rateLimit(key, max, WINDOW_MS);
       if (!check.allowed) return jsonTooManyRequests(check.retryAfterSeconds);
     }
 
-    const user = await prisma.user.findUnique({ where: { email: body.data.email } });
+    const user = identifier.includes("@")
+      ? await prisma.user.findUnique({ where: { email: identifier } })
+      : await prisma.user.findFirst({
+          where: { nickname: { equals: body.data.email, mode: "insensitive" } },
+        });
     if (!user || user.suspendedAt) return jsonError("INVALID_CREDENTIALS", 401);
     const valid = await verifyPassword(body.data.password, user.passwordHash);
     if (!valid) return jsonError("INVALID_CREDENTIALS", 401);
 
     // autentificare reusita — contoarele se sterg, ca sa nu blocam un user legitim
     resetLimit(ipKey);
-    resetLimit(emailKey);
+    resetLimit(accountKey);
 
     await createSessionCookie(user.id, user.role);
     return jsonOk({ userId: user.id, role: user.role });

@@ -17,6 +17,20 @@ model User {
   email               String    @unique
   passwordHash        String
   name                String
+  /// Contul complet cerut de client: prenume, nume, tip de cont și firma.
+  /// `name` rămâne „Prenume Nume", pentru paginile care îl foloseau deja.
+  firstName           String?
+  lastName            String?
+  accountType         String    @default("PERSON") // PERSON | COMPANY
+  companyName         String?
+  companyCui          String?
+  companyRegCom       String?
+  companyAddress      String?
+  companyBank         String?
+  companyIban         String?
+  /// când a acceptat Termenii și Politica de confidențialitate, și ce versiune
+  termsAcceptedAt     DateTime?
+  termsVersion        String?
   /// Numele sub care apare in istoricul ofertelor. Public — numele real nu
   /// se arata niciodata acolo.
   nickname            String?   @unique

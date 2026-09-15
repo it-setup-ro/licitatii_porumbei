@@ -1,5 +1,5 @@
 import { test, expect, type Page, type APIRequestContext } from "@playwright/test";
-import { login } from "./helpers";
+import { login, registrationData } from "./helpers";
 
 /**
  * Cererile clientului din 14–15 septembrie:
@@ -171,13 +171,13 @@ test.describe("Acordul de informare la înregistrare", () => {
     const email = `info-${id}@e2e.test`;
     await page.goto("/ro");
     const r = await page.request.post("/api/auth/register", {
-      data: {
+      data: registrationData({
         email,
         password: "parola12345",
         name: "Cont Informare",
         nickname: `Info ${id.slice(-5)}`,
         notifyAuctionEnding: true,
-      },
+      }),
     });
     const body = await r.json();
     expect(body.ok, JSON.stringify(body)).toBe(true);

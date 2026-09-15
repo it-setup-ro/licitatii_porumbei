@@ -1,5 +1,5 @@
 import { test, expect, type Page, type APIRequestContext } from "@playwright/test";
-import { login } from "./helpers";
+import { login, registrationData, fillRegisterForm } from "./helpers";
 
 /**
  * Conturile — cerințele clientului: înregistrare cu nume, telefon, adresă,
@@ -30,14 +30,13 @@ async function liveAuctionId(page: Page) {
 async function registerStrict(page: Page, id: string) {
   await page.goto("/ro/register");
   await expect(page.getByTestId("reg-address")).toBeVisible();
-  await page.getByTestId("reg-name").fill(`Ionuț Test ${id}`);
-  await page.getByTestId("reg-nickname").fill(`Burca Ionuț ${id.slice(-5)}`);
-  await page.getByTestId("reg-email").fill(`cont-${id}@e2e.test`);
-  await page.getByTestId("reg-password").fill("parola12345");
-  await page.getByTestId("reg-phone").fill("0723 000 111");
-  await page.getByTestId("reg-street").fill("Str. Porumbeilor 7");
-  await page.getByTestId("reg-city").fill("Arad");
-  await page.getByTestId("reg-county").fill("Arad");
+  await fillRegisterForm(page, {
+    firstName: "Ionuț",
+    lastName: `Test ${id}`,
+    nickname: `Burca Ionuț ${id.slice(-5)}`,
+    email: `cont-${id}@e2e.test`,
+    password: "parola12345",
+  });
   await expect(page.getByTestId("reg-country")).toHaveValue("România");
   // avizele sunt alegerea omului: bifa pornește nebifată
   await expect(page.getByTestId("reg-notify-ending")).not.toBeChecked();
@@ -174,15 +173,15 @@ test.describe("Porecla liberă", () => {
     await page.goto("/ro");
     const nick = `Crescătoria Mureș ${uid().slice(-4)}`;
     const first = await page.request.post("/api/auth/register", {
-      data: { email: `nick-${uid()}@e2e.test`, password: "parola12345", name: "Nume Unu", nickname: nick },
+      data: registrationData({ email: `nick-${uid()}@e2e.test`, password: "parola12345", name: "Nume Unu", nickname: nick }),
     });
     expect((await first.json()).ok).toBe(true);
 
     const second = await page.request.post("/api/auth/register", {
-      data: { email: `nick-${uid()}@e2e.test`, password: "parola12345", name: "Nume Doi", nickname: nick.toUpperCase() },
+      data: registrationData({ email: `nick-${uid()}@e2e.test`, password: "parola12345", name: "Nume Doi", nickname: nick.toUpperCase() }),
     });
     expect(second.status()).toBe(409);
-    expect((await second.json()).fields.nickname).toContain("folosită");
+    expect((await second.json()).fields.nickname).toContain("deja folosit");
   });
 });
 

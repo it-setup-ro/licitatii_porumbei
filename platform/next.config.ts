@@ -30,6 +30,8 @@ const securityHeaders = [
       "font-src 'self' data:",
       "connect-src 'self'",
       "media-src 'self'",
+      // bifa „Nu sunt robot" (ALTCHA) calculează în Web Workers creați din blob
+      "worker-src 'self' blob:",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

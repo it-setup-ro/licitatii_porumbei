@@ -35,6 +35,47 @@ export async function login(page: Page, email: string, password: string) {
   }
 }
 
+/** Datele unui cont nou valid (persoană fizică), cu ce se schimbă în `over`. */
+export function registrationData(over: Record<string, unknown> = {}) {
+  const id = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
+  return {
+    accountType: "PERSON",
+    firstName: "Test",
+    lastName: "Cont",
+    nickname: `Test ${id.slice(-7)}`,
+    email: `cont-${id}@e2e.test`,
+    password: "parola12345",
+    phone: "0723 000 111",
+    addressCountry: "România",
+    addressCounty: "Arad",
+    addressCity: "Arad",
+    addressStreet: "Str. Porumbeilor 7",
+    acceptTerms: true,
+    ...over,
+  };
+}
+
+/** Completează formularul de cont nou (persoană fizică), fără să-l trimită. */
+export async function fillRegisterForm(
+  page: Page,
+  d: { firstName: string; lastName: string; email: string; password: string; nickname?: string }
+) {
+  // câmpurile sunt controlate de React: ce se scrie înainte de hidratare se pierde
+  await expect(async () => {
+    await page.getByTestId("reg-last-name").fill(d.lastName);
+    await expect(page.getByTestId("reg-last-name")).toHaveValue(d.lastName, { timeout: 1_000 });
+  }).toPass({ timeout: 15_000 });
+  await page.getByTestId("reg-first-name").fill(d.firstName);
+  await page.getByTestId("reg-nickname").fill(d.nickname ?? `U${Date.now() % 1e7}`);
+  await page.getByTestId("reg-email").fill(d.email);
+  await page.getByTestId("reg-phone").fill("0723 000 111");
+  await page.getByTestId("reg-password").fill(d.password);
+  await page.getByTestId("reg-county").selectOption("Arad");
+  await page.getByTestId("reg-city").fill("Arad");
+  await page.getByTestId("reg-street").fill("Str. Porumbeilor 7");
+  await page.getByTestId("reg-terms").check();
+}
+
 export async function apiLogin(page: Page, email: string, password: string) {
   await page.goto("/ro");
   const res = await page.request.post("/api/auth/login", {

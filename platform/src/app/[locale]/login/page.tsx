@@ -36,9 +36,10 @@ export default function LoginPage() {
     <div className="mx-auto max-w-md px-4 py-14">
       <h1 className="font-display mb-6 text-3xl font-bold">{t("loginTitle")}</h1>
       <form onSubmit={submit} className="space-y-4 rounded-2xl border border-ink/10 bg-white p-6">
+        {/* e-mailul sau numele de utilizator */}
         <Field
-          label={t("email")}
-          type="email"
+          label={t("loginIdentifier")}
+          type="text"
           value={email}
           onChange={setEmail}
           testid="login-email"
@@ -102,6 +103,8 @@ function Field({
         type={type}
         value={value}
         required
+        autoComplete="username"
+        autoCapitalize="none"
         data-testid={testid}
         onChange={(e) => onChange(e.target.value)}
         className="mt-1 w-full rounded-xl border border-ink/20 bg-ivory-soft px-4 py-2.5 outline-none focus:border-wing-blue"

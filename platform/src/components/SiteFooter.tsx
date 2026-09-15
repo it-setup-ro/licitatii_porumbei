@@ -118,6 +118,8 @@ export default function SiteFooter({
           links={[
             { href: "/how-it-works", label: t("howItWorks") },
             { href: "/info/regulament", label: n("infoRules") },
+            { href: "/info/termeni-si-conditii", label: t("terms") },
+            { href: "/info/politica-de-confidentialitate", label: t("privacy") },
             { href: "/info/info-licitatii", label: n("infoAuctions") },
             { href: "/info/alte-info", label: n("infoOther") },
             { href: "/shipping-agents", label: n("shippingAgents") },

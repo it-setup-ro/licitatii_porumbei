@@ -1,12 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { login } from "./helpers";
+import { login, fillRegisterForm } from "./helpers";
 
 test.describe("Autentificare si conturi", () => {
   test("inregistrare cumparator nou + logout + login", async ({ page }) => {
     await page.goto("/ro/register");
-    await page.getByTestId("reg-name").fill("Test Cumpărător");
-    await page.getByTestId("reg-email").fill("test-buyer@e2e.test");
-    await page.getByTestId("reg-password").fill("parola12345");
+    await fillRegisterForm(page, { firstName: "Test", lastName: "Cumpărător", email: "test-buyer@e2e.test", password: "parola12345" });
     await page.getByTestId("reg-submit").click();
     await expect(page.getByTestId("user-menu")).toBeVisible();
     await expect(page.getByTestId("user-menu")).toContainText("Test");
@@ -20,9 +18,7 @@ test.describe("Autentificare si conturi", () => {
 
   test("email duplicat e respins cu mesaj clar", async ({ page }) => {
     await page.goto("/ro/register");
-    await page.getByTestId("reg-name").fill("Duplicat");
-    await page.getByTestId("reg-email").fill("buyer1@nbp.test");
-    await page.getByTestId("reg-password").fill("parola12345");
+    await fillRegisterForm(page, { firstName: "Duplicat", lastName: "Test", email: "buyer1@nbp.test", password: "parola12345" });
     await page.getByTestId("reg-submit").click();
     await expect(page.getByTestId("reg-error")).toContainText("Există deja un cont");
   });
@@ -37,9 +33,7 @@ test.describe("Autentificare si conturi", () => {
 
   test("cerere de cont vanzator -> statut in asteptare", async ({ page }) => {
     await page.goto("/ro/register");
-    await page.getByTestId("reg-name").fill("Viitor Vânzător");
-    await page.getByTestId("reg-email").fill("wannabe-seller@e2e.test");
-    await page.getByTestId("reg-password").fill("parola12345");
+    await fillRegisterForm(page, { firstName: "Viitor", lastName: "Vânzător", email: "wannabe-seller@e2e.test", password: "parola12345" });
     await page.getByTestId("reg-submit").click();
     await expect(page.getByTestId("user-menu")).toBeVisible();
 

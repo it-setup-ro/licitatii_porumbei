@@ -71,6 +71,11 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - Fiecare marcaj (plătit, predat, anulat, decont) rămâne în Jurnal
 
 ### Cont
+- **Înregistrare completă** (după voiajor.net și columbofil.net, cerută de client): persoană fizică sau juridică; nume și prenume, nume de utilizator, e-mail, telefon, parolă; țară și județ din listă, localitate, cod poștal, adresă; la juridică denumirea firmei, CUI (verificat cu cifra de control), Nr. Reg. Com., sediu, plus banca și IBAN opționale. Steluța apare doar pe câmpurile obligatorii
+- **Bifa obligatorie „Accept Termenii și condițiile și Politica de confidențialitate"** (se păstrează data și versiunea) și bifa opțională „Doresc să primesc noutăți despre licitații pe email"
+- **„Nu sunt robot" fără cont extern**: ALTCHA, verificat pe serverul nostru (fără Google/Cloudflare, fără cookie-uri); cheile se derivă din AUTH_SECRET
+- **Autentificare cu e-mailul sau cu numele de utilizator**
+- **Termeni și condiții / Politica de confidențialitate** (`/info/termeni-si-conditii`, `/info/politica-de-confidentialitate`), RO + EN, cu legături în subsol. Datele firmei și termenele de garanție se iau automat din Setări ({{firma}}, {{cui}}…); textul se editează din Administrare → Pagini. Forma finală trebuie văzută de un avocat
 - Înregistrare, autentificare, cerere de cont crescător (aprobată manual de admin)
 - **Datele crescătoriei** (denumire, localitate, prezentare) se corectează din Contul meu. IBAN-ul și CUI-ul nu — o schimbare tăcută de cont bancar e tiparul unei fraude; acelea rămân la admin
 - **Parola**: buton de arătat/ascuns la autentificare, înregistrare și resetare; „Am uitat parola" cu link valabil o oră, de unică folosință; schimbarea parolei din Contul meu (cu parola veche)

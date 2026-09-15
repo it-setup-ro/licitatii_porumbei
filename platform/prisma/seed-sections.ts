@@ -1,3 +1,4 @@
+import { LEGAL_PAGES } from "./legal-texts";
 import { PrismaClient } from "@prisma/client";
 
 /**
@@ -266,6 +267,7 @@ export async function seedSections(
   // ── Pagini de conținut (editabile din admin) ───────────────────────────
   await prisma.contentPage.createMany({
     data: [
+      ...LEGAL_PAGES,
       {
         slug: "regulament",
         titleRo: "Regulamentul platformei",

@@ -1,45 +1,21 @@
-import { consentTextFor, newUnsubToken } from "@/lib/newsletter";
-import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { hashPassword, createSessionCookie } from "@/lib/auth";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
-import { nicknameSchema } from "@/lib/nickname";
-import { passwordSchema } from "@/lib/password";
 import { getSettings } from "@/lib/settings";
-import { contactSchema, contactToDb } from "@/lib/address";
-import {
-  jsonOk,
-  jsonError,
-  jsonTooManyRequests,
-  handleApiError,
-  validationFields,
-} from "@/lib/api";
+import { registrationSchema, registrationToDb } from "@/lib/registration";
+import { verifyCaptcha } from "@/lib/captcha";
+import { consentTextFor, newUnsubToken } from "@/lib/newsletter";
+import { jsonOk, jsonError, jsonTooManyRequests, handleApiError, validationFields } from "@/lib/api";
 
 /**
  * Contul nou.
  *
- * Cu aprobarea conturilor pornită (cerința clientului), cere și telefonul și
- * adresa, iar contul intră în „așteaptă aprobarea": omul vede licitațiile de la
- * început, dar licitează abia după ce îl aprobă administratorul.
+ * Datele cerute urmează exemplele clientului (voiajor.net, columbofil.net):
+ * persoană fizică sau juridică, nume și prenume, nume de utilizator, contact,
+ * adresă, datele firmei la juridică, acordul pentru termeni și bifa „Nu sunt
+ * robot". Cu aprobarea conturilor pornită, contul intră în „așteaptă aprobarea":
+ * omul vede licitațiile de la început, dar licitează abia după aprobare.
  */
-
-const schema = z.object({
-  email: z.string().email("Adresa de e-mail nu e scrisă corect.").toLowerCase().max(200),
-  password: passwordSchema,
-  name: z.string().trim().min(2, "Scrie numele și prenumele.").max(120),
-  nickname: nicknameSchema,
-  phone: z.string().max(40).optional(),
-  locale: z.enum(["ro", "en"]).default("ro"),
-  /**
-   * Clientul, Punctul 6: „sunt de acord să primesc mail de info / notificări
-   * licitații, articole, știri". Pornește nebifat; bifat, abonează și la noutăți.
-   */
-  notifyAuctionEnding: z.boolean().default(false),
-  wantsSeller: z.boolean().default(false),
-  sellerCompany: z.string().max(200).optional(),
-  sellerCui: z.string().max(40).optional(),
-  sellerIban: z.string().max(40).optional(),
-});
 
 export async function POST(req: Request) {
   try {
@@ -53,15 +29,15 @@ export async function POST(req: Request) {
     const strict = settings.accountApprovalRequired;
     const raw = await req.json();
 
-    // datele de bază și, cu aprobarea pornită, telefonul și adresa — erorile
-    // din ambele se întorc deodată, ca omul să le repare dintr-o trecere
-    const body = schema.safeParse(raw);
-    const contact = strict ? contactSchema.safeParse(raw) : null;
-    if (!body.success || (contact && !contact.success)) {
-      return jsonError("VALIDATION", 422, {
+    // erorile câmpurilor și ale bifei „Nu sunt robot" se întorc deodată,
+    // ca omul să le repare dintr-o singură trecere
+    const body = registrationSchema.safeParse(raw);
+    const human = await verifyCaptcha(raw?.captcha);
+    if (!body.success || !human) {
+      return jsonError(body.success ? "CAPTCHA" : "VALIDATION", 422, {
         fields: {
-          ...(contact && !contact.success ? validationFields(contact.error) : {}),
           ...(!body.success ? validationFields(body.error) : {}),
+          ...(!human ? { captcha: "Bifează „Nu sunt robot” și așteaptă să apară verificat." } : {}),
         },
       });
     }
@@ -79,9 +55,16 @@ export async function POST(req: Request) {
     });
     if (nickTaken) {
       return jsonError("NICKNAME_TAKEN", 409, {
-        fields: { nickname: "Porecla e deja folosită de altcineva." },
+        fields: { nickname: "Numele de utilizator e deja folosit de altcineva." },
       });
     }
+
+    // versiunea termenilor acceptați = ultima modificare a paginii, ca să se
+    // poată arăta ce text era în vigoare în ziua în care omul a bifat
+    const terms = await prisma.contentPage.findUnique({
+      where: { slug: "termeni-si-conditii" },
+      select: { updatedAt: true },
+    });
 
     // cererea de cont de crescător — doar cât fluxul vechi e pornit din Setări
     const wantsSeller = d.wantsSeller && settings.breederSelfServiceEnabled;
@@ -90,10 +73,10 @@ export async function POST(req: Request) {
       data: {
         email: d.email,
         passwordHash: await hashPassword(d.password),
-        name: d.name,
         nickname: d.nickname,
-        phone: d.phone || null,
-        ...(contact && contact.success ? contactToDb(contact.data) : {}),
+        ...registrationToDb(d),
+        termsAcceptedAt: new Date(),
+        termsVersion: terms ? terms.updatedAt.toISOString() : null,
         notifyAuctionEnding: d.notifyAuctionEnding,
         accountStatus: strict ? "PENDING" : "APPROVED",
         locale: d.locale,
@@ -105,6 +88,7 @@ export async function POST(req: Request) {
       },
     });
 
+    // bifa „Doresc să primesc noutăți despre licitații pe email"
     if (d.notifyAuctionEnding) {
       const consentText = consentTextFor(d.locale);
       await prisma.newsletterSubscriber.upsert({
