@@ -31,7 +31,8 @@ test.describe("Contul nou", () => {
       password: "parola12345",
       nickname: `Firma ${id.slice(-6)}`,
     });
-    await expect(page.getByTestId("reg-captcha")).toBeVisible();
+    // în e2e verificarea e oprită (CAPTCHA_DISABLED), deci bifa nu se afișează
+    await expect(page.locator('[data-testid="reg-captcha"]')).toHaveCount(0);
 
     await page.getByTestId("reg-type-company").click();
     const firma = page.getByTestId("reg-company");

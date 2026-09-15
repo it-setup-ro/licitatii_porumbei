@@ -99,7 +99,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 
 | # | Ce | De ce contează | Cine decide |
 |---|---|---|---|
-| 1 | **Domeniu + HTTPS** | Acum parolele circulă necriptat. După: `COOKIE_SECURE=true` în `.env` de pe server | Daniel (cumpără domeniul) |
+| 1 | **Domeniu + HTTPS** | Acum parolele circulă necriptat. După: `COOKIE_SECURE=true` în `.env` de pe server și **scoaterea liniei `CAPTCHA_DISABLED=1`** (bifa „Nu sunt robot" merge doar pe HTTPS) | Daniel (cumpără domeniul) |
 | 2 | **Datele de plată ale firmei** | Plata se face în contul firmei sau numerar (faza 2); fără IBAN în Setări → Facturare (denumire, IBAN, bancă) și telefon în Contact, câștigătorul nu primește contul. Stripe nu mai e necesar | Daniel / clientul |
 | 3 | **Schimbă parola PostgreSQL locală** | A fost publică pe GitHub și rămâne în istoricul git | Daniel |
 | 4 | **Șterge conturile demo** înainte de public | `admin@nbp.test/admin1234` e scris în README | Daniel |

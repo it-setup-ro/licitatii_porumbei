@@ -18,11 +18,17 @@ import CaptchaField from "@/components/CaptchaField";
 export default function RegisterForm({
   sellerSignupEnabled,
   strictSignup,
+  captchaEnabled = true,
 }: {
   /** fluxul vechi, prin care crescătorii își cereau cont de vânzător */
   sellerSignupEnabled: boolean;
   /** contul nou așteaptă aprobarea administratorului */
   strictSignup: boolean;
+  /**
+   * Bifa „Nu sunt robot". Browserele permit calculul ei doar pe HTTPS, deci pe
+   * serverul fără certificat e oprită (CAPTCHA_DISABLED) și nu se afișează.
+   */
+  captchaEnabled?: boolean;
 }) {
   const t = useTranslations("auth");
   const locale = useLocale();
@@ -356,7 +362,7 @@ export default function RegisterForm({
           </div>
         )}
 
-        <CaptchaField onChange={(p) => set("captcha", p)} error={fieldErrors.captcha} />
+        {captchaEnabled && <CaptchaField onChange={(p) => set("captcha", p)} error={fieldErrors.captcha} />}
 
         {error && (
           <p className="rounded-lg bg-wing-red/10 px-3 py-2 text-sm text-wing-red" data-testid="reg-error">
