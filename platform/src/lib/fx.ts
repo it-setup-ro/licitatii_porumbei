@@ -1,5 +1,30 @@
+import https from "node:https";
 import { getSettings, setSetting } from "./settings";
 import { parseBnrEur } from "./fx-math";
+
+/**
+ * Fișierul BNR, cerut cu TLS 1.2.
+ *
+ * Serverul BNR închide conexiunea (ECONNRESET) când Node încearcă TLS 1.3, cum
+ * face implicit `fetch` — pe serverul platformei cursul nu venea deloc, deși
+ * `curl` mergea. BNR cere explicit TLS 1.2 pentru preluarea automată.
+ */
+function getBnrXml(): Promise<{ status: number; body: string }> {
+  return new Promise((resolve, reject) => {
+    const req = https.get(
+      BNR_URL,
+      { minVersion: "TLSv1.2", maxVersion: "TLSv1.2", timeout: 15_000 },
+      (res) => {
+        let body = "";
+        res.setEncoding("utf8");
+        res.on("data", (chunk: string) => (body += chunk));
+        res.on("end", () => resolve({ status: res.statusCode ?? 0, body }));
+      }
+    );
+    req.on("timeout", () => req.destroy(new Error("TIMEOUT")));
+    req.on("error", reject);
+  });
+}
 
 /**
  * Cursul euro al platformei.
@@ -34,9 +59,9 @@ export async function refreshBnrRate(
   if (process.env.FX_FETCH_DISABLED === "1") return { ok: false, error: "DISABLED" };
 
   try {
-    const res = await fetch(BNR_URL, { signal: AbortSignal.timeout(15_000), cache: "no-store" });
-    if (!res.ok) return { ok: false, error: `HTTP_${res.status}` };
-    const parsed = parseBnrEur(await res.text());
+    const res = await getBnrXml();
+    if (res.status !== 200) return { ok: false, error: `HTTP_${res.status}` };
+    const parsed = parseBnrEur(res.body);
     if (!parsed) return { ok: false, error: "PARSE" };
 
     const s = await getSettings();

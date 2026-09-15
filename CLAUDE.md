@@ -60,4 +60,4 @@ Publicare și scripturi pe server: skill-urile `deploy` și `prod-script`. E2e: 
 - Baza e2e e comună: testele nu se bazează pe ce apare „primul" într-o listă.
 - Screenshot-urile din Browser pane ies des goale → verifică prin `get_page_text` / JS.
 - React pune `<!-- -->` între bucăți de text → grep pe HTML după ce le scoți.
-- BNR: fișierul e la `https://curs.bnr.ro/nbrfxrates.xml` (adresa veche redirecționează).
+- BNR: fișierul e la `https://curs.bnr.ro/nbrfxrates.xml` (adresa veche redirecționează) și **acceptă doar TLS 1.2** — `fetch` din Node (TLS 1.3) primește ECONNRESET, deși `curl` merge. Folosește `https.get` cu `minVersion/maxVersion: "TLSv1.2"` (vezi `lib/fx.ts`).
