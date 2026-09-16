@@ -36,9 +36,9 @@ export default async function ArticlesPage({
           {t("empty")}
         </p>
       ) : (
-        /* Clientul: casete mai mici, ca pe voiajor.net/articole — un rând pe
-           articol, cu poza mică în stânga, ca să încapă mai multe pe ecran. */
-        <div className="mt-8 space-y-4">
+        /* Clientul: „aș vrea să fie în pătrățele, nu listă" — carduri mici,
+           patru pe rând pe calculator, două pe telefon. */
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {articles.map((a) => {
             const title = pick(currentLocale, a.titleRo, a.titleEn);
             const excerpt = pick(currentLocale, a.excerptRo, a.excerptEn);
@@ -47,9 +47,9 @@ export default async function ArticlesPage({
                 key={a.id}
                 href={`/articles/${a.slug}`}
                 data-testid="article-card"
-                className="card-hover flex gap-4 overflow-hidden rounded-2xl border border-ink/10 bg-white p-3 sm:gap-5 sm:p-4"
+                className="card-hover flex flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white"
               >
-                <div className="h-24 w-32 shrink-0 overflow-hidden rounded-xl bg-ivory-soft sm:h-28 sm:w-44">
+                <div className="aspect-square bg-ivory-soft">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={a.coverUrl ?? "/pigeons/p1.svg"}
@@ -57,17 +57,17 @@ export default async function ArticlesPage({
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div className="flex min-w-0 flex-1 flex-col gap-1">
-                  <p className="text-xs uppercase tracking-wide text-ink/50">
+                <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
+                  <p className="text-[11px] uppercase tracking-wide text-ink/50">
                     {a.publishedAt ? t("published", { date: fmtDate(a.publishedAt) }) : ""}
                   </p>
-                  <h2 className="font-display text-base font-bold leading-snug sm:text-lg">
+                  <h2 className="font-display line-clamp-2 text-sm font-bold leading-snug sm:text-base">
                     {title}
                   </h2>
                   {excerpt && (
-                    <p className="line-clamp-2 text-sm text-ink/70 sm:line-clamp-3">{excerpt}</p>
+                    <p className="line-clamp-2 hidden text-xs text-ink/70 sm:block">{excerpt}</p>
                   )}
-                  <span className="mt-auto pt-1 text-sm font-semibold text-wing-blue">
+                  <span className="mt-auto pt-2 text-xs font-semibold text-wing-blue sm:text-sm">
                     {t("readMore")} →
                   </span>
                 </div>

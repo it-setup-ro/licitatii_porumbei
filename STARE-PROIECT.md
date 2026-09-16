@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză, japoneză, olandeză, franceză, germană, spaniolă, poloneză, arabă, hindi, gujarati, swahili), construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 151 teste unitare + 246 teste end-to-end, toate verzi (16 sept 2026).
+**Stare: funcțională cap-coadă pentru testare.** 151 teste unitare + 245 teste end-to-end, toate verzi (16 sept 2026).
 
 ---
 
