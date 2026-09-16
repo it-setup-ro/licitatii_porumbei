@@ -22,6 +22,7 @@ Platformă de licitații de porumbei pentru Daniel (intermediar) și clientul lu
 | Textele legale | `prisma/legal-texts.ts` (textele de pornire RO/EN), `lib/legal-placeholders.ts` ({{firma}}… din Setări), `app/[locale]/info/[slug]` |
 | Comenzi, plată în afara site-ului, decont (faza 2) | `lib/orders.ts` (Plătit / Predat / anulare / decont, e-mail cu datele de plată), `lib/settlement-math.ts` (pur), `lib/payment-instructions.ts` (pur); admin: `app/[locale]/admin/orders`, `admin/settlements`, `components/admin/SettlementSection.tsx`, export `app/api/admin/settlements/export` (exceljs); cumpărător: `app/[locale]/orders/[id]` |
 | E-mail și notificări | `lib/mailer.ts` (EmailLog + SMTP din `SMTP_URL`), `lib/notify.ts` (tipuri + subiecte), `lib/newsletter.ts` |
+| Cereri „Vreau să organizez o licitație" | `components/AuctionRequestForm.tsx` (cardul de pe prima pagină), `app/api/auction-requests`, admin: `app/[locale]/admin/auction-requests` + `components/admin/RequestHandledButton.tsx` |
 | Erori pe câmpuri | `lib/api.ts` (`jsonValidationError`, `validationFields`) |
 | Sweeper (15 s) | `instrumentation.ts` |
 | Limbile (13) | `lib/locales.ts` (lista, `pick` = conținutul adminului: română sau, altfel, engleză; `intlLocale` pentru date/numere; araba e RTL), `i18n/routing.ts`, `components/LanguageSwitcher.tsx`; e-mailuri în limba contului: `lib/messages.ts` (`emailTranslator`, doar pe server) |

@@ -102,7 +102,20 @@
     "weatherSub": "Consulter les conditions",
     "firstHome": "Premier arrivé",
     "soon": "Bientôt",
-    "atHour": "À"
+    "atHour": "À",
+    "organizeTitle": "Je veux organiser une vente",
+    "organizeText": "Vous avez des pigeons à vendre et souhaitez votre propre vente sur No.1 & Best Pigeons ? Laissez-nous vos coordonnées et nous vous rappelons.",
+    "organizeCta": "Envoyer la demande",
+    "organizeName": "Nom et prénom",
+    "organizePhone": "Numéro de téléphone",
+    "organizeEmail": "E-mail",
+    "organizePlace": "Pays / ville",
+    "organizeDone": "Nous avons bien reçu votre demande. Nous vous rappelons très vite.",
+    "organizeError": "Nous n’avons pas pu envoyer la demande. Merci de réessayer.",
+    "organizeTooMany": "Trop de demandes depuis la même connexion. Réessayez plus tard.",
+    "followTitle": "Suivez-nous",
+    "followText": "Les enchères, les pigeons et les résultats des concours, sur nos réseaux.",
+    "followSoon": "Bientôt."
   },
   "auction": {
     "statusLive": "En direct",

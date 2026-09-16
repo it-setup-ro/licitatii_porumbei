@@ -36,7 +36,9 @@ export default async function ArticlesPage({
           {t("empty")}
         </p>
       ) : (
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
+        /* Clientul: casete mai mici, ca pe voiajor.net/articole — un rând pe
+           articol, cu poza mică în stânga, ca să încapă mai multe pe ecran. */
+        <div className="mt-8 space-y-4">
           {articles.map((a) => {
             const title = pick(currentLocale, a.titleRo, a.titleEn);
             const excerpt = pick(currentLocale, a.excerptRo, a.excerptEn);
@@ -45,9 +47,9 @@ export default async function ArticlesPage({
                 key={a.id}
                 href={`/articles/${a.slug}`}
                 data-testid="article-card"
-                className="card-hover flex flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white"
+                className="card-hover flex gap-4 overflow-hidden rounded-2xl border border-ink/10 bg-white p-3 sm:gap-5 sm:p-4"
               >
-                <div className="aspect-[16/9] bg-ivory-soft">
+                <div className="h-24 w-32 shrink-0 overflow-hidden rounded-xl bg-ivory-soft sm:h-28 sm:w-44">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={a.coverUrl ?? "/pigeons/p1.svg"}
@@ -55,13 +57,17 @@ export default async function ArticlesPage({
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div className="flex flex-1 flex-col gap-2 p-5">
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
                   <p className="text-xs uppercase tracking-wide text-ink/50">
                     {a.publishedAt ? t("published", { date: fmtDate(a.publishedAt) }) : ""}
                   </p>
-                  <h2 className="font-display text-xl font-bold leading-snug">{title}</h2>
-                  {excerpt && <p className="text-sm text-ink/70">{excerpt}</p>}
-                  <span className="mt-auto pt-2 text-sm font-semibold text-wing-blue">
+                  <h2 className="font-display text-base font-bold leading-snug sm:text-lg">
+                    {title}
+                  </h2>
+                  {excerpt && (
+                    <p className="line-clamp-2 text-sm text-ink/70 sm:line-clamp-3">{excerpt}</p>
+                  )}
+                  <span className="mt-auto pt-1 text-sm font-semibold text-wing-blue">
                     {t("readMore")} →
                   </span>
                 </div>

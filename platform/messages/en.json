@@ -102,7 +102,20 @@
     "weatherSub": "Check conditions",
     "firstHome": "First home",
     "soon": "Soon",
-    "atHour": "At"
+    "atHour": "At",
+    "organizeTitle": "I want to run an auction",
+    "organizeText": "Do you have pigeons to sell and want your own auction on No.1 & Best Pigeons? Leave your details and we will call you.",
+    "organizeCta": "Send the request",
+    "organizeName": "Full name",
+    "organizePhone": "Phone number",
+    "organizeEmail": "Email",
+    "organizePlace": "Country / town",
+    "organizeDone": "We received your request. We will call you shortly.",
+    "organizeError": "We could not send the request. Please try again.",
+    "organizeTooMany": "Too many requests from the same connection. Try again later.",
+    "followTitle": "Follow us",
+    "followText": "Auctions, pigeons and race results, on our channels.",
+    "followSoon": "Coming soon."
   },
   "auction": {
     "statusLive": "Live",

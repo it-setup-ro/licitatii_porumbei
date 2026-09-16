@@ -61,6 +61,9 @@ export type PlatformSettings = {
   contactEmail: string;
   contactPhone: string;
   contactCity: string;
+  /** Adresa completă și programul, cerute de client în subsol, la Contact. */
+  contactAddress: string;
+  contactSchedule: string;
   facebookUrl: string;
   youtubeUrl: string;
   instagramUrl: string;
@@ -146,6 +149,8 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   contactEmail: "",
   contactPhone: "",
   contactCity: "",
+  contactAddress: "",
+  contactSchedule: "",
   facebookUrl: "",
   youtubeUrl: "",
   instagramUrl: "",

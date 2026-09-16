@@ -102,7 +102,20 @@
     "weatherSub": "Angalia hali",
     "firstHome": "Wa kwanza nyumbani",
     "soon": "Hivi karibuni",
-    "atHour": "Saa"
+    "atHour": "Saa",
+    "organizeTitle": "Nataka kuandaa mnada",
+    "organizeText": "Una njiwa wa kuuza na unataka mnada wako mwenyewe kwenye No.1 & Best Pigeons? Tuachie taarifa zako na tutakupigia simu.",
+    "organizeCta": "Tuma ombi",
+    "organizeName": "Jina kamili",
+    "organizePhone": "Namba ya simu",
+    "organizeEmail": "Barua pepe",
+    "organizePlace": "Nchi / mji",
+    "organizeDone": "Tumepokea ombi lako. Tutakupigia simu hivi karibuni.",
+    "organizeError": "Hatukuweza kutuma ombi. Tafadhali jaribu tena.",
+    "organizeTooMany": "Maombi mengi mno kutoka muunganisho uleule. Jaribu baadaye.",
+    "followTitle": "Tufuate",
+    "followText": "Minada, njiwa na matokeo ya mashindano, kwenye kurasa zetu.",
+    "followSoon": "Hivi karibuni."
   },
   "auction": {
     "statusLive": "Unaendelea",

@@ -115,6 +115,18 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
         { key: "contactEmail", label: "E-mail de contact", type: "text" },
         { key: "contactPhone", label: "Telefon", type: "text" },
         { key: "contactCity", label: "Localitate", type: "text" },
+        {
+          key: "contactAddress",
+          label: "Adresa completă",
+          type: "text",
+          hint: "Apare în subsol, la Contact. Ex.: Str. Porumbeilor nr. 10, Arad",
+        },
+        {
+          key: "contactSchedule",
+          label: "Program de funcționare",
+          type: "text",
+          hint: "Ex.: Luni–Vineri 9:00–17:00, Sâmbătă 9:00–13:00. Gol = nu se afișează.",
+        },
         { key: "facebookUrl", label: "Facebook (link complet)", type: "text" },
         { key: "youtubeUrl", label: "YouTube (link complet)", type: "text" },
         { key: "instagramUrl", label: "Instagram (link complet)", type: "text" },

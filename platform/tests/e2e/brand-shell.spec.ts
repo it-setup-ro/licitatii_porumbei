@@ -181,13 +181,13 @@ test.describe("Noutăți pe e-mail", () => {
 });
 
 test.describe("Meniul, după machetă", () => {
-  test("„Comunitate” adună paginile despre oameni", async ({ page }) => {
+  // Clientul: „dispare numele de comunitate, va rămâne doar crescători și fără
+  // submeniuri"; interviurile cu ei vor sta tot în pagina crescătorilor.
+  test("„Crescători” duce direct la pagina lor, fără submeniu", async ({ page }) => {
     await page.goto("/ro");
-    await page.getByTestId("nav-community").click();
-    const sub = page.getByTestId("community-submenu");
-    await expect(sub.getByTestId("nav-community-articles")).toBeVisible();
-    await expect(sub.getByTestId("nav-community-about")).toBeVisible();
-    await sub.getByTestId("nav-community-breeders").click();
+    const intrare = page.getByTestId("nav-community");
+    await expect(intrare).toContainText("Crescători");
+    await intrare.click();
     await page.waitForURL(/\/sellers$/);
     await expect(page.getByTestId("sellers-title")).toBeVisible();
   });

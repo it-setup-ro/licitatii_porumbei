@@ -21,10 +21,12 @@ test.describe("Meniu pe telefon", () => {
     const menu = page.getByTestId("mobile-menu");
     await expect(menu).toBeVisible();
     await expect(menu.getByTestId("m-auctions")).toBeVisible();
-    // Informatii e strans; se desface la clic
-    await expect(menu.getByTestId("m-info-rules")).toHaveCount(0);
-    await menu.getByTestId("m-info-toggle").click();
-    await expect(menu.getByTestId("m-info-rules")).toBeVisible();
+    // meniul cerut de client: linkuri simple, plus Curse & Rezultate care se desface
+    await expect(menu.getByTestId("m-articles")).toBeVisible();
+    await expect(menu.getByTestId("m-community")).toBeVisible();
+    await expect(menu.getByTestId("contest-link")).toHaveCount(0);
+    await menu.getByTestId("m-contests-toggle").click();
+    await expect(menu.getByTestId("contest-link").first()).toBeVisible();
     await expect(menu.getByTestId("m-sell")).toBeVisible();
     await expect(menu.getByTestId("m-admin")).toBeVisible();
     await expect(menu.getByTestId("m-products")).toBeVisible();

@@ -69,6 +69,8 @@ const SETTING_SCHEMAS: Record<keyof PlatformSettings, z.ZodTypeAny> = {
   contactEmail: z.union([z.literal(""), z.string().email().max(120)]),
   contactPhone: z.string().max(40),
   contactCity: z.string().max(80),
+  contactAddress: z.string().max(200),
+  contactSchedule: z.string().max(200),
   facebookUrl: z.union([z.literal(""), z.string().url().max(200)]),
   youtubeUrl: z.union([z.literal(""), z.string().url().max(200)]),
   instagramUrl: z.union([z.literal(""), z.string().url().max(200)]),

@@ -102,7 +102,20 @@
     "weatherSub": "查看天气状况",
     "firstHome": "首羽归巢",
     "soon": "即将",
-    "atHour": "时间："
+    "atHour": "时间：",
+    "organizeTitle": "我想举办拍卖",
+    "organizeText": "您有鸽子要出售，想在 No.1 & Best Pigeons 上拥有自己的拍卖吗？留下您的联系方式，我们会给您回电。",
+    "organizeCta": "发送申请",
+    "organizeName": "姓名",
+    "organizePhone": "电话号码",
+    "organizeEmail": "电子邮箱",
+    "organizePlace": "国家 / 城市",
+    "organizeDone": "我们已收到您的申请，会尽快与您联系。",
+    "organizeError": "申请发送失败，请再试一次。",
+    "organizeTooMany": "同一网络提交的申请过多，请稍后再试。",
+    "followTitle": "关注我们",
+    "followText": "拍卖、鸽子和赛绩，尽在我们的社交平台。",
+    "followSoon": "敬请期待。"
   },
   "auction": {
     "statusLive": "拍卖中",

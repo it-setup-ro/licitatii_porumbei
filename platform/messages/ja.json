@@ -102,7 +102,20 @@
     "weatherSub": "天候を確認",
     "firstHome": "一番帰還",
     "soon": "まもなく",
-    "atHour": "時刻"
+    "atHour": "時刻",
+    "organizeTitle": "オークションを開催したい",
+    "organizeText": "売りたい鳩がいて、No.1 & Best Pigeons でご自身のオークションを開きたいですか？ご連絡先を残していただければ、こちらからお電話します。",
+    "organizeCta": "申し込みを送信",
+    "organizeName": "お名前",
+    "organizePhone": "電話番号",
+    "organizeEmail": "メールアドレス",
+    "organizePlace": "国 / 市町村",
+    "organizeDone": "お申し込みを受け付けました。追ってお電話いたします。",
+    "organizeError": "申し込みを送信できませんでした。もう一度お試しください。",
+    "organizeTooMany": "同じ接続からの申し込みが多すぎます。しばらくしてからお試しください。",
+    "followTitle": "フォローする",
+    "followText": "オークション、鳩、レース結果を各チャンネルでお届けします。",
+    "followSoon": "近日公開。"
   },
   "auction": {
     "statusLive": "開催中",

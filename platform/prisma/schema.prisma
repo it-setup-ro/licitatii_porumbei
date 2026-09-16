@@ -565,6 +565,23 @@ model ShippingAgent {
   updatedAt DateTime @updatedAt
 }
 
+/// „Vreau să organizez o licitație" — cererea unui crescător de pe prima pagină.
+/// Se păstrează aici, nu doar pe e-mail: un e-mail pierdut înseamnă un crescător
+/// pierdut. Administratorul o marchează ca rezolvată după ce sună omul.
+model AuctionRequest {
+  id        String    @id @default(cuid())
+  name      String
+  phone     String
+  email     String
+  place     String
+  /// limba în care a completat, ca să știm cum îi răspundem
+  locale    String    @default("ro")
+  handledAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([handledAt, createdAt])
+}
+
 /// Crescătorul care vinde, ca profil. Nu are cont pe site: datele le primește
 /// administratorul pe e-mail și le introduce el.
 model Breeder {

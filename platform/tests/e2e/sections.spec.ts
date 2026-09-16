@@ -25,34 +25,32 @@ test.describe("Bara de sus și meniul principal", () => {
     }).toPass({ timeout: 5000 });
   });
 
-  test("meniul are toate cele 10 secțiuni cerute", async ({ page }) => {
+  // Clientul a cerut meniu scurt: Informații, Transport, Despre noi și Contact
+  // au rămas doar în subsol.
+  test("meniul are cele 7 secțiuni cerute, fără cele mutate în subsol", async ({ page }) => {
     await page.goto("/ro");
     const nav = page.getByTestId("main-nav");
     for (const id of [
       "nav-home",
       "nav-articles",
       "nav-contests",
-      "nav-info",
+      "nav-community",
       "nav-auctions",
       "nav-fixed",
       "nav-products",
-      "nav-shipping",
-      "nav-about",
-      "nav-contact",
     ]) {
       await expect(nav.getByTestId(id), `lipsește ${id}`).toBeVisible();
     }
+    for (const id of ["nav-info", "nav-shipping", "nav-about", "nav-contact"]) {
+      await expect(nav.getByTestId(id), `${id} trebuia scos din meniul de sus`).toHaveCount(0);
+    }
   });
 
-  test("submeniul Informații are cele 3 intrări și navighează", async ({ page }) => {
+  test("informațiile rămân în subsol și navighează", async ({ page }) => {
     await page.goto("/ro");
-    await page.getByTestId("nav-info").click();
-    const sub = page.getByTestId("info-submenu");
-    await expect(sub).toBeVisible();
-    await expect(sub.getByTestId("nav-info-rules")).toBeVisible();
-    await expect(sub.getByTestId("nav-info-auctions")).toBeVisible();
-    await expect(sub.getByTestId("nav-info-other")).toBeVisible();
-    await sub.getByTestId("nav-info-rules").click();
+    const info = page.getByTestId("footer-info");
+    await expect(info).toBeVisible();
+    await info.getByRole("link", { name: "Regulament" }).click();
     await expect(page).toHaveURL(/\/ro\/info\/regulament$/);
     await expect(page.getByTestId("content-title")).toContainText("Regulament");
   });

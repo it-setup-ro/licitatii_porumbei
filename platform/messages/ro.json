@@ -102,7 +102,20 @@
     "weatherSub": "Urmărește condițiile",
     "firstHome": "Primul sosit",
     "soon": "În curând",
-    "atHour": "Ora:"
+    "atHour": "Ora:",
+    "organizeTitle": "Vreau să organizez o licitație",
+    "organizeText": "Ai porumbei de vândut și vrei licitația ta pe No.1 & Best Pigeons? Lasă-ne datele și te sunăm noi.",
+    "organizeCta": "Trimite cererea",
+    "organizeName": "Nume și prenume",
+    "organizePhone": "Număr de telefon",
+    "organizeEmail": "E-mail",
+    "organizePlace": "Țara / localitatea",
+    "organizeDone": "Am primit cererea. Te sunăm în cel mai scurt timp.",
+    "organizeError": "Nu am putut trimite cererea. Mai încearcă o dată.",
+    "organizeTooMany": "Prea multe cereri de pe aceeași conexiune. Încearcă mai târziu.",
+    "followTitle": "Urmărește-ne",
+    "followText": "Licitațiile, porumbeii și rezultatele curselor, pe rețelele noastre.",
+    "followSoon": "În curând."
   },
   "auction": {
     "statusLive": "Live",

@@ -102,7 +102,20 @@
     "weatherSub": "تحقّق من الأحوال الجوية",
     "firstHome": "أول حمامة واصلة",
     "soon": "قريبًا",
-    "atHour": "الساعة"
+    "atHour": "الساعة",
+    "organizeTitle": "أريد تنظيم مزاد",
+    "organizeText": "هل لديك حمام للبيع وتريد مزادك الخاص على No.1 & Best Pigeons؟ اترك لنا بياناتك وسنتصل بك.",
+    "organizeCta": "إرسال الطلب",
+    "organizeName": "الاسم الكامل",
+    "organizePhone": "رقم الهاتف",
+    "organizeEmail": "البريد الإلكتروني",
+    "organizePlace": "الدولة / المدينة",
+    "organizeDone": "استلمنا طلبك. سنتصل بك في أقرب وقت.",
+    "organizeError": "تعذّر إرسال الطلب. حاول مرة أخرى.",
+    "organizeTooMany": "طلبات كثيرة من الاتصال نفسه. حاول لاحقًا.",
+    "followTitle": "تابعنا",
+    "followText": "المزادات والحمام ونتائج السباقات على قنواتنا.",
+    "followSoon": "قريبًا."
   },
   "auction": {
     "statusLive": "جارٍ",

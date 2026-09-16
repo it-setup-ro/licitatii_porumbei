@@ -16,6 +16,9 @@ export type FooterContact = {
   email: string;
   phone: string;
   city: string;
+  /** Clientul a cerut să se vadă în subsol și adresa, și programul. */
+  address: string;
+  schedule: string;
   facebook: string;
   youtube: string;
   instagram: string;
@@ -88,7 +91,13 @@ export default function SiteFooter({
                 </a>
               </li>
             )}
-            {contact.city && <li>⌂ {contact.city}</li>}
+            {/* adresa completă o înlocuiește pe localitatea simplă */}
+            {(contact.address || contact.city) && (
+              <li data-testid="footer-address">⌂ {contact.address || contact.city}</li>
+            )}
+            {contact.schedule && (
+              <li data-testid="footer-schedule">🕘 {contact.schedule}</li>
+            )}
             <li>
               <Link href="/contact" data-testid="footer-contact-page" className="hover:text-ivory">
                 {t("contactForm")} →

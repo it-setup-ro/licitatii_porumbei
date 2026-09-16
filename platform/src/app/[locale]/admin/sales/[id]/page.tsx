@@ -116,6 +116,21 @@ export default async function AdminSalePage({
         </div>
       </div>
 
+      {/*
+        S-a întâmplat deja: licitația e făcută, lotul are porumbei, dar nimeni
+        n-a apăsat „Start lot" — iar pe site nu apare nimic, fără să scrie de ce.
+      */}
+      {status === "DRAFT" && (
+        <p
+          className="mb-6 rounded-2xl border border-wing-orange/40 bg-wing-orange/5 p-4 text-sm"
+          data-testid="sale-draft-notice"
+        >
+          <strong>Licitația nu se vede încă pe site.</strong> Loturile sunt ciornă. Adaugă porumbeii,
+          apoi apasă <em>Start lot</em> la fiecare lot: dacă ora de început a trecut, lotul pornește
+          pe loc; dacă nu, rămâne programat și pornește singur la ora scrisă.
+        </p>
+      )}
+
       <div className="space-y-6">
         {lots.map((lot) => (
           <LotAdminPanel

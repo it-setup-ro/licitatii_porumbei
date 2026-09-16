@@ -26,6 +26,8 @@ export type AdminCounts = {
   messages: number;
   /** vânzări care așteaptă plata */
   unpaid: number;
+  /** cereri „Vreau să organizez o licitație" încă nerezolvate */
+  requests: number;
 };
 
 type Item = {
@@ -46,6 +48,12 @@ function groups(): Group[] {
       items: [
         { href: "/admin/sales", label: "Licitații pe loturi", icon: <IconGavel /> },
         { href: "/admin/breeders", label: "Crescători", icon: <IconBird /> },
+        {
+          href: "/admin/auction-requests",
+          label: "Cereri licitație",
+          icon: <IconMail />,
+          count: "requests",
+        },
         { href: "/admin/orders", label: "Vânzări și plăți", icon: <IconBox />, count: "unpaid" },
         { href: "/admin/settlements", label: "Deconturi", icon: <IconList /> },
       ],

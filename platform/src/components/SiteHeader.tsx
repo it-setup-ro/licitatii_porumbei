@@ -46,21 +46,12 @@ export type ExternalNavLink = {
   url: string | null;
 };
 
-/** Ultimele articole publicate, pentru submeniul Articole. */
-export type ArticleNavLink = {
-  id: string;
-  slug: string;
-  titleRo: string;
-  titleEn: string;
-};
-
 export default function SiteHeader({
   siteName,
   user,
   unreadCount,
   cartCount,
   contestLinks,
-  latestArticles,
   sellEnabled = true,
 }: {
   siteName: string;
@@ -68,7 +59,6 @@ export default function SiteHeader({
   unreadCount: number;
   cartCount: number;
   contestLinks: ExternalNavLink[];
-  latestArticles: ArticleNavLink[];
   /** „+ Vinde un porumbel" — doar cât fluxul crescătorilor e pornit din Setări */
   sellEnabled?: boolean;
 }) {
@@ -101,25 +91,16 @@ export default function SiteHeader({
     // adminul listează oricând; crescătorii doar dacă e pornit din Setări
     user && (user.role === "ADMIN" || (sellEnabled && user.sellerStatus === "APPROVED"));
 
-  const articleChildren: SubItem[] = [
-    ...latestArticles.map((a) => ({
-      href: `/articles/${a.slug}`,
-      label: pick(locale, a.titleRo, a.titleEn),
-      testid: "nav-article",
-    })),
-    { href: "/articles", label: t("allArticles"), testid: "nav-articles-all" },
-  ];
-
+  /*
+    Meniul de sus, cerut de client: scurt, fără submeniuri în afară de Curse &
+    Rezultate (acolo sunt linkuri externe). Articolele deschid direct pagina cu
+    toate articolele; „Comunitate" a devenit „Crescători", iar interviurile cu
+    ei vor sta tot în pagina crescătorilor. Informații, Transport și agenți,
+    Despre noi și Contact au rămas doar în subsol — sunt suficiente acolo.
+  */
   const items: NavItem[] = [
     { href: "/", label: t("home"), testid: "nav-home" },
-    {
-      href: "/articles",
-      label: t("articles"),
-      testid: "nav-articles",
-      children: articleChildren,
-      submenuTestid: "articles-submenu",
-      wide: true,
-    },
+    { href: "/articles", label: t("articles"), testid: "nav-articles" },
     {
       href: "/contests",
       label: t("contests"),
@@ -129,36 +110,10 @@ export default function SiteHeader({
       submenuTestid: "contests-submenu",
       wide: true,
     },
-    {
-      // „Comunitate" din macheta clientului. Nu duce nicaieri nou: aduna la un
-      // loc paginile despre oameni — articolele, crescatorii, despre noi.
-      href: "/sellers",
-      label: t("community"),
-      testid: "nav-community",
-      children: [
-        { href: "/articles", label: t("articles"), testid: "nav-community-articles" },
-        { href: "/sellers", label: t("breeders"), testid: "nav-community-breeders" },
-        { href: "/about", label: t("about"), testid: "nav-community-about" },
-      ],
-      submenuTestid: "community-submenu",
-    },
-    {
-      href: "/info/regulament",
-      label: t("info"),
-      testid: "nav-info",
-      children: [
-        { href: "/info/regulament", label: t("infoRules"), testid: "nav-info-rules" },
-        { href: "/info/info-licitatii", label: t("infoAuctions"), testid: "nav-info-auctions" },
-        { href: "/info/alte-info", label: t("infoOther"), testid: "nav-info-other" },
-      ],
-      submenuTestid: "info-submenu",
-    },
+    { href: "/sellers", label: t("breeders"), testid: "nav-community" },
     { href: "/auctions", label: t("auctions"), testid: "nav-auctions" },
     { href: "/fixed-price", label: t("fixedPrice"), testid: "nav-fixed" },
     { href: "/products", label: t("products"), testid: "nav-products" },
-    { href: "/shipping-agents", label: t("shippingAgents"), testid: "nav-shipping" },
-    { href: "/about", label: t("about"), testid: "nav-about" },
-    { href: "/contact", label: t("contact"), testid: "nav-contact" },
   ];
 
   const isContests = (item: NavItem) => item.testid === "nav-contests";
@@ -350,11 +305,7 @@ export default function SiteHeader({
                             <Link
                               href={child.href}
                               data-testid={child.testid}
-                              className={
-                                child.testid === "nav-articles-all"
-                                  ? "mt-1 block truncate rounded-lg border-t border-ink/10 px-3 py-2 pt-3 font-semibold text-wing-blue hover:bg-ink/5"
-                                  : "block truncate rounded-lg px-3 py-2 hover:bg-ink/5"
-                              }
+                              className="block truncate rounded-lg px-3 py-2 hover:bg-ink/5"
                             >
                               {child.label}
                             </Link>

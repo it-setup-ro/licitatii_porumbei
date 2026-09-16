@@ -102,7 +102,20 @@
     "weatherSub": "Bedingungen prüfen",
     "firstHome": "Erste Taube zu Hause",
     "soon": "Demnächst",
-    "atHour": "Um"
+    "atHour": "Um",
+    "organizeTitle": "Ich möchte eine Auktion veranstalten",
+    "organizeText": "Sie haben Tauben zu verkaufen und möchten Ihre eigene Auktion auf No.1 & Best Pigeons? Hinterlassen Sie uns Ihre Daten, wir rufen Sie an.",
+    "organizeCta": "Anfrage senden",
+    "organizeName": "Vor- und Nachname",
+    "organizePhone": "Telefonnummer",
+    "organizeEmail": "E-Mail",
+    "organizePlace": "Land / Ort",
+    "organizeDone": "Wir haben Ihre Anfrage erhalten. Wir rufen Sie in Kürze an.",
+    "organizeError": "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "organizeTooMany": "Zu viele Anfragen von derselben Verbindung. Versuchen Sie es später erneut.",
+    "followTitle": "Folgen Sie uns",
+    "followText": "Auktionen, Tauben und Wettflugergebnisse auf unseren Kanälen.",
+    "followSoon": "Demnächst."
   },
   "auction": {
     "statusLive": "Live",

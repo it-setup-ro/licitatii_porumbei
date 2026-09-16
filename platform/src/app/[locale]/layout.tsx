@@ -61,14 +61,6 @@ export default async function LocaleLayout({
     orderBy: { sortIdx: "asc" },
     select: { id: true, labelRo: true, labelEn: true, url: true },
   });
-  // ultimele articole publicate, pentru submeniul „Articole"
-  const latestArticles = await prisma.article.findMany({
-    where: { publishedAt: { not: null } },
-    orderBy: { publishedAt: "desc" },
-    take: 5,
-    select: { id: true, slug: true, titleRo: true, titleEn: true },
-  });
-
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className={`${display.variable} ${body.variable} ${script.variable} h-full antialiased`}>
       <body className="min-h-screen flex flex-col">
@@ -89,7 +81,6 @@ export default async function LocaleLayout({
             unreadCount={unreadCount}
             cartCount={cartCount}
             contestLinks={contestLinks}
-            latestArticles={latestArticles}
             sellEnabled={settings.breederSelfServiceEnabled}
           />
           {user &&
@@ -105,6 +96,8 @@ export default async function LocaleLayout({
               email: settings.contactEmail,
               phone: settings.contactPhone,
               city: settings.contactCity,
+              address: settings.contactAddress,
+              schedule: settings.contactSchedule,
               facebook: settings.facebookUrl,
               youtube: settings.youtubeUrl,
               instagram: settings.instagramUrl,

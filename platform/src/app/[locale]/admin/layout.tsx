@@ -18,19 +18,20 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const user = await getCurrentUser();
   if (!user || user.role !== "ADMIN") redirect({ href: "/", locale });
 
-  const [accounts, sellers, lots, reviews, messages, unpaid] = await Promise.all([
+  const [accounts, sellers, lots, reviews, messages, unpaid, requests] = await Promise.all([
     prisma.user.count({ where: { accountStatus: "PENDING", role: { not: "ADMIN" } } }),
     prisma.user.count({ where: { sellerStatus: "PENDING" } }),
     prisma.auction.count({ where: { status: "PENDING_APPROVAL" } }),
     prisma.review.count({ where: { reportedAt: { not: null }, moderNote: null } }),
     prisma.contactMessage.count({ where: { handledAt: null } }),
     prisma.order.count({ where: { status: "PENDING_PAYMENT" } }),
+    prisma.auctionRequest.count({ where: { handledAt: null } }),
   ]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 lg:py-10">
       <div className="lg:grid lg:grid-cols-[224px_1fr] lg:gap-10">
-        <AdminNav counts={{ accounts, sellers, lots, reviews, messages, unpaid }} />
+        <AdminNav counts={{ accounts, sellers, lots, reviews, messages, unpaid, requests }} />
         <div className="min-w-0">{children}</div>
       </div>
     </div>

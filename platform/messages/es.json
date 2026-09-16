@@ -102,7 +102,20 @@
     "weatherSub": "Consulta las condiciones",
     "firstHome": "Primera llegada",
     "soon": "Pronto",
-    "atHour": "A las"
+    "atHour": "A las",
+    "organizeTitle": "Quiero organizar una subasta",
+    "organizeText": "¿Tienes palomas para vender y quieres tu propia subasta en No.1 & Best Pigeons? Déjanos tus datos y te llamamos.",
+    "organizeCta": "Enviar la solicitud",
+    "organizeName": "Nombre y apellidos",
+    "organizePhone": "Número de teléfono",
+    "organizeEmail": "Correo electrónico",
+    "organizePlace": "País / localidad",
+    "organizeDone": "Hemos recibido tu solicitud. Te llamaremos lo antes posible.",
+    "organizeError": "No hemos podido enviar la solicitud. Inténtalo de nuevo.",
+    "organizeTooMany": "Demasiadas solicitudes desde la misma conexión. Inténtalo más tarde.",
+    "followTitle": "Síguenos",
+    "followText": "Las subastas, las palomas y los resultados de los concursos, en nuestras redes.",
+    "followSoon": "Muy pronto."
   },
   "auction": {
     "statusLive": "En curso",

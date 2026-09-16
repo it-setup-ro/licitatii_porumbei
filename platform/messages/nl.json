@@ -102,7 +102,20 @@
     "weatherSub": "Bekijk de omstandigheden",
     "firstHome": "Eerste aankomst",
     "soon": "Binnenkort",
-    "atHour": "Om"
+    "atHour": "Om",
+    "organizeTitle": "Ik wil een veiling houden",
+    "organizeText": "Hebt u duiven te koop en wilt u uw eigen veiling op No.1 & Best Pigeons? Laat uw gegevens achter en wij bellen u.",
+    "organizeCta": "Aanvraag versturen",
+    "organizeName": "Volledige naam",
+    "organizePhone": "Telefoonnummer",
+    "organizeEmail": "E-mail",
+    "organizePlace": "Land / plaats",
+    "organizeDone": "We hebben uw aanvraag ontvangen. We bellen u zo snel mogelijk.",
+    "organizeError": "We konden de aanvraag niet versturen. Probeer het opnieuw.",
+    "organizeTooMany": "Te veel aanvragen vanaf dezelfde verbinding. Probeer het later opnieuw.",
+    "followTitle": "Volg ons",
+    "followText": "Veilingen, duiven en wedstrijduitslagen, op onze kanalen.",
+    "followSoon": "Binnenkort."
   },
   "auction": {
     "statusLive": "Live",

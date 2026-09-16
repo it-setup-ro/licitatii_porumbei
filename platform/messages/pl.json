@@ -102,7 +102,20 @@
     "weatherSub": "Sprawdź warunki",
     "firstHome": "Pierwszy w domu",
     "soon": "Wkrótce",
-    "atHour": "O godz."
+    "atHour": "O godz.",
+    "organizeTitle": "Chcę zorganizować aukcję",
+    "organizeText": "Masz gołębie na sprzedaż i chcesz własną aukcję na No.1 & Best Pigeons? Zostaw nam swoje dane, a zadzwonimy do Ciebie.",
+    "organizeCta": "Wyślij zgłoszenie",
+    "organizeName": "Imię i nazwisko",
+    "organizePhone": "Numer telefonu",
+    "organizeEmail": "E-mail",
+    "organizePlace": "Kraj / miejscowość",
+    "organizeDone": "Otrzymaliśmy zgłoszenie. Zadzwonimy w najbliższym czasie.",
+    "organizeError": "Nie udało się wysłać zgłoszenia. Spróbuj jeszcze raz.",
+    "organizeTooMany": "Zbyt wiele zgłoszeń z tego samego połączenia. Spróbuj później.",
+    "followTitle": "Obserwuj nas",
+    "followText": "Aukcje, gołębie i wyniki lotów w naszych kanałach.",
+    "followSoon": "Wkrótce."
   },
   "auction": {
     "statusLive": "Trwa",

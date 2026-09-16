@@ -35,7 +35,9 @@ Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză
 - **Produse** — magazin cu categorii, coș (merge și nelogat), checkout cu scădere de stoc
 - **Articole** — blog bilingv, cu poze și clipuri
 - **Concursuri** — submeniu cu 6 linkuri către site-uri externe (clasamente, UNCR, FRSC, UCP)
-- **Meniuri strânse**: Articole (ultimele 5 articole + „Toate articolele"), Concursuri și Informații se desfac la clic — dropdown pe calculator, acordeon în panoul de pe telefon
+- **Meniu de sus scurt** (cerut de client): Acasă, Articole, Curse & Rezultate, Crescători, Licitații, Preț fix, Produse. Articole și Crescători duc direct la pagina lor, fără submeniu; singurul meniu care se desface a rămas Curse & Rezultate (linkuri externe). Informații, Transport și agenți, Despre noi și Contact au rămas doar în subsol
+- **Prima pagină**: cardul „Vreau să organizez o licitație" (nume, telefon, e-mail, țară/localitate) — cererea se salvează în Administrare → Cereri licitație și pleacă și pe e-mail la adresa de contact; lângă el, cardul „Urmărește-ne", care apare cu rețelele completate în Setări
+- **Subsol, la Contact**: e-mail, telefon, adresa completă și programul de funcționare (toate din Setări; cele goale nu apar)
 - **Pagina principală după macheta clientului**: hero cu fotografie și deviza scrisă de mână, bandă cu ce oferă platforma, **toți crescătorii cu loturi live** (câte un card pe crescător, cu poza lui, câți porumbei are la licitație și link la licitația lui), licitații live, banda concursului, ultimele articole, cifre reale din baza de date
 - **Banda concursului** în forma cerută de client: trofeu, destinația scrisă mare, distanța cu țara, slogan, rubricile Îmbarcare / Lansare / Meteo pe traseu / Primul sosit și butonul auriu. Rubricile se completează din Administrare → Concursuri; cele goale nu apar
 - **Pedigree ca filă în galerie** — Foto / Video / Pedigree în același cadru, cu mărire la clic
@@ -208,5 +210,6 @@ platform/src/
 | 29 aug | Editarea loturilor de către crescător; clipuri până la 5 min (300 MB, scrise direct pe disc); an+sex în antetul lotului; mărirea pozelor |
 | 11 sep | Pagina principală după macheta clientului, banda concursului, newsletter GDPR, căutare fără diacritice, transportatori și agenți ca listă de carduri |
 | 15 sep | Lei cu € alături (curs BNR + manual), fără an, semne de sex, porumbel indisponibil, acord la înregistrare, Brevo gratuit; porumbeii de test mutați în „Licitație de test"; faza 2: plata în afara site-ului, Vânzări și plăți, deconturi cu Excel |
+| 16 sep | Meniu de sus scurt (fără submeniuri, fără Informații/Transport/Despre/Contact), articole în casete mici pe rânduri, carduri „Vreau să organizez o licitație" și „Urmărește-ne" pe prima pagină, adresa și programul în subsol |
 | 16 sep | Site în 13 limbi (listă de alegere, arabă în oglindă, e-mailuri în limba contului); pe prima pagină toți crescătorii cu licitații active |
 | 14 sep | Faza 1 a licitațiilor pe loturi: crescător → licitație → loturi cu „Start lot", prelungire 10/10 înghețată, comision pe licitație, conturi aprobate de admin, pagina publică a licitației, avizul de 30 de minute, trimitere SMTP |

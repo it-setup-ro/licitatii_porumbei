@@ -4,6 +4,8 @@ import { prisma } from "@/lib/db";
 import { getAuctionsByStatus } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
 import ContestBanner from "@/components/ContestBanner";
+import AuctionRequestForm from "@/components/AuctionRequestForm";
+import { getSettings } from "@/lib/settings";
 import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
@@ -168,6 +170,14 @@ export default async function HomePage({
     dateStyle: "medium",
   });
 
+  // Rețelele vin din Setări; cele necompletate nu apar deloc.
+  const settings = await getSettings();
+  const socialLinks = [
+    { href: settings.facebookUrl, label: "Facebook" },
+    { href: settings.youtubeUrl, label: "YouTube" },
+    { href: settings.instagramUrl, label: "Instagram" },
+  ].filter((s) => s.href);
+
   return (
     <div>
       {/* ───────────────── Hero ───────────────── */}
@@ -326,6 +336,50 @@ export default async function HomePage({
           )}
         </section>
       </div>
+
+      {/* ───── Vreau să organizez o licitație · Urmărește-ne ───── */}
+      <section className="bg-ivory-soft" data-testid="home-cta-strip">
+        <div className="mx-auto grid max-w-6xl gap-6 px-4 py-12 lg:grid-cols-[1.4fr_1fr]">
+          {/* Cardul cerut de client, ca pe voiajor.net: crescătorul lasă datele
+              și îl sună administratorul. */}
+          <div className="rounded-2xl bg-ink p-6 text-white sm:p-8" data-testid="organize-card">
+            <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("organizeTitle")}</h2>
+            <p className="mt-2 max-w-xl text-white/80">{t("organizeText")}</p>
+            <div className="mt-5 max-w-md">
+              <AuctionRequestForm />
+            </div>
+          </div>
+
+          <div
+            className="rounded-2xl border border-ink/10 bg-white p-6 sm:p-8"
+            data-testid="follow-card"
+          >
+            <h2 className="font-display text-2xl font-bold">{t("followTitle")}</h2>
+            <p className="mt-2 text-ink/70">{t("followText")}</p>
+            {socialLinks.length > 0 ? (
+              <div className="mt-5 flex flex-wrap gap-3">
+                {socialLinks.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="follow-link"
+                    className="flex items-center gap-2 rounded-xl border border-ink/15 px-4 py-2.5 font-semibold transition-colors hover:border-wing-blue hover:text-wing-blue"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </div>
+            ) : (
+              // fără conturi completate în Setări nu punem pictograme moarte
+              <p className="mt-5 text-sm text-ink/50" data-testid="follow-soon">
+                {t("followSoon")}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
 
       {/* ───────────── Concursul apropiat ───────────── */}
       {contest && (
