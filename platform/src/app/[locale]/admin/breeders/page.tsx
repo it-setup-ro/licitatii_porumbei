@@ -109,7 +109,7 @@ export default async function AdminBreedersPage({
                   <td className="px-4 py-2.5 text-ink/60">
                     {b._count.sales === 1 ? "1 licitație" : `${b._count.sales} licitații`}
                   </td>
-                  <td className="px-4 py-2.5 text-right">
+                  <td className="px-4 py-2.5 text-end">
                     <a
                       href={`?id=${b.id}`}
                       className="-my-1 inline-block rounded-lg px-3 py-2 font-semibold text-wing-blue hover:bg-wing-blue/10 hover:underline"

@@ -193,7 +193,7 @@ export default function RecordEditor({
                 >
                   <span
                     className={`block h-6 w-6 rounded-full bg-white transition-transform ${
-                      values[f.key] ? "translate-x-6" : ""
+                      values[f.key] ? "translate-x-6 rtl:-translate-x-6" : ""
                     }`}
                   />
                 </button>

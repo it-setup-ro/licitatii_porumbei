@@ -5,6 +5,7 @@ import Countdown from "./Countdown";
 import { getEurRate } from "@/lib/fx";
 import { equivalentLabel } from "@/lib/fx-math";
 import { SEX_SYMBOL } from "@/lib/pigeon";
+import { intlLocale, pick } from "@/lib/locales";
 
 export type AuctionCardData = {
   id: string;
@@ -35,7 +36,7 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
   const eurRate = await getEurRate();
   const title = auction.pigeon.name;
   const sexSymbol = SEX_SYMBOL[auction.pigeon.sex] ?? "";
-  const tagline = locale === "en" ? auction.pigeon.taglineEn : auction.pigeon.taglineRo;
+  const tagline = pick(locale, auction.pigeon.taglineRo, auction.pigeon.taglineEn);
   const price =
     auction.bidCount > 0 || auction.status === "CLOSED"
       ? auction.currentPriceCents
@@ -66,7 +67,7 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
           data-testid="card-image"
         />
         <span
-          className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${badge.cls}`}
+          className={`absolute start-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${badge.cls}`}
         >
           {badge.label}
         </span>
@@ -86,7 +87,7 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
         )}
         <p className="text-xs font-semibold text-ink">
           {sexSymbol && (
-            <span className="mr-1 font-bold" data-testid="card-sex">
+            <span className="me-1 font-bold" data-testid="card-sex">
               {sexSymbol}
             </span>
           )}
@@ -123,7 +124,7 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
             )}
           </div>
           {/* „Se închide în" cu roșu — clientul: să sară în ochi cât timp mai e */}
-          <div className={`text-right ${live ? "text-wing-red" : "text-ink"}`} data-testid="card-time">
+          <div className={`text-end ${live ? "text-wing-red" : "text-ink"}`} data-testid="card-time">
             <p className="text-xs font-bold uppercase tracking-wide">
               {auction.status === "SCHEDULED"
                 ? t("startsIn")
@@ -143,7 +144,7 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
               </span>
             ) : (
               <span className="text-sm font-semibold">
-                {new Intl.DateTimeFormat(locale === "ro" ? "ro-RO" : "en-GB", {
+                {new Intl.DateTimeFormat(intlLocale(locale), {
                   dateStyle: "medium",
                 }).format(auction.endsAt)}
               </span>

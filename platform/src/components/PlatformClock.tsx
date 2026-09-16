@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { intlLocale } from "@/lib/locales";
 
 /**
  * Ora oficială a platformei — referința pentru închiderea licitațiilor.
@@ -22,7 +23,7 @@ export default function PlatformClock({ serverNowIso }: { serverNowIso: string }
     return () => clearInterval(id);
   }, [offsetMs]);
 
-  const formatted = new Intl.DateTimeFormat(locale === "ro" ? "ro-RO" : "en-GB", {
+  const formatted = new Intl.DateTimeFormat(intlLocale(locale), {
     timeZone: "Europe/Bucharest",
     day: "2-digit",
     month: "short",
@@ -55,7 +56,7 @@ export default function PlatformClock({ serverNowIso }: { serverNowIso: string }
       </svg>
       <span className="hidden sm:inline">{formatted}</span>
       <span className="sm:hidden">
-        {new Intl.DateTimeFormat(locale === "ro" ? "ro-RO" : "en-GB", {
+        {new Intl.DateTimeFormat(intlLocale(locale), {
           timeZone: "Europe/Bucharest",
           hour: "2-digit",
           minute: "2-digit",

@@ -12,7 +12,8 @@
     "all": "Toate",
     "none": "—",
     "error": "A apărut o eroare. Încearcă din nou.",
-    "requiredField": "Câmp obligatoriu"
+    "requiredField": "Câmp obligatoriu",
+    "language": "Limba"
   },
   "nav": {
     "auctions": "Licitații",
@@ -686,5 +687,195 @@
     "unsubDone": "Gata. Nu mai primești avizele de final de licitație.",
     "unsubBad": "Linkul nu mai este valabil.",
     "lotCardTitle": "{breeder} – Lotul {number}"
+  },
+  "email": {
+    "subjects": {
+      "OUTBID": "Oferta ta a fost depășită",
+      "AUCTION_ENDING": "Licitația se închide curând",
+      "AUCTION_WON": "Felicitări! Ai câștigat licitația",
+      "AUCTION_LOST": "Licitația s-a încheiat",
+      "SELLER_SOLD": "Porumbelul tău s-a vândut",
+      "LOT_APPROVED": "Lotul tău a fost aprobat",
+      "LOT_REJECTED": "Lotul tău a fost respins",
+      "ORDER_PAID": "Plata a fost confirmată",
+      "SELLER_APPROVED": "Contul de vânzător a fost aprobat",
+      "SELLER_REJECTED": "Contul de vânzător a fost respins",
+      "REVIEW_RECEIVED": "Ai primit o recenzie nouă",
+      "RESERVE_NOT_MET": "Licitația s-a încheiat sub prețul de rezervă",
+      "LOTS_ENDING": "Se încheie o licitație în curând",
+      "LOTS_ENDING_BIDDER": "Porumbeii pe care ai licitat se închid în curând",
+      "ACCOUNT_APPROVED": "Contul tău a fost aprobat — poți licita",
+      "ACCOUNT_REJECTED": "Contul tău nu a fost aprobat pentru licitare",
+      "LOT_EDITED_BY_ADMIN": "Un lot al tău a fost corectat de administrator",
+      "PIGEON_UNAVAILABLE": "Porumbelul câștigat nu mai este disponibil",
+      "PAYMENT_INSTRUCTIONS": "Datele de plată pentru porumbelul cumpărat",
+      "ORDER_CANCELLED": "Vânzarea a fost anulată"
+    },
+    "hello": "Bună ziua,",
+    "lotLabel": "Lotul {label}",
+    "payment": {
+      "won": "Felicitări! Ai câștigat porumbelul {pigeon} (serie {ring}).",
+      "bought": "Ai cumpărat porumbelul {pigeon} (serie {ring}) la preț fix.",
+      "amount": "Suma de plată: {amount}",
+      "transferIntro": "Cum plătești — prin transfer bancar în contul firmei:",
+      "beneficiary": "Beneficiar: {value}",
+      "iban": "IBAN: {value}",
+      "bank": "Banca: {value}",
+      "reference": "La detalii plată scrie: {value}",
+      "noIban": "Datele contului pentru transfer îți vor fi trimise de administrator.",
+      "cash": "Se poate plăti și numerar, la predarea porumbelului.",
+      "rule": "Porumbeii se predau după plată.",
+      "phone": "Pentru orice întrebare: {phone}",
+      "order": "Comanda ta: {url}"
+    },
+    "lots": {
+      "subjectBidder": "Porumbeii pe care ai licitat se închid în {minutes} de minute",
+      "subjectGeneral": "Se încheie o licitație în {minutes} de minute",
+      "intro": "Loturile de mai jos se încheie în {minutes} de minute:",
+      "lotLine": "• {title} — Lotul {lot}, la ora {time}",
+      "mineTitle": "Porumbeii pe care ai licitat:",
+      "leading": "ești pe primul loc",
+      "outbid": "ai fost depășit",
+      "pigeonLine": "• Lotul {label} {name} — {price} — {state}",
+      "extension": "O ofertă în ultimele minute prelungește licitația porumbelului respectiv.",
+      "unsubscribe": "Nu mai vrei aceste avize? {url}"
+    },
+    "reset": {
+      "subject": "Resetarea parolei",
+      "body": "Bună, {name}.\n\nAi cerut resetarea parolei. Deschide linkul de mai jos și alege o parolă nouă:\n\n{link}\n\nLinkul e valabil {minutes} de minute și poate fi folosit o singură dată.\nDacă nu tu ai cerut asta, ignoră mesajul — parola rămâne neschimbată."
+    },
+    "consentText": "Sunt de acord să primesc pe e-mail noutăți despre licitații și porumbei. Mă pot dezabona oricând, dintr-un link aflat în fiecare mesaj."
+  },
+  "traits": {
+    "groups": {
+      "general": "Caracteristici",
+      "body": "Constituție",
+      "wing": "Aripă și penaj"
+    },
+    "fields": {
+      "eyeColor": "Culoarea ochiului",
+      "disciplines": "Specializare",
+      "size": "Mărime",
+      "thickness": "Corpolență",
+      "vitality": "Vitalitate",
+      "colorDensity": "Intensitatea culorii",
+      "length": "Lungime",
+      "strength": "Robustețe",
+      "ventboneStrength": "Oase pubiene — rezistență",
+      "ventbonePosition": "Oase pubiene — poziție",
+      "muscles": "Musculatură",
+      "balance": "Echilibru în mână",
+      "back": "Spate",
+      "breedingFeathers": "Remige — formă",
+      "feather": "Pana",
+      "plumage": "Penaj",
+      "feathersTexture": "Textura penelor",
+      "secondaries": "Pene secundare",
+      "suppleness": "Suplețe"
+    },
+    "options": {
+      "eyeColor": {
+        "pearl": "Perlat",
+        "yellow": "Galben",
+        "orange": "Portocaliu",
+        "red": "Roșu",
+        "white": "Alb",
+        "brown": "Brun",
+        "broken": "Mixt (pigmentat)"
+      },
+      "disciplines": {
+        "sprint": "Viteză",
+        "middle": "Demifond",
+        "long": "Fond",
+        "marathon": "Mare fond"
+      },
+      "size": {
+        "small": "Mic",
+        "medium": "Mediu",
+        "large": "Mare"
+      },
+      "thickness": {
+        "fine": "Fin",
+        "normal": "Normal",
+        "plump": "Îndesat"
+      },
+      "vitality": {
+        "weak": "Slabă",
+        "normal": "Normală",
+        "strong": "Puternică"
+      },
+      "colorDensity": {
+        "weak": "Slabă",
+        "normal": "Normală",
+        "strong": "Puternică"
+      },
+      "length": {
+        "short": "Scurt",
+        "normal": "Normal",
+        "long": "Lung"
+      },
+      "strength": {
+        "weak": "Slabă",
+        "normal": "Normală",
+        "strong": "Puternică"
+      },
+      "ventboneStrength": {
+        "weak": "Slabă",
+        "normal": "Normală",
+        "strong": "Puternică"
+      },
+      "ventbonePosition": {
+        "open": "Deschise",
+        "normal": "Normale",
+        "closed": "Închise",
+        "veryClosed": "Foarte închise"
+      },
+      "muscles": {
+        "hard": "Tare",
+        "normal": "Normală",
+        "supple": "Suplă"
+      },
+      "balance": {
+        "unbalanced": "Dezechilibrat",
+        "balanced": "Echilibrat",
+        "veryBalanced": "Foarte echilibrat"
+      },
+      "back": {
+        "weak": "Slab",
+        "normal": "Normal",
+        "strong": "Puternic"
+      },
+      "breedingFeathers": {
+        "squareShort": "Pătrate și scurte",
+        "squareLong": "Pătrate și lungi",
+        "pointedShort": "Ascuțite și scurte",
+        "pointedLong": "Ascuțite și lungi"
+      },
+      "feather": {
+        "short": "Scurtă",
+        "normal": "Normală",
+        "long": "Lungă"
+      },
+      "plumage": {
+        "thin": "Subțire",
+        "normal": "Normal",
+        "thick": "Bogat"
+      },
+      "feathersTexture": {
+        "rough": "Aspră",
+        "normal": "Normală",
+        "soft": "Mătăsoasă"
+      },
+      "secondaries": {
+        "irregular": "Neregulate",
+        "regular": "Regulate",
+        "veryRegular": "Foarte regulate"
+      },
+      "suppleness": {
+        "stiff": "Rigidă",
+        "normal": "Normală",
+        "supple": "Suplă"
+      }
+    }
   }
 }

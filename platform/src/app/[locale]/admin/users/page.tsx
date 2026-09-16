@@ -84,12 +84,12 @@ export default async function AdminUsersPage({
                 <p className="font-display text-base font-bold">
                   {u.name}
                   {u.role === "ADMIN" && (
-                    <span className="ml-2 rounded bg-wing-blue/10 px-2 py-0.5 text-xs font-bold text-wing-blue">
+                    <span className="ms-2 rounded bg-wing-blue/10 px-2 py-0.5 text-xs font-bold text-wing-blue">
                       admin
                     </span>
                   )}
                   {u.suspendedAt && (
-                    <span className="ml-2 rounded bg-wing-red/10 px-2 py-0.5 text-xs font-bold text-wing-red">
+                    <span className="ms-2 rounded bg-wing-red/10 px-2 py-0.5 text-xs font-bold text-wing-red">
                       suspendat
                     </span>
                   )}

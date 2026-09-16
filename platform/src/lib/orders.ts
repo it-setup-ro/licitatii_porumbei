@@ -5,6 +5,7 @@ import { getSettings } from "./settings";
 import { getEurRate } from "./fx";
 import { lotLabel } from "./lots";
 import { paymentInstructionsText } from "./payment-instructions";
+import { normalizeLocale } from "./locales";
 import { SETTLEABLE_STATUSES, settlementSummary } from "./settlement-math";
 
 /**
@@ -209,7 +210,7 @@ export async function notifyBuyerWithPaymentDetails(orderId: string, kind: "WON"
   });
   if (!order) return;
   const [s, eurRate] = await Promise.all([getSettings(), getEurRate()]);
-  const locale = order.buyer.locale === "en" ? "en" : "ro";
+  const locale = normalizeLocale(order.buyer.locale);
   const label =
     order.auction.lot && order.auction.lotPosition
       ? lotLabel(order.auction.lot.number, order.auction.lotPosition)

@@ -50,7 +50,7 @@ export default function LoginPage() {
           onChange={setPassword}
           testid="login-password"
         />
-        <p className="text-right">
+        <p className="text-end">
           <Link
             href="/forgot-password"
             data-testid="forgot-link"

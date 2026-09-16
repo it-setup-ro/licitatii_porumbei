@@ -1,4 +1,5 @@
 import { formatMoney } from "./money";
+import { intlLocale } from "./locales";
 
 /**
  * Lei și euro — partea de calcul, fără bază de date, ca să poată fi folosită
@@ -49,7 +50,7 @@ export function equivalentLabel(
 }
 
 export function formatRate(rate: number, locale: string): string {
-  return new Intl.NumberFormat(locale === "en" ? "en-GB" : "ro-RO", {
+  return new Intl.NumberFormat(intlLocale(locale), {
     minimumFractionDigits: 4,
     maximumFractionDigits: 4,
   }).format(rate);

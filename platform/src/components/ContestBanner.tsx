@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { formatDistance } from "@/lib/distance";
+import { intlLocale } from "@/lib/locales";
 
 /**
  * Banda concursului de pe prima pagina, dupa macheta clientului: trofeu,
@@ -58,7 +59,7 @@ export default function ContestBanner({
     at: string;
   };
 }) {
-  const loc = locale === "en" ? "en-GB" : "ro-RO";
+  const loc = intlLocale(locale);
   const zi = (d: Date) =>
     new Intl.DateTimeFormat(loc, { day: "numeric", month: "long", year: "numeric" }).format(d);
   const ora = (d: Date) =>
@@ -114,7 +115,7 @@ export default function ContestBanner({
         {/* Decorul din banda desenata de client: cetatea si porumbeii, in dreapta,
             sub buton. Restul benzii ramane bleumarin plin, ca textul sa se citeasca. */}
         <div
-          className="absolute inset-y-0 right-0 -z-10 hidden w-[30%] bg-cover bg-center lg:block [mask-image:linear-gradient(to_right,transparent,black_45%)]"
+          className="absolute inset-y-0 end-0 -z-10 hidden w-[30%] bg-cover bg-center lg:block [mask-image:linear-gradient(to_right,transparent,black_45%)]"
           style={{ backgroundImage: "url(/pigeons/banda-cetate.jpg)" }}
           aria-hidden="true"
         />
@@ -125,7 +126,7 @@ export default function ContestBanner({
 
         <div className="flex flex-col gap-6 p-6 lg:flex-row lg:items-center lg:gap-5 lg:p-6">
           {/* Trofeu + titlu */}
-          <div className="flex min-w-0 shrink-0 items-center gap-4 lg:max-w-[36%] lg:gap-5 lg:pr-2">
+          <div className="flex min-w-0 shrink-0 items-center gap-4 lg:max-w-[36%] lg:gap-5 lg:pe-2">
             <IconTrophy />
             <div className="min-w-0">
               <p className="font-display text-base font-bold uppercase leading-tight tracking-wide">
@@ -162,7 +163,7 @@ export default function ContestBanner({
             {cells.map((c) => (
               <div
                 key={c.key}
-                className="min-w-[7.5rem] flex-1 px-3 text-center lg:min-w-0 lg:px-2.5 lg:[&+&]:border-l lg:[&+&]:border-white/10"
+                className="min-w-[7.5rem] flex-1 px-3 text-center lg:min-w-0 lg:px-2.5 lg:[&+&]:border-s lg:[&+&]:border-white/10"
                 data-testid="contest-cell"
               >
                 <span className="flex justify-center text-wing-yellow">{c.icon}</span>

@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { cardInclude, toCardData } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
 import RichText from "@/components/RichText";
+import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -24,18 +25,18 @@ export default async function ContestPage({
   });
   if (!contest) notFound();
 
-  const title = currentLocale === "en" ? contest.titleEn : contest.titleRo;
-  const desc = currentLocale === "en" ? contest.descEn : contest.descRo;
-  const rules = currentLocale === "en" ? contest.rulesEn : contest.rulesRo;
+  const title = pick(currentLocale, contest.titleRo, contest.titleEn);
+  const desc = pick(currentLocale, contest.descRo, contest.descEn);
+  const rules = pick(currentLocale, contest.rulesRo, contest.rulesEn);
 
   const fmt = (d: Date) =>
-    new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+    new Intl.DateTimeFormat(intlLocale(currentLocale), {
       dateStyle: "long",
     }).format(d);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
-      <Link href="/contests" className="-ml-2 inline-block rounded-lg px-2 py-2 text-sm text-ink/60 hover:text-wing-orange">
+      <Link href="/contests" className="-ms-2 inline-block rounded-lg px-2 py-2 text-sm text-ink/60 hover:text-wing-orange">
         {t("backToList")}
       </Link>
 

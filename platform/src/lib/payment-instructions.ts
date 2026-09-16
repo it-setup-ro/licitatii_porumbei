@@ -1,8 +1,9 @@
 import { formatMoney } from "./money";
 import { equivalentLabel } from "./fx-math";
+import { emailTranslator } from "./messages";
 
 /**
- * Textul cu datele de plată, pentru câștigător (e-mail).
+ * Textul cu datele de plată, pentru câștigător (e-mail), în limba contului.
  *
  * Clientul: „Plata se face în contul firmei sau cash și nu trebuie legată de
  * site. Omul primește porumbeii după ce îi achită." Fără IBAN completat în
@@ -12,7 +13,7 @@ import { equivalentLabel } from "./fx-math";
 export type PaymentDetails = { companyName: string; iban: string; bank: string; phone: string };
 
 export function paymentInstructionsText(p: {
-  locale: "ro" | "en";
+  locale: string;
   /** true = a câștigat licitația; false = a cumpărat la preț fix */
   won: boolean;
   pigeon: string;
@@ -24,51 +25,31 @@ export function paymentInstructionsText(p: {
   details: PaymentDetails;
   orderUrl: string;
 }): string {
-  const ro = p.locale === "ro";
+  const t = emailTranslator(p.locale);
   const amount = formatMoney(p.amountCents, p.currency, p.locale);
   const eq = p.eurRate ? equivalentLabel(p.amountCents, p.currency, p.locale, p.eurRate) : null;
-  const ref = p.label ? `${ro ? "Lotul" : "Lot"} ${p.label} ${p.pigeon}` : p.pigeon;
+  const ref = p.label ? `${t("lotLabel", { label: p.label })} ${p.pigeon}` : p.pigeon;
   const iban = p.details.iban.trim();
   const company = p.details.companyName.trim();
   const bank = p.details.bank.trim();
   const phone = p.details.phone.trim();
 
-  const l: string[] = [ro ? "Bună ziua," : "Hello,", ""];
-  l.push(
-    p.won
-      ? ro
-        ? `Felicitări! Ai câștigat porumbelul ${ref} (serie ${p.ring}).`
-        : `Congratulations! You won the pigeon ${ref} (ring ${p.ring}).`
-      : ro
-        ? `Ai cumpărat porumbelul ${ref} (serie ${p.ring}) la preț fix.`
-        : `You bought the pigeon ${ref} (ring ${p.ring}) at a fixed price.`
-  );
-  l.push("", `${ro ? "Suma de plată" : "Amount to pay"}: ${amount}${eq ? ` (${eq})` : ""}`, "");
+  const l: string[] = [t("hello"), ""];
+  l.push(t(p.won ? "payment.won" : "payment.bought", { pigeon: ref, ring: p.ring }));
+  l.push("", t("payment.amount", { amount: eq ? `${amount} (${eq})` : amount }), "");
 
   if (iban) {
-    l.push(
-      ro
-        ? "Cum plătești — prin transfer bancar în contul firmei:"
-        : "How to pay — by bank transfer to the company account:"
-    );
-    if (company) l.push(`  ${ro ? "Beneficiar" : "Beneficiary"}: ${company}`);
-    l.push(`  IBAN: ${iban}`);
-    if (bank) l.push(`  ${ro ? "Banca" : "Bank"}: ${bank}`);
-    l.push(`  ${ro ? "La detalii plată scrie" : "Payment reference"}: ${ref}`);
+    l.push(t("payment.transferIntro"));
+    if (company) l.push(`  ${t("payment.beneficiary", { value: company })}`);
+    l.push(`  ${t("payment.iban", { value: iban })}`);
+    if (bank) l.push(`  ${t("payment.bank", { value: bank })}`);
+    l.push(`  ${t("payment.reference", { value: ref })}`);
   } else {
-    l.push(
-      ro
-        ? "Datele contului pentru transfer îți vor fi trimise de administrator."
-        : "The account details for the transfer will be sent to you by the administrator."
-    );
+    l.push(t("payment.noIban"));
   }
-  l.push(
-    ro
-      ? "Se poate plăti și numerar, la predarea porumbelului."
-      : "You can also pay in cash when the pigeon is handed over."
-  );
-  l.push("", ro ? "Porumbeii se predau după plată." : "Pigeons are handed over after payment.");
-  if (phone) l.push(ro ? `Pentru orice întrebare: ${phone}` : `For any questions: ${phone}`);
-  l.push("", `${ro ? "Comanda ta" : "Your order"}: ${p.orderUrl}`);
+  l.push(t("payment.cash"));
+  l.push("", t("payment.rule"));
+  if (phone) l.push(t("payment.phone", { phone }));
+  l.push("", t("payment.order", { url: p.orderUrl }));
   return l.join("\n");
 }

@@ -1,6 +1,6 @@
 # No.1 & Best Pigeons — ghid de lucru
 
-Platformă de licitații de porumbei pentru Daniel (intermediar) și clientul lui, **Buca Ionuț (Demeco Arad)**. Codul e în `platform/` (Next.js 16 App Router, React 19, Prisma 6 + PostgreSQL, next-intl RO/EN, Tailwind 4, zod 4, Playwright + Vitest). Repo **public** — nimic secret în cod.
+Platformă de licitații de porumbei pentru Daniel (intermediar) și clientul lui, **Buca Ionuț (Demeco Arad)**. Codul e în `platform/` (Next.js 16 App Router, React 19, Prisma 6 + PostgreSQL, next-intl în 13 limbi, Tailwind 4, zod 4, Playwright + Vitest). Repo **public** — nimic secret în cod.
 
 **Nu parcurge proiectul.** Citește doar ce trebuie, în ordinea asta:
 1. `STARE-PROIECT.md` — ce funcționează, ce rămâne, istoric.
@@ -24,7 +24,8 @@ Platformă de licitații de porumbei pentru Daniel (intermediar) și clientul lu
 | E-mail și notificări | `lib/mailer.ts` (EmailLog + SMTP din `SMTP_URL`), `lib/notify.ts` (tipuri + subiecte), `lib/newsletter.ts` |
 | Erori pe câmpuri | `lib/api.ts` (`jsonValidationError`, `validationFields`) |
 | Sweeper (15 s) | `instrumentation.ts` |
-| Texte | `platform/messages/ro.json`, `en.json` |
+| Limbile (13) | `lib/locales.ts` (lista, `pick` = conținutul adminului: română sau, altfel, engleză; `intlLocale` pentru date/numere; araba e RTL), `i18n/routing.ts`, `components/LanguageSwitcher.tsx`; e-mailuri în limba contului: `lib/messages.ts` (`emailTranslator`, doar pe server) |
+| Texte | `platform/messages/<limbă>.json` — `ro`, `en` + zh ja nl fr de es pl ar hi gu sw; verificare: `node scripts/check-locale.cjs --all` |
 
 ## Comenzi (din `platform/`)
 
@@ -40,7 +41,8 @@ Publicare și scripturi pe server: skill-urile `deploy` și `prod-script`. E2e: 
 ## Convenții
 
 - **Comentarii și UI în română**, cu diacritice; explică *de ce*, nu *ce*. Cererile clientului se citează scurt în comentariu.
-- **Texte noi**: script node în scratchpad care face merge în `messages/ro.json` + `en.json` (vezi skill `batch-edits`). Fără `\"` în ICU — ghilimele tipografice.
+- **Texte noi**: script node în scratchpad care face merge în `messages/ro.json` + `en.json` **și în celelalte 11 limbi** (traduse; un agent pe limbă merge bine), apoi `node scripts/check-locale.cjs --all` (aceleași chei și argumente ICU). Fără `\"` în ICU — ghilimele tipografice.
+- **Nu scrie `locale === "en"`**: conținut din baza de date → `pick(locale, ro, en)`; date și numere → `intlLocale(locale)`; limba contului → `normalizeLocale`. Clasele de spațiere sunt logice (`ms-`/`me-`/`ps-`/`pe-`/`start-`/`end-`/`text-start`), ca araba să se oglindească.
 - **Setare nouă** = 4 locuri: tip + default în `settings.ts`, schema în `api/admin/settings/route.ts`, câmp în `SettingsForm.tsx` (dacă e editabilă), și, dacă schimbă comportamentul testelor vechi, `tests/e2e/fixtures/pin-test-settings.ts`.
 - **Migrări doar aditive** (coloane/tabele noi). Fișier în `prisma/migrations/<timestamp>_<nume>/migration.sql`, apoi `npx prisma migrate deploy && npx prisma generate` (oprește întâi serverul de dev — EPERM).
 - **Bani în bani/cenți** (`...Cents`), cu `currency` pe înregistrare. Moneda platformei pe server: RON, cu echivalent €.

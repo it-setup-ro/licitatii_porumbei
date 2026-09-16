@@ -218,12 +218,21 @@ export function parseTraits(json: string | null | undefined): PigeonTraits {
   }
 }
 
+/**
+ * Etichetele traduse, din `traits` în messages/<limbă>.json. Se dau din afară:
+ * fișierul acesta ajunge și în browser (TraitsEditor), unde nu încap 13 limbi.
+ */
+export type TraitLabels = {
+  groups: Record<string, string>;
+  fields: Record<string, string>;
+  options: Record<string, Record<string, string>>;
+};
+
 /** Eticheta si valorile traduse, gata de afisat. Doar campurile completate. */
-export function describeTraits(traits: PigeonTraits, locale: string) {
-  const lang = locale === "en" ? "en" : "ro";
+export function describeTraits(traits: PigeonTraits, labels: TraitLabels) {
   return TRAIT_GROUPS.map((group) => ({
     key: group.key,
-    label: group[lang],
+    label: labels.groups[group.key] ?? group.en,
     rows: group.fields
       .filter((f) => traits[f.key] !== undefined)
       .map((f) => {
@@ -231,9 +240,9 @@ export function describeTraits(traits: PigeonTraits, locale: string) {
         const values = Array.isArray(raw) ? raw : [raw];
         return {
           key: f.key,
-          label: f[lang],
+          label: labels.fields[f.key] ?? f.en,
           value: values
-            .map((v) => f.options.find((o) => o.value === v)?.[lang] ?? v)
+            .map((v) => labels.options[f.key]?.[v] ?? f.options.find((o) => o.value === v)?.en ?? v)
             .join(", "),
         };
       }),

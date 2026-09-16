@@ -36,7 +36,7 @@ export default function UploadProgress({ state }: { state: UploadState }) {
       <div className="mb-1.5 flex items-baseline justify-between gap-3 text-xs">
         <span className="min-w-0 truncate font-medium text-ink/70">
           {state.total > 1 && (
-            <span className="mr-1.5 rounded bg-ink/10 px-1.5 py-0.5 font-bold text-ink/60">
+            <span className="me-1.5 rounded bg-ink/10 px-1.5 py-0.5 font-bold text-ink/60">
               {state.index}/{state.total}
             </span>
           )}

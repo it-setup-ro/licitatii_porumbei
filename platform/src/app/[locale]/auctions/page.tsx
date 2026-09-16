@@ -108,7 +108,7 @@ export default async function AuctionsPage({
             </a>
           ))}
         </div>
-        <form className="ml-auto" method="get">
+        <form className="ms-auto" method="get">
           <input type="hidden" name="status" value={status} />
           <input
             name="q"

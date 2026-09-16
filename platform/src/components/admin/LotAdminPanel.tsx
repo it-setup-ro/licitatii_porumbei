@@ -329,7 +329,7 @@ export default function LotAdminPanel({
                       <span className="text-xs text-ink/50">{p.imageCount} poze</span>
                     )}
                   </td>
-                  <td className="px-2 py-2 text-right">
+                  <td className="px-2 py-2 text-end">
                     {showLive ? (
                       <>
                         <p className="font-semibold">{fmt(p.bidCount > 0 ? p.currentPriceCents : p.startPriceCents)}</p>
@@ -341,7 +341,7 @@ export default function LotAdminPanel({
                       <p className="text-ink/70">{fmt(p.startPriceCents)}</p>
                     )}
                   </td>
-                  <td className="whitespace-nowrap px-2 py-2 text-right">
+                  <td className="whitespace-nowrap px-2 py-2 text-end">
                     {draft && (
                       <>
                         <button
@@ -497,7 +497,7 @@ export default function LotAdminPanel({
       {problems && problems.length > 0 && (
         <div className="mt-3 rounded-xl border border-wing-red/30 bg-wing-red/5 p-4 text-sm" data-testid="lot-problems">
           <p className="font-semibold text-wing-red">Lotul nu poate porni încă:</p>
-          <ul className="mt-2 list-disc space-y-1 pl-5">
+          <ul className="mt-2 list-disc space-y-1 ps-5">
             {problems.flatMap(describeProblem).map((line) => (
               <li key={line}>{line}</li>
             ))}

@@ -40,13 +40,13 @@ export default function BidHistory({ bids, live }: { bids: BidRow[]; live: boole
                 <td className="px-4 py-2.5 font-medium">
                   {b.name}
                   {b.leading && live && (
-                    <span className="ml-2 rounded bg-wing-blue/10 px-1.5 py-0.5 text-xs font-bold text-wing-blue">
+                    <span className="ms-2 rounded bg-wing-blue/10 px-1.5 py-0.5 text-xs font-bold text-wing-blue">
                       ★
                     </span>
                   )}
                 </td>
                 <td className="px-4 py-2.5 font-semibold">{b.amount}</td>
-                <td className="px-4 py-2.5 text-right text-ink/50">{b.when}</td>
+                <td className="px-4 py-2.5 text-end text-ink/50">{b.when}</td>
               </tr>
             ))}
           </tbody>

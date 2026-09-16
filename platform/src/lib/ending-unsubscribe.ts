@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "crypto";
+import { normalizeLocale } from "./locales";
 
 /**
  * Linkul de dezabonare din avizul „se încheie o licitație".
@@ -26,6 +27,6 @@ export function verifyEndingUnsubscribe(userId: string, token: string): boolean 
 
 export function endingUnsubscribeUrl(userId: string, locale: string): string {
   const base = (process.env.PUBLIC_BASE_URL ?? "").replace(/\/$/, "");
-  const loc = locale === "en" ? "en" : "ro";
+  const loc = normalizeLocale(locale);
   return `${base}/${loc}/ending-notices/unsubscribe?u=${encodeURIComponent(userId)}&t=${endingUnsubscribeToken(userId)}`;
 }

@@ -120,7 +120,7 @@ export default async function AdminOrdersPage({
             </a>
           ))}
         </div>
-        <form method="get" className="ml-auto">
+        <form method="get" className="ms-auto">
           <input type="hidden" name="status" value={status} />
           <input
             name="q"
@@ -179,7 +179,7 @@ export default async function AdminOrdersPage({
                       {o.cancelledAt ? ` · anulat ${dateFmt.format(o.cancelledAt)}${o.cancelReason ? `: ${o.cancelReason}` : ""}` : ""}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="text-lg font-bold text-wing-orange">
                       {formatMoney(o.amountCents, o.currency, "ro")}
                     </p>

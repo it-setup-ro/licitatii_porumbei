@@ -3,6 +3,7 @@ import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { Link } from "@/i18n/navigation";
 import RichText from "@/components/RichText";
+import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -22,12 +23,12 @@ export default async function ArticlePage({
   });
   if (!article) notFound();
 
-  const title = currentLocale === "en" ? article.titleEn : article.titleRo;
-  const body = currentLocale === "en" ? article.bodyEn : article.bodyRo;
+  const title = pick(currentLocale, article.titleRo, article.titleEn);
+  const body = pick(currentLocale, article.bodyRo, article.bodyEn);
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
-      <Link href="/articles" className="-ml-2 inline-block rounded-lg px-2 py-2 text-sm text-ink/60 hover:text-wing-orange">
+      <Link href="/articles" className="-ms-2 inline-block rounded-lg px-2 py-2 text-sm text-ink/60 hover:text-wing-orange">
         {t("backToList")}
       </Link>
 
@@ -44,7 +45,7 @@ export default async function ArticlePage({
       <p className="mt-2 text-sm text-ink/50">
         {article.publishedAt
           ? t("published", {
-              date: new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+              date: new Intl.DateTimeFormat(intlLocale(currentLocale), {
                 dateStyle: "long",
               }).format(article.publishedAt),
             })

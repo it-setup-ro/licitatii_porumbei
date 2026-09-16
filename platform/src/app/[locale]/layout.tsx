@@ -70,7 +70,7 @@ export default async function LocaleLayout({
   });
 
   return (
-    <html lang={locale} className={`${display.variable} ${body.variable} ${script.variable} h-full antialiased`}>
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className={`${display.variable} ${body.variable} ${script.variable} h-full antialiased`}>
       <body className="min-h-screen flex flex-col">
         <NextIntlClientProvider>
           <TopBar isLoggedIn={user !== null} isAdmin={user?.role === "ADMIN"} />

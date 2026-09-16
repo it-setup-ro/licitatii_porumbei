@@ -6,6 +6,7 @@ import { useRouter } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
 import { queueCartUpdate } from "@/lib/cart-client";
 import type { CartLine } from "@/lib/cart";
+import { pick } from "@/lib/locales";
 
 export default function CartView({
   lines,
@@ -107,7 +108,7 @@ export default function CartView({
             />
             <div className="min-w-0 flex-1">
               <p className="font-display font-bold">
-                {locale === "en" ? line.nameEn : line.nameRo}
+                {pick(locale, line.nameRo, line.nameEn)}
               </p>
               <p className="text-sm text-ink/60">{fmt(line.priceCents)}</p>
             </div>
@@ -130,7 +131,7 @@ export default function CartView({
                 ✕
               </button>
             </div>
-            <p className="w-24 text-right font-bold">{fmt(line.lineTotalCents)}</p>
+            <p className="w-24 text-end font-bold">{fmt(line.lineTotalCents)}</p>
           </div>
         ))}
       </div>

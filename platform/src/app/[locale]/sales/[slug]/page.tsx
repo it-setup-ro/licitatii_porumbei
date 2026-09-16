@@ -12,6 +12,7 @@ import AuctionCard from "@/components/AuctionCard";
 import Countdown from "@/components/Countdown";
 import RichText from "@/components/RichText";
 import ViewToggle from "@/components/ViewToggle";
+import { intlLocale } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +30,8 @@ export default async function SalePage({
   const t = await getTranslations("sales");
   const ta = await getTranslations("auction");
   const currentLocale = await getLocale();
-  const en = currentLocale === "en";
+  // conținutul scris de administrator: română sau, altfel, engleză
+  const en = currentLocale !== "ro";
 
   const [sale, settings] = await Promise.all([
     prisma.sale.findUnique({
@@ -64,7 +66,7 @@ export default async function SalePage({
   const period = salePeriod(sale.lots);
   const status = saleStatus(sale.lots);
 
-  const dateFmt = new Intl.DateTimeFormat(en ? "en-GB" : "ro-RO", {
+  const dateFmt = new Intl.DateTimeFormat(intlLocale(currentLocale), {
     dateStyle: "medium",
     timeStyle: "short",
     timeZone: "Europe/Bucharest",
@@ -175,7 +177,7 @@ export default async function SalePage({
                       </span>
                       <LotBadge status={lot.status} label={t(`lotStatus${lot.status}` as "lotStatusLIVE")} />
                     </span>
-                    <span className="text-right text-sm">
+                    <span className="text-end text-sm">
                       {lot.status === "SCHEDULED" ? (
                         <>
                           <span className="block text-xs uppercase tracking-wide text-ink/50">
@@ -225,12 +227,12 @@ export default async function SalePage({
                                   {a.pigeon.ringNumber}
                                 </span>
                               </span>
-                              <span className="text-right">
+                              <span className="text-end">
                                 <span className="block font-bold text-wing-orange">
                                   {formatMoney(price, a.currency, currentLocale)}
                                 </span>
                                 {eurRate && (
-                                  <span className="mt-0.5 ml-auto block w-fit text-xs inline-block rounded-full bg-wing-blue px-2.5 py-0.5 font-bold text-white" data-testid="price-equiv">
+                                  <span className="mt-0.5 ms-auto block w-fit text-xs inline-block rounded-full bg-wing-blue px-2.5 py-0.5 font-bold text-white" data-testid="price-equiv">
                                     {equivalentLabel(price, a.currency, currentLocale, eurRate)}
                                   </span>
                                 )}

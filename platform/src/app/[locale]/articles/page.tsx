@@ -1,6 +1,7 @@
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { Link } from "@/i18n/navigation";
+import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,7 @@ export default async function ArticlesPage({
   });
 
   const fmtDate = (d: Date) =>
-    new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+    new Intl.DateTimeFormat(intlLocale(currentLocale), {
       dateStyle: "long",
     }).format(d);
 
@@ -37,8 +38,8 @@ export default async function ArticlesPage({
       ) : (
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           {articles.map((a) => {
-            const title = currentLocale === "en" ? a.titleEn : a.titleRo;
-            const excerpt = currentLocale === "en" ? a.excerptEn : a.excerptRo;
+            const title = pick(currentLocale, a.titleRo, a.titleEn);
+            const excerpt = pick(currentLocale, a.excerptRo, a.excerptEn);
             return (
               <Link
                 key={a.id}

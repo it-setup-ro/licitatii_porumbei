@@ -60,7 +60,7 @@ export default function Lightbox({
         onClick={onClose}
         aria-label="Închide"
         data-testid="lightbox-close"
-        className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-2xl text-white hover:bg-white/25"
+        className="absolute end-3 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-2xl text-white hover:bg-white/25"
       >
         ✕
       </button>
@@ -74,7 +74,7 @@ export default function Lightbox({
             }}
             aria-label="Imaginea anterioară"
             data-testid="lightbox-prev"
-            className="absolute left-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-2xl text-white hover:bg-white/25"
+            className="absolute start-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-2xl text-white hover:bg-white/25"
           >
             ‹
           </button>
@@ -85,7 +85,7 @@ export default function Lightbox({
             }}
             aria-label="Imaginea următoare"
             data-testid="lightbox-next"
-            className="absolute right-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-2xl text-white hover:bg-white/25"
+            className="absolute end-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-2xl text-white hover:bg-white/25"
           >
             ›
           </button>

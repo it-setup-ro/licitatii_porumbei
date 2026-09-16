@@ -67,7 +67,7 @@ export default async function SettlementSection({
           : `Încă neplătiți (nu intră în decont): ${unpaid.length} — ${fmt(summary.unpaid.totalCents)}`}
       </p>
       {unpaid.length > 0 && (
-        <ul className="mt-1 list-disc pl-5 text-sm text-ink/60">
+        <ul className="mt-1 list-disc ps-5 text-sm text-ink/60">
           {unpaid.map((o) => (
             <li key={o.id}>
               {name(o)} — {fmt(o.amountCents)} — {o.buyer.nickname ?? o.buyer.name}

@@ -40,7 +40,7 @@ export default function PasswordField({
           data-testid={testid}
           onChange={(e) => onChange(e.target.value)}
           onBlur={() => setShown(false)}
-          className="w-full rounded-xl border border-ink/20 bg-ivory-soft py-2.5 pl-4 pr-12 outline-none focus:border-wing-blue"
+          className="w-full rounded-xl border border-ink/20 bg-ivory-soft py-2.5 ps-4 pe-12 outline-none focus:border-wing-blue"
         />
         <button
           type="button"
@@ -52,7 +52,7 @@ export default function PasswordField({
           aria-label={shown ? "Ascunde parola" : "Arată parola"}
           title={shown ? "Ascunde parola" : "Arată parola"}
           data-testid={`${testid}-toggle`}
-          className="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-xl text-ink/45 transition-colors hover:text-ink"
+          className="absolute inset-y-0 end-0 flex w-12 items-center justify-center rounded-e-xl text-ink/45 transition-colors hover:text-ink"
         >
           {shown ? <EyeOff /> : <Eye />}
         </button>

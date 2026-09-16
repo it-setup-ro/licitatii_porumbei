@@ -131,7 +131,7 @@ export default function AccountMenu({
           role="menu"
           data-testid="account-menu"
           onClick={() => setOpen(false)}
-          className="absolute right-0 z-50 mt-2 w-60 rounded-xl border border-ink/10 bg-white p-2 shadow-xl"
+          className="absolute end-0 z-50 mt-2 w-60 rounded-xl border border-ink/10 bg-white p-2 shadow-xl"
         >
           {user ? (
             <>
@@ -159,7 +159,7 @@ export default function AccountMenu({
                 onClick={logout}
                 data-testid="menu-logout"
                 role="menuitem"
-                className="w-full rounded-lg px-3 py-2.5 text-left font-medium text-wing-red hover:bg-wing-red/10"
+                className="w-full rounded-lg px-3 py-2.5 text-start font-medium text-wing-red hover:bg-wing-red/10"
               >
                 {t("logout")}
               </button>

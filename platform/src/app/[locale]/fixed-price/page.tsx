@@ -67,7 +67,7 @@ export default async function FixedPricePage({
                     className="h-full w-full object-contain"
                   />
                   <span
-                    className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${
+                    className={`absolute start-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${
                       sold ? "bg-ink/70 text-ivory" : "bg-wing-orange text-white"
                     }`}
                   >

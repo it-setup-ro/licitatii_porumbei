@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 import { consentTextFor, newUnsubToken } from "@/lib/newsletter";
+import { LOCALES } from "@/lib/locales";
 
 /**
  * Abonare la newsletter.
@@ -15,7 +16,7 @@ import { consentTextFor, newUnsubToken } from "@/lib/newsletter";
 const schema = z.object({
   email: z.string().email().max(120),
   consent: z.literal(true),
-  locale: z.enum(["ro", "en"]).default("ro"),
+  locale: z.enum(LOCALES).default("ro"),
 });
 
 export async function POST(req: Request) {

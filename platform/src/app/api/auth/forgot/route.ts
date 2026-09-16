@@ -4,6 +4,8 @@ import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { newResetToken, resetExpiry, resetLink, RESET_TOKEN_MINUTES } from "@/lib/password";
 import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/api";
 import { sendEmail } from "@/lib/mailer";
+import { LOCALES, isLocale } from "@/lib/locales";
+import { emailTranslator } from "@/lib/messages";
 
 /**
  * „Am uitat parola" — trimite linkul de resetare.
@@ -18,7 +20,7 @@ import { sendEmail } from "@/lib/mailer";
 
 const schema = z.object({
   email: z.string().email().toLowerCase().max(200),
-  locale: z.enum(["ro", "en"]).default("ro"),
+  locale: z.enum(LOCALES).default("ro"),
 });
 
 export async function POST(req: Request) {
@@ -49,14 +51,14 @@ export async function POST(req: Request) {
         data: { userId: user.id, tokenHash: hash, expiresAt: resetExpiry() },
       });
 
-      const link = resetLink(raw, user.locale === "en" ? "en" : locale);
-      const ro = user.locale !== "en";
+      // limba contului; dacă lipsește, cea în care s-a cerut resetarea
+      const lang = isLocale(user.locale) ? user.locale : locale;
+      const link = resetLink(raw, lang);
+      const t = emailTranslator(lang);
       await sendEmail({
         to: user.email,
-        subject: ro ? "Resetarea parolei" : "Password reset",
-        text: ro
-          ? `Bună, ${user.name}.\n\nAi cerut resetarea parolei. Deschide linkul de mai jos și alege o parolă nouă:\n\n${link}\n\nLinkul e valabil ${RESET_TOKEN_MINUTES} de minute și poate fi folosit o singură dată.\nDacă nu tu ai cerut asta, ignoră mesajul — parola rămâne neschimbată.`
-          : `Hello, ${user.name}.\n\nYou asked to reset your password. Open the link below and choose a new one:\n\n${link}\n\nThe link is valid for ${RESET_TOKEN_MINUTES} minutes and can be used only once.\nIf this wasn't you, ignore this message — your password stays unchanged.`,
+        subject: t("reset.subject"),
+        text: t("reset.body", { name: user.name, link, minutes: RESET_TOKEN_MINUTES }),
       });
     }
 

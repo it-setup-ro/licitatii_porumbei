@@ -1,4 +1,5 @@
 import { randomBytes } from "crypto";
+import { messagesFor } from "./messages";
 
 /**
  * Textul bifat la abonare, pastrat odata cu adresa.
@@ -6,13 +7,9 @@ import { randomBytes } from "crypto";
  * Se tine aici, nu in fisierul de traduceri: traducerile se schimba, iar noi
  * trebuie sa putem arata exact ce scria in ziua in care omul a bifat.
  */
-export const CONSENT_TEXT: Record<string, string> = {
-  ro: "Sunt de acord să primesc pe e-mail noutăți despre licitații și porumbei. Mă pot dezabona oricând, dintr-un link aflat în fiecare mesaj.",
-  en: "I agree to receive email updates about auctions and pigeons. I can unsubscribe at any time using the link in every message.",
-};
-
+/** Textul exact pe care l-a bifat omul, în limba în care l-a citit. */
 export function consentTextFor(locale: string): string {
-  return CONSENT_TEXT[locale] ?? CONSENT_TEXT.ro;
+  return messagesFor(locale).email.consentText;
 }
 
 /** Token de dezabonare: aleator, destul de lung cat sa nu fie ghicit. */

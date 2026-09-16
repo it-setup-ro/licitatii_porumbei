@@ -6,6 +6,8 @@ import { formatMoney } from "./money";
 import { endingUnsubscribeUrl } from "./ending-unsubscribe";
 import { getEurRate } from "./fx";
 import { equivalentLabel } from "./fx-math";
+import { intlLocale, normalizeLocale, pick } from "./locales";
+import { emailTranslator } from "./messages";
 
 /**
  * Avizul „se încheie în 30 de minute", pentru loturi.
@@ -93,7 +95,7 @@ export async function notifyLotsEnding(now: Date): Promise<number> {
   for (const notice of notices) {
     const user = byId.get(notice.userId);
     if (!user) continue;
-    const locale = user.locale === "en" ? "en" : "ro";
+    const locale = normalizeLocale(user.locale);
     const email = renderEndingEmail(notice, {
       locale,
       minutes: settings.endingNoticeMinutes,
@@ -124,7 +126,8 @@ export async function notifyLotsEnding(now: Date): Promise<number> {
 export function renderEndingEmail(
   notice: EndingNotice,
   ctx: {
-    locale: "ro" | "en";
+    /** limba contului; titlul licitației e în română sau, altfel, în engleză */
+    locale: string;
     minutes: number;
     currency: string;
     eurRate?: number | null;
@@ -132,78 +135,41 @@ export function renderEndingEmail(
     unsubscribeUrl: string | null;
   }
 ): { subject: string; text: string } {
-  const ro = ctx.locale === "ro";
+  const locale = normalizeLocale(ctx.locale);
+  const t = emailTranslator(locale);
   const base = (process.env.PUBLIC_BASE_URL ?? "").replace(/\/$/, "");
-  const ora = new Intl.DateTimeFormat(ro ? "ro-RO" : "en-GB", {
+  const ora = new Intl.DateTimeFormat(intlLocale(locale), {
     timeStyle: "short",
     timeZone: "Europe/Bucharest",
   });
   const bani = (c: number) => {
-    const suma = formatMoney(c, ctx.currency, ctx.locale);
-    const eq = ctx.eurRate ? equivalentLabel(c, ctx.currency, ctx.locale, ctx.eurRate) : null;
+    const suma = formatMoney(c, ctx.currency, locale);
+    const eq = ctx.eurRate ? equivalentLabel(c, ctx.currency, locale, ctx.eurRate) : null;
     return eq ? `${suma} (${eq})` : suma;
   };
+  const minutes = ctx.minutes;
 
-  const subject =
-    notice.kind === "BIDDER"
-      ? ro
-        ? `Porumbeii pe care ai licitat se închid în ${ctx.minutes} de minute`
-        : `The pigeons you bid on close in ${ctx.minutes} minutes`
-      : ro
-        ? `Se încheie o licitație în ${ctx.minutes} de minute`
-        : `An auction ends in ${ctx.minutes} minutes`;
+  const subject = t(notice.kind === "BIDDER" ? "lots.subjectBidder" : "lots.subjectGeneral", { minutes });
 
-  const lines: string[] = [ro ? "Bună ziua," : "Hello,", ""];
-
-  lines.push(
-    ro
-      ? `Loturile de mai jos se încheie în ${ctx.minutes} de minute:`
-      : `The lots below end in ${ctx.minutes} minutes:`
-  );
-  lines.push("");
+  const lines: string[] = [t("hello"), "", t("lots.intro", { minutes }), ""];
   for (const lot of notice.lots) {
-    const t = ctx.titles.get(lot.lotId);
-    const title = t ? (ro ? t.ro : t.en) : lot.saleTitle;
-    lines.push(
-      ro
-        ? `• ${title} — Lotul ${lot.lotNumber}, la ora ${ora.format(lot.endsAt)}`
-        : `• ${title} — Lot ${lot.lotNumber}, at ${ora.format(lot.endsAt)}`
-    );
-    lines.push(`  ${base}/${ctx.locale}/sales/${lot.saleSlug}`);
+    const titles = ctx.titles.get(lot.lotId);
+    const title = titles ? pick(locale, titles.ro, titles.en) : lot.saleTitle;
+    lines.push(t("lots.lotLine", { title, lot: String(lot.lotNumber), time: ora.format(lot.endsAt) }));
+    lines.push(`  ${base}/${locale}/sales/${lot.saleSlug}`);
   }
 
   if (notice.kind === "BIDDER") {
-    lines.push("");
-    lines.push(ro ? "Porumbeii pe care ai licitat:" : "The pigeons you bid on:");
-    lines.push("");
+    lines.push("", t("lots.mineTitle"), "");
     for (const p of notice.mine) {
-      const stare = p.leading
-        ? ro
-          ? "ești pe primul loc"
-          : "you are the highest bidder"
-        : ro
-          ? "ai fost depășit"
-          : "you have been outbid";
-      lines.push(`• ${ro ? "Lotul" : "Lot"} ${p.label} ${p.name} — ${bani(p.priceCents)} — ${stare}`);
-      lines.push(`  ${base}/${ctx.locale}/auctions/${p.auctionId}`);
+      const state = t(p.leading ? "lots.leading" : "lots.outbid");
+      lines.push(t("lots.pigeonLine", { label: p.label, name: p.name, price: bani(p.priceCents), state }));
+      lines.push(`  ${base}/${locale}/auctions/${p.auctionId}`);
     }
   }
 
-  lines.push("");
-  lines.push(
-    ro
-      ? "O ofertă în ultimele minute prelungește licitația porumbelului respectiv."
-      : "A bid in the final minutes extends that pigeon's auction."
-  );
-
-  if (ctx.unsubscribeUrl) {
-    lines.push("");
-    lines.push(
-      ro
-        ? `Nu mai vrei aceste avize? ${ctx.unsubscribeUrl}`
-        : `Don't want these notices any more? ${ctx.unsubscribeUrl}`
-    );
-  }
+  lines.push("", t("lots.extension"));
+  if (ctx.unsubscribeUrl) lines.push("", t("lots.unsubscribe", { url: ctx.unsubscribeUrl }));
 
   return { subject, text: lines.join("\n") };
 }

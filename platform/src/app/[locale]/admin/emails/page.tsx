@@ -54,8 +54,8 @@ export default async function AdminEmailsPage({
             >
               <summary className="cursor-pointer px-5 py-4">
                 <span className="font-semibold">{e.subject}</span>
-                <span className="ml-2 text-sm text-ink/60">{e.toEmail}</span>
-                <span className="ml-2 text-xs text-ink/40">{when.format(e.createdAt)}</span>
+                <span className="ms-2 text-sm text-ink/60">{e.toEmail}</span>
+                <span className="ms-2 text-xs text-ink/40">{when.format(e.createdAt)}</span>
               </summary>
               <pre
                 data-testid="email-body"

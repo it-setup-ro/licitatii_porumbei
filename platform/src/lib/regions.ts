@@ -3,6 +3,8 @@
  * „Arad", „arad" și „Jud. Arad" ar fi trei județe diferite în evidență.
  */
 
+import { LOCALES, intlLocale } from "./locales";
+
 export const RO_COUNTRY = "România";
 
 export const RO_COUNTIES = [
@@ -30,23 +32,43 @@ const COUNTRY_CODES = (
  * vin aproape toți cumpărătorii), apoi restul în ordine alfabetică.
  */
 export function countryOptions(locale: string): string[] {
-  const lang = locale === "en" ? "en" : "ro";
-  let names: string[];
+  const intl = intlLocale(locale);
+  let dn: Intl.DisplayNames | null = null;
   try {
-    const dn = new Intl.DisplayNames([lang], { type: "region" });
-    names = COUNTRY_CODES.map((c) => dn.of(c) ?? c);
+    dn = new Intl.DisplayNames([intl], { type: "region" });
   } catch {
-    names = [];
+    // browser vechi: rămân doar primele două
   }
-  const romania = lang === "ro" ? RO_COUNTRY : "Romania";
-  const moldova = lang === "ro" ? "Republica Moldova" : "Moldova";
-  const rest = names
-    .filter((n) => n !== romania && n !== moldova && !/^Rom[aâ]nia$/.test(n) && !/Moldova/.test(n))
-    .sort((a, b) => a.localeCompare(b, lang));
+  const romania = locale === "ro" ? RO_COUNTRY : (dn?.of("RO") ?? "Romania");
+  const moldova = locale === "ro" ? "Republica Moldova" : (dn?.of("MD") ?? "Moldova");
+  const rest = dn
+    ? COUNTRY_CODES.filter((c) => c !== "RO" && c !== "MD")
+        .map((c) => dn.of(c) ?? c)
+        .sort((a, b) => a.localeCompare(b, intl))
+    : [];
   return [romania, moldova, ...rest];
 }
 
-/** România, indiferent de limba în care a fost aleasă. */
+/** Numele României în toate limbile site-ului, calculat o singură dată. */
+let romaniaNames: Set<string> | null = null;
+
+/**
+ * România, indiferent de limba în care a fost aleasă — omul care completează
+ * în germană alege „Rumänien", iar județul trebuie cerut la fel.
+ */
 export function isRomania(country: string | null | undefined): boolean {
-  return /^rom[aâ]nia$/i.test((country ?? "").trim());
+  const value = (country ?? "").trim();
+  if (/^rom[aâ]nia$/i.test(value)) return true;
+  if (!romaniaNames) {
+    romaniaNames = new Set();
+    for (const l of LOCALES) {
+      try {
+        const name = new Intl.DisplayNames([intlLocale(l)], { type: "region" }).of("RO");
+        if (name) romaniaNames.add(name.toLowerCase());
+      } catch {
+        // fără date pentru limba asta
+      }
+    }
+  }
+  return romaniaNames.has(value.toLowerCase());
 }

@@ -55,7 +55,7 @@ export default async function AdminNewsletterPage({
       ) : (
         <div className="overflow-x-auto rounded-2xl border border-ink/10 bg-white">
           <table className="w-full text-sm" data-testid="subscribers-table">
-            <thead className="border-b border-ink/10 text-left text-ink/60">
+            <thead className="border-b border-ink/10 text-start text-ink/60">
               <tr>
                 <th className="px-4 py-3">E-mail</th>
                 <th className="px-4 py-3">Limbă</th>

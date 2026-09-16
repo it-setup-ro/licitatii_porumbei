@@ -95,7 +95,7 @@ export function RevokeAdminButton({ userId, name }: { userId: string; name: stri
   };
 
   return (
-    <div className="text-right">
+    <div className="text-end">
       <button
         type="button"
         onClick={revoke}

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { getAuctionsByStatus } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
 import ContestBanner from "@/components/ContestBanner";
+import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -25,15 +26,34 @@ export default async function HomePage({
   const t = await getTranslations("home");
   const currentLocale = await getLocale();
 
-  const [live, breederRows, articles, contest, stats] = await Promise.all([
+  const [live, liveLots, legacyRows, articles, contest, stats] = await Promise.all([
     getAuctionsByStatus("LIVE", 6),
-    // crescatorii care au acum loturi in licitatie, cu cate au fiecare
+    // Clientul: „să apară toți crescătorii cu licitații active". Crescătorii
+    // licitațiilor pe loturi nu au cont — se iau din loturile aflate acum live.
+    prisma.lot.findMany({
+      where: { status: "LIVE" },
+      orderBy: { endsAt: "asc" },
+      select: {
+        sale: {
+          select: {
+            slug: true,
+            coverUrl: true,
+            breeder: { select: { id: true, name: true, city: true, photoUrl: true } },
+          },
+        },
+        auctions: {
+          orderBy: { lotPosition: "asc" },
+          select: {
+            pigeon: { select: { name: true, media: { where: { type: "IMAGE" }, take: 1 } } },
+          },
+        },
+      },
+    }),
+    // licitațiile individuale din fluxul vechi (cont de vânzător, fără lot)
     prisma.auction.groupBy({
       by: ["sellerId"],
-      where: { status: "LIVE" },
+      where: { status: "LIVE", lotId: null, saleMode: "AUCTION" },
       _count: { _all: true },
-      orderBy: { _count: { sellerId: "desc" } },
-      take: 8,
     }),
     prisma.article.findMany({
       where: { publishedAt: { not: null } },
@@ -72,16 +92,16 @@ export default async function HomePage({
     })(),
   ]);
 
-  const breederIds = breederRows.map((r) => r.sellerId);
-  const [breeders, breederLots] = await Promise.all([
+  const legacyIds = legacyRows.map((r) => r.sellerId);
+  const [legacySellers, legacyAuctions] = await Promise.all([
     prisma.user.findMany({
-      where: { id: { in: breederIds } },
+      where: { id: { in: legacyIds } },
       select: { id: true, name: true, sellerCompany: true, sellerCity: true },
     }),
-    // Poza de pe card e chiar poza unui lot de-al lui, aflat acum in licitatie.
+    // Poza de pe card e chiar poza unui porumbel de-al lui, aflat acum in licitatie.
     // Asa nu punem pe prima pagina fotografii de crescatorii care nu exista.
     prisma.auction.findMany({
-      where: { sellerId: { in: breederIds }, status: "LIVE" },
+      where: { sellerId: { in: legacyIds }, status: "LIVE", lotId: null, saleMode: "AUCTION" },
       orderBy: { createdAt: "desc" },
       select: {
         sellerId: true,
@@ -91,30 +111,60 @@ export default async function HomePage({
   ]);
 
   type BreederCard = {
-    id: string;
+    key: string;
+    href: string;
     name: string;
     city: string | null;
     photo: string | null;
     photoAlt: string;
     count: number;
   };
-  const breederCards: BreederCard[] = breederRows.flatMap((r) => {
-    const u = breeders.find((b) => b.id === r.sellerId);
+  // Un card pe crescător, chiar dacă are mai multe loturi live. Linkul duce la
+  // licitația lui care se închide prima (loturile vin ordonate după final).
+  const byBreeder = new Map<string, BreederCard>();
+  for (const lot of liveLots) {
+    const b = lot.sale.breeder;
+    const firstPhoto = lot.auctions.find((a) => a.pigeon.media.length > 0)?.pigeon;
+    const card = byBreeder.get(b.id);
+    if (card) {
+      card.count += lot.auctions.length;
+      if (!card.photo && firstPhoto) {
+        card.photo = firstPhoto.media[0].url;
+        card.photoAlt = firstPhoto.name;
+      }
+      continue;
+    }
+    // aceeași ordine ca pe cardul lotului: crescătorul, coperta, apoi un porumbel
+    const photo = b.photoUrl ?? lot.sale.coverUrl ?? firstPhoto?.media[0]?.url ?? null;
+    byBreeder.set(b.id, {
+      key: `breeder-${b.id}`,
+      href: `/sales/${lot.sale.slug}`,
+      name: b.name,
+      city: b.city,
+      photo,
+      photoAlt: b.photoUrl || lot.sale.coverUrl ? b.name : (firstPhoto?.name ?? ""),
+      count: lot.auctions.length,
+    });
+  }
+  const legacyCards: BreederCard[] = legacyRows.flatMap((r) => {
+    const u = legacySellers.find((s) => s.id === r.sellerId);
     if (!u) return [];
-    const lot = breederLots.find((a) => a.sellerId === r.sellerId && a.pigeon.media.length > 0);
+    const withPhoto = legacyAuctions.find((a) => a.sellerId === r.sellerId && a.pigeon.media.length > 0);
     return [
       {
-        id: u.id,
+        key: `seller-${u.id}`,
+        href: `/sellers/${u.id}`,
         name: u.sellerCompany ?? u.name,
         city: u.sellerCity,
-        photo: lot?.pigeon.media[0]?.url ?? null,
-        photoAlt: lot?.pigeon.name ?? "",
+        photo: withPhoto?.pigeon.media[0]?.url ?? null,
+        photoAlt: withPhoto?.pigeon.name ?? "",
         count: r._count._all,
       },
     ];
   });
+  const breederCards = [...byBreeder.values(), ...legacyCards].sort((a, b) => b.count - a.count);
 
-  const dateFmt = new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+  const dateFmt = new Intl.DateTimeFormat(intlLocale(currentLocale), {
     dateStyle: "medium",
   });
 
@@ -175,7 +225,7 @@ export default async function HomePage({
           </div>
 
           <p
-            className="hero-shadow hidden text-right text-sm font-semibold uppercase leading-loose tracking-[0.2em] text-white/80 lg:block"
+            className="hero-shadow hidden text-end text-sm font-semibold uppercase leading-loose tracking-[0.2em] text-white/80 lg:block"
             data-testid="hero-keywords"
           >
             {t("keywords")
@@ -215,21 +265,14 @@ export default async function HomePage({
         {/* ───────────── Crescători cu licitații active ───────────── */}
         {breederCards.length > 0 && (
           <section data-testid="breeders-strip">
-            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-              <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("breeders")}</h2>
-              <Link
-                href="/sellers"
-                className="font-semibold text-wing-blue hover:underline"
-                data-testid="breeders-all"
-              >
-                {t("breedersAll")} →
-              </Link>
-            </div>
+            {/* Fără „Vezi toți crescătorii": lista aceea are conturile de vânzător,
+                nu crescătorii din licitații, iar aici apar oricum toți cei activi. */}
+            <h2 className="font-display mb-5 text-2xl font-bold sm:text-3xl">{t("breeders")}</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {breederCards.slice(0, 4).map((b) => (
+              {breederCards.map((b) => (
                 <Link
-                  key={b.id}
-                  href={`/sellers/${b.id}`}
+                  key={b.key}
+                  href={b.href}
                   data-testid="breeder-card"
                   className="card-hover overflow-hidden rounded-2xl border border-ink/10 bg-white"
                 >
@@ -239,7 +282,7 @@ export default async function HomePage({
                       src={b.photo}
                       alt={b.photoAlt}
                       data-testid="breeder-photo"
-                      className="aspect-[4/3] w-full object-cover"
+                      className="aspect-[4/3] w-full bg-ivory-soft object-contain"
                     />
                   ) : (
                     <div className="wing-gradient aspect-[4/3] w-full opacity-70" aria-hidden="true" />
@@ -290,7 +333,7 @@ export default async function HomePage({
           locale={currentLocale}
           contest={{
             slug: contest.slug,
-            title: currentLocale === "en" ? contest.titleEn : contest.titleRo,
+            title: pick(currentLocale, contest.titleRo, contest.titleEn),
             destination: contest.destination,
             distanceKm: contest.distanceKm,
             distanceMaxKm: contest.distanceMaxKm,
@@ -299,7 +342,7 @@ export default async function HomePage({
             boardingPlace: contest.boardingPlace,
             releaseAt: contest.releaseAt,
             weatherUrl: contest.weatherUrl,
-            slogan: currentLocale === "en" ? contest.sloganEn : contest.sloganRo,
+            slogan: pick(currentLocale, contest.sloganRo, contest.sloganEn),
             status: contest.status,
           }}
           labels={{
@@ -353,7 +396,7 @@ export default async function HomePage({
                       {a.publishedAt ? dateFmt.format(a.publishedAt) : ""}
                     </p>
                     <p className="font-display mt-1 line-clamp-2 font-bold leading-snug">
-                      {currentLocale === "en" ? a.titleEn : a.titleRo}
+                      {pick(currentLocale, a.titleRo, a.titleEn)}
                     </p>
                     <span className="mt-3 inline-block text-sm font-semibold text-wing-blue">
                       {t("readMore")} →

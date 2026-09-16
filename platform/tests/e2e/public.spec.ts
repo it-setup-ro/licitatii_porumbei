@@ -19,10 +19,10 @@ test.describe("Pagini publice & i18n", () => {
   }) => {
     await page.goto("/ro");
     await expect(page.locator("h1")).toContainText("Pasiunea unește oameni");
-    await page.getByTestId("lang-en").click();
+    await page.getByTestId("lang-select").selectOption("en");
     await expect(page).toHaveURL(/\/en$/);
     await expect(page.locator("h1")).toContainText("Passion brings people together");
-    await page.getByTestId("lang-ro").click();
+    await page.getByTestId("lang-select").selectOption("ro");
     await expect(page.locator("h1")).toContainText("Pasiunea unește oameni");
 
     // numele porumbelului ramane acelasi in ambele limbi; se traduce rubrica

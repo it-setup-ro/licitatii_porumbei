@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import Countdown from "./Countdown";
+import { intlLocale } from "@/lib/locales";
 
 /**
  * Cardul unui lot, în lista de licitații.
@@ -28,10 +29,11 @@ export type LotCardData = {
 export default async function LotCard({ lot }: { lot: LotCardData }) {
   const t = await getTranslations("sales");
   const locale = await getLocale();
-  const en = locale === "en";
+  // conținutul scris de administrator: română sau, altfel, engleză
+  const en = locale !== "ro";
   const saleTitle = en ? lot.saleTitleEn : lot.saleTitleRo;
 
-  const when = new Intl.DateTimeFormat(en ? "en-GB" : "ro-RO", {
+  const when = new Intl.DateTimeFormat(intlLocale(locale), {
     day: "2-digit",
     month: "2-digit",
     hour: "2-digit",
@@ -60,7 +62,7 @@ export default async function LotCard({ lot }: { lot: LotCardData }) {
           <div className="wing-gradient h-full w-full opacity-70" aria-hidden="true" />
         )}
         <span
-          className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${badge.cls}`}
+          className={`absolute start-3 top-3 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${badge.cls}`}
         >
           {badge.label}
         </span>

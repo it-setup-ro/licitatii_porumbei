@@ -1,6 +1,7 @@
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { Link } from "@/i18n/navigation";
+import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ export default async function ContestsPage({
   });
 
   const fmt = (d: Date) =>
-    new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+    new Intl.DateTimeFormat(intlLocale(currentLocale), {
       dateStyle: "medium",
     }).format(d);
 
@@ -43,8 +44,8 @@ export default async function ContestsPage({
       ) : (
         <div className="mt-8 space-y-5">
           {contests.map((c) => {
-            const title = currentLocale === "en" ? c.titleEn : c.titleRo;
-            const desc = currentLocale === "en" ? c.descEn : c.descRo;
+            const title = pick(currentLocale, c.titleRo, c.titleEn);
+            const desc = pick(currentLocale, c.descRo, c.descEn);
             return (
               <Link
                 key={c.id}

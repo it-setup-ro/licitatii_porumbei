@@ -4,6 +4,7 @@ import { passwordSchema } from "./password";
 import { PHONE_RE } from "./address";
 import { isPlausibleIban, isValidRoCui } from "./company";
 import { isRomania } from "./regions";
+import { LOCALES } from "./locales";
 
 /**
  * Datele contului nou, după exemplele date de client (voiajor.net, columbofil.net).
@@ -46,7 +47,7 @@ export const registrationSchema = z
       message: "Trebuie să accepți Termenii și condițiile și Politica de confidențialitate.",
     }),
     notifyAuctionEnding: z.boolean().default(false),
-    locale: z.enum(["ro", "en"]).default("ro"),
+    locale: z.enum(LOCALES).default("ro"),
     captcha: z.string().max(10_000).optional(),
     // fluxul vechi, prin care crescătorii își cereau cont de vânzător
     wantsSeller: z.boolean().default(false),

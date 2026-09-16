@@ -1,6 +1,6 @@
 # Stare proiect — No.1 & Best Pigeons
 
-**Ultima actualizare:** 14 septembrie 2026
+**Ultima actualizare:** 16 septembrie 2026
 **Site live (test):** http://207.180.241.165:3000
 **Cod:** https://github.com/it-setup-ro/licitatii_porumbei (public, branch `main`)
 **Credențiale:** `credentiale-acces.md` (local, exclus din git)
@@ -11,15 +11,16 @@
 
 ## 1. Ce este, pe scurt
 
-Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
+Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză, japoneză, olandeză, franceză, germană, spaniolă, poloneză, arabă, hindi, gujarati, swahili), construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 113 teste unitare + 228 teste end-to-end, toate verzi (14 sept 2026).
+**Stare: funcțională cap-coadă pentru testare.** 151 teste unitare + 246 teste end-to-end, toate verzi (16 sept 2026).
 
 ---
 
 ## 2. Ce funcționează acum
 
 ### Public
+- **13 limbi**, alese dintr-o listă în bara de sus (fiecare limbă scrisă în limba ei). Textele site-ului sunt traduse în toate; ce scrie administratorul (titluri, descrieri, articole) apare în română pentru română și în engleză pentru restul. Araba se afișează de la dreapta la stânga, în oglindă. E-mailurile (plată, avizul de 30 min, resetarea parolei, notificări) pleacă în limba contului. Traducerile noi sunt de verificat de vorbitori nativi — termenii de columbofilie sunt cei mai nesiguri
 - **Pagina unui lot, în formatul pipa.be**: serie inel · nume · rând scurt de descriere; galerie foto+video; fișa cu serie/an/sex, reprodus de, oferit de; descrierea lungă; pedigree scanat (poză sau PDF); restul informațiilor sub butonul „Toate detaliile"; ofertele — ultimele 3 și „Vezi toate ofertele"
 - **Modificarea unui lot** de către crescător (`/account/lots` → Editează): tot, până la prima ofertă; după, doar adăugiri — poze, clipuri și o completare datată la descriere. Schimbarea seriei/anului/sexului/prețului pe un lot public îl trimite înapoi la aprobare. Adminul poate corecta orice, cu urmă în audit
 - **Zona de licitație** după brief-ul clientului: „licitație live", preț mare, câți ofertanți și câte oferte, cronometru, stepper − / +, buton pe toată lățimea, preț de rezervă (sumă ascunsă), semne de încredere, bară fixă jos pe telefon
@@ -35,7 +36,7 @@ Platformă de licitații de porumbei, bilingvă RO/EN, construită de la zero: N
 - **Articole** — blog bilingv, cu poze și clipuri
 - **Concursuri** — submeniu cu 6 linkuri către site-uri externe (clasamente, UNCR, FRSC, UCP)
 - **Meniuri strânse**: Articole (ultimele 5 articole + „Toate articolele"), Concursuri și Informații se desfac la clic — dropdown pe calculator, acordeon în panoul de pe telefon
-- **Pagina principală după macheta clientului**: hero cu fotografie și deviza scrisă de mână, bandă cu ce oferă platforma, crescători cu poză și localitate, licitații live, banda concursului, ultimele articole, cifre reale din baza de date
+- **Pagina principală după macheta clientului**: hero cu fotografie și deviza scrisă de mână, bandă cu ce oferă platforma, **toți crescătorii cu loturi live** (câte un card pe crescător, cu poza lui, câți porumbei are la licitație și link la licitația lui), licitații live, banda concursului, ultimele articole, cifre reale din baza de date
 - **Banda concursului** în forma cerută de client: trofeu, destinația scrisă mare, distanța cu țara, slogan, rubricile Îmbarcare / Lansare / Meteo pe traseu / Primul sosit și butonul auriu. Rubricile se completează din Administrare → Concursuri; cele goale nu apar
 - **Pedigree ca filă în galerie** — Foto / Video / Pedigree în același cadru, cu mărire la clic
 - **Căutare în antet** (nume, serie, crescător); pe telefon stă în meniul hamburger
@@ -207,4 +208,5 @@ platform/src/
 | 29 aug | Editarea loturilor de către crescător; clipuri până la 5 min (300 MB, scrise direct pe disc); an+sex în antetul lotului; mărirea pozelor |
 | 11 sep | Pagina principală după macheta clientului, banda concursului, newsletter GDPR, căutare fără diacritice, transportatori și agenți ca listă de carduri |
 | 15 sep | Lei cu € alături (curs BNR + manual), fără an, semne de sex, porumbel indisponibil, acord la înregistrare, Brevo gratuit; porumbeii de test mutați în „Licitație de test"; faza 2: plata în afara site-ului, Vânzări și plăți, deconturi cu Excel |
+| 16 sep | Site în 13 limbi (listă de alegere, arabă în oglindă, e-mailuri în limba contului); pe prima pagină toți crescătorii cu licitații active |
 | 14 sep | Faza 1 a licitațiilor pe loturi: crescător → licitație → loturi cu „Start lot", prelungire 10/10 înghețată, comision pe licitație, conturi aprobate de admin, pagina publică a licitației, avizul de 30 de minute, trimitere SMTP |

@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import LogoMark from "./LogoMark";
 import AccountMenu from "./AccountMenu";
+import { pick } from "@/lib/locales";
 
 /**
  * Antetul si navigatia.
@@ -103,7 +104,7 @@ export default function SiteHeader({
   const articleChildren: SubItem[] = [
     ...latestArticles.map((a) => ({
       href: `/articles/${a.slug}`,
-      label: locale === "en" ? a.titleEn : a.titleRo,
+      label: pick(locale, a.titleRo, a.titleEn),
       testid: "nav-article",
     })),
     { href: "/articles", label: t("allArticles"), testid: "nav-articles-all" },
@@ -175,13 +176,13 @@ export default function SiteHeader({
         {/* Cautare — duce in pagina de licitatii, care stie deja `?q=`.
             Pe telefon sta in panoul de meniu, ca sa nu inghesuim antetul. */}
         <SearchBox
-          className="ml-auto hidden w-64 lg:block"
+          className="ms-auto hidden w-64 lg:block"
           placeholder={t("searchPlaceholder")}
           testid="header-search"
           onSearch={(q) => router.push(`/auctions?q=${encodeURIComponent(q)}`)}
         />
 
-        <div className="ml-auto flex items-center gap-1.5 lg:ml-3 sm:gap-2">
+        <div className="ms-auto flex items-center gap-1.5 lg:ms-3 sm:gap-2">
           {/* Coș */}
           <Link
             href="/cart"
@@ -207,7 +208,7 @@ export default function SiteHeader({
             </svg>
             {cartCount > 0 && (
               <span
-                className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-wing-orange px-1 text-xs font-bold text-white"
+                className="absolute -end-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-wing-orange px-1 text-xs font-bold text-white"
                 data-testid="cart-badge"
               >
                 {cartCount > 9 ? "9+" : cartCount}
@@ -247,7 +248,7 @@ export default function SiteHeader({
               </svg>
               {unreadCount > 0 && (
                 <span
-                  className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-wing-red px-1 text-xs font-bold text-white"
+                  className="absolute -end-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-wing-red px-1 text-xs font-bold text-white"
                   data-testid="unread-badge"
                 >
                   {unreadCount > 9 ? "9+" : unreadCount}
@@ -319,7 +320,7 @@ export default function SiteHeader({
                 </button>
                 {openMenu === item.testid && (
                   <ul
-                    className={`absolute left-0 z-50 rounded-xl border border-ink/10 bg-white p-2 shadow-xl ${
+                    className={`absolute start-0 z-50 rounded-xl border border-ink/10 bg-white p-2 shadow-xl ${
                       item.wide ? "w-72" : "w-64"
                     }`}
                     data-testid={item.submenuTestid}
@@ -375,7 +376,7 @@ export default function SiteHeader({
             )
           )}
           {canSell && (
-            <li className="ml-auto">
+            <li className="ms-auto">
               <Link
                 href="/sell"
                 data-testid="nav-sell"
@@ -386,7 +387,7 @@ export default function SiteHeader({
             </li>
           )}
           {user?.role === "ADMIN" && (
-            <li className={canSell ? "" : "ml-auto"}>
+            <li className={canSell ? "" : "ms-auto"}>
               <Link
                 href="/admin"
                 data-testid="nav-admin"
@@ -434,13 +435,13 @@ export default function SiteHeader({
                       }}
                       data-testid={`m-${item.testid.replace("nav-", "")}-toggle`}
                       aria-expanded={openGroup === item.testid}
-                      className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left font-medium hover:bg-ink/5"
+                      className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-start font-medium hover:bg-ink/5"
                     >
                       {item.label}
                       <Chevron open={openGroup === item.testid} />
                     </button>
                     {openGroup === item.testid && (
-                      <div className="ml-4 border-l border-ink/10 pl-2">
+                      <div className="ms-4 border-s border-ink/10 ps-2">
                         {isContests(item)
                           ? [
                               <MobileLink
@@ -523,13 +524,13 @@ function SearchBox({
         placeholder={placeholder}
         aria-label={placeholder}
         data-testid={testid}
-        className="w-full rounded-full border border-ink/15 bg-white py-2 pl-4 pr-10 text-sm outline-none transition-colors focus:border-wing-blue"
+        className="w-full rounded-full border border-ink/15 bg-white py-2 ps-4 pe-10 text-sm outline-none transition-colors focus:border-wing-blue"
       />
       <button
         type="submit"
         aria-label={placeholder}
         data-testid={`${testid}-submit`}
-        className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full p-2 text-ink/50 hover:text-wing-blue"
+        className="absolute end-1 top-1/2 -translate-y-1/2 rounded-full p-2 text-ink/50 hover:text-wing-blue"
       >
         <svg
           width="16"
@@ -609,7 +610,7 @@ function ExternalItem({
   soonLabel: string;
   mobile?: boolean;
 }) {
-  const label = locale === "en" ? link.labelEn : link.labelRo;
+  const label = pick(locale, link.labelRo, link.labelEn);
   const base = mobile
     ? "flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-sm"
     : "flex items-center justify-between gap-2 rounded-lg px-3 py-2";
@@ -622,7 +623,7 @@ function ExternalItem({
         title={soonLabel}
       >
         {label}
-        <span className="ml-2 rounded bg-ink/5 px-1.5 py-0.5 text-xs">{soonLabel}</span>
+        <span className="ms-2 rounded bg-ink/5 px-1.5 py-0.5 text-xs">{soonLabel}</span>
       </span>
     );
   }

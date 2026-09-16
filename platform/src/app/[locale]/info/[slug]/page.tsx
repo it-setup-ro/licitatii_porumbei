@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { fillPlaceholders } from "@/lib/legal-placeholders";
 import RichText from "@/components/RichText";
+import { intlLocale } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -30,7 +31,8 @@ export default async function InfoPage({
   const [page, s] = await Promise.all([prisma.contentPage.findUnique({ where: { slug } }), getSettings()]);
   if (!page) notFound();
 
-  const en = currentLocale === "en";
+  // conținutul scris de administrator: română sau, altfel, engleză
+  const en = currentLocale !== "ro";
   const title = en ? page.titleEn : page.titleRo;
   // Datele firmei și regulile vin din Setări — clientul: „firma va fi cea care
   // se va scrie în Setări". Un câmp gol apare vizibil ca „de completat".
@@ -57,7 +59,7 @@ export default async function InfoPage({
       {LEGAL.includes(slug) && (
         <p className="mb-6 text-sm text-ink/50" data-testid="content-updated">
           {en ? "Last updated: " : "Ultima actualizare: "}
-          {new Intl.DateTimeFormat(en ? "en-GB" : "ro-RO", { dateStyle: "long", timeZone: "Europe/Bucharest" }).format(
+          {new Intl.DateTimeFormat(intlLocale(currentLocale), { dateStyle: "long", timeZone: "Europe/Bucharest" }).format(
             page.updatedAt
           )}
         </p>

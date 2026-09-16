@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { convertCents, formatRate, otherCurrency, type FxInfo } from "@/lib/fx-math";
+import { intlLocale } from "@/lib/locales";
 
 /**
  * Prețul în două căsuțe: lei și euro. Clientul: se scrie în oricare, iar
@@ -67,7 +68,7 @@ export default function PriceInput({
   const suffix = (label: string) => (
     <span
       aria-hidden="true"
-      className="pointer-events-none absolute bottom-0 right-3 top-1 flex items-center text-sm font-semibold text-ink/50"
+      className="pointer-events-none absolute bottom-0 end-3 top-1 flex items-center text-sm font-semibold text-ink/50"
     >
       {label}
     </span>
@@ -77,7 +78,7 @@ export default function PriceInput({
     ? t("rateManual")
     : fx?.date
       ? t("rateBnr", {
-          date: new Date(`${fx.date}T12:00:00Z`).toLocaleDateString(locale === "en" ? "en-GB" : "ro-RO"),
+          date: new Date(`${fx.date}T12:00:00Z`).toLocaleDateString(intlLocale(locale)),
         })
       : "BNR";
 
@@ -97,7 +98,7 @@ export default function PriceInput({
               setOtherText(null);
               onChange(e.target.value);
             }}
-            className={`${inputClassName} pr-12`}
+            className={`${inputClassName} pe-12`}
           />
           {suffix(SYMBOL[currency] ?? currency)}
         </div>
@@ -116,7 +117,7 @@ export default function PriceInput({
                 const c = toCents(v);
                 onChange(c === null ? "" : String(Math.round(convertCents(c, other, rate) / 100)));
               }}
-              className={`${inputClassName} pr-12`}
+              className={`${inputClassName} pe-12`}
             />
             {suffix(SYMBOL[other])}
           </div>

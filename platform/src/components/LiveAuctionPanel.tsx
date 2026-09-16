@@ -320,7 +320,7 @@ export default function LiveAuctionPanel(props: Props) {
                 onClick={() => nudge(-step)}
                 aria-label={t("decrease")}
                 data-testid="bid-minus"
-                className="w-14 shrink-0 border-r border-ink/15 text-2xl font-bold text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink"
+                className="w-14 shrink-0 border-e border-ink/15 text-2xl font-bold text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink"
               >
                 −
               </button>
@@ -341,7 +341,7 @@ export default function LiveAuctionPanel(props: Props) {
                 onClick={() => nudge(step)}
                 aria-label={t("increase")}
                 data-testid="bid-plus"
-                className="w-14 shrink-0 border-l border-ink/15 text-2xl font-bold text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink"
+                className="w-14 shrink-0 border-s border-ink/15 text-2xl font-bold text-ink/60 transition-colors hover:bg-ink/5 hover:text-ink"
               >
                 +
               </button>

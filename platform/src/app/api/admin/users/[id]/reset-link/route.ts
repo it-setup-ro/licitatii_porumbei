@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { newResetToken, resetExpiry, resetLink, RESET_TOKEN_MINUTES } from "@/lib/password";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
+import { normalizeLocale } from "@/lib/locales";
 
 /**
  * Adminul generează un link de resetare pentru un utilizator.
@@ -48,7 +49,7 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
     ]);
 
     return jsonOk({
-      link: resetLink(raw, user.locale === "en" ? "en" : "ro"),
+      link: resetLink(raw, normalizeLocale(user.locale)),
       minutes: RESET_TOKEN_MINUTES,
       email: user.email,
     });

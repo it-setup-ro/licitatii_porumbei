@@ -12,7 +12,8 @@
     "all": "All",
     "none": "—",
     "error": "Something went wrong. Please try again.",
-    "requiredField": "Required field"
+    "requiredField": "Required field",
+    "language": "Language"
   },
   "nav": {
     "auctions": "Auctions",
@@ -686,5 +687,195 @@
     "unsubDone": "Done. You will no longer receive auction ending notices.",
     "unsubBad": "This link is no longer valid.",
     "lotCardTitle": "{breeder} – Lot {number}"
+  },
+  "email": {
+    "subjects": {
+      "OUTBID": "You have been outbid",
+      "AUCTION_ENDING": "Auction ending soon",
+      "AUCTION_WON": "Congratulations! You won the auction",
+      "AUCTION_LOST": "The auction has ended",
+      "SELLER_SOLD": "Your pigeon has sold",
+      "LOT_APPROVED": "Your lot has been approved",
+      "LOT_REJECTED": "Your lot has been rejected",
+      "ORDER_PAID": "Payment confirmed",
+      "SELLER_APPROVED": "Seller account approved",
+      "SELLER_REJECTED": "Seller account rejected",
+      "REVIEW_RECEIVED": "You received a new review",
+      "RESERVE_NOT_MET": "The auction ended below the reserve price",
+      "LOTS_ENDING": "An auction is ending soon",
+      "LOTS_ENDING_BIDDER": "The pigeons you bid on are closing soon",
+      "ACCOUNT_APPROVED": "Your account has been approved — you can bid",
+      "ACCOUNT_REJECTED": "Your account was not approved for bidding",
+      "LOT_EDITED_BY_ADMIN": "One of your lots was corrected by an administrator",
+      "PIGEON_UNAVAILABLE": "The pigeon you won is no longer available",
+      "PAYMENT_INSTRUCTIONS": "Payment details for the pigeon you bought",
+      "ORDER_CANCELLED": "The sale has been cancelled"
+    },
+    "hello": "Hello,",
+    "lotLabel": "Lot {label}",
+    "payment": {
+      "won": "Congratulations! You won the pigeon {pigeon} (ring {ring}).",
+      "bought": "You bought the pigeon {pigeon} (ring {ring}) at a fixed price.",
+      "amount": "Amount to pay: {amount}",
+      "transferIntro": "How to pay — by bank transfer to the company account:",
+      "beneficiary": "Beneficiary: {value}",
+      "iban": "IBAN: {value}",
+      "bank": "Bank: {value}",
+      "reference": "Payment reference: {value}",
+      "noIban": "The account details for the transfer will be sent to you by the administrator.",
+      "cash": "You can also pay in cash when the pigeon is handed over.",
+      "rule": "Pigeons are handed over after payment.",
+      "phone": "For any questions: {phone}",
+      "order": "Your order: {url}"
+    },
+    "lots": {
+      "subjectBidder": "The pigeons you bid on close in {minutes} minutes",
+      "subjectGeneral": "An auction ends in {minutes} minutes",
+      "intro": "The lots below end in {minutes} minutes:",
+      "lotLine": "• {title} — Lot {lot}, at {time}",
+      "mineTitle": "The pigeons you bid on:",
+      "leading": "you are the highest bidder",
+      "outbid": "you have been outbid",
+      "pigeonLine": "• Lot {label} {name} — {price} — {state}",
+      "extension": "A bid in the final minutes extends that pigeon's auction.",
+      "unsubscribe": "Don't want these notices any more? {url}"
+    },
+    "reset": {
+      "subject": "Password reset",
+      "body": "Hello, {name}.\n\nYou asked to reset your password. Open the link below and choose a new one:\n\n{link}\n\nThe link is valid for {minutes} minutes and can be used only once.\nIf this wasn't you, ignore this message — your password stays unchanged."
+    },
+    "consentText": "I agree to receive email updates about auctions and pigeons. I can unsubscribe at any time using the link in every message."
+  },
+  "traits": {
+    "groups": {
+      "general": "Characteristics",
+      "body": "Body",
+      "wing": "Wing and plumage"
+    },
+    "fields": {
+      "eyeColor": "Eye colour",
+      "disciplines": "Disciplines",
+      "size": "Size",
+      "thickness": "Thickness",
+      "vitality": "Vitality",
+      "colorDensity": "Colour density",
+      "length": "Length",
+      "strength": "Strength",
+      "ventboneStrength": "Ventbones strength",
+      "ventbonePosition": "Ventbones position",
+      "muscles": "Muscles",
+      "balance": "Balance",
+      "back": "Back",
+      "breedingFeathers": "Breeding feathers",
+      "feather": "Feather",
+      "plumage": "Plumage",
+      "feathersTexture": "Feathers",
+      "secondaries": "Secondaries",
+      "suppleness": "Suppleness"
+    },
+    "options": {
+      "eyeColor": {
+        "pearl": "Pearl",
+        "yellow": "Yellow",
+        "orange": "Orange",
+        "red": "Red",
+        "white": "White",
+        "brown": "Brown",
+        "broken": "Broken"
+      },
+      "disciplines": {
+        "sprint": "Short distance",
+        "middle": "Middle distance",
+        "long": "Long distance",
+        "marathon": "Marathon"
+      },
+      "size": {
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large"
+      },
+      "thickness": {
+        "fine": "Fine",
+        "normal": "Normal",
+        "plump": "Plump"
+      },
+      "vitality": {
+        "weak": "Weak",
+        "normal": "Normal",
+        "strong": "Strong"
+      },
+      "colorDensity": {
+        "weak": "Weak",
+        "normal": "Normal",
+        "strong": "Strong"
+      },
+      "length": {
+        "short": "Short",
+        "normal": "Normal",
+        "long": "Long"
+      },
+      "strength": {
+        "weak": "Weak",
+        "normal": "Normal",
+        "strong": "Strong"
+      },
+      "ventboneStrength": {
+        "weak": "Weak",
+        "normal": "Normal",
+        "strong": "Strong"
+      },
+      "ventbonePosition": {
+        "open": "Open",
+        "normal": "Normal",
+        "closed": "Closed",
+        "veryClosed": "Very closed"
+      },
+      "muscles": {
+        "hard": "Hard",
+        "normal": "Normal",
+        "supple": "Supple"
+      },
+      "balance": {
+        "unbalanced": "Unbalanced",
+        "balanced": "Balanced",
+        "veryBalanced": "Very balanced"
+      },
+      "back": {
+        "weak": "Weak",
+        "normal": "Normal",
+        "strong": "Strong"
+      },
+      "breedingFeathers": {
+        "squareShort": "Square and short",
+        "squareLong": "Square and long",
+        "pointedShort": "Pointed and short",
+        "pointedLong": "Pointed and long"
+      },
+      "feather": {
+        "short": "Short",
+        "normal": "Normal",
+        "long": "Long"
+      },
+      "plumage": {
+        "thin": "Thin",
+        "normal": "Normal",
+        "thick": "Thick"
+      },
+      "feathersTexture": {
+        "rough": "Rough",
+        "normal": "Normal",
+        "soft": "Soft"
+      },
+      "secondaries": {
+        "irregular": "Irregular",
+        "regular": "Regular",
+        "veryRegular": "Very regular"
+      },
+      "suppleness": {
+        "stiff": "Stiff",
+        "normal": "Normal",
+        "supple": "Supple"
+      }
+    }
   }
 }

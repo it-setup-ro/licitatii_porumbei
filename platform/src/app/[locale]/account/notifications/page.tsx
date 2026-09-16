@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/money";
 import AccountNav from "@/components/AccountNav";
 import MarkAllReadButton from "@/components/MarkAllReadButton";
+import { intlLocale } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -73,7 +74,7 @@ export default async function NotificationsPage({
             >
               <p className="font-medium">{render(n.type, n.paramsJson)}</p>
               <p className="mt-1 text-xs text-ink/50">
-                {new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+                {new Intl.DateTimeFormat(intlLocale(currentLocale), {
                   dateStyle: "medium",
                   timeStyle: "short",
                 }).format(n.createdAt)}

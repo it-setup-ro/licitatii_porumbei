@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { TRAIT_GROUPS, type PigeonTraits } from "@/lib/pigeon-traits";
 
 /**
@@ -21,8 +21,9 @@ export default function TraitsEditor({
   value: PigeonTraits;
   onChange: (next: PigeonTraits) => void;
 }) {
-  const locale = useLocale();
-  const lang = locale === "en" ? "en" : "ro";
+  // etichetele din messages/<limbă>.json („traits"); engleza din cod rămâne plasă
+  const t = useTranslations("traits");
+  const tr = (key: string, fallback: string) => (t.has(key) ? t(key) : fallback);
 
   const setOne = (key: string, v: string) => {
     const next = { ...value };
@@ -47,12 +48,12 @@ export default function TraitsEditor({
     <div className="space-y-5" data-testid="traits-editor">
       {TRAIT_GROUPS.map((group) => (
         <div key={group.key}>
-          <p className="mb-2 text-sm font-bold">{group[lang]}</p>
+          <p className="mb-2 text-sm font-bold">{tr(`groups.${group.key}`, group.en)}</p>
           <div className="grid gap-3 sm:grid-cols-2">
             {group.fields.map((f) =>
               f.multi ? (
                 <div key={f.key} className="sm:col-span-2">
-                  <p className="text-sm font-medium">{f[lang]}</p>
+                  <p className="text-sm font-medium">{tr(`fields.${f.key}`, f.en)}</p>
                   <div className="mt-1 flex flex-wrap gap-x-5 gap-y-2">
                     {f.options.map((o) => {
                       const on =
@@ -66,7 +67,7 @@ export default function TraitsEditor({
                             onChange={(e) => toggleMany(f.key, o.value, e.target.checked)}
                             data-testid={`trait-${f.key}-${o.value}`}
                           />
-                          {o[lang]}
+                          {tr(`options.${f.key}.${o.value}`, o.en)}
                         </label>
                       );
                     })}
@@ -74,7 +75,7 @@ export default function TraitsEditor({
                 </div>
               ) : (
                 <label key={f.key} className="block text-sm">
-                  <span className="font-medium">{f[lang]}</span>
+                  <span className="font-medium">{tr(`fields.${f.key}`, f.en)}</span>
                   <select
                     value={typeof value[f.key] === "string" ? (value[f.key] as string) : ""}
                     onChange={(e) => setOne(f.key, e.target.value)}
@@ -84,7 +85,7 @@ export default function TraitsEditor({
                     <option value="">—</option>
                     {f.options.map((o) => (
                       <option key={o.value} value={o.value}>
-                        {o[lang]}
+                        {tr(`options.${f.key}.${o.value}`, o.en)}
                       </option>
                     ))}
                   </select>

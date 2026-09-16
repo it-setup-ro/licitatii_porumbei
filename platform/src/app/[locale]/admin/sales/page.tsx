@@ -165,10 +165,10 @@ export default async function AdminSalesPage({
                       {s.lots.length} loturi · {porumbei} porumbei
                     </td>
                     <td className="px-4 py-2.5 text-ink/60">{s.commissionPercent}%</td>
-                    <td className="whitespace-nowrap px-4 py-2.5 text-right">
+                    <td className="whitespace-nowrap px-4 py-2.5 text-end">
                       <a
                         href={`?id=${s.id}`}
-                        className="-my-1 mr-1 inline-block rounded-lg px-3 py-2 font-semibold text-ink/60 hover:bg-ink/5"
+                        className="-my-1 me-1 inline-block rounded-lg px-3 py-2 font-semibold text-ink/60 hover:bg-ink/5"
                         data-testid="sale-edit"
                       >
                         Editează

@@ -2,6 +2,7 @@ import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import RichText from "@/components/RichText";
 import { telHref, whatsappHref } from "@/lib/contact-links";
+import {  } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +43,8 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
     }),
   ]);
 
-  const en = currentLocale === "en";
+  // conținutul scris de administrator: română sau, altfel, engleză
+  const en = currentLocale !== "ro";
   const title = page ? (en ? page.titleEn : page.titleRo) : t("title");
   const body = page ? (en ? page.bodyEn : page.bodyRo) : null;
 

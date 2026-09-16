@@ -391,7 +391,7 @@ export default function MediaPicker({
               )}
 
               {m.type === "VIDEO" && (
-                <span className="pointer-events-none absolute left-2 top-2 rounded bg-ink/70 px-1.5 py-0.5 text-xs font-bold text-white">
+                <span className="pointer-events-none absolute start-2 top-2 rounded bg-ink/70 px-1.5 py-0.5 text-xs font-bold text-white">
                   VIDEO
                 </span>
               )}
@@ -401,7 +401,7 @@ export default function MediaPicker({
                 onClick={() => onChange(value.filter((x) => x.url !== m.url))}
                 aria-label="Șterge"
                 data-testid="media-remove"
-                className="absolute right-1.5 top-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-wing-red text-sm font-bold text-white shadow"
+                className="absolute end-1.5 top-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-wing-red text-sm font-bold text-white shadow"
               >
                 ✕
               </button>

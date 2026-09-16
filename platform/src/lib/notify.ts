@@ -1,6 +1,7 @@
 import { prisma } from "./db";
 import { getSettings } from "./settings";
 import { sendEmail } from "./mailer";
+import { emailTranslator } from "./messages";
 
 /**
  * Notificari in-app + e-mail. In dev, e-mailul se scrie in EmailLog (si consola)
@@ -29,55 +30,6 @@ export type NotifyType =
   | "PAYMENT_INSTRUCTIONS"
   | "ORDER_CANCELLED";
 
-const EMAIL_SUBJECTS: Record<NotifyType, { ro: string; en: string }> = {
-  OUTBID: { ro: "Oferta ta a fost depășită", en: "You have been outbid" },
-  AUCTION_ENDING: { ro: "Licitația se închide curând", en: "Auction ending soon" },
-  AUCTION_WON: { ro: "Felicitări! Ai câștigat licitația", en: "Congratulations! You won the auction" },
-  AUCTION_LOST: { ro: "Licitația s-a încheiat", en: "The auction has ended" },
-  SELLER_SOLD: { ro: "Porumbelul tău s-a vândut", en: "Your pigeon has sold" },
-  LOT_APPROVED: { ro: "Lotul tău a fost aprobat", en: "Your lot has been approved" },
-  LOT_REJECTED: { ro: "Lotul tău a fost respins", en: "Your lot has been rejected" },
-  ORDER_PAID: { ro: "Plata a fost confirmată", en: "Payment confirmed" },
-  SELLER_APPROVED: { ro: "Contul de vânzător a fost aprobat", en: "Seller account approved" },
-  SELLER_REJECTED: { ro: "Contul de vânzător a fost respins", en: "Seller account rejected" },
-  REVIEW_RECEIVED: { ro: "Ai primit o recenzie nouă", en: "You received a new review" },
-  RESERVE_NOT_MET: {
-    ro: "Licitația s-a încheiat sub prețul de rezervă",
-    en: "The auction ended below the reserve price",
-  },
-  LOTS_ENDING: {
-    ro: "Se încheie o licitație în curând",
-    en: "An auction is ending soon",
-  },
-  LOTS_ENDING_BIDDER: {
-    ro: "Porumbeii pe care ai licitat se închid în curând",
-    en: "The pigeons you bid on are closing soon",
-  },
-  PAYMENT_INSTRUCTIONS: {
-    ro: "Datele de plată pentru porumbelul cumpărat",
-    en: "Payment details for the pigeon you bought",
-  },
-  ORDER_CANCELLED: {
-    ro: "Vânzarea a fost anulată",
-    en: "The sale has been cancelled",
-  },
-  PIGEON_UNAVAILABLE: {
-    ro: "Porumbelul câștigat nu mai este disponibil",
-    en: "The pigeon you won is no longer available",
-  },
-  ACCOUNT_APPROVED: {
-    ro: "Contul tău a fost aprobat — poți licita",
-    en: "Your account has been approved — you can bid",
-  },
-  ACCOUNT_REJECTED: {
-    ro: "Contul tău nu a fost aprobat pentru licitare",
-    en: "Your account was not approved for bidding",
-  },
-  LOT_EDITED_BY_ADMIN: {
-    ro: "Un lot al tău a fost corectat de administrator",
-    en: "One of your lots was corrected by an administrator",
-  },
-};
 
 export async function notify(
   userId: string,
@@ -96,8 +48,8 @@ export async function notify(
 
   const settings = await getSettings();
   if (settings.emailEnabled) {
-    const locale = user.locale === "en" ? "en" : "ro";
-    const subject = EMAIL_SUBJECTS[type][locale];
+    // subiectul în limba contului (email.subjects din messages/<limbă>.json)
+    const subject = emailTranslator(user.locale)(`subjects.${type}`);
     const body =
       opts.emailText ??
       `${subject}\n\n` +

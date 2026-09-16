@@ -18,10 +18,12 @@ import LotGallery from "@/components/LotGallery";
 import BidHistory, { type BidRow } from "@/components/BidHistory";
 import PedigreeTree from "@/components/PedigreeTree";
 import { describeTraits, parseTraits } from "@/lib/pigeon-traits";
+import { messagesFor } from "@/lib/messages";
 import StarRating from "@/components/StarRating";
 import ZoomableImage from "@/components/ZoomableImage";
 import WatchButton from "@/components/WatchButton";
 import { lotLabel } from "@/lib/lots";
+import { intlLocale, pick } from "@/lib/locales";
 
 /**
  * Pagina unui lot, in structura de pe pipa.be:
@@ -119,8 +121,8 @@ export default async function AuctionDetailPage({
   // Numele sub care apare contul care vinde. Cand „Oferit de" spune acelasi
   // lucru, nu-l mai repetam in fisa — ar arata ca doua informatii diferite.
   const sellerLabel = breeder?.name ?? seller.sellerCompany ?? seller.name;
-  const tagline = currentLocale === "en" ? pigeon.taglineEn : pigeon.taglineRo;
-  const desc = currentLocale === "en" ? pigeon.descEn : pigeon.descRo;
+  const tagline = pick(currentLocale, pigeon.taglineRo, pigeon.taglineEn);
+  const desc = pick(currentLocale, pigeon.descRo, pigeon.descEn);
 
   const minNext = minimumAcceptableMax(
     auction.currentPriceCents,
@@ -142,7 +144,7 @@ export default async function AuctionDetailPage({
       ? leadingBid.maxAmountCents + incrementFor(auction.currentPriceCents, settings.increments)
       : minNext;
 
-  const dateFmt = new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+  const dateFmt = new Intl.DateTimeFormat(intlLocale(currentLocale), {
     dateStyle: "short",
     timeStyle: "short",
   });
@@ -157,7 +159,7 @@ export default async function AuctionDetailPage({
   }));
 
   // fisa detaliata, in stil pipa: doar randurile completate
-  const traitGroups = describeTraits(parseTraits(pigeon.traitsJson), currentLocale);
+  const traitGroups = describeTraits(parseTraits(pigeon.traitsJson), messagesFor(currentLocale).traits);
 
   const hasExtras =
     pigeon.color ||
@@ -188,7 +190,7 @@ export default async function AuctionDetailPage({
                   href={`/sales/${lotSale.slug}`}
                   className="font-semibold text-wing-blue hover:underline"
                 >
-                  {currentLocale === "en" ? lotSale.titleEn : lotSale.titleRo}
+                  {pick(currentLocale, lotSale.titleRo, lotSale.titleEn)}
                 </Link>
                 <span aria-hidden="true" className="text-ink/30">
                   ›
@@ -421,7 +423,7 @@ export default async function AuctionDetailPage({
                                 data-testid={`trait-row-${r.key}`}
                               >
                                 <dt className="text-ink/60">{r.label}</dt>
-                                <dd className="text-right font-semibold">{r.value}</dd>
+                                <dd className="text-end font-semibold">{r.value}</dd>
                               </div>
                             ))}
                           </dl>
@@ -444,12 +446,12 @@ export default async function AuctionDetailPage({
                           {pigeon.results.map((r) => (
                             <tr key={r.id} className="border-b border-ink/5 last:border-0">
                               <td className="px-4 py-3 font-semibold">
-                                <span className="mr-2 inline-block rounded bg-wing-yellow/30 px-2 py-0.5 font-bold">
+                                <span className="me-2 inline-block rounded bg-wing-yellow/30 px-2 py-0.5 font-bold">
                                   {tp("resultPlace", { place: r.place })}
                                 </span>
                                 {r.raceName} {r.year ?? ""}
                               </td>
-                              <td className="px-4 py-3 text-right text-ink/60">
+                              <td className="px-4 py-3 text-end text-ink/60">
                                 {r.distanceKm ? `${r.distanceKm} km` : ""}
                                 {r.participants
                                   ? ` · ${tp("resultOf", { count: r.participants })}`

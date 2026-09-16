@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/money";
 import { Link } from "@/i18n/navigation";
 import AddToCartButton from "@/components/AddToCartButton";
+import { pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -64,8 +65,8 @@ export default async function ProductsPage({
       ) : (
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p) => {
-            const name = currentLocale === "en" ? p.nameEn : p.nameRo;
-            const desc = currentLocale === "en" ? p.descEn : p.descRo;
+            const name = pick(currentLocale, p.nameRo, p.nameEn);
+            const desc = pick(currentLocale, p.descRo, p.descEn);
             return (
               <div
                 key={p.id}

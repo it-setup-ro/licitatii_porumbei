@@ -151,7 +151,7 @@ export default function ArticleComposer({
           type="submit"
           disabled={!canPublish}
           data-testid="composer-submit"
-          className="ml-auto rounded-xl bg-ink px-7 py-2.5 font-bold text-ivory transition-colors hover:bg-wing-orange disabled:opacity-40"
+          className="ms-auto rounded-xl bg-ink px-7 py-2.5 font-bold text-ivory transition-colors hover:bg-wing-orange disabled:opacity-40"
         >
           {busy ? "…" : articleId ? "Salvează" : published ? "Publică" : "Salvează ciorna"}
         </button>

@@ -9,6 +9,7 @@ import { equivalentLabel } from "@/lib/fx-math";
 import { formatMoney } from "@/lib/money";
 import { lotLabel } from "@/lib/lots";
 import ReviewForm from "@/components/ReviewForm";
+import { intlLocale } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -60,7 +61,7 @@ export default async function OrderPage({
   const reference = label ? `${t("lotPrefix", { label })} ${pigeon.name}` : pigeon.name;
   const amount = formatMoney(order.amountCents, order.currency, currentLocale);
   const equiv = eurRate ? equivalentLabel(order.amountCents, order.currency, currentLocale, eurRate) : null;
-  const dateFmt = new Intl.DateTimeFormat(currentLocale === "en" ? "en-GB" : "ro-RO", {
+  const dateFmt = new Intl.DateTimeFormat(intlLocale(currentLocale), {
     dateStyle: "medium",
     timeZone: "Europe/Bucharest",
   });
@@ -101,7 +102,7 @@ export default async function OrderPage({
           <dl className="mt-5 space-y-2 border-t border-ink/10 pt-4 text-sm">
             <div className="flex justify-between gap-3">
               <dt className="text-ink/60">{t("amount")}</dt>
-              <dd className="text-right font-bold" data-testid="order-amount">
+              <dd className="text-end font-bold" data-testid="order-amount">
                 {amount}
                 {equiv && <span className="block text-xs font-medium text-ink/50">{equiv}</span>}
               </dd>

@@ -54,7 +54,7 @@ export default async function AdminAccountsPage({
       <p className="mb-6 text-sm text-ink/60">
         Oricine își poate face cont și vedea licitațiile, dar licitează abia după ce îl aprobi.
         {!settings.accountApprovalRequired && (
-          <strong className="ml-1 text-wing-orange">
+          <strong className="ms-1 text-wing-orange">
             Aprobarea e oprită din Setări: deocamdată toate conturile pot licita.
           </strong>
         )}
@@ -96,7 +96,7 @@ export default async function AdminAccountsPage({
                   <p className="font-display text-base font-bold">
                     {u.name}
                     {u.nickname && (
-                      <span className="ml-2 font-body text-sm font-normal text-ink/60">
+                      <span className="ms-2 font-body text-sm font-normal text-ink/60">
                         utilizator: <strong>{u.nickname}</strong>
                       </span>
                     )}

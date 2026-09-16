@@ -160,7 +160,7 @@ export default async function AdminAgentsPage({
                       <span className="rounded bg-ink/10 px-2 py-0.5 text-xs font-bold">ascuns</span>
                     )}
                   </td>
-                  <td className="px-4 py-2.5 text-right">
+                  <td className="px-4 py-2.5 text-end">
                     <a
                       href={`?id=${a.id}`}
                       className="-my-1 inline-block rounded-lg px-3 py-2 font-semibold text-wing-blue hover:bg-wing-blue/10 hover:underline"
