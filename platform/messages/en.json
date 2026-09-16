@@ -658,8 +658,8 @@
   },
   "sellers": {
     "title": "Breeders",
-    "intro": "The lofts that put pigeons up for auction here. Open one to see its birds, record and reviews.",
-    "empty": "No approved breeder yet.",
+    "intro": "The breeders who put pigeons up for auction here. Open one to see their auction, their birds and their story.",
+    "empty": "There is no breeder auction on the site yet.",
     "noLive": "No live auctions right now"
   },
   "agents": {

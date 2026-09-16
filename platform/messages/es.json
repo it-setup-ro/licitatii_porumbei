@@ -658,8 +658,8 @@
   },
   "sellers": {
     "title": "Criadores",
-    "intro": "Los palomares que subastan palomas aquí. Abre uno para ver sus palomas, su historial y sus valoraciones.",
-    "empty": "Todavía no hay criadores aprobados.",
+    "intro": "Los criadores que subastan palomas aquí. Abre uno para ver su subasta, sus palomas y su historia.",
+    "empty": "Todavía no hay ninguna subasta de criador en el sitio.",
     "noLive": "Ahora mismo no hay subastas en curso"
   },
   "agents": {

@@ -658,8 +658,8 @@
   },
   "sellers": {
     "title": "Éleveurs",
-    "intro": "Les colombiers qui mettent des pigeons aux enchères sur la plateforme. Ouvrez-en un pour voir ses pigeons, son palmarès et ses avis.",
-    "empty": "Aucun éleveur approuvé pour l’instant.",
+    "intro": "Les éleveurs qui mettent des pigeons aux enchères ici. Ouvrez-en un pour voir son enchère, ses pigeons et son histoire.",
+    "empty": "Aucune enchère d’éleveur sur le site pour l’instant.",
     "noLive": "Aucune enchère en cours actuellement"
   },
   "agents": {

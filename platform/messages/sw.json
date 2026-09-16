@@ -658,8 +658,8 @@
   },
   "sellers": {
     "title": "Wafugaji",
-    "intro": "Mabanda yanayoweka njiwa mnadani hapa. Fungua moja kuona ndege wake, rekodi na tathmini.",
-    "empty": "Bado hakuna mfugaji aliyeidhinishwa.",
+    "intro": "Wafugaji wanaoweka njiwa mnadani hapa. Fungua mmoja kuona mnada wake, njiwa wake na hadithi yake.",
+    "empty": "Bado hakuna mnada wa mfugaji kwenye tovuti.",
     "noLive": "Hakuna minada inayoendelea kwa sasa"
   },
   "agents": {

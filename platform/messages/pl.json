@@ -658,8 +658,8 @@
   },
   "sellers": {
     "title": "Hodowcy",
-    "intro": "Gołębniki, które wystawiają tu gołębie na aukcje. Otwórz jeden, aby zobaczyć jego ptaki, wyniki i opinie.",
-    "empty": "Brak zatwierdzonych hodowców.",
+    "intro": "Hodowcy, którzy wystawiają tu gołębie na aukcje. Otwórz jednego, aby zobaczyć jego aukcję, jego gołębie i jego historię.",
+    "empty": "Na stronie nie ma jeszcze żadnej aukcji hodowcy.",
     "noLive": "Obecnie brak trwających aukcji"
   },
   "agents": {

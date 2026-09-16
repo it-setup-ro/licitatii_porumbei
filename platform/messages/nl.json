@@ -658,8 +658,8 @@
   },
   "sellers": {
     "title": "Kwekers",
-    "intro": "De hokken die hier duiven in veiling zetten. Open er een om de duiven, prestaties en beoordelingen te zien.",
-    "empty": "Nog geen goedgekeurde kweker.",
+    "intro": "De kwekers die hier duiven in veiling zetten. Open er een om zijn veiling, zijn duiven en zijn verhaal te zien.",
+    "empty": "Er is nog geen kwekersveiling op de site.",
     "noLive": "Momenteel geen lopende veilingen"
   },
   "agents": {

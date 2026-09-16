@@ -658,8 +658,8 @@
   },
   "sellers": {
     "title": "Crescători",
-    "intro": "Crescătoriile care scot porumbei la licitație pe platformă. Apasă pe una ca să-i vezi păsările, palmaresul și recenziile.",
-    "empty": "Deocamdată nu este niciun crescător aprobat.",
+    "intro": "Crescătorii care scot porumbei la licitație aici. Apasă pe unul ca să-i vezi licitația, porumbeii și povestea lui.",
+    "empty": "Deocamdată nu este nicio licitație de crescător pe site.",
     "noLive": "Fără licitații active acum"
   },
   "agents": {

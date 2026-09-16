@@ -16,6 +16,10 @@ test.describe("Vreau să organizez o licitație", () => {
     await expect(card).toBeVisible();
     await expect(card).toContainText("Vreau să organizez o licitație");
 
+    // formularul pornește închis: se deschide la clic pe buton (cerut de client)
+    await expect(card.getByTestId("organize-form")).toHaveCount(0);
+    await card.getByTestId("organize-open").click();
+
     // câmpurile controlate pot pierde textul înainte de hidratare
     await expect(async () => {
       await card.getByTestId("organize-name").fill(nume);
@@ -42,6 +46,7 @@ test.describe("Vreau să organizez o licitație", () => {
   test("cererea cu date lipsă nu trece", async ({ page }) => {
     await page.goto("/ro");
     const card = page.getByTestId("organize-card");
+    await card.getByTestId("organize-open").click();
     await card.getByTestId("organize-name").fill("X");
     await card.getByTestId("organize-phone").fill("1");
     await card.getByTestId("organize-email").fill("nu-e-email@test.ro");

@@ -5,6 +5,7 @@ import { getAuctionsByStatus } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
 import ContestBanner from "@/components/ContestBanner";
 import AuctionRequestForm from "@/components/AuctionRequestForm";
+import { IconFacebook, IconInstagram, IconYouTube } from "@/components/SocialIcons";
 import { getSettings } from "@/lib/settings";
 import { intlLocale, pick } from "@/lib/locales";
 
@@ -173,9 +174,25 @@ export default async function HomePage({
   // Rețelele vin din Setări; cele necompletate nu apar deloc.
   const settings = await getSettings();
   const socialLinks = [
-    { href: settings.facebookUrl, label: "Facebook" },
-    { href: settings.youtubeUrl, label: "YouTube" },
-    { href: settings.instagramUrl, label: "Instagram" },
+    {
+      href: settings.facebookUrl,
+      label: "Facebook",
+      icon: <IconFacebook size={26} />,
+      cls: "bg-[#1877f2]",
+    },
+    {
+      href: settings.youtubeUrl,
+      label: "YouTube",
+      icon: <IconYouTube size={26} />,
+      cls: "bg-[#ff0000]",
+    },
+    {
+      href: settings.instagramUrl,
+      label: "Instagram",
+      icon: <IconInstagram size={26} />,
+      // Instagram nu are o culoare, are un degrade — îl punem cum îl știe lumea
+      cls: "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]",
+    },
   ].filter((s) => s.href);
 
   return (
@@ -357,6 +374,7 @@ export default async function HomePage({
             <h2 className="font-display text-2xl font-bold">{t("followTitle")}</h2>
             <p className="mt-2 text-ink/70">{t("followText")}</p>
             {socialLinks.length > 0 ? (
+              // Clientul: „să fie sigle, nu scris" — pătrate cu culoarea rețelei
               <div className="mt-5 flex flex-wrap gap-3">
                 {socialLinks.map((s) => (
                   <a
@@ -364,10 +382,12 @@ export default async function HomePage({
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={s.label}
+                    title={s.label}
                     data-testid="follow-link"
-                    className="flex items-center gap-2 rounded-xl border border-ink/15 px-4 py-2.5 font-semibold transition-colors hover:border-wing-blue hover:text-wing-blue"
+                    className={`flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-sm transition-transform hover:scale-105 ${s.cls}`}
                   >
-                    {s.label}
+                    {s.icon}
                   </a>
                 ))}
               </div>

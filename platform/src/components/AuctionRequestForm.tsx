@@ -12,6 +12,8 @@ import { useLocale, useTranslations } from "next-intl";
 export default function AuctionRequestForm() {
   const t = useTranslations("home");
   const locale = useLocale();
+  // Clientul: „se dă click pe buton și deschide formularul", ca pe voiajor.net
+  const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", email: "", place: "" });
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
@@ -60,6 +62,19 @@ export default function AuctionRequestForm() {
 
   const input =
     "mt-1 w-full rounded-xl border border-white/25 bg-white/10 px-3 py-2.5 text-sm text-white outline-none placeholder:text-white/50 focus:border-white";
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        data-testid="organize-open"
+        className="rounded-xl bg-wing-orange px-7 py-3.5 font-bold text-white transition-colors hover:bg-wing-red"
+      >
+        {t("organizeCta")} →
+      </button>
+    );
+  }
 
   return (
     <form onSubmit={submit} className="space-y-3" data-testid="organize-form">

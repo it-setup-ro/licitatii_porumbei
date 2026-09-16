@@ -658,8 +658,8 @@
   },
   "sellers": {
     "title": "Züchter",
-    "intro": "Die Schläge, die hier Tauben versteigern. Öffnen Sie einen, um seine Tauben, Erfolge und Bewertungen zu sehen.",
-    "empty": "Noch kein freigegebener Züchter.",
+    "intro": "Die Züchter, die hier Tauben versteigern. Öffnen Sie einen, um seine Auktion, seine Tauben und seine Geschichte zu sehen.",
+    "empty": "Noch keine Züchterauktion auf der Seite.",
     "noLive": "Derzeit keine laufenden Auktionen"
   },
   "agents": {
