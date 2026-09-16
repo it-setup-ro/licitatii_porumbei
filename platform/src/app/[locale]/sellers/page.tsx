@@ -111,7 +111,14 @@ export default async function SellersPage({
   const legacyIds = legacyRows.map((r) => r.sellerId);
   const [legacySellers, legacyPhotos, ratings] = await Promise.all([
     prisma.user.findMany({
-      where: { id: { in: legacyIds }, suspendedAt: null },
+      // doar vânzători aprobați: administratorul listează în numele crescătorilor,
+      // nu e el însuși crescător — altfel apărea „Daniel Admin" printre ei
+      where: {
+        id: { in: legacyIds },
+        suspendedAt: null,
+        sellerStatus: "APPROVED",
+        role: { not: "ADMIN" },
+      },
       select: { id: true, name: true, sellerCompany: true, sellerCity: true, sellerBio: true },
     }),
     prisma.auction.findMany({

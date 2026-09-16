@@ -98,7 +98,13 @@ export default async function HomePage({
   const legacyIds = legacyRows.map((r) => r.sellerId);
   const [legacySellers, legacyAuctions] = await Promise.all([
     prisma.user.findMany({
-      where: { id: { in: legacyIds } },
+      // ca pe pagina Crescători: doar vânzători aprobați, fără contul de admin
+      where: {
+        id: { in: legacyIds },
+        suspendedAt: null,
+        sellerStatus: "APPROVED",
+        role: { not: "ADMIN" },
+      },
       select: { id: true, name: true, sellerCompany: true, sellerCity: true },
     }),
     // Poza de pe card e chiar poza unui porumbel de-al lui, aflat acum in licitatie.
