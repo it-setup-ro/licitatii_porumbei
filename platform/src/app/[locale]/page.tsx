@@ -67,7 +67,13 @@ export default async function HomePage({
     // nepublicate sau încheiate rămân afară; cel ales anume în administrare
     // („Banda pe prima pagină") intră primul în carusel.
     prisma.contest.findMany({
-      where: { published: true, endsAt: { gte: new Date() } },
+      // Un concurs intră în carusel fie dacă nu s-a încheiat după dată, fie
+      // dacă administratorul l-a trecut pe „Activ": s-a întâmplat să fie pus
+      // pe Activ cu orele rămase vechi, iar omul îl aștepta pe prima pagină.
+      where: {
+        published: true,
+        OR: [{ endsAt: { gte: new Date() } }, { status: "ACTIVE" }],
+      },
       orderBy: [{ featured: "desc" }, { startsAt: "asc" }],
       take: 6,
     }),
