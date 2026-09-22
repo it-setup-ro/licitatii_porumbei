@@ -699,7 +699,10 @@
     "unsubButton": "Desactivar estos avisos",
     "unsubDone": "Listo. Ya no recibirás avisos de cierre de subastas.",
     "unsubBad": "Este enlace ya no es válido.",
-    "lotCardTitle": "{breeder} – Lote {number}"
+    "lotCardTitle": "{breeder} – Lote {number}",
+    "readMore": "Leer más",
+    "readLess": "Mostrar menos",
+    "breederArticles": "Artículos sobre el criador"
   },
   "email": {
     "subjects": {

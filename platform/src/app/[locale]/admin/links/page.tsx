@@ -8,6 +8,12 @@ const FIELDS: FieldDef[] = [
   { key: "labelRo", label: "Denumire (RO)", type: "text", required: true },
   { key: "labelEn", label: "Denumire (EN)", type: "text", required: true },
   {
+    key: "category",
+    label: "Subcategorie (grup)",
+    type: "text",
+    hint: "Scrie același nume la mai multe linkuri ca să stea împreună în meniu, sub un titlu care se desface la clic. Ex.: OLR. Gol = linkul stă singur în listă.",
+  },
+  {
     key: "url",
     label: "Adresa site-ului",
     type: "text",
@@ -41,6 +47,7 @@ export default async function AdminLinksPage({
         group: "CONTESTS",
         labelRo: editing.labelRo,
         labelEn: editing.labelEn,
+        category: editing.category ?? "",
         url: editing.url ?? "",
         sortIdx: editing.sortIdx,
         active: editing.active,
@@ -49,6 +56,7 @@ export default async function AdminLinksPage({
         group: "CONTESTS",
         labelRo: "",
         labelEn: "",
+        category: "",
         url: "",
         sortIdx: links.length + 1,
         active: true,

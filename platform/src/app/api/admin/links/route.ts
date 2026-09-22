@@ -14,6 +14,8 @@ const schema = z.object({
   group: z.enum(["CONTESTS"]).default("CONTESTS"),
   labelRo: z.string().min(1).max(120),
   labelEn: z.string().min(1).max(120),
+  // subcategoria din meniu (ex. „OLR"); gol = linkul stă singur în listă
+  category: z.string().max(60).optional().or(z.literal("")),
   url: z
     .string()
     .max(500)
@@ -39,7 +41,12 @@ export async function POST(req: Request) {
     if (!body.success) return jsonValidationError(body.error);
     const { id, url, ...rest } = body.data;
     // gol => intrare inactivă, afișată cu „în curând"
-    const data = { ...rest, url: url && url.length > 0 ? url : null };
+    const { category, ...restFaraCategorie } = rest;
+    const data = {
+      ...restFaraCategorie,
+      url: url && url.length > 0 ? url : null,
+      category: category && category.trim().length > 0 ? category.trim() : null,
+    };
 
     const saved = id
       ? await prisma.externalLink.update({ where: { id }, data })

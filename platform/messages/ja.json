@@ -699,7 +699,10 @@
     "unsubButton": "このお知らせを停止",
     "unsubDone": "完了しました。オークション終了のお知らせは今後届きません。",
     "unsubBad": "このリンクは無効です。",
-    "lotCardTitle": "{breeder} – ロット {number}"
+    "lotCardTitle": "{breeder} – ロット {number}",
+    "readMore": "続きを読む",
+    "readLess": "閉じる",
+    "breederArticles": "ブリーダーについての記事"
   },
   "email": {
     "subjects": {

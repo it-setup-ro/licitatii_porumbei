@@ -699,7 +699,10 @@
     "unsubButton": "Wyłącz te powiadomienia",
     "unsubDone": "Gotowe. Nie będziesz już otrzymywać powiadomień o końcu aukcji.",
     "unsubBad": "Ten link nie jest już ważny.",
-    "lotCardTitle": "{breeder} – Partia {number}"
+    "lotCardTitle": "{breeder} – Partia {number}",
+    "readMore": "Czytaj dalej",
+    "readLess": "Pokaż mniej",
+    "breederArticles": "Artykuły o hodowcy"
   },
   "email": {
     "subjects": {

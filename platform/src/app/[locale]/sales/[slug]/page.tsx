@@ -11,8 +11,9 @@ import { cardInclude, toCardData } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
 import Countdown from "@/components/Countdown";
 import RichText from "@/components/RichText";
+import ExpandableText from "@/components/ExpandableText";
 import ViewToggle from "@/components/ViewToggle";
-import { intlLocale } from "@/lib/locales";
+import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
 
@@ -50,6 +51,15 @@ export default async function SalePage({
   ]);
   if (!sale || sale.lots.length === 0) notFound();
   const eurRate = await getEurRate();
+
+  // Articolele despre crescător, alese de administrator la scrierea lor.
+  const breederArticles = await prisma.article.findMany({
+    where: { breederId: sale.breederId, publishedAt: { not: null, lte: new Date() } },
+    orderBy: { publishedAt: "desc" },
+    take: 12,
+    select: { id: true, slug: true, titleRo: true, titleEn: true, coverUrl: true, publishedAt: true },
+  });
+  const articleDate = new Intl.DateTimeFormat(intlLocale(currentLocale), { dateStyle: "medium" });
 
   const title = en ? sale.titleEn : sale.titleRo;
   const desc = en ? (sale.descEn ?? sale.descRo) : sale.descRo;
@@ -126,12 +136,15 @@ export default async function SalePage({
         </div>
       )}
 
-      {(story || results || sale.breeder.photoUrl) && (
-        <details className="mt-6 overflow-hidden rounded-2xl border border-ink/10 bg-white" data-testid="sale-breeder-info">
-          <summary className="cursor-pointer px-5 py-4 font-display text-lg font-bold">
+      {(story || results || sale.breeder.photoUrl || breederArticles.length > 0) && (
+        <section
+          className="mt-6 overflow-hidden rounded-2xl border border-ink/10 bg-white p-5"
+          data-testid="sale-breeder-info"
+        >
+          <h2 className="font-display text-lg font-bold">
             {t("aboutBreeder", { name: sale.breeder.name })}
-          </summary>
-          <div className="grid gap-5 border-t border-ink/10 p-5 sm:grid-cols-[180px_1fr]">
+          </h2>
+          <div className="mt-4 grid gap-5 sm:grid-cols-[180px_1fr]">
             {sale.breeder.photoUrl && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -141,16 +154,59 @@ export default async function SalePage({
               />
             )}
             <div className="space-y-5">
-              {story && <RichText text={story} />}
-              {results && (
-                <div>
-                  <h3 className="font-display mb-2 text-lg font-bold">{t("results")}</h3>
-                  <RichText text={results} />
-                </div>
+              {/* Clientul: câteva propoziții, cu „citește mai mult" care le desface. */}
+              {(story || results) && (
+                <ExpandableText
+                  moreLabel={t("readMore")}
+                  lessLabel={t("readLess")}
+                  testid="breeder-story"
+                >
+                  {story && <RichText text={story} />}
+                  {results && (
+                    <div className="mt-4">
+                      <h3 className="font-display mb-2 text-lg font-bold">{t("results")}</h3>
+                      <RichText text={results} />
+                    </div>
+                  )}
+                </ExpandableText>
               )}
             </div>
           </div>
-        </details>
+
+          {/* Articolele lui, cele mai noi întâi */}
+          {breederArticles.length > 0 && (
+            <div className="mt-6 border-t border-ink/10 pt-5" data-testid="sale-breeder-articles">
+              <h3 className="font-display mb-3 text-lg font-bold">{t("breederArticles")}</h3>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {breederArticles.map((a) => (
+                  <Link
+                    key={a.id}
+                    href={`/articles/${a.slug}`}
+                    data-testid="breeder-article-card"
+                    className="card-hover overflow-hidden rounded-xl border border-ink/10 bg-white"
+                  >
+                    <div className="aspect-square bg-ivory-soft">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={a.coverUrl ?? "/pigeons/p1.svg"}
+                        alt={pick(currentLocale, a.titleRo, a.titleEn)}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div className="p-3">
+                      <p className="text-[11px] text-ink/50">
+                        {a.publishedAt ? articleDate.format(a.publishedAt) : ""}
+                      </p>
+                      <p className="font-display line-clamp-2 text-sm font-bold leading-snug">
+                        {pick(currentLocale, a.titleRo, a.titleEn)}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
       )}
 
       {/* ── Loturile ── */}

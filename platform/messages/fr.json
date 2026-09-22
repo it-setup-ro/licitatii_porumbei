@@ -699,7 +699,10 @@
     "unsubButton": "Arrêter ces avis",
     "unsubDone": "C’est fait. Vous ne recevrez plus d’avis de fin d’enchère.",
     "unsubBad": "Ce lien n’est plus valable.",
-    "lotCardTitle": "{breeder} – Lot {number}"
+    "lotCardTitle": "{breeder} – Lot {number}",
+    "readMore": "Lire la suite",
+    "readLess": "Réduire",
+    "breederArticles": "Articles sur l’éleveur"
   },
   "email": {
     "subjects": {

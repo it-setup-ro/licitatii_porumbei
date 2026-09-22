@@ -699,7 +699,10 @@
     "unsubButton": "Stop these notices",
     "unsubDone": "Done. You will no longer receive auction ending notices.",
     "unsubBad": "This link is no longer valid.",
-    "lotCardTitle": "{breeder} – Lot {number}"
+    "lotCardTitle": "{breeder} – Lot {number}",
+    "readMore": "Read more",
+    "readLess": "Show less",
+    "breederArticles": "Articles about the breeder"
   },
   "email": {
     "subjects": {

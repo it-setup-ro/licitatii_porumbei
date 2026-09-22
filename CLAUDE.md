@@ -22,6 +22,8 @@ Platformă de licitații de porumbei pentru Daniel (intermediar) și clientul lu
 | Textele legale | `prisma/legal-texts.ts` (textele de pornire RO/EN), `lib/legal-placeholders.ts` ({{firma}}… din Setări), `app/[locale]/info/[slug]` |
 | Comenzi, plată în afara site-ului, decont (faza 2) | `lib/orders.ts` (Plătit / Predat / anulare / decont, e-mail cu datele de plată), `lib/settlement-math.ts` (pur), `lib/payment-instructions.ts` (pur); admin: `app/[locale]/admin/orders`, `admin/settlements`, `components/admin/SettlementSection.tsx`, export `app/api/admin/settlements/export` (exceljs); cumpărător: `app/[locale]/orders/[id]` |
 | E-mail și notificări | `lib/mailer.ts` (EmailLog + SMTP din `SMTP_URL`), `lib/notify.ts` (tipuri + subiecte), `lib/newsletter.ts` |
+| Prima pagină: carusel concursuri, subcategorii meniu | `components/ContestCarousel.tsx` (rotire + puncte), `components/ContestBanner.tsx` (banda întreagă e link), subcategorii: `ExternalLink.category` → `components/SiteHeader.tsx` (`linkGroups`), admin: `app/[locale]/admin/links` |
+| Pagina crescătorului | `app/[locale]/sales/[slug]` (poveste cu `components/ExpandableText.tsx` + articolele lui), legătura articol → crescător: `Article.breederId`, admin: `components/admin/ArticleComposer.tsx` |
 | Cereri „Vreau să organizez o licitație" | `components/AuctionRequestForm.tsx` (cardul de pe prima pagină), `app/api/auction-requests`, admin: `app/[locale]/admin/auction-requests` + `components/admin/RequestHandledButton.tsx` |
 | Erori pe câmpuri | `lib/api.ts` (`jsonValidationError`, `validationFields`) |
 | Sweeper (15 s) | `instrumentation.ts` |

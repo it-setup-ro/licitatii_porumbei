@@ -415,6 +415,11 @@ model Article {
   bodyEn      String
   coverUrl    String?
   authorName  String    @default("No.1 & Best Pigeons")
+  /// Crescătorul despre care e articolul. Îl alege administratorul la scriere;
+  /// articolele lui apar pe pagina lui, în ordine cronologică. Gol = articol
+  /// general, care apare doar la Articole.
+  breederId  String?
+  breeder    Breeder?  @relation(fields: [breederId], references: [id])
   publishedAt DateTime?
 
   media     ArticleMedia[]
@@ -499,6 +504,10 @@ model ExternalLink {
   id      String  @id @default(cuid())
   /// gruparea in meniu; deocamdata doar CONTESTS, dar modelul e reutilizabil
   group   String  @default("CONTESTS")
+  /// Subcategoria din meniu, scrisa de admin: „OLR" adună la un loc
+  /// „OLR Romanian Champions League" și „OLR Bucovina Cajvana". Gol = linkul
+  /// stă singur, direct în listă.
+  category String?
   labelRo String
   labelEn String
   /// null sau gol = intrare inactiva, afisata ca „in curand" (ex. One loft races)
@@ -598,6 +607,7 @@ model Breeder {
   updatedAt DateTime @updatedAt
 
   sales Sale[]
+  articles Article[]
 }
 
 /// Licitația unui crescător — „Licitația Burca Ionuț". Până la 5 loturi.

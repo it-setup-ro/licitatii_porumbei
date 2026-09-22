@@ -1,6 +1,6 @@
 # Stare proiect — No.1 & Best Pigeons
 
-**Ultima actualizare:** 16 septembrie 2026
+**Ultima actualizare:** 22 septembrie 2026
 **Site live (test):** http://207.180.241.165:3000
 **Cod:** https://github.com/it-setup-ro/licitatii_porumbei (public, branch `main`)
 **Credențiale:** `credentiale-acces.md` (local, exclus din git)
@@ -36,6 +36,11 @@ Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză
 - **Articole** — blog bilingv, cu poze și clipuri
 - **Concursuri** — submeniu cu 6 linkuri către site-uri externe (clasamente, UNCR, FRSC, UCP)
 - **Meniu de sus scurt** (cerut de client): Acasă, Articole, Curse & Rezultate, Crescători, Licitații, Preț fix, Produse. Articole și Crescători duc direct la pagina lor, fără submeniu; singurul meniu care se desface a rămas Curse & Rezultate (linkuri externe). Informații, Transport și agenți, Despre noi și Contact au rămas doar în subsol
+- **Ordinea de pe prima pagină** (cerută de client): hero, ce oferim, **ultimele articole**, **concursurile active**, crescătorii cu licitații active, licitațiile live, cardurile de acțiune, cifrele
+- **Concursuri active în carusel**: banda se schimbă singură la 7 secunde, punctele de jos o opresc pe cea aleasă, toată banda duce la concursul afișat, iar lângă ea e linkul către toate concursurile
+- **Subcategorii în meniul Curse & Rezultate**: linkurile cu același nume de grup (ex. „OLR") stau strânse sub un titlu care se desface la clic, pe calculator și pe telefon. Grupul se scrie în Administrare → Linkuri, câmpul „Subcategorie"
+- **Pagina crescătorului**: povestea lui apare pe câteva rânduri, cu „Citește mai mult", iar sub ea articolele despre el, cele mai noi întâi. Articolul se leagă de crescător din Administrare → Articole, câmpul „Crescătorul"
+- **Pagina porumbelului**: istoricul ofertelor s-a mutat în coloana din dreapta, sub „Adaugă la favorite"
 - **Prima pagină**: cardul „Vreau să organizez o licitație" (nume, telefon, e-mail, țară/localitate) — cererea se salvează în Administrare → Cereri licitație și pleacă și pe e-mail la adresa de contact; lângă el, cardul „Urmărește-ne", care apare cu rețelele completate în Setări
 - **Subsol, la Contact**: e-mail, telefon, adresa completă și programul de funcționare (toate din Setări; cele goale nu apar)
 - **Pagina principală după macheta clientului**: hero cu fotografie și deviza scrisă de mână, bandă cu ce oferă platforma, **toți crescătorii cu loturi live** (câte un card pe crescător, cu poza lui, câți porumbei are la licitație și link la licitația lui), licitații live, banda concursului, ultimele articole, cifre reale din baza de date
@@ -210,6 +215,7 @@ platform/src/
 | 29 aug | Editarea loturilor de către crescător; clipuri până la 5 min (300 MB, scrise direct pe disc); an+sex în antetul lotului; mărirea pozelor |
 | 11 sep | Pagina principală după macheta clientului, banda concursului, newsletter GDPR, căutare fără diacritice, transportatori și agenți ca listă de carduri |
 | 15 sep | Lei cu € alături (curs BNR + manual), fără an, semne de sex, porumbel indisponibil, acord la înregistrare, Brevo gratuit; porumbeii de test mutați în „Licitație de test"; faza 2: plata în afara site-ului, Vânzări și plăți, deconturi cu Excel |
+| 22 sep | Articolele sus pe prima pagină, concursuri active în carusel, subcategorii la linkurile de concursuri, povestea crescătorului cu „Citește mai mult" + articolele lui, istoricul ofertelor în dreapta; șterși 5 porumbei demo (nu mai există preț fix în bază) |
 | 16 sep | Meniu de sus scurt (fără submeniuri, fără Informații/Transport/Despre/Contact), articole în casete mici pe rânduri, carduri „Vreau să organizez o licitație" și „Urmărește-ne" pe prima pagină, adresa și programul în subsol |
 | 16 sep | Site în 13 limbi (listă de alegere, arabă în oglindă, e-mailuri în limba contului); pe prima pagină toți crescătorii cu licitații active |
 | 14 sep | Faza 1 a licitațiilor pe loturi: crescător → licitație → loturi cu „Start lot", prelungire 10/10 înghețată, comision pe licitație, conturi aprobate de admin, pagina publică a licitației, avizul de 30 de minute, trimitere SMTP |

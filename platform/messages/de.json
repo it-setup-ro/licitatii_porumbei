@@ -699,7 +699,10 @@
     "unsubButton": "Diese Hinweise abbestellen",
     "unsubDone": "Erledigt. Sie erhalten keine Hinweise zum Auktionsende mehr.",
     "unsubBad": "Dieser Link ist nicht mehr gültig.",
-    "lotCardTitle": "{breeder} – Los {number}"
+    "lotCardTitle": "{breeder} – Los {number}",
+    "readMore": "Weiterlesen",
+    "readLess": "Weniger anzeigen",
+    "breederArticles": "Artikel über den Züchter"
   },
   "email": {
     "subjects": {

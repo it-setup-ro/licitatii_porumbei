@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/db";
 import { getAuctionsByStatus } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
-import ContestBanner from "@/components/ContestBanner";
+import ContestCarousel from "@/components/ContestCarousel";
 import AuctionRequestForm from "@/components/AuctionRequestForm";
 import { IconFacebook, IconInstagram, IconYouTube } from "@/components/SocialIcons";
 import { getSettings } from "@/lib/settings";
@@ -29,7 +29,7 @@ export default async function HomePage({
   const t = await getTranslations("home");
   const currentLocale = await getLocale();
 
-  const [live, liveLots, legacyRows, articles, contest, stats] = await Promise.all([
+  const [live, liveLots, legacyRows, articles, contests, stats] = await Promise.all([
     getAuctionsByStatus("LIVE", 6),
     // Clientul: „să apară toți crescătorii cu licitații active". Crescătorii
     // licitațiilor pe loturi nu au cont — se iau din loturile aflate acum live.
@@ -63,27 +63,14 @@ export default async function HomePage({
       orderBy: { publishedAt: "desc" },
       take: 4,
     }),
-    // Banda de concurs: intai cel ales anume din administrare („Banda pe prima
-    // pagina"). Daca nu e ales niciunul, cel aflat acum in desfasurare, iar
-    // daca nu curge niciunul, urmatorul care incepe. Inainte era pur si simplu
-    // primul dupa data de start — cu doua concursuri, castiga vechiul si omul
-    // nu intelegea de ce nu-l vede pe al lui.
-    (async () => {
-      const acum = new Date();
-      const ales = await prisma.contest.findFirst({
-        where: { published: true, featured: true, endsAt: { gte: acum } },
-      });
-      if (ales) return ales;
-      const inCurs = await prisma.contest.findFirst({
-        where: { published: true, startsAt: { lte: acum }, endsAt: { gte: acum } },
-        orderBy: { endsAt: "asc" },
-      });
-      if (inCurs) return inCurs;
-      return prisma.contest.findFirst({
-        where: { published: true, startsAt: { gt: acum } },
-        orderBy: { startsAt: "asc" },
-      });
-    })(),
+    // Clientul: „mai multe concursuri active să se ruleze". Toate cele
+    // nepublicate sau încheiate rămân afară; cel ales anume în administrare
+    // („Banda pe prima pagină") intră primul în carusel.
+    prisma.contest.findMany({
+      where: { published: true, endsAt: { gte: new Date() } },
+      orderBy: [{ featured: "desc" }, { startsAt: "asc" }],
+      take: 6,
+    }),
     (async () => {
       const [breeders, closed, running, lots] = await Promise.all([
         prisma.user.count({ where: { sellerStatus: "APPROVED" } }),
@@ -295,6 +282,52 @@ export default async function HomePage({
       </section>
 
       <div className="mx-auto max-w-6xl space-y-16 px-4 py-14">
+        {/* ───────────── Articole ───────────── */}
+        {articles.length > 0 && (
+          <section data-testid="home-articles">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("articles")}</h2>
+              <Link
+                href="/articles"
+                className="font-semibold text-wing-blue hover:underline"
+                data-testid="articles-all"
+              >
+                {t("articlesAll")} →
+              </Link>
+            </div>
+      {/* ───────────── Concursul apropiat ───────────── */}
+      {contests.length > 0 && (
+        <ContestCarousel
+          locale={currentLocale}
+          allLabel={t("viewAll")}
+          contests={contests.map((c) => ({
+            slug: c.slug,
+            title: pick(currentLocale, c.titleRo, c.titleEn),
+            destination: c.destination,
+            distanceKm: c.distanceKm,
+            distanceMaxKm: c.distanceMaxKm,
+            countryCode: c.countryCode,
+            boardingAt: c.boardingAt,
+            boardingPlace: c.boardingPlace,
+            releaseAt: c.releaseAt,
+            weatherUrl: c.weatherUrl,
+            slogan: pick(currentLocale, c.sloganRo, c.sloganEn),
+            status: c.status,
+          }))}
+          labels={{
+            boarding: t("boarding"),
+            release: t("release"),
+            weather: t("weather"),
+            weatherSub: t("weatherSub"),
+            firstHome: t("firstHome"),
+            soon: t("soon"),
+            results: t("contestPage"),
+            cta: t("contestPage"),
+            at: t("atHour"),
+          }}
+        />
+      )}
+      <div className="mx-auto max-w-6xl space-y-16 px-4 py-14">
         {/* ───────────── Crescători cu licitații active ───────────── */}
         {breederCards.length > 0 && (
           <section data-testid="breeders-strip">
@@ -407,52 +440,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* ───────────── Concursul apropiat ───────────── */}
-      {contest && (
-        <ContestBanner
-          locale={currentLocale}
-          contest={{
-            slug: contest.slug,
-            title: pick(currentLocale, contest.titleRo, contest.titleEn),
-            destination: contest.destination,
-            distanceKm: contest.distanceKm,
-            distanceMaxKm: contest.distanceMaxKm,
-            countryCode: contest.countryCode,
-            boardingAt: contest.boardingAt,
-            boardingPlace: contest.boardingPlace,
-            releaseAt: contest.releaseAt,
-            weatherUrl: contest.weatherUrl,
-            slogan: pick(currentLocale, contest.sloganRo, contest.sloganEn),
-            status: contest.status,
-          }}
-          labels={{
-            boarding: t("boarding"),
-            release: t("release"),
-            weather: t("weather"),
-            weatherSub: t("weatherSub"),
-            firstHome: t("firstHome"),
-            soon: t("soon"),
-            results: t("contestPage"),
-            cta: t("contestPage"),
-            at: t("atHour"),
-          }}
-        />
-      )}
 
-      <div className="mx-auto max-w-6xl space-y-16 px-4 py-14">
-        {/* ───────────── Articole ───────────── */}
-        {articles.length > 0 && (
-          <section data-testid="home-articles">
-            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-              <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("articles")}</h2>
-              <Link
-                href="/articles"
-                className="font-semibold text-wing-blue hover:underline"
-                data-testid="articles-all"
-              >
-                {t("articlesAll")} →
-              </Link>
-            </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {articles.map((a) => (
                 <Link

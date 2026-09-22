@@ -699,7 +699,10 @@
     "unsubButton": "Deze meldingen stoppen",
     "unsubDone": "Klaar. Je krijgt geen meldingen meer over sluitende veilingen.",
     "unsubBad": "Deze link is niet meer geldig.",
-    "lotCardTitle": "{breeder} – Lot {number}"
+    "lotCardTitle": "{breeder} – Lot {number}",
+    "readMore": "Lees meer",
+    "readLess": "Minder weergeven",
+    "breederArticles": "Artikels over de kweker"
   },
   "email": {
     "subjects": {

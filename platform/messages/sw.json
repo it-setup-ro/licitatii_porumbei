@@ -699,7 +699,10 @@
     "unsubButton": "Sitisha arifa hizi",
     "unsubDone": "Imekamilika. Hutapokea tena arifa za mnada kuisha.",
     "unsubBad": "Kiungo hiki si halali tena.",
-    "lotCardTitle": "{breeder} – Kundi {number}"
+    "lotCardTitle": "{breeder} – Kundi {number}",
+    "readMore": "Soma zaidi",
+    "readLess": "Onyesha kidogo",
+    "breederArticles": "Makala kuhusu mfugaji"
   },
   "email": {
     "subjects": {

@@ -23,6 +23,8 @@ export default function ArticleComposer({
   initialBodyEn = "",
   initialMedia = [],
   initialPublished = true,
+  initialBreederId = "",
+  breeders = [],
 }: {
   articleId?: string;
   initialTitle?: string;
@@ -31,6 +33,9 @@ export default function ArticleComposer({
   initialBodyEn?: string;
   initialMedia?: ComposerMedia[];
   initialPublished?: boolean;
+  /** crescătorul despre care e articolul; gol = articol general */
+  initialBreederId?: string;
+  breeders?: { id: string; name: string }[];
 }) {
   const router = useRouter();
 
@@ -38,6 +43,7 @@ export default function ArticleComposer({
   const [body, setBody] = useState(initialBody);
   const [media, setMedia] = useState<ComposerMedia[]>(initialMedia);
   const [published, setPublished] = useState(initialPublished);
+  const [breederId, setBreederId] = useState(initialBreederId);
 
   const [showEn, setShowEn] = useState(Boolean(initialTitleEn || initialBodyEn));
   const [titleEn, setTitleEn] = useState(initialTitleEn);
@@ -62,6 +68,7 @@ export default function ArticleComposer({
         bodyEn: showEn ? bodyEn.trim() : undefined,
         media,
         published,
+        breederId: breederId || undefined,
       }),
     });
     const out = await res.json();
@@ -136,6 +143,25 @@ export default function ArticleComposer({
       </div>
 
       <div className="flex flex-wrap items-center gap-2 border-t border-ink/10 bg-ivory-soft px-3 py-3">
+        {breeders.length > 0 && (
+          <label className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium">
+            Crescătorul:
+            <select
+              value={breederId}
+              onChange={(e) => setBreederId(e.target.value)}
+              data-testid="composer-breeder"
+              className="rounded-xl border border-ink/20 bg-ivory-soft px-3 py-2 text-sm outline-none focus:border-wing-blue"
+            >
+              <option value="">— articol general —</option>
+              {breeders.map((b) => (
+                <option key={b.id} value={b.id}>
+                  {b.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+
         <label className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-ink/5">
           <input
             type="checkbox"

@@ -59,7 +59,7 @@ export default async function LocaleLayout({
   const contestLinks = await prisma.externalLink.findMany({
     where: { group: "CONTESTS", active: true },
     orderBy: { sortIdx: "asc" },
-    select: { id: true, labelRo: true, labelEn: true, url: true },
+    select: { id: true, labelRo: true, labelEn: true, url: true, category: true },
   });
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className={`${display.variable} ${body.variable} ${script.variable} h-full antialiased`}>

@@ -95,7 +95,7 @@ export default function ContestBanner({
           href={contest.weatherUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="underline decoration-wing-yellow/40 underline-offset-2 hover:text-wing-yellow"
+          className="relative z-10 underline decoration-wing-yellow/40 underline-offset-2 hover:text-wing-yellow"
         >
           {labels.weatherSub}
         </a>,
@@ -112,6 +112,14 @@ export default function ContestBanner({
   return (
     <section className="mx-auto max-w-6xl px-4 py-10" data-testid="contest-banner">
       <div className="relative isolate overflow-hidden rounded-3xl border border-wing-yellow/25 bg-ink text-white shadow-xl">
+        {/* Toata banda duce la concursul afisat; meteo si butonul rămân
+            deasupra, ca sa poata fi apasate separat. */}
+        <Link
+          href={`/contests/${contest.slug}`}
+          aria-label={contest.title}
+          data-testid="contest-banner-link"
+          className="absolute inset-0 z-0"
+        />
         {/* Decorul din banda desenata de client: cetatea si porumbeii, in dreapta,
             sub buton. Restul benzii ramane bleumarin plin, ca textul sa se citeasca. */}
         <div
@@ -182,7 +190,7 @@ export default function ContestBanner({
             <Link
               href={`/contests/${contest.slug}`}
               data-testid="contest-cta"
-              className="font-display inline-block rounded-full bg-gradient-to-b from-wing-yellow to-wing-orange px-7 py-3.5 font-bold text-ink shadow-lg transition-opacity hover:opacity-90 lg:px-5 lg:py-3 lg:text-sm"
+              className="relative z-10 font-display inline-block rounded-full bg-gradient-to-b from-wing-yellow to-wing-orange px-7 py-3.5 font-bold text-ink shadow-lg transition-opacity hover:opacity-90 lg:px-5 lg:py-3 lg:text-sm"
             >
               {labels.cta} →
             </Link>

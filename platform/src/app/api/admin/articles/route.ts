@@ -28,6 +28,8 @@ const schema = z.object({
   bodyEn: z.string().max(50_000).optional(),
   media: z.array(mediaSchema).max(10).default([]),
   published: z.boolean().default(true),
+  /** crescătorul despre care e articolul; gol = articol general */
+  breederId: z.string().max(40).optional().or(z.literal("")),
 });
 
 const DIACRITICS: Record<string, string> = {
@@ -85,6 +87,7 @@ export async function POST(req: Request) {
     const data = {
       slug,
       titleRo: d.title,
+      breederId: d.breederId && d.breederId.length > 0 ? d.breederId : null,
       titleEn: d.titleEn?.trim() || d.title,
       bodyRo: d.body,
       bodyEn: d.bodyEn?.trim() || d.body,

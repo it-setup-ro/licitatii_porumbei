@@ -41,6 +41,8 @@ type NavItem = {
 /** Linkuri catre site-uri externe (submeniul Concursuri), venite din DB. */
 export type ExternalNavLink = {
   id: string;
+  /** subcategoria din meniu (ex. OLR); null = linkul stă singur */
+  category?: string | null;
   labelRo: string;
   labelEn: string;
   url: string | null;
@@ -67,6 +69,8 @@ export default function SiteHeader({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  // subcategoria de linkuri deschisa (ex. OLR)
+  const [openLinkGroup, setOpenLinkGroup] = useState<string | null>(null);
   const navRef = useRef<HTMLUListElement>(null);
   const router = useRouter();
 
@@ -86,6 +90,24 @@ export default function SiteHeader({
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
+
+  // Linkurile externe, strânse pe subcategorii, în ordinea din administrare.
+  const linkGroups: { category: string | null; links: ExternalNavLink[] }[] = [];
+  const grupIndex = new Map<string, number>();
+  for (const link of contestLinks) {
+    const cat = link.category?.trim() || null;
+    if (!cat) {
+      linkGroups.push({ category: null, links: [link] });
+      continue;
+    }
+    const idx = grupIndex.get(cat);
+    if (idx === undefined) {
+      grupIndex.set(cat, linkGroups.length);
+      linkGroups.push({ category: cat, links: [link] });
+    } else {
+      linkGroups[idx].links.push(link);
+    }
+  }
 
   const canSell =
     // adminul listează oricând; crescătorii doar dacă e pornit din Setări
@@ -294,11 +316,40 @@ export default function SiteHeader({
                               {t("ourContests")}
                             </Link>
                           </li>,
-                          ...contestLinks.map((link) => (
-                            <li key={link.id}>
-                              <ExternalItem link={link} locale={locale} soonLabel={t("comingSoon")} />
-                            </li>
-                          )),
+                          ...linkGroups.map((g) =>
+                            g.category ? (
+                              <li key={`grup-${g.category}`}>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setOpenLinkGroup((v) => (v === g.category ? null : g.category));
+                                  }}
+                                  aria-expanded={openLinkGroup === g.category}
+                                  data-testid="contest-group"
+                                  className="flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-start font-semibold hover:bg-ink/5"
+                                >
+                                  {g.category}
+                                  <Chevron open={openLinkGroup === g.category} />
+                                </button>
+                                {openLinkGroup === g.category && (
+                                  <ul className="ms-3 border-s border-ink/10 ps-2" data-testid="contest-group-items">
+                                    {g.links.map((link) => (
+                                      <li key={link.id}>
+                                        <ExternalItem link={link} locale={locale} soonLabel={t("comingSoon")} />
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </li>
+                            ) : (
+                              g.links.map((link) => (
+                                <li key={link.id}>
+                                  <ExternalItem link={link} locale={locale} soonLabel={t("comingSoon")} />
+                                </li>
+                              ))
+                            )
+                          ),
                         ]
                       : item.children.map((child, i) => (
                           <li key={`${child.testid}-${i}`}>
@@ -402,15 +453,48 @@ export default function SiteHeader({
                                 testid="m-our-contests"
                                 accent
                               />,
-                              ...contestLinks.map((link) => (
-                                <ExternalItem
-                                  key={link.id}
-                                  link={link}
-                                  locale={locale}
-                                  soonLabel={t("comingSoon")}
-                                  mobile
-                                />
-                              )),
+                              ...linkGroups.map((g) =>
+                                g.category ? (
+                                  <div key={`m-grup-${g.category}`}>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setOpenLinkGroup((v) => (v === g.category ? null : g.category));
+                                      }}
+                                      aria-expanded={openLinkGroup === g.category}
+                                      data-testid="m-contest-group"
+                                      className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-start text-sm font-semibold hover:bg-ink/5"
+                                    >
+                                      {g.category}
+                                      <Chevron open={openLinkGroup === g.category} />
+                                    </button>
+                                    {openLinkGroup === g.category && (
+                                      <div className="ms-3 border-s border-ink/10 ps-2">
+                                        {g.links.map((link) => (
+                                          <ExternalItem
+                                            key={link.id}
+                                            link={link}
+                                            locale={locale}
+                                            soonLabel={t("comingSoon")}
+                                            mobile
+                                          />
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                ) : (
+                                  g.links.map((link) => (
+                                    <ExternalItem
+                                      key={link.id}
+                                      link={link}
+                                      locale={locale}
+                                      soonLabel={t("comingSoon")}
+                                      mobile
+                                    />
+                                  ))
+                                )
+                              ),
                             ]
                           : item.children.map((child, i) => (
                               <MobileLink

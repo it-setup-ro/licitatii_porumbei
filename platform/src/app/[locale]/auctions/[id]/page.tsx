@@ -310,6 +310,15 @@ export default async function AuctionDetailPage({
             <WatchButton auctionId={auction.id} initialWatching={watching} />
           )}
 
+          {/* Ofertele stau in coloana din dreapta, sub „Adauga la favorite": acolo
+              se uita omul cand cantareste daca sa liciteze (cerut de client). */}
+          {auction.saleMode !== "FIXED" && (
+            <div data-testid="bid-history-box">
+              <h2 className="font-display mb-3 text-xl font-bold">{t("bidHistory")}</h2>
+              <BidHistory bids={bidRows} live={auction.status === "LIVE"} />
+            </div>
+          )}
+
           {/* Semne de incredere — discrete, dar chiar langa buton, unde omul
               ezita. Se afiseaza doar ce e adevarat despre lotul asta. */}
           <ul
@@ -502,13 +511,6 @@ export default async function AuctionDetailPage({
             </div>
           )}
 
-          {/* Ofertele: ultimele cateva, restul la buton */}
-          {auction.saleMode !== "FIXED" && (
-            <div>
-              <h2 className="font-display mb-3 text-xl font-bold">{t("bidHistory")}</h2>
-              <BidHistory bids={bidRows} live={auction.status === "LIVE"} />
-            </div>
-          )}
         </div>
 
       </div>

@@ -699,7 +699,10 @@
     "unsubButton": "આ સૂચનાઓ બંધ કરો",
     "unsubDone": "થઈ ગયું. આપને હવે હરાજી સમાપ્ત થવાની સૂચનાઓ મળશે નહીં.",
     "unsubBad": "આ લિંક હવે માન્ય નથી.",
-    "lotCardTitle": "{breeder} – લોટ {number}"
+    "lotCardTitle": "{breeder} – લોટ {number}",
+    "readMore": "વધુ વાંચો",
+    "readLess": "ઓછું બતાવો",
+    "breederArticles": "બ્રીડર વિશેના લેખો"
   },
   "email": {
     "subjects": {

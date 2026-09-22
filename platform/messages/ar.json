@@ -699,7 +699,10 @@
     "unsubButton": "إيقاف هذه الإشعارات",
     "unsubDone": "تم. لن تتلقى بعد الآن إشعارات انتهاء المزادات.",
     "unsubBad": "هذا الرابط لم يعد صالحًا.",
-    "lotCardTitle": "{breeder} – لوت {number}"
+    "lotCardTitle": "{breeder} – لوت {number}",
+    "readMore": "اقرأ المزيد",
+    "readLess": "عرض أقل",
+    "breederArticles": "مقالات عن المربّي"
   },
   "email": {
     "subjects": {

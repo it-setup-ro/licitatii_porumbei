@@ -14,6 +14,7 @@ export default async function AdminArticlesPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const sp = await searchParams;
+  const breeders = await prisma.breeder.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } });
 
   const articles = await prisma.article.findMany({
     orderBy: { updatedAt: "desc" },
@@ -50,6 +51,8 @@ export default async function AdminArticlesPage({
           editing?.media.map((m) => ({ url: m.url, type: m.type as "IMAGE" | "VIDEO" })) ?? []
         }
         initialPublished={editing ? editing.publishedAt !== null : true}
+        initialBreederId={editing?.breederId ?? ""}
+        breeders={breeders}
       />
 
       <h2 className="font-display mb-3 mt-10 text-xl font-bold">Articolele tale</h2>

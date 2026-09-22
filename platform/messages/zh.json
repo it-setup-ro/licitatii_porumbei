@@ -699,7 +699,10 @@
     "unsubButton": "停止此类提醒",
     "unsubDone": "已完成。您将不再收到拍卖结束提醒。",
     "unsubBad": "此链接已失效。",
-    "lotCardTitle": "{breeder} – 第 {number} 批次"
+    "lotCardTitle": "{breeder} – 第 {number} 批次",
+    "readMore": "阅读更多",
+    "readLess": "收起",
+    "breederArticles": "关于该鸽舍的文章"
   },
   "email": {
     "subjects": {

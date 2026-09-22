@@ -699,7 +699,10 @@
     "unsubButton": "Nu mai trimite aceste avize",
     "unsubDone": "Gata. Nu mai primești avizele de final de licitație.",
     "unsubBad": "Linkul nu mai este valabil.",
-    "lotCardTitle": "{breeder} – Lotul {number}"
+    "lotCardTitle": "{breeder} – Lotul {number}",
+    "readMore": "Citește mai mult",
+    "readLess": "Arată mai puțin",
+    "breederArticles": "Articole despre crescător"
   },
   "email": {
     "subjects": {

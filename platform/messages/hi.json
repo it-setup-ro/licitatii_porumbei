@@ -699,7 +699,10 @@
     "unsubButton": "ये सूचनाएँ बंद करें",
     "unsubDone": "हो गया। अब आपको नीलामी समाप्ति की सूचनाएँ नहीं मिलेंगी।",
     "unsubBad": "यह लिंक अब मान्य नहीं है।",
-    "lotCardTitle": "{breeder} – लॉट {number}"
+    "lotCardTitle": "{breeder} – लॉट {number}",
+    "readMore": "और पढ़ें",
+    "readLess": "कम दिखाएँ",
+    "breederArticles": "ब्रीडर के बारे में लेख"
   },
   "email": {
     "subjects": {
