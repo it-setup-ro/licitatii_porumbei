@@ -295,6 +295,42 @@ export default async function HomePage({
                 {t("articlesAll")} →
               </Link>
             </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {articles.map((a) => (
+                <Link
+                  key={a.id}
+                  href={`/articles/${a.slug}`}
+                  data-testid="home-article-card"
+                  className="card-hover overflow-hidden rounded-2xl border border-ink/10 bg-white"
+                >
+                  <div className="aspect-[16/10] bg-ivory-soft">
+                    {a.coverUrl && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={a.coverUrl}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <p className="text-xs text-ink/50">
+                      {a.publishedAt ? dateFmt.format(a.publishedAt) : ""}
+                    </p>
+                    <p className="font-display mt-1 line-clamp-2 font-bold leading-snug">
+                      {pick(currentLocale, a.titleRo, a.titleEn)}
+                    </p>
+                    <span className="mt-3 inline-block text-sm font-semibold text-wing-blue">
+                      {t("readMore")} →
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
       {/* ───────────── Concursul apropiat ───────────── */}
       {contests.length > 0 && (
         <ContestCarousel
@@ -440,42 +476,6 @@ export default async function HomePage({
         </div>
       </section>
 
-
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {articles.map((a) => (
-                <Link
-                  key={a.id}
-                  href={`/articles/${a.slug}`}
-                  data-testid="home-article-card"
-                  className="card-hover overflow-hidden rounded-2xl border border-ink/10 bg-white"
-                >
-                  <div className="aspect-[16/10] bg-ivory-soft">
-                    {a.coverUrl && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={a.coverUrl}
-                        alt=""
-                        className="h-full w-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <p className="text-xs text-ink/50">
-                      {a.publishedAt ? dateFmt.format(a.publishedAt) : ""}
-                    </p>
-                    <p className="font-display mt-1 line-clamp-2 font-bold leading-snug">
-                      {pick(currentLocale, a.titleRo, a.titleEn)}
-                    </p>
-                    <span className="mt-3 inline-block text-sm font-semibold text-wing-blue">
-                      {t("readMore")} →
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
 
       {/* ───────────── Cifrele platformei ───────────── */}
       <section className="border-y border-ink/10 bg-white" data-testid="home-stats">

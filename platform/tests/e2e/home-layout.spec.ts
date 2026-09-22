@@ -28,6 +28,13 @@ test.describe("Ordinea de pe prima pagină", () => {
     if (crescatori !== null) expect(articole!).toBeLessThan(crescatori);
     expect(articole!).toBeLessThan(licitatii!);
 
+    // Titlul singur nu spune nimic: o mutare gresita a lasat odata titlul sus
+    // si cardurile jos, langa cifre. Verificam chiar articolele.
+    const cardArticol = await poz("home-article-card");
+    expect(cardArticol, "cardurile de articole lipsesc").not.toBeNull();
+    if (crescatori !== null) expect(cardArticol!).toBeLessThan(crescatori);
+    expect(cardArticol!).toBeLessThan(licitatii!);
+
     // concursul, dacă e vreunul activ, stă între articole și licitații
     const carusel = await poz("contest-carousel");
     if (carusel !== null) {
