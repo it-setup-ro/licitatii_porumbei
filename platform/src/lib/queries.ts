@@ -58,7 +58,7 @@ export function toCardData(a: AuctionWithCard): AuctionCardData {
 export async function getAuctionsByStatus(status: string, take = 12) {
   const auctions = await prisma.auction.findMany({
     // porumbeii cu preț fix nu sunt licitații — au pagina lor, „Preț fix"
-    where: { status, saleMode: "AUCTION" },
+    where: { status, saleMode: "AUCTION", hiddenAt: null },
     include: cardInclude,
     orderBy: status === "CLOSED" ? { closedAt: "desc" } : { endsAt: "asc" },
     take,

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
+import AuctionVisibility from "./AuctionVisibility";
 import { formatMoney } from "@/lib/money";
 import PriceInput from "@/components/PriceInput";
 import type { FxInfo } from "@/lib/fx-math";
@@ -35,6 +36,8 @@ export type LotAdminData = {
     bidCount: number;
     imageCount: number;
     status: string;
+    /** scos de pe site de administrator */
+    hidden: boolean;
   }[];
 };
 
@@ -152,6 +155,24 @@ export default function LotAdminPanel({
     }
   };
 
+  const deleteLot = async () => {
+    const ok = window.confirm(
+      `Ștergi Lotul ${lot.number}, cu cei ${lot.pigeons.length} porumbei din el?\n\n` +
+        "Merge doar cât lotul e ciornă și nimeni n-a licitat. Nu se poate da înapoi."
+    );
+    if (!ok) return;
+    const data = await call("del-lot", `/api/admin/sale-lots/${lot.id}`, { method: "DELETE" });
+    if (data.ok) {
+      router.refresh();
+    } else if (data.error === "HAS_HISTORY") {
+      setNotice("Lotul are porumbei cu oferte sau comenzi: nu se șterge.");
+    } else if (data.error === "NOT_DRAFT") {
+      setNotice("Lotul a pornit deja: nu se mai șterge.");
+    } else {
+      setNotice("Lotul nu s-a putut șterge.");
+    }
+  };
+
   const unschedule = async () => {
     const data = await call("unschedule", `/api/admin/sale-lots/${lot.id}/unschedule`);
     if (data.ok) {
@@ -254,6 +275,17 @@ export default function LotAdminPanel({
           <span className="text-sm text-ink/50">
             {lot.pigeons.length} / {maxPigeons} porumbei
           </span>
+          {draft && (
+            <button
+              type="button"
+              onClick={deleteLot}
+              disabled={busy !== null}
+              data-testid="lot-delete"
+              className="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-wing-red hover:bg-wing-red/10 disabled:opacity-50"
+            >
+              Șterge lotul
+            </button>
+          )}
         </div>
         <p className="text-sm text-ink/60">
           {dateFmt.format(new Date(lot.startsAt))} → {dateFmt.format(new Date(lot.endsAt))}
@@ -393,6 +425,16 @@ export default function LotAdminPanel({
                       >
                         Scoate
                       </button>
+                    )}
+                    {!draft && (
+                      <span className="ms-2 inline-flex">
+                        <AuctionVisibility
+                          auctionId={p.auctionId}
+                          hidden={p.hidden}
+                          name={p.name}
+                          compact
+                        />
+                      </span>
                     )}
                   </td>
                 </tr>

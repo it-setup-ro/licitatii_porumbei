@@ -153,7 +153,12 @@ export default async function AdminSalesPage({
                 return (
                   <tr key={s.id} className="border-b border-ink/5 last:border-0" data-testid="sale-row">
                     <td className="px-4 py-2.5">
-                      <p className="font-semibold">{s.titleRo}</p>
+                      <p className="font-semibold">{s.titleRo}
+                      {s.archivedAt && (
+                        <span className="ms-2 rounded bg-wing-orange/15 px-1.5 py-0.5 text-xs font-bold text-wing-orange" data-testid="sale-archived-badge">
+                          arhivată
+                        </span>
+                      )}</p>
                       <p className="text-xs text-ink/50">{s.breeder.name}</p>
                     </td>
                     <td className="px-4 py-2.5">

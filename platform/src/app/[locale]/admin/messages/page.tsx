@@ -1,21 +1,31 @@
 import { getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
+import Pager from "@/components/admin/Pager";
+import RowActions from "@/components/admin/RowActions";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminMessagesPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const sp = await searchParams;
+  const page = Math.max(1, Number(sp.page ?? "1") || 1);
+  const PE_PAGINA = 50;
   const currentLocale = await getLocale();
 
   const messages = await prisma.contactMessage.findMany({
     orderBy: { createdAt: "desc" },
-    take: 100,
+    skip: (page - 1) * PE_PAGINA,
+    take: PE_PAGINA,
   });
+
+  const total = await prisma.contactMessage.count();
 
   return (
     <div>
@@ -35,6 +45,20 @@ export default async function AdminMessagesPage({
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="font-display font-bold">{m.subject}</p>
+                <RowActions
+                  testid="message-row-actions"
+                  toggle={{
+                    url: `/api/admin/messages/${m.id}`,
+                    field: "handled",
+                    on: m.handledAt !== null,
+                    onLabel: "Redeschide",
+                    offLabel: "Rezolvat",
+                  }}
+                  remove={{
+                    url: `/api/admin/messages/${m.id}`,
+                    confirm: `Ștergi mesajul de la ${m.email}? Nu se poate da înapoi.`,
+                  }}
+                />
                 <span className="text-xs text-ink/50">
                   {new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
                     dateStyle: "medium",
@@ -53,6 +77,8 @@ export default async function AdminMessagesPage({
           ))}
         </div>
       )}
+
+      <Pager page={page} total={total} perPage={PE_PAGINA} label="mesaje" />
     </div>
   );
 }

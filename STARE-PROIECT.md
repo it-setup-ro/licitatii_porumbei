@@ -92,6 +92,15 @@ Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză
 - **Caseta de cont** (iconița din antet): autentificare/înregistrare când ești delogat; cont + ieșire când ești logat — totul într-un singur loc
 
 ### Admin
+- **Istoric tranzacții** — toate vânzările, cu filtre pe perioadă, licitație, stare și căutare; totaluri (câte, cât s-a vândut, comision, cât rămâne crescătorilor), paginare și export Excel pentru contabilitate
+- **Comenzi magazin** — până acum comenzile de produse intrau în bază și scădeau stocul, dar nu le vedea nimeni. Acum se văd cu adresa de livrare și se mută prin stări (Plătită / Expediată / Livrată / Anulează); la anulare produsele se întorc în stoc
+- **Preț fix** — pagină proprie pentru porumbeii de cumpărat direct, cu „Ascunde de pe site" și „Șterge"
+- **Ascundere și ștergere**: un porumbel se poate ascunde (iese din liste, din căutare și de pe pagina lui) sau șterge, dacă n-are oferte și comandă. Un porumbel cu oferte se **retrage**, iar cei care au licitat primesc e-mail în limba lor. O licitație veche se **arhivează** (rămâne în istoric, la cumpărător și în deconturi) și se șterge doar dacă n-a vândut nimic. Loturile ciornă se șterg cu porumbeii lor
+- **Ștergeri de conținut** — articole, produse, concursuri, linkuri, transportatori se pot șterge definitiv (produsul cumpărat vreodată nu: acolo rămâne stingerea din listă)
+- **Date personale** — mesajele de contact se marchează „rezolvat" și se pot șterge; la fel cererile de licitație și abonații la newsletter (cerința legală de ștergere la cerere)
+- **Crescător ascuns** (nu se șterge niciodată: are licitații și articole) și **blocarea unui utilizator** de rea-credință
+- **E-mailuri** — se vede dacă mesajul a plecat, ce a răspuns serverul când l-a refuzat și de câte ori s-a încercat; căutare, filtre (trimise / eșuate / neplecate) și buton „Trimite din nou"
+- **Paginare și căutare** în listele care creșteau la nesfârșit: jurnal, mesaje, conturi, abonați, cereri, e-mailuri, comenzi magazin, istoric tranzacții
 - Buton **Administrare** în bara de sus, pe orice pagină (doar pentru admini)
 - **Utilizatori** (căutare + buton „Link de resetare" pentru cine nu primește e-mailul) și **E-mailuri trimise** (jurnalul din care se citesc linkurile cât timp e-mailul nu e conectat)
 - **Navigație grupată** în administrare (Moderare / Conținut / Platformă), cu numărul de așteptări lângă fiecare secțiune de moderat: coloană pe calculator, un rând + panoul „Secțiuni" pe telefon
@@ -215,6 +224,7 @@ platform/src/
 | 29 aug | Editarea loturilor de către crescător; clipuri până la 5 min (300 MB, scrise direct pe disc); an+sex în antetul lotului; mărirea pozelor |
 | 11 sep | Pagina principală după macheta clientului, banda concursului, newsletter GDPR, căutare fără diacritice, transportatori și agenți ca listă de carduri |
 | 15 sep | Lei cu € alături (curs BNR + manual), fără an, semne de sex, porumbel indisponibil, acord la înregistrare, Brevo gratuit; porumbeii de test mutați în „Licitație de test"; faza 2: plata în afara site-ului, Vânzări și plăți, deconturi cu Excel |
+| 22 sep | Istoric tranzacții cu export Excel, comenzi magazin în administrare, ascundere/ștergere/retragere porumbei (inclusiv preț fix), arhivare licitații, ștergeri de conținut și date personale, crescător ascuns, blocare utilizator, e-mailuri eșuate cu retrimitere, paginare în listele de administrare |
 | 22 sep | Articolele sus pe prima pagină, concursuri active în carusel, subcategorii la linkurile de concursuri, povestea crescătorului cu „Citește mai mult" + articolele lui, istoricul ofertelor în dreapta; șterși 5 porumbei demo (nu mai există preț fix în bază) |
 | 16 sep | Meniu de sus scurt (fără submeniuri, fără Informații/Transport/Despre/Contact), articole în casete mici pe rânduri, carduri „Vreau să organizez o licitație" și „Urmărește-ne" pe prima pagină, adresa și programul în subsol |
 | 16 sep | Site în 13 limbi (listă de alegere, arabă în oglindă, e-mailuri în limba contului); pe prima pagină toți crescătorii cu licitații active |

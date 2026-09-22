@@ -725,7 +725,8 @@
       "LOT_EDITED_BY_ADMIN": "Un administrador ha corregido uno de tus lotes",
       "PIGEON_UNAVAILABLE": "La paloma que has ganado ya no está disponible",
       "PAYMENT_INSTRUCTIONS": "Datos de pago de la paloma que has comprado",
-      "ORDER_CANCELLED": "La venta se ha cancelado"
+      "ORDER_CANCELLED": "La venta se ha cancelado",
+      "AUCTION_WITHDRAWN": "Una paloma por la que has pujado ha sido retirada"
     },
     "hello": "Hola:",
     "lotLabel": "Lote {label}",
@@ -760,7 +761,11 @@
       "subject": "Restablecimiento de contraseña",
       "body": "Hola, {name}:\n\nHas solicitado restablecer tu contraseña. Abre el enlace de abajo y elige una nueva:\n\n{link}\n\nEl enlace es válido durante {minutes} minutos y solo se puede usar una vez.\nSi no has sido tú, ignora este mensaje: tu contraseña no cambiará."
     },
-    "consentText": "Acepto recibir por correo electrónico novedades sobre subastas y palomas. Puedo darme de baja en cualquier momento con el enlace que incluye cada mensaje."
+    "consentText": "Acepto recibir por correo electrónico novedades sobre subastas y palomas. Puedo darme de baja en cualquier momento con el enlace que incluye cada mensaje.",
+    "withdrawn": {
+      "body": "La paloma {pigeon} (anilla {ring}) ha sido retirada de la subasta por el organizador. Tu puja ya no es válida y no tienes que pagar nada.",
+      "reason": "Motivo: {reason}"
+    }
   },
   "traits": {
     "groups": {

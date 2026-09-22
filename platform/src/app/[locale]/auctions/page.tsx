@@ -68,6 +68,8 @@ export default async function AuctionsPage({
       status,
       // porumbeii cu preț fix au pagina lor, „Preț fix"
       saleMode: "AUCTION",
+      // scoși de pe site de administrator
+      hiddenAt: null,
       ...(pigeonIds ? { pigeonId: { in: pigeonIds } } : {}),
     },
     include: cardInclude,

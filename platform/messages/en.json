@@ -725,7 +725,8 @@
       "LOT_EDITED_BY_ADMIN": "One of your lots was corrected by an administrator",
       "PIGEON_UNAVAILABLE": "The pigeon you won is no longer available",
       "PAYMENT_INSTRUCTIONS": "Payment details for the pigeon you bought",
-      "ORDER_CANCELLED": "The sale has been cancelled"
+      "ORDER_CANCELLED": "The sale has been cancelled",
+      "AUCTION_WITHDRAWN": "A pigeon you bid on has been withdrawn"
     },
     "hello": "Hello,",
     "lotLabel": "Lot {label}",
@@ -760,7 +761,11 @@
       "subject": "Password reset",
       "body": "Hello, {name}.\n\nYou asked to reset your password. Open the link below and choose a new one:\n\n{link}\n\nThe link is valid for {minutes} minutes and can be used only once.\nIf this wasn't you, ignore this message — your password stays unchanged."
     },
-    "consentText": "I agree to receive email updates about auctions and pigeons. I can unsubscribe at any time using the link in every message."
+    "consentText": "I agree to receive email updates about auctions and pigeons. I can unsubscribe at any time using the link in every message.",
+    "withdrawn": {
+      "body": "The pigeon {pigeon} (ring {ring}) has been withdrawn from the auction by the organiser. Your bid no longer stands and you owe nothing.",
+      "reason": "Reason: {reason}"
+    }
   },
   "traits": {
     "groups": {

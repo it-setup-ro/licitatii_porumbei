@@ -1,23 +1,32 @@
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
+import Pager from "@/components/admin/Pager";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminAuditPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const sp = await searchParams;
+  const page = Math.max(1, Number(sp.page ?? "1") || 1);
+  const PE_PAGINA = 100;
   const t = await getTranslations("admin");
   const currentLocale = await getLocale();
 
   const logs = await prisma.auditLog.findMany({
     include: { actor: true },
     orderBy: { createdAt: "desc" },
-    take: 100,
+    skip: (page - 1) * PE_PAGINA,
+    take: PE_PAGINA,
   });
+
+  const total = await prisma.auditLog.count();
 
   return (
     <div>
@@ -43,6 +52,8 @@ export default async function AdminAuditPage({
           </tbody>
         </table>
       </div>
+
+      <Pager page={page} total={total} perPage={PE_PAGINA} label="intrări" />
     </div>
   );
 }

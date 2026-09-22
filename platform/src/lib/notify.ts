@@ -28,7 +28,8 @@ export type NotifyType =
   | "LOTS_ENDING_BIDDER"
   | "PIGEON_UNAVAILABLE"
   | "PAYMENT_INSTRUCTIONS"
-  | "ORDER_CANCELLED";
+  | "ORDER_CANCELLED"
+  | "AUCTION_WITHDRAWN";
 
 
 export async function notify(

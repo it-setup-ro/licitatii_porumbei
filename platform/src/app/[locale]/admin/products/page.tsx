@@ -127,6 +127,7 @@ export default async function AdminProductsPage({
       <RecordEditor
         key={editing?.id ?? "new"}
         endpoint="/api/admin/products"
+        deletable
         title={editing ? `Editează: ${editing.nameRo}` : "Produs nou"}
         initial={initial}
         fields={FIELDS}

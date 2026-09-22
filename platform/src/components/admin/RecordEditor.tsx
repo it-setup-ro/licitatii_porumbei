@@ -49,6 +49,7 @@ export default function RecordEditor({
   title,
   help,
   onSavedRedirect,
+  deletable = false,
 }: {
   endpoint: string;
   fields: FieldDef[];
@@ -57,6 +58,8 @@ export default function RecordEditor({
   /** doua-trei randuri despre ce se completeaza aici si unde se vede rezultatul */
   help?: React.ReactNode;
   onSavedRedirect?: string;
+  /** arată butonul „Șterge" când se editează ceva existent */
+  deletable?: boolean;
 }) {
   const router = useRouter();
   const [values, setValues] = useState<Record<string, unknown>>(initial);
@@ -131,6 +134,31 @@ export default function RecordEditor({
   /** campul gresit se vede si fara sa citesti: chenar rosu */
   const inputFor = (key: string) =>
     `${inputBase} ${fieldErrors[key] ? "border-wing-red" : "border-ink/20"}`;
+
+  /** Ștergerea definitivă a înregistrării editate. Serverul refuză dacă are istoric. */
+  const sterge = async () => {
+    const id = typeof initial.id === "string" ? initial.id : null;
+    if (!id) return;
+    if (!window.confirm(`${title}\n\nȘtergi definitiv? Nu se poate da înapoi.`)) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch(`${endpoint}/${id}`, { method: "DELETE" });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        router.push(onSavedRedirect ?? window.location.pathname);
+        router.refresh();
+      } else if (data.error === "HAS_HISTORY") {
+        setError(
+          `Nu se poate șterge: a fost folosit în ${data.orders ?? 0} comenzi. Îl poți scoate din listă, oprind „Vizibil”.`
+        );
+      } else {
+        setError("Nu s-a putut șterge.");
+      }
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <form onSubmit={submit} className="space-y-4" data-testid="record-editor">
@@ -273,6 +301,17 @@ export default function RecordEditor({
           <p className="text-sm font-semibold text-green-700" data-testid="editor-saved">
             ✓ Salvat
           </p>
+        )}
+        {deletable && typeof initial.id === "string" && (
+          <button
+            type="button"
+            onClick={sterge}
+            disabled={busy}
+            data-testid="editor-delete"
+            className="ms-auto rounded-xl border border-ink/20 px-5 py-2.5 text-sm font-semibold text-wing-red hover:border-wing-red disabled:opacity-40"
+          >
+            Șterge
+          </button>
         )}
       </div>
     </form>

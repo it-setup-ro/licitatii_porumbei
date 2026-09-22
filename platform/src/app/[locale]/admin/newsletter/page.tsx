@@ -1,5 +1,7 @@
 import { getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
+import Pager from "@/components/admin/Pager";
+import RowActions from "@/components/admin/RowActions";
 
 export const dynamic = "force-dynamic";
 
@@ -11,15 +13,24 @@ export const dynamic = "force-dynamic";
  */
 export default async function AdminNewsletterPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const sp = await searchParams;
+  const page = Math.max(1, Number(sp.page ?? "1") || 1);
+  const PE_PAGINA = 100;
   const currentLocale = await getLocale();
 
   const [rows, active, gone] = await Promise.all([
-    prisma.newsletterSubscriber.findMany({ orderBy: { createdAt: "desc" }, take: 500 }),
+    prisma.newsletterSubscriber.findMany({
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * PE_PAGINA,
+      take: PE_PAGINA,
+    }),
     prisma.newsletterSubscriber.count({ where: { unsubscribedAt: null } }),
     prisma.newsletterSubscriber.count({ where: { unsubscribedAt: { not: null } } }),
   ]);
@@ -28,6 +39,8 @@ export default async function AdminNewsletterPage({
     dateStyle: "short",
     timeStyle: "short",
   });
+
+  const total = await prisma.newsletterSubscriber.count();
 
   return (
     <div>
@@ -78,12 +91,23 @@ export default async function AdminNewsletterPage({
                       <span className="font-semibold text-green-700">activ</span>
                     )}
                   </td>
+                  <td className="px-4 py-3 text-end">
+                    <RowActions
+                      testid="subscriber-row-actions"
+                      remove={{
+                        url: `/api/admin/newsletter/${r.id}`,
+                        confirm: `Ștergi definitiv abonatul ${r.email}? Nu se poate da înapoi.`,
+                      }}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
+
+      <Pager page={page} total={total} perPage={PE_PAGINA} label="abonați" />
     </div>
   );
 }

@@ -725,7 +725,8 @@
       "LOT_EDITED_BY_ADMIN": "Eines Ihrer Lose wurde von einem Administrator korrigiert",
       "PIGEON_UNAVAILABLE": "Die ersteigerte Taube ist nicht mehr verfügbar",
       "PAYMENT_INSTRUCTIONS": "Zahlungsdaten für die gekaufte Taube",
-      "ORDER_CANCELLED": "Der Verkauf wurde storniert"
+      "ORDER_CANCELLED": "Der Verkauf wurde storniert",
+      "AUCTION_WITHDRAWN": "Eine Taube, auf die Sie geboten haben, wurde zurückgezogen"
     },
     "hello": "Guten Tag,",
     "lotLabel": "Los {label}",
@@ -760,7 +761,11 @@
       "subject": "Passwort zurücksetzen",
       "body": "Guten Tag, {name}.\n\nSie haben das Zurücksetzen Ihres Passworts angefordert. Öffnen Sie den folgenden Link und legen Sie ein neues fest:\n\n{link}\n\nDer Link ist {minutes} Minuten gültig und kann nur einmal verwendet werden.\nWenn Sie das nicht waren, ignorieren Sie diese Nachricht — Ihr Passwort bleibt unverändert."
     },
-    "consentText": "Ich bin damit einverstanden, E-Mail-Neuigkeiten über Auktionen und Tauben zu erhalten. Ich kann mich jederzeit über den Link in jeder Nachricht abmelden."
+    "consentText": "Ich bin damit einverstanden, E-Mail-Neuigkeiten über Auktionen und Tauben zu erhalten. Ich kann mich jederzeit über den Link in jeder Nachricht abmelden.",
+    "withdrawn": {
+      "body": "Die Taube {pigeon} (Ring {ring}) wurde vom Veranstalter aus der Auktion zurückgezogen. Ihr Gebot ist damit hinfällig und Sie müssen nichts bezahlen.",
+      "reason": "Grund: {reason}"
+    }
   },
   "traits": {
     "groups": {

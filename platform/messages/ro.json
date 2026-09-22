@@ -725,7 +725,8 @@
       "LOT_EDITED_BY_ADMIN": "Un lot al tău a fost corectat de administrator",
       "PIGEON_UNAVAILABLE": "Porumbelul câștigat nu mai este disponibil",
       "PAYMENT_INSTRUCTIONS": "Datele de plată pentru porumbelul cumpărat",
-      "ORDER_CANCELLED": "Vânzarea a fost anulată"
+      "ORDER_CANCELLED": "Vânzarea a fost anulată",
+      "AUCTION_WITHDRAWN": "Porumbelul pe care ai licitat a fost retras"
     },
     "hello": "Bună ziua,",
     "lotLabel": "Lotul {label}",
@@ -760,7 +761,11 @@
       "subject": "Resetarea parolei",
       "body": "Bună, {name}.\n\nAi cerut resetarea parolei. Deschide linkul de mai jos și alege o parolă nouă:\n\n{link}\n\nLinkul e valabil {minutes} de minute și poate fi folosit o singură dată.\nDacă nu tu ai cerut asta, ignoră mesajul — parola rămâne neschimbată."
     },
-    "consentText": "Sunt de acord să primesc pe e-mail noutăți despre licitații și porumbei. Mă pot dezabona oricând, dintr-un link aflat în fiecare mesaj."
+    "consentText": "Sunt de acord să primesc pe e-mail noutăți despre licitații și porumbei. Mă pot dezabona oricând, dintr-un link aflat în fiecare mesaj.",
+    "withdrawn": {
+      "body": "Porumbelul {pigeon} (serie {ring}) a fost retras din licitație de organizator. Oferta ta nu mai are efect și nu ai nimic de plătit.",
+      "reason": "Motivul: {reason}"
+    }
   },
   "traits": {
     "groups": {

@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import ArticleComposer from "@/components/admin/ArticleComposer";
+import RowActions from "@/components/admin/RowActions";
 
 export const dynamic = "force-dynamic";
 
@@ -61,11 +62,11 @@ export default async function AdminArticlesPage({
       ) : (
         <div className="space-y-2" data-testid="admin-articles-list">
           {articles.map((a) => (
+            <div key={a.id} className="flex items-center gap-2">
             <a
-              key={a.id}
               href={`?id=${a.id}`}
               data-testid="article-edit"
-              className={`flex items-center gap-3 rounded-2xl border bg-white p-3 transition-colors hover:border-wing-blue ${
+              className={`flex min-w-0 flex-1 items-center gap-3 rounded-2xl border bg-white p-3 transition-colors hover:border-wing-blue ${
                 editing?.id === a.id ? "border-wing-blue" : "border-ink/10"
               }`}
             >
@@ -90,6 +91,14 @@ export default async function AdminArticlesPage({
                 Editează
               </span>
             </a>
+              <RowActions
+                testid="article-row"
+                remove={{
+                  url: `/api/admin/articles/${a.id}`,
+                  confirm: `Ștergi articolul „${a.titleRo}"? Nu se poate da înapoi.`,
+                }}
+              />
+            </div>
           ))}
         </div>
       )}

@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
+import Pager from "@/components/admin/Pager";
 import { getSettings } from "@/lib/settings";
 import AccountReview from "@/components/admin/AccountReview";
 
@@ -20,22 +21,26 @@ export default async function AdminAccountsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ tab?: string }>;
+  searchParams: Promise<{ tab?: string; page?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const sp = await searchParams;
   const tab = TABS.find((t) => t.key === sp.tab)?.key ?? "PENDING";
+  const page = Math.max(1, Number(sp.page ?? "1") || 1);
+  const PE_PAGINA = 50;
+  const where = {
+    accountStatus: tab,
+    role: { not: "ADMIN" },
+    ...(tab === "APPROVED" ? { accountReviewedAt: { not: null } } : {}),
+  };
 
   const [users, counts, settings] = await Promise.all([
     prisma.user.findMany({
-      where: {
-        accountStatus: tab,
-        role: { not: "ADMIN" },
-        ...(tab === "APPROVED" ? { accountReviewedAt: { not: null } } : {}),
-      },
+      where,
       orderBy: tab === "APPROVED" ? { accountReviewedAt: "desc" } : { createdAt: "desc" },
-      take: 100,
+      skip: (page - 1) * PE_PAGINA,
+      take: PE_PAGINA,
     }),
     prisma.user.groupBy({
       by: ["accountStatus"],
@@ -44,6 +49,7 @@ export default async function AdminAccountsPage({
     }),
     getSettings(),
   ]);
+  const total = await prisma.user.count({ where });
   const count = (k: string) => counts.find((c) => c.accountStatus === k)?._count._all ?? 0;
 
   const dateFmt = new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium", timeStyle: "short" });
@@ -125,6 +131,8 @@ export default async function AdminAccountsPage({
           })}
         </div>
       )}
+
+      <Pager page={page} total={total} perPage={PE_PAGINA} params={{ tab }} label="conturi" />
     </div>
   );
 }

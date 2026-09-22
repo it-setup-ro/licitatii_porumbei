@@ -185,6 +185,9 @@ model Auction {
   /// Suma sub care vanzatorul nu vinde. Ascunsa cumparatorilor: se arata doar
   /// daca a fost atinsa sau nu. null = licitatie fara pret de rezerva.
   reservePriceCents    Int?
+  /// Scos de pe site de administrator: nu mai apare in liste, in cautare si
+  /// nici pe pagina crescatorului, dar rămâne in administrare si in istoric.
+  hiddenAt             DateTime?
   /** porumbelul s-a îmbolnăvit sau a murit după licitație (clientul, Punctul 5) */
   unavailableAt        DateTime?
   unavailableReason    String?
@@ -315,6 +318,12 @@ model EmailLog {
   toEmail   String
   subject   String
   body      String
+  /// când a plecat efectiv prin SMTP; gol = n-a plecat (sau SMTP nu e pornit)
+  sentAt    DateTime?
+  /// ce a răspuns serverul de e-mail când a refuzat
+  error     String?
+  /// de câte ori s-a încercat (retrimiterile din administrare îl cresc)
+  attempts  Int      @default(1)
   createdAt DateTime @default(now())
 }
 
@@ -603,6 +612,8 @@ model Breeder {
   storyEn   String?
   resultsRo String?
   resultsEn String?
+  /// Ascuns de pe site (nu se sterge niciodata: are licitatii si articole)
+  hiddenAt  DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -626,6 +637,9 @@ model Sale {
   /// Comisionul reținut crescătorului, în procente. Cumpărătorul nu îl vede și
   /// nu plătește nimic în plus, deci se poate schimba și după pornire.
   commissionPercent Float    @default(12)
+  /// Arhivata: dispare din site si din listele de administrare, dar rămâne
+  /// in Istoric tranzactii, la cumparator si in deconturi.
+  archivedAt        DateTime?
   createdById       String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt

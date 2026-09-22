@@ -34,7 +34,7 @@ export default async function HomePage({
     // Clientul: „să apară toți crescătorii cu licitații active". Crescătorii
     // licitațiilor pe loturi nu au cont — se iau din loturile aflate acum live.
     prisma.lot.findMany({
-      where: { status: "LIVE" },
+      where: { status: "LIVE", sale: { archivedAt: null, breeder: { hiddenAt: null } } },
       orderBy: { endsAt: "asc" },
       select: {
         sale: {
@@ -45,6 +45,7 @@ export default async function HomePage({
           },
         },
         auctions: {
+          where: { hiddenAt: null },
           orderBy: { lotPosition: "asc" },
           select: {
             pigeon: { select: { name: true, media: { where: { type: "IMAGE" }, take: 1 } } },
@@ -55,7 +56,7 @@ export default async function HomePage({
     // licitațiile individuale din fluxul vechi (cont de vânzător, fără lot)
     prisma.auction.groupBy({
       by: ["sellerId"],
-      where: { status: "LIVE", lotId: null, saleMode: "AUCTION" },
+      where: { status: "LIVE", lotId: null, saleMode: "AUCTION", hiddenAt: null },
       _count: { _all: true },
     }),
     prisma.article.findMany({
@@ -103,7 +104,7 @@ export default async function HomePage({
     // Poza de pe card e chiar poza unui porumbel de-al lui, aflat acum in licitatie.
     // Asa nu punem pe prima pagina fotografii de crescatorii care nu exista.
     prisma.auction.findMany({
-      where: { sellerId: { in: legacyIds }, status: "LIVE", lotId: null, saleMode: "AUCTION" },
+      where: { sellerId: { in: legacyIds }, status: "LIVE", lotId: null, saleMode: "AUCTION", hiddenAt: null },
       orderBy: { createdAt: "desc" },
       select: {
         sellerId: true,

@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import ResetLinkButton from "@/components/admin/ResetLinkButton";
+import RowActions from "@/components/admin/RowActions";
 
 export const dynamic = "force-dynamic";
 
@@ -100,6 +101,19 @@ export default async function AdminUsersPage({
                 </p>
               </div>
               <ResetLinkButton userId={u.id} />
+              {/* Administratorii nu se blochează: întâi li se retrag drepturile. */}
+              {u.role !== "ADMIN" && (
+                <RowActions
+                  testid="user-row-actions"
+                  toggle={{
+                    url: `/api/admin/users/${u.id}/suspend`,
+                    field: "suspended",
+                    on: u.suspendedAt !== null,
+                    onLabel: "Deblochează",
+                    offLabel: "Blochează",
+                  }}
+                />
+              )}
             </div>
           ))}
         </div>

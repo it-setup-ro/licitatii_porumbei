@@ -10,10 +10,12 @@ export async function getLotCards(
   take = 30
 ): Promise<LotCardData[]> {
   const lots = await prisma.lot.findMany({
-    where: { status },
+    // loturile din licitațiile arhivate și porumbeii ascunși nu mai apar
+    where: { status, sale: { archivedAt: null } },
     include: {
       sale: { include: { breeder: true } },
       auctions: {
+        where: { hiddenAt: null },
         orderBy: { lotPosition: "asc" },
         select: {
           pigeon: {

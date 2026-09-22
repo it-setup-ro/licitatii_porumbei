@@ -1,6 +1,8 @@
 import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
+import Pager from "@/components/admin/Pager";
 import RequestHandledButton from "@/components/admin/RequestHandledButton";
+import RowActions from "@/components/admin/RowActions";
 
 export const dynamic = "force-dynamic";
 
@@ -12,21 +14,29 @@ export const dynamic = "force-dynamic";
  */
 export default async function AdminAuctionRequestsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const sp = await searchParams;
+  const page = Math.max(1, Number(sp.page ?? "1") || 1);
+  const PE_PAGINA = 50;
 
   const requests = await prisma.auctionRequest.findMany({
     orderBy: [{ handledAt: "asc" }, { createdAt: "desc" }],
-    take: 200,
+    skip: (page - 1) * PE_PAGINA,
+    take: PE_PAGINA,
   });
   const when = new Intl.DateTimeFormat("ro-RO", {
     dateStyle: "medium",
     timeStyle: "short",
     timeZone: "Europe/Bucharest",
   });
+
+  const total = await prisma.auctionRequest.count();
 
   return (
     <div>
@@ -68,10 +78,19 @@ export default async function AdminAuctionRequestsPage({
                 </p>
               </div>
               <RequestHandledButton id={r.id} handled={r.handledAt !== null} />
+              <RowActions
+                testid="request-row"
+                remove={{
+                  url: `/api/admin/auction-requests/${r.id}`,
+                  confirm: `Ștergi cererea de la ${r.name} (${r.email})? Nu se poate da înapoi.`,
+                }}
+              />
             </div>
           ))}
         </div>
       )}
+
+      <Pager page={page} total={total} perPage={PE_PAGINA} label="cereri" />
     </div>
   );
 }

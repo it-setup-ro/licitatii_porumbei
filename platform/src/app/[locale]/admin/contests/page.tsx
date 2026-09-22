@@ -259,6 +259,7 @@ export default async function AdminContestsPage({
       <RecordEditor
         key={editing?.id ?? "new"}
         endpoint="/api/admin/contests"
+        deletable
         title={editing ? `Editează: ${editing.titleRo}` : "Concurs nou"}
         initial={initial}
         fields={FIELDS}

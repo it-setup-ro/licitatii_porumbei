@@ -23,13 +23,13 @@ export default async function FixedPricePage({
   const include = { pigeon: { include: { media: { orderBy: { sortIdx: "asc" as const }, take: 1 } } } };
   const [available, sold] = await Promise.all([
     prisma.auction.findMany({
-      where: { saleMode: "FIXED", status: "LIVE" },
+      where: { saleMode: "FIXED", status: "LIVE", hiddenAt: null },
       include,
       orderBy: { createdAt: "desc" },
       take: 60,
     }),
     prisma.auction.findMany({
-      where: { saleMode: "FIXED", status: "CLOSED" },
+      where: { saleMode: "FIXED", status: "CLOSED", hiddenAt: null },
       include,
       orderBy: { closedAt: "desc" },
       take: 24,

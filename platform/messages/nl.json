@@ -725,7 +725,8 @@
       "LOT_EDITED_BY_ADMIN": "Een van je loten is gecorrigeerd door een beheerder",
       "PIGEON_UNAVAILABLE": "De duif die je hebt gewonnen is niet meer beschikbaar",
       "PAYMENT_INSTRUCTIONS": "Betalingsgegevens voor de duif die je hebt gekocht",
-      "ORDER_CANCELLED": "De verkoop is geannuleerd"
+      "ORDER_CANCELLED": "De verkoop is geannuleerd",
+      "AUCTION_WITHDRAWN": "Een duif waarop je hebt geboden is teruggetrokken"
     },
     "hello": "Hallo,",
     "lotLabel": "Lot {label}",
@@ -760,7 +761,11 @@
       "subject": "Wachtwoord herstellen",
       "body": "Hallo {name},\n\nJe hebt gevraagd om je wachtwoord te herstellen. Open de onderstaande link en kies een nieuw wachtwoord:\n\n{link}\n\nDe link is {minutes} minuten geldig en kan maar één keer gebruikt worden.\nHeb je dit niet zelf gevraagd? Negeer dan dit bericht — je wachtwoord blijft ongewijzigd."
     },
-    "consentText": "Ik ga ermee akkoord e-mails te ontvangen met nieuws over veilingen en duiven. Ik kan me altijd afmelden via de link in elk bericht."
+    "consentText": "Ik ga ermee akkoord e-mails te ontvangen met nieuws over veilingen en duiven. Ik kan me altijd afmelden via de link in elk bericht.",
+    "withdrawn": {
+      "body": "De duif {pigeon} (ring {ring}) is door de organisator uit de veiling teruggetrokken. Je bod vervalt en je bent niets verschuldigd.",
+      "reason": "Reden: {reason}"
+    }
   },
   "traits": {
     "groups": {

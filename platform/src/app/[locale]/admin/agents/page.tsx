@@ -179,6 +179,7 @@ export default async function AdminAgentsPage({
       <RecordEditor
         key={editing?.id ?? "new"}
         endpoint="/api/admin/agents"
+        deletable
         title={editing ? `Editează: ${editing.name}` : "Transportator sau agent nou"}
         initial={initial}
         fields={FIELDS}

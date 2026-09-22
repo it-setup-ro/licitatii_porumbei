@@ -725,7 +725,8 @@
       "LOT_EDITED_BY_ADMIN": "Moja ya makundi yako limerekebishwa na msimamizi",
       "PIGEON_UNAVAILABLE": "Njiwa uliyemshinda hapatikani tena",
       "PAYMENT_INSTRUCTIONS": "Maelezo ya malipo kwa njiwa uliyemnunua",
-      "ORDER_CANCELLED": "Uuzaji umeghairiwa"
+      "ORDER_CANCELLED": "Uuzaji umeghairiwa",
+      "AUCTION_WITHDRAWN": "Njiwa uliyemwekea zabuni ameondolewa"
     },
     "hello": "Habari,",
     "lotLabel": "Kundi {label}",
@@ -760,7 +761,11 @@
       "subject": "Kuweka upya nenosiri",
       "body": "Habari, {name}.\n\nUliomba kuweka upya nenosiri lako. Fungua kiungo kilicho hapa chini na uchague jipya:\n\n{link}\n\nKiungo ni halali kwa dakika {minutes} na kinaweza kutumika mara moja tu.\nIkiwa si wewe, puuza ujumbe huu — nenosiri lako halitabadilika."
     },
-    "consentText": "Ninakubali kupokea taarifa kwa barua pepe kuhusu minada na njiwa. Ninaweza kujiondoa wakati wowote kupitia kiungo kilicho katika kila ujumbe."
+    "consentText": "Ninakubali kupokea taarifa kwa barua pepe kuhusu minada na njiwa. Ninaweza kujiondoa wakati wowote kupitia kiungo kilicho katika kila ujumbe.",
+    "withdrawn": {
+      "body": "Njiwa {pigeon} (pete {ring}) ameondolewa kwenye mnada na mwandaaji. Zabuni yako haitumiki tena na huna deni lolote.",
+      "reason": "Sababu: {reason}"
+    }
   },
   "traits": {
     "groups": {

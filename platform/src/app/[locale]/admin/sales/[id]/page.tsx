@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { lotIsLocked, lotLabel, saleStatus } from "@/lib/lots";
 import AddLotForm from "@/components/admin/AddLotForm";
+import SaleAdminActions from "@/components/admin/SaleAdminActions";
 import LotAdminPanel, { type LotAdminData } from "@/components/admin/LotAdminPanel";
 
 export const dynamic = "force-dynamic";
@@ -68,6 +69,7 @@ export default async function AdminSalePage({
       bidCount: a._count.bids,
       imageCount: a.pigeon.media.length,
       status: a.status,
+      hidden: a.hiddenAt !== null,
     })),
   }));
 
@@ -131,6 +133,10 @@ export default async function AdminSalePage({
         </p>
       )}
 
+      {/* Arhivare sau ștergere: o licitație care a vândut nu se șterge, se arhivează. */}
+      <div className="mb-6 flex flex-wrap items-center gap-3 rounded-2xl border border-ink/10 bg-white p-4">
+        <SaleAdminActions saleId={sale.id} archived={sale.archivedAt !== null} title={sale.titleRo} />
+      </div>
       <div className="space-y-6">
         {lots.map((lot) => (
           <LotAdminPanel

@@ -23,3 +23,33 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     return handleApiError(e);
   }
 }
+
+/** Șterge o cerere. Conține nume, telefon și e-mail: se poate cere ștergerea. */
+export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+  try {
+    const admin = await requireAdmin();
+    const { id } = await ctx.params;
+
+    const cerere = await prisma.auctionRequest.findUnique({
+      where: { id },
+      select: { id: true, email: true },
+    });
+    if (!cerere) return jsonError("NOT_FOUND", 404);
+
+    await prisma.$transaction([
+      prisma.auctionRequest.delete({ where: { id } }),
+      prisma.auditLog.create({
+        data: {
+          actorId: admin.id,
+          action: "AUCTION_REQUEST_DELETED",
+          entity: "AuctionRequest",
+          entityId: id,
+          dataJson: JSON.stringify({ email: cerere.email }),
+        },
+      }),
+    ]);
+    return jsonOk({ deleted: true });
+  } catch (e) {
+    return handleApiError(e);
+  }
+}

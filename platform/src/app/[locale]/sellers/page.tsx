@@ -33,7 +33,7 @@ export default async function SellersPage({
 
   const [lots, legacyRows] = await Promise.all([
     prisma.lot.findMany({
-      where: { status: { in: VIZIBILE } },
+      where: { status: { in: VIZIBILE }, sale: { archivedAt: null, breeder: { hiddenAt: null } } },
       orderBy: { endsAt: "asc" },
       select: {
         status: true,
@@ -55,6 +55,7 @@ export default async function SellersPage({
           },
         },
         auctions: {
+          where: { hiddenAt: null },
           orderBy: { lotPosition: "asc" },
           select: { pigeon: { select: { name: true, media: { where: { type: "IMAGE" }, take: 1 } } } },
         },
@@ -63,7 +64,7 @@ export default async function SellersPage({
     // fluxul vechi: conturi de vânzător cu licitații individuale pornite
     prisma.auction.groupBy({
       by: ["sellerId"],
-      where: { status: "LIVE", lotId: null, saleMode: "AUCTION" },
+      where: { status: "LIVE", lotId: null, saleMode: "AUCTION", hiddenAt: null },
       _count: { _all: true },
     }),
   ]);

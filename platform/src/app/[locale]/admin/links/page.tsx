@@ -112,6 +112,7 @@ export default async function AdminLinksPage({
       <RecordEditor
         key={editing?.id ?? "new"}
         endpoint="/api/admin/links"
+        deletable
         title={editing ? `Editează: ${editing.labelRo}` : "Link nou"}
         initial={initial}
         fields={FIELDS}

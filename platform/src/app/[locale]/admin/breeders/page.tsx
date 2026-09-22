@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import RecordEditor, { type FieldDef } from "@/components/admin/RecordEditor";
+import RowActions from "@/components/admin/RowActions";
 
 export const dynamic = "force-dynamic";
 
@@ -117,6 +118,16 @@ export default async function AdminBreedersPage({
                     >
                       Editează
                     </a>
+                    <RowActions
+                      testid="breeder-row"
+                      toggle={{
+                        url: `/api/admin/breeders/${b.id}/hide`,
+                        field: "hidden",
+                        on: b.hiddenAt !== null,
+                        onLabel: "Arată pe site",
+                        offLabel: "Ascunde de pe site",
+                      }}
+                    />
                   </td>
                 </tr>
               ))}

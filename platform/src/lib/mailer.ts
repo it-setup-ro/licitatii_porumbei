@@ -28,13 +28,19 @@ async function transportFor(url: string): Promise<Transporter> {
 }
 
 export async function sendEmail(msg: OutgoingEmail): Promise<{ sent: boolean }> {
-  await prisma.emailLog.create({
+  const log = await prisma.emailLog.create({
     data: { toEmail: msg.to, subject: msg.subject, body: msg.text },
   });
+  return deliver(log.id, msg);
+}
+
+/** Trimiterea propriu-zisă, folosită și la „Trimite din nou” din administrare. */
+export async function deliver(logId: string, msg: OutgoingEmail): Promise<{ sent: boolean }> {
 
   const url = process.env.SMTP_URL;
   if (!url) {
     if (process.env.NODE_ENV === "development") console.log(`[email -> ${msg.to}] ${msg.subject}`);
+    // fără SMTP nu e o eroare: mesajul se citește din jurnal
     return { sent: false };
   }
 
@@ -46,10 +52,19 @@ export async function sendEmail(msg: OutgoingEmail): Promise<{ sent: boolean }> 
       subject: msg.subject,
       text: msg.text,
     });
+    await prisma.emailLog.update({
+      where: { id: logId },
+      data: { sentAt: new Date(), error: null },
+    });
     return { sent: true };
   } catch (e) {
-    // un e-mail care nu pleacă nu trebuie să oprească o licitație sau o închidere
+    // un e-mail care nu pleacă nu trebuie să oprească o licitație sau o închidere,
+    // dar trebuie să se vadă în administrare — altfel nimeni nu află
     console.error("[email]", msg.to, msg.subject, e);
+    await prisma.emailLog.update({
+      where: { id: logId },
+      data: { error: e instanceof Error ? e.message.slice(0, 500) : String(e).slice(0, 500) },
+    });
     return { sent: false };
   }
 }

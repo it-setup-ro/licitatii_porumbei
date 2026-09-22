@@ -67,6 +67,8 @@ export default async function AuctionDetailPage({
     },
   });
   if (!auction || ["DRAFT", "PENDING_APPROVAL", "REJECTED"].includes(auction.status)) notFound();
+  // scos de pe site de administrator: pentru vizitatori nu există
+  if (auction.hiddenAt) notFound();
 
   const [settings, user, eurRate] = await Promise.all([
     getSettings(),
@@ -103,6 +105,7 @@ export default async function AuctionDetailPage({
   const similar = await prisma.auction.findMany({
     where: {
       status: "LIVE",
+      hiddenAt: null,
       id: { not: auction.id },
       // din același lot, dacă face parte dintr-unul; altfel de la același vânzător sau linie
       ...(auction.lotId

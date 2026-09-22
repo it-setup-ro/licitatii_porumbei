@@ -725,7 +725,8 @@
       "LOT_EDITED_BY_ADMIN": "Un de vos lots a été corrigé par un administrateur",
       "PIGEON_UNAVAILABLE": "Le pigeon que vous avez remporté n’est plus disponible",
       "PAYMENT_INSTRUCTIONS": "Informations de paiement pour le pigeon acheté",
-      "ORDER_CANCELLED": "La vente a été annulée"
+      "ORDER_CANCELLED": "La vente a été annulée",
+      "AUCTION_WITHDRAWN": "Un pigeon sur lequel vous avez enchéri a été retiré"
     },
     "hello": "Bonjour,",
     "lotLabel": "Lot {label}",
@@ -760,7 +761,11 @@
       "subject": "Réinitialisation du mot de passe",
       "body": "Bonjour {name},\n\nVous avez demandé la réinitialisation de votre mot de passe. Ouvrez le lien ci-dessous et choisissez-en un nouveau :\n\n{link}\n\nLe lien est valable {minutes} minutes et ne peut être utilisé qu’une seule fois.\nSi vous n’êtes pas à l’origine de cette demande, ignorez ce message — votre mot de passe reste inchangé."
     },
-    "consentText": "J’accepte de recevoir par e-mail des actualités sur les enchères et les pigeons. Je peux me désabonner à tout moment grâce au lien présent dans chaque message."
+    "consentText": "J’accepte de recevoir par e-mail des actualités sur les enchères et les pigeons. Je peux me désabonner à tout moment grâce au lien présent dans chaque message.",
+    "withdrawn": {
+      "body": "Le pigeon {pigeon} (bague {ring}) a été retiré de la vente aux enchères par l’organisateur. Votre enchère n’est plus valable et vous n’avez rien à payer.",
+      "reason": "Motif : {reason}"
+    }
   },
   "traits": {
     "groups": {

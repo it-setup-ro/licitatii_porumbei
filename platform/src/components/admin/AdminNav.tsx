@@ -28,6 +28,8 @@ export type AdminCounts = {
   unpaid: number;
   /** cereri „Vreau să organizez o licitație" încă nerezolvate */
   requests: number;
+  /** comenzi din magazin care așteaptă plata */
+  shopOrders: number;
 };
 
 type Item = {
@@ -48,6 +50,7 @@ function groups(): Group[] {
       items: [
         { href: "/admin/sales", label: "Licitații pe loturi", icon: <IconGavel /> },
         { href: "/admin/breeders", label: "Crescători", icon: <IconBird /> },
+        { href: "/admin/fixed-price", label: "Preț fix", icon: <IconBox /> },
         {
           href: "/admin/auction-requests",
           label: "Cereri licitație",
@@ -56,6 +59,7 @@ function groups(): Group[] {
         },
         { href: "/admin/orders", label: "Vânzări și plăți", icon: <IconBox />, count: "unpaid" },
         { href: "/admin/settlements", label: "Deconturi", icon: <IconList /> },
+        { href: "/admin/transactions", label: "Istoric tranzacții", icon: <IconList /> },
       ],
     },
     {
@@ -73,6 +77,7 @@ function groups(): Group[] {
       items: [
         { href: "/admin/articles", label: "Articole", icon: <IconArticle /> },
         { href: "/admin/products", label: "Produse", icon: <IconBox /> },
+        { href: "/admin/shop-orders", label: "Comenzi magazin", icon: <IconBox />, count: "shopOrders" },
         { href: "/admin/contests", label: "Concursuri", icon: <IconTrophy /> },
         { href: "/admin/content", label: "Pagini", icon: <IconPage /> },
         { href: "/admin/links", label: "Linkuri", icon: <IconLink /> },

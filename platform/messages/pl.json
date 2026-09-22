@@ -725,7 +725,8 @@
       "LOT_EDITED_BY_ADMIN": "Jedna z Twoich partii została poprawiona przez administratora",
       "PIGEON_UNAVAILABLE": "Wygrany przez Ciebie gołąb nie jest już dostępny",
       "PAYMENT_INSTRUCTIONS": "Dane do płatności za kupionego gołębia",
-      "ORDER_CANCELLED": "Sprzedaż została anulowana"
+      "ORDER_CANCELLED": "Sprzedaż została anulowana",
+      "AUCTION_WITHDRAWN": "Gołąb, na którego licytowałeś, został wycofany"
     },
     "hello": "Dzień dobry,",
     "lotLabel": "Partia {label}",
@@ -760,7 +761,11 @@
       "subject": "Resetowanie hasła",
       "body": "Dzień dobry, {name}.\n\nOtrzymaliśmy prośbę o zresetowanie Twojego hasła. Otwórz poniższy link i ustaw nowe:\n\n{link}\n\nLink jest ważny {minutes} minut i można go użyć tylko raz.\nJeśli to nie Ty, zignoruj tę wiadomość — Twoje hasło pozostanie bez zmian."
     },
-    "consentText": "Wyrażam zgodę na otrzymywanie wiadomości e-mail o aukcjach i gołębiach. Mogę zrezygnować w każdej chwili, klikając link w każdej wiadomości."
+    "consentText": "Wyrażam zgodę na otrzymywanie wiadomości e-mail o aukcjach i gołębiach. Mogę zrezygnować w każdej chwili, klikając link w każdej wiadomości.",
+    "withdrawn": {
+      "body": "Gołąb {pigeon} (obrączka {ring}) został wycofany z aukcji przez organizatora. Twoja oferta nie jest już ważna i nie masz nic do zapłaty.",
+      "reason": "Powód: {reason}"
+    }
   },
   "traits": {
     "groups": {

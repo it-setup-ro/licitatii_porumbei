@@ -43,13 +43,15 @@ export default async function SalePage({
           // loturile în ciornă nu există încă pentru cumpărători
           where: { status: { not: "DRAFT" } },
           orderBy: { number: "asc" },
-          include: { auctions: { orderBy: { lotPosition: "asc" }, include: cardInclude } },
+          include: { auctions: { where: { hiddenAt: null }, orderBy: { lotPosition: "asc" }, include: cardInclude } },
         },
       },
     }),
     getSettings(),
   ]);
   if (!sale || sale.lots.length === 0) notFound();
+  // licitație arhivată: pentru vizitatori nu există
+  if (sale.archivedAt) notFound();
   const eurRate = await getEurRate();
 
   // Articolele despre crescător, alese de administrator la scrierea lor.

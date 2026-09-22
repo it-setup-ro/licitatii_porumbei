@@ -1,0 +1,91 @@
+import { test, expect } from "@playwright/test";
+import { login } from "./helpers";
+
+/**
+ * Uneltele cerute după verificarea site-ului: comenzile din magazin, jurnalul
+ * de e-mailuri cu retrimitere, ștergerile din administrare și paginarea.
+ */
+
+test.describe("Unelte de administrare", () => {
+  test("paginile noi se deschid și au ce trebuie", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+
+    await page.goto("/ro/admin/shop-orders");
+    await expect(page.locator("h1")).toContainText("Comenzi magazin");
+    await expect(page.getByTestId("shop-tab-pending_payment")).toBeVisible();
+    await expect(page.getByTestId("shop-search")).toBeVisible();
+
+    await page.goto("/ro/admin/emails");
+    await expect(page.locator("h1")).toContainText("E-mailuri");
+    await expect(page.getByTestId("emails-tab-failed")).toBeVisible();
+    await expect(page.getByTestId("emails-search")).toBeVisible();
+
+    await page.goto("/ro/admin/fixed-price");
+    await expect(page.locator("h1")).toContainText("Preț fix");
+
+    await page.goto("/ro/admin/audit");
+    await expect(page.locator("h1")).toBeVisible();
+  });
+
+  test("un e-mail din jurnal se poate trimite din nou", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/emails");
+
+    const randuri = page.getByTestId("email-row");
+    if ((await randuri.count()) === 0) {
+      await expect(page.getByTestId("emails-empty")).toBeVisible();
+      return;
+    }
+    await randuri.first().locator("summary").click();
+    await randuri.first().getByTestId("email-resend").click();
+    // fără SMTP pornit în teste, răspunsul spune că n-a plecat — dar butonul lucrează
+    await expect(randuri.first().getByTestId("email-resend-result")).toBeVisible();
+  });
+
+  test("un link din meniu se poate șterge definitiv", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+
+    const creat = await page.request.post("/api/admin/links", {
+      data: {
+        group: "CONTESTS",
+        labelRo: "Link de test pentru ștergere",
+        labelEn: "Test link",
+        url: "https://example.com/de-sters",
+        sortIdx: 95,
+        active: false,
+      },
+    });
+    expect(creat.ok()).toBe(true);
+    const { id } = await creat.json();
+
+    const sters = await page.request.delete(`/api/admin/links/${id}`);
+    expect(sters.ok()).toBe(true);
+
+    // a doua oară nu mai există
+    const dinNou = await page.request.delete(`/api/admin/links/${id}`);
+    expect(dinNou.status()).toBe(404);
+  });
+
+  test("un cumpărător se poate bloca și debloca", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/users");
+
+    // căutăm un cumpărător din baza de test
+    await page.getByTestId("users-search").fill("buyer");
+    await page.getByTestId("users-search").press("Enter");
+
+    const rand = page.getByTestId("user-row").first();
+    if ((await page.getByTestId("user-row").count()) === 0) return;
+
+    const actiuni = rand.getByTestId("user-row-actions-toggle");
+    if ((await actiuni.count()) === 0) return; // e administrator: nu se blochează
+
+    const eticheta = (await actiuni.innerText()).trim();
+    await actiuni.click();
+    await expect(rand.getByTestId("user-row-actions-toggle")).not.toHaveText(eticheta);
+
+    // înapoi cum era, ca să nu stricăm celelalte teste
+    await rand.getByTestId("user-row-actions-toggle").click();
+    await expect(rand.getByTestId("user-row-actions-toggle")).toHaveText(eticheta);
+  });
+});
