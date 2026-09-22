@@ -39,7 +39,10 @@ export default function ContestCarousel({
 
   return (
     <div data-testid="contest-carousel">
-      <ContestBanner contest={curent} locale={locale} labels={labels} />
+      {/* „key" forțează remontarea, deci animația pornește la fiecare schimbare */}
+      <div key={curent.slug} className="contest-in">
+        <ContestBanner contest={curent} locale={locale} labels={labels} />
+      </div>
 
       <div className="mx-auto -mt-4 flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 pb-6">
         {contests.length > 1 ? (

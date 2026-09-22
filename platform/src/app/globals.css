@@ -177,3 +177,27 @@ h1, h2, h3, .font-display {
     0 2px 12px rgba(8, 20, 38, 0.55),
     0 6px 30px rgba(8, 20, 38, 0.4);
 }
+
+/* Caruselul de concursuri: banda nouă intră stins și urcă puțin, ca schimbarea
+   să se vadă fără ca pagina să sară. Scurtă: se repetă la fiecare 7 secunde. */
+@keyframes contest-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.contest-in {
+  animation: contest-in 0.4s ease-out;
+}
+
+/* Cine a cerut mai puțină mișcare primește schimbarea simplă. */
+@media (prefers-reduced-motion: reduce) {
+  .contest-in {
+    animation: none;
+  }
+}
