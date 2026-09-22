@@ -183,7 +183,19 @@ h1, h2, h3, .font-display {
 @keyframes contest-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* În arabă se citește de la dreapta la stânga, deci banda intră din partea opusă. */
+@keyframes contest-in-rtl {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
   }
   to {
     opacity: 1;
@@ -192,7 +204,11 @@ h1, h2, h3, .font-display {
 }
 
 .contest-in {
-  animation: contest-in 0.4s ease-out;
+  animation: contest-in 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[dir="rtl"] .contest-in {
+  animation-name: contest-in-rtl;
 }
 
 /* Cine a cerut mai puțină mișcare primește schimbarea simplă. */

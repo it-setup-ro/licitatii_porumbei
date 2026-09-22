@@ -24,6 +24,23 @@ export type AuctionEvent =
       endsAt: string;
       extended: boolean;
     }
+  /**
+   * Starea curentă, trimisă la deschiderea fluxului. Fără ea, ofertele date
+   * cât timp conexiunea se stabilea se pierdeau: ecranul rămânea cu prețul
+   * de la randarea paginii.
+   */
+  | {
+      kind: "sync";
+      auctionId: string;
+      priceCents: number;
+      minNextCents: number;
+      stepCents: number;
+      bidCount: number;
+      bidderCount: number;
+      reserve: string;
+      leadingBidderId: string | null;
+      endsAt: string;
+    }
   | { kind: "closed"; auctionId: string; winnerId: string | null; priceCents: number }
   /** ora de inchidere s-a schimbat din administrare (deocamdata: unealta de test) */
   | { kind: "rescheduled"; auctionId: string; endsAt: string };

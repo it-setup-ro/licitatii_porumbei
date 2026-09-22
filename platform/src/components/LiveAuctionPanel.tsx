@@ -125,6 +125,24 @@ export default function LiveAuctionPanel(props: Props) {
             if (isLeadingNow) setShowOutbid(false);
             wasLeading.current = isLeadingNow;
           }
+        } else if (ev.kind === "sync") {
+          // starea de la conectare: aducem ecranul la zi fără fulger și fără
+          // „ai fost depășit" — nu s-a întâmplat nimic acum, doar ne-am conectat
+          setPriceCents(ev.priceCents);
+          setBidCount(ev.bidCount);
+          if (typeof ev.bidderCount === "number") setBidderCount(ev.bidderCount);
+          if (typeof ev.stepCents === "number") setStep(ev.stepCents);
+          if (ev.reserve) setReserve(ev.reserve);
+          setEndsAt(ev.endsAt);
+          if (typeof ev.minNextCents === "number" && ev.youAreLeading !== true) {
+            setMinNext(ev.minNextCents);
+            bumpInput(ev.minNextCents);
+          }
+          if (props.userId) {
+            const isLeadingNow = ev.youAreLeading === true;
+            setLeading(isLeadingNow);
+            wasLeading.current = isLeadingNow;
+          }
         } else if (ev.kind === "rescheduled") {
           // ora de inchidere a fost mutata din administrare
           setEndsAt(ev.endsAt);

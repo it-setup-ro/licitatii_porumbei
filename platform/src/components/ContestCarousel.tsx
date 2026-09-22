@@ -38,7 +38,7 @@ export default function ContestCarousel({
   if (!curent) return null;
 
   return (
-    <div data-testid="contest-carousel">
+    <div data-testid="contest-carousel" className="overflow-hidden">
       {/* „key" forțează remontarea, deci animația pornește la fiecare schimbare */}
       <div key={curent.slug} className="contest-in">
         <ContestBanner contest={curent} locale={locale} labels={labels} />
