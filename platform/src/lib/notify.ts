@@ -29,7 +29,9 @@ export type NotifyType =
   | "PIGEON_UNAVAILABLE"
   | "PAYMENT_INSTRUCTIONS"
   | "ORDER_CANCELLED"
-  | "AUCTION_WITHDRAWN";
+  | "AUCTION_WITHDRAWN"
+  | "ARTICLE_PUBLISHED"
+  | "ARTICLE_REJECTED";
 
 
 export async function notify(

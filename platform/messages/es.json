@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "Las palomas por las que has pujado cierran en {minutes} minutos.",
     "PIGEON_UNAVAILABLE": "La paloma {lot} ya no está disponible tras la subasta. No se puede entregar y el pedido se ha cancelado.",
     "PAYMENT_INSTRUCTIONS": "Has comprado «{lot}» por {price}. Los datos de pago están en tu pedido.",
-    "ORDER_CANCELLED": "La venta de «{lot}» se ha cancelado: no se recibió el pago."
+    "ORDER_CANCELLED": "La venta de «{lot}» se ha cancelado: no se recibió el pago.",
+    "ARTICLE_PUBLISHED": "Tu artículo “{titlu}” ha sido publicado.",
+    "ARTICLE_REJECTED": "El artículo “{titlu}” todavía no ha sido publicado."
   },
   "sell": {
     "title": "Publicar una paloma",
@@ -567,7 +569,8 @@
     "unsubIntro": "Pulsa el botón y no recibirás más correos nuestros.",
     "unsubButton": "Darme de baja",
     "unsubDone": "Ya no estás en la lista. No recibirás más correos nuestros.",
-    "unsubBad": "Este enlace ya no es válido. Quizá ya lo hayas usado."
+    "unsubBad": "Este enlace ya no es válido. Quizá ya lo hayas usado.",
+    "help": "Ayuda"
   },
   "articles": {
     "title": "Artículos",
@@ -575,7 +578,8 @@
     "readMore": "Leer el artículo",
     "published": "Publicado el {date}",
     "empty": "Todavía no hay artículos publicados.",
-    "backToList": "← Todos los artículos"
+    "backToList": "← Todos los artículos",
+    "propose": "Propón un artículo"
   },
   "contests": {
     "title": "Concursos de campeonato",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "La paloma que has ganado ya no está disponible",
       "PAYMENT_INSTRUCTIONS": "Datos de pago de la paloma que has comprado",
       "ORDER_CANCELLED": "La venta se ha cancelado",
-      "AUCTION_WITHDRAWN": "Una paloma por la que has pujado ha sido retirada"
+      "AUCTION_WITHDRAWN": "Una paloma por la que has pujado ha sido retirada",
+      "ARTICLE_PUBLISHED": "Tu artículo ha sido publicado",
+      "ARTICLE_REJECTED": "Sobre el artículo que nos enviaste"
     },
     "hello": "Hola:",
     "lotLabel": "Lote {label}",
@@ -898,5 +904,47 @@
         "supple": "Flexible"
       }
     }
+  },
+  "help": {
+    "title": "Ayuda",
+    "intro": "Las preguntas que nos hacen más a menudo. Si no encuentras tu respuesta, escríbenos.",
+    "empty": "Aquí todavía no hay preguntas. Escríbenos y te respondemos.",
+    "stillStuck": "¿Sigue sin estar claro?",
+    "stillStuckText": "Escríbenos: normalmente respondemos el mismo día.",
+    "writeUs": "Escríbenos",
+    "howItWorks": "Cómo funciona",
+    "groups": {
+      "ACCOUNT": "Cuenta y registro",
+      "BIDDING": "Cómo pujar",
+      "PAYMENT": "Pago",
+      "SHIPPING": "Transporte y entrega",
+      "OTHER": "Otros"
+    }
+  },
+  "propose": {
+    "title": "Propón un artículo",
+    "intro": "¿Tienes una historia sobre tus palomas, sobre un vuelo o un consejo para otros criadores? Envíala aquí. La leemos y, si está lista para publicarse, aparece en Artículos con tu nombre.",
+    "loginNeeded": "Entra en tu cuenta para enviar un artículo.",
+    "login": "Iniciar sesión",
+    "sellersOnly": "Los artículos los pueden enviar los criadores aprobados. Si quieres escribir para la web, dínoslo.",
+    "writeUs": "Escríbenos",
+    "titleLabel": "El título",
+    "titlePlaceholder": "Ej.: Cómo preparé mis palomas para el maratón",
+    "bodyLabel": "El artículo",
+    "bodyPlaceholder": "Tómate tu tiempo, como si se lo contaras a un amigo.",
+    "bodyHint": "Al menos 100 caracteres. No te preocupes por las faltas: nosotros las arreglamos.",
+    "mediaLabel": "Fotos o vídeos (no es obligatorio)",
+    "submit": "Enviar el artículo",
+    "sending": "Enviando…",
+    "thanksTitle": "¡Hemos recibido tu artículo, gracias!",
+    "thanksText": "Lo leemos y te decimos cuándo aparece en la web. Si hay que arreglar algo, te escribimos.",
+    "again": "Enviar otro",
+    "tooMany": "Ya has enviado varios artículos hoy. Prueba mañana.",
+    "failed": "No se ha podido enviar. Inténtalo otra vez.",
+    "mine": "Lo que has enviado",
+    "statusPublished": "publicado",
+    "statusWaiting": "en espera",
+    "adminNote": "Nuestra respuesta",
+    "seeIt": "Ver el artículo"
   }
 }

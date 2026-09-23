@@ -28,8 +28,20 @@ export default async function ArticlesPage({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
-      <h1 className="font-display text-3xl font-bold">{t("title")}</h1>
-      <p className="mt-2 text-ink/70">{t("subtitle")}</p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="font-display text-3xl font-bold">{t("title")}</h1>
+          <p className="mt-2 text-ink/70">{t("subtitle")}</p>
+        </div>
+        {/* Clientul voia articole scrise de crescători, nu doar de admin. */}
+        <Link
+          href="/articles/propose"
+          className="rounded-xl border border-ink/20 px-4 py-2 text-sm font-semibold hover:border-wing-blue"
+          data-testid="articles-propose-link"
+        >
+          {t("propose")}
+        </Link>
+      </div>
 
       {articles.length === 0 ? (
         <p className="mt-10 text-ink/50" data-testid="articles-empty">

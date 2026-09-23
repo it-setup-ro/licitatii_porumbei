@@ -88,4 +88,28 @@ test.describe("Unelte de administrare", () => {
     await rand.getByTestId("user-row-actions-toggle").click();
     await expect(rand.getByTestId("user-row-actions-toggle")).toHaveText(eticheta);
   });
+
+  /**
+   * Daniel: „unde se setează datele de SMTP… fă locul evident în administrare,
+   * că uităm de situație”. În teste nu e configurat niciun serviciu, deci
+   * trebuie să se vadă limpede asta, împreună cu pașii.
+   */
+  test("starea trimiterii de e-mailuri se vede sus, cu pașii de pornire", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/emails");
+    const caseta = page.getByTestId("email-setup");
+    await expect(caseta).toBeVisible();
+    await expect(caseta.getByTestId("email-setup-missing")).toBeVisible();
+    await expect(caseta).toContainText("set-smtp.sh");
+    await expect(caseta).toContainText("Gmail");
+    // fără configurare nu are rost butonul de probă
+    await expect(page.locator('[data-testid="email-test-send"]')).toHaveCount(0);
+
+    // iar proba cerută prin API spune limpede de ce nu merge
+    const res = await page.request.post("/api/admin/email-test", {
+      data: { to: "cineva@e2e.test" },
+    });
+    expect(res.status()).toBe(409);
+    expect((await res.json()).error).toBe("SMTP_NECONFIGURAT");
+  });
 });

@@ -126,6 +126,7 @@ export default function SiteFooter({
           title={n("info")}
           testid="footer-info"
           links={[
+            { href: "/help", label: t("help") },
             { href: "/how-it-works", label: t("howItWorks") },
             { href: "/info/regulament", label: n("infoRules") },
             { href: "/info/termeni-si-conditii", label: t("terms") },

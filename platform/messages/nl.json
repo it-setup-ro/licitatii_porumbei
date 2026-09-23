@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "De duiven waarop je hebt geboden sluiten over {minutes} minuten.",
     "PIGEON_UNAVAILABLE": "De duif {lot} is na de veiling niet meer beschikbaar. Ze kan niet worden overhandigd en de bestelling is geannuleerd.",
     "PAYMENT_INSTRUCTIONS": "Je hebt “{lot}” gekocht voor {price}. De betalingsgegevens staan in je bestelling.",
-    "ORDER_CANCELLED": "De verkoop van “{lot}” is geannuleerd: de betaling is niet ontvangen."
+    "ORDER_CANCELLED": "De verkoop van “{lot}” is geannuleerd: de betaling is niet ontvangen.",
+    "ARTICLE_PUBLISHED": "Je artikel ‘{titlu}’ is gepubliceerd.",
+    "ARTICLE_REJECTED": "Het artikel ‘{titlu}’ is nog niet gepubliceerd."
   },
   "sell": {
     "title": "Duif aanbieden",
@@ -567,7 +569,8 @@
     "unsubIntro": "Druk op de knop en je ontvangt geen e-mails meer van ons.",
     "unsubButton": "Afmelden",
     "unsubDone": "Je staat niet meer op de lijst. Geen e-mails meer van ons.",
-    "unsubBad": "Deze link is niet meer geldig. Misschien heb je hem al gebruikt."
+    "unsubBad": "Deze link is niet meer geldig. Misschien heb je hem al gebruikt.",
+    "help": "Hulp"
   },
   "articles": {
     "title": "Artikels",
@@ -575,7 +578,8 @@
     "readMore": "Lees het artikel",
     "published": "Gepubliceerd op {date}",
     "empty": "Nog geen artikels gepubliceerd.",
-    "backToList": "← Alle artikels"
+    "backToList": "← Alle artikels",
+    "propose": "Stel een artikel voor"
   },
   "contests": {
     "title": "Kampioenschappen",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "De duif die je hebt gewonnen is niet meer beschikbaar",
       "PAYMENT_INSTRUCTIONS": "Betalingsgegevens voor de duif die je hebt gekocht",
       "ORDER_CANCELLED": "De verkoop is geannuleerd",
-      "AUCTION_WITHDRAWN": "Een duif waarop je hebt geboden is teruggetrokken"
+      "AUCTION_WITHDRAWN": "Een duif waarop je hebt geboden is teruggetrokken",
+      "ARTICLE_PUBLISHED": "Je artikel is gepubliceerd",
+      "ARTICLE_REJECTED": "Over het artikel dat je ons stuurde"
     },
     "hello": "Hallo,",
     "lotLabel": "Lot {label}",
@@ -898,5 +904,47 @@
         "supple": "Soepel"
       }
     }
+  },
+  "help": {
+    "title": "Hulp",
+    "intro": "De vragen die we het vaakst krijgen. Vind je je antwoord niet? Schrijf ons.",
+    "empty": "Hier staan nog geen vragen. Schrijf ons en we antwoorden.",
+    "stillStuck": "Nog niet duidelijk?",
+    "stillStuckText": "Schrijf ons — meestal antwoorden we dezelfde dag.",
+    "writeUs": "Schrijf ons",
+    "howItWorks": "Hoe het werkt",
+    "groups": {
+      "ACCOUNT": "Account en aanmelden",
+      "BIDDING": "Zo bied je",
+      "PAYMENT": "Betaling",
+      "SHIPPING": "Verzending en overdracht",
+      "OTHER": "Overige"
+    }
+  },
+  "propose": {
+    "title": "Stel een artikel voor",
+    "intro": "Heb je een verhaal over je duiven, een vlucht of een tip voor andere liefhebbers? Stuur het hier in. Wij lezen het en als het klaar is om te publiceren, verschijnt het bij Artikelen met jouw naam erbij.",
+    "loginNeeded": "Meld je aan om een artikel te versturen.",
+    "login": "Aanmelden",
+    "sellersOnly": "Artikelen kunnen worden ingestuurd door goedgekeurde duivenmelkers. Wil je voor de site schrijven? Laat het ons weten.",
+    "writeUs": "Schrijf ons",
+    "titleLabel": "Titel",
+    "titlePlaceholder": "Bijv.: Zo maakte ik mijn duiven klaar voor de marathon",
+    "bodyLabel": "Het artikel",
+    "bodyPlaceholder": "Neem er de tijd voor, net alsof je het aan een vriend vertelt.",
+    "bodyHint": "Minstens 100 tekens. Maak je geen zorgen over foutjes — die verbeteren wij.",
+    "mediaLabel": "Foto’s of video’s (niet verplicht)",
+    "submit": "Artikel versturen",
+    "sending": "Versturen…",
+    "thanksTitle": "We hebben je artikel ontvangen, bedankt!",
+    "thanksText": "We lezen het en laten je weten wanneer het online staat. Moet er iets bijgeschaafd worden, dan schrijven we je.",
+    "again": "Nog een insturen",
+    "tooMany": "Je hebt vandaag al een paar artikelen ingestuurd. Probeer het morgen opnieuw.",
+    "failed": "Het versturen is niet gelukt. Probeer het nog eens.",
+    "mine": "Wat je hebt ingestuurd",
+    "statusPublished": "gepubliceerd",
+    "statusWaiting": "in afwachting",
+    "adminNote": "Onze reactie",
+    "seeIt": "Bekijk het artikel"
   }
 }

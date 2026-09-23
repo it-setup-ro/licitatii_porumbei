@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import ArticleComposer from "@/components/admin/ArticleComposer";
 import RowActions from "@/components/admin/RowActions";
+import ProposalActions from "@/components/admin/ProposalActions";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +21,11 @@ export default async function AdminArticlesPage({
   const articles = await prisma.article.findMany({
     orderBy: { updatedAt: "desc" },
     include: { media: { orderBy: { sortIdx: "asc" } }, _count: { select: { media: true } } },
+  });
+  const propuneri = await prisma.article.findMany({
+    where: { proposedAt: { not: null }, publishedAt: null },
+    orderBy: { proposedAt: "desc" },
+    include: { proposedBy: { select: { name: true, email: true, sellerCompany: true } } },
   });
   const editing = sp.new ? null : articles.find((a) => a.id === sp.id);
 
@@ -55,6 +61,38 @@ export default async function AdminArticlesPage({
         initialBreederId={editing?.breederId ?? ""}
         breeders={breeders}
       />
+
+      {propuneri.length > 0 && (
+        <section className="mt-10" data-testid="admin-proposals">
+          <h2 className="font-display mb-1 text-xl font-bold">
+            Propuneri de la crescători ({propuneri.length})
+          </h2>
+          <p className="mb-3 text-sm text-ink/60">
+            Le-a scris altcineva. Deschide-le, corectează ce trebuie (titlu, traducere, crescător),
+            apoi publică — sau respinge cu un motiv, care ajunge la autor.
+          </p>
+          <div className="space-y-2">
+            {propuneri.map((a) => (
+              <div
+                key={a.id}
+                className="flex flex-wrap items-center gap-3 rounded-2xl border border-wing-orange/30 bg-wing-orange/5 p-3"
+                data-testid="admin-proposal-row"
+              >
+                <a href={`?id=${a.id}`} className="min-w-0 flex-1">
+                  <span className="block truncate font-semibold">{a.titleRo}</span>
+                  <span className="text-xs text-ink/50">
+                    {a.proposedBy?.sellerCompany || a.proposedBy?.name || a.proposedBy?.email} ·{" "}
+                    {a.proposedAt
+                      ? new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium" }).format(a.proposedAt)
+                      : ""}
+                  </span>
+                </a>
+                <ProposalActions articleId={a.id} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <h2 className="font-display mb-3 mt-10 text-xl font-bold">Articolele tale</h2>
       {articles.length === 0 ? (

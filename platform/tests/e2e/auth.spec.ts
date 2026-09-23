@@ -53,4 +53,47 @@ test.describe("Autentificare si conturi", () => {
     await page.goto("/ro/admin");
     await expect(page).toHaveURL(/\/ro$/);
   });
+
+  /**
+   * Daniel, pe serverul viu: „îmi zice de câmpuri roșii și nu roșește niciun
+   * câmp”. Parola era scrisă în câmp, dar pusă fără ca React să afle (așa
+   * completează gestionarele de parole), deci formularul o credea goală.
+   */
+  test("parola pusă de gestionarul de parole e luată în seamă", async ({ page }) => {
+    test.setTimeout(120_000);
+    const id = Date.now();
+    await page.goto("/ro/register");
+    await fillRegisterForm(page, {
+      firstName: "Gestionar",
+      lastName: "Parole",
+      email: `gestionar-${id}@e2e.test`,
+      password: "nuconteaza",
+    });
+
+    // scriem parola direct în câmp, fără evenimentele pe care le ascultă React
+    await page.evaluate(() => {
+      const camp = document.querySelector('[data-testid="reg-password"]') as HTMLInputElement;
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")!.set!;
+      setter.call(camp, "parolaDinSeif1");
+    });
+
+    await page.getByTestId("reg-submit").click();
+    await expect(page.getByTestId("user-menu").or(page.getByTestId("notif-bell")).first()).toBeVisible({
+      timeout: 20_000,
+    });
+  });
+
+  test("parola prea scurtă înroșește chiar câmpul de parolă", async ({ page }) => {
+    test.setTimeout(120_000);
+    const id = Date.now();
+    await page.goto("/ro/register");
+    await fillRegisterForm(page, {
+      firstName: "Scurtă",
+      lastName: "Parolă",
+      email: `scurta-${id}@e2e.test`,
+      password: "scurta",
+    });
+    await page.getByTestId("reg-submit").click();
+    await expect(page.getByTestId("reg-password-error")).toBeVisible();
+  });
 });

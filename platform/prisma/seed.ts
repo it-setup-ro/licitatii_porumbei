@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { FAQ_SEED } from "./faq-texts";
 import bcrypt from "bcryptjs";
 import { seedSections } from "./seed-sections";
 
@@ -456,6 +457,10 @@ async function main() {
     mainAuctionId: a1.id,
     pedigree,
   });
+
+  // întrebările de la Ajutor — clientul le rescrie din administrare
+  await prisma.faqItem.deleteMany({});
+  await prisma.faqItem.createMany({ data: FAQ_SEED });
 
   console.log("Seed complet: admin@nbp.test/admin1234, seller@nbp.test/seller1234, buyer1@nbp.test/buyer1234, buyer2@nbp.test/buyer1234");
 }

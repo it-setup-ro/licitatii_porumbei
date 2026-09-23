@@ -16,6 +16,7 @@ export default function PasswordField({
   testid,
   autoComplete = "current-password",
   hint,
+  error,
   required = true,
 }: {
   label: string;
@@ -24,6 +25,8 @@ export default function PasswordField({
   testid: string;
   autoComplete?: "current-password" | "new-password";
   hint?: string;
+  /** ce e greșit la parolă; câmpul se înroșește și scrie dedesubt */
+  error?: string;
   required?: boolean;
 }) {
   const [shown, setShown] = useState(false);
@@ -40,7 +43,10 @@ export default function PasswordField({
           data-testid={testid}
           onChange={(e) => onChange(e.target.value)}
           onBlur={() => setShown(false)}
-          className="w-full rounded-xl border border-ink/20 bg-ivory-soft py-2.5 ps-4 pe-12 outline-none focus:border-wing-blue"
+          aria-invalid={error ? true : undefined}
+          className={`w-full rounded-xl border bg-ivory-soft py-2.5 ps-4 pe-12 outline-none focus:border-wing-blue ${
+            error ? "border-wing-red" : "border-ink/20"
+          }`}
         />
         <button
           type="button"
@@ -57,6 +63,11 @@ export default function PasswordField({
           {shown ? <EyeOff /> : <Eye />}
         </button>
       </div>
+      {error && (
+        <span className="mt-1 block text-sm text-wing-red" data-testid={`${testid}-error`}>
+          {error}
+        </span>
+      )}
       {hint && <span className="mt-1 block text-xs text-ink/50">{hint}</span>}
     </label>
   );

@@ -1,7 +1,7 @@
 import { test, expect, type Page, type APIRequestContext } from "@playwright/test";
 import { execSync } from "child_process";
 import path from "path";
-import { login } from "./helpers";
+import { login, asteaptaFormularViu } from "./helpers";
 import { TEST_DATABASE_URL } from "../../playwright.config";
 
 /**
@@ -99,11 +99,13 @@ test.describe("Licitații pe loturi — din administrare", () => {
     const nume = `Burca Test ${id}`;
 
     await page.goto("/ro/admin/breeders?new=1");
+    await asteaptaFormularViu(page, "field-name");
     await page.getByTestId("field-name").fill(nume);
     await page.getByTestId("editor-save").click();
     await expect(page.getByTestId("editor-saved")).toBeVisible();
 
     await page.goto("/ro/admin/sales?new=1");
+    await asteaptaFormularViu(page, "field-slug");
     await page.getByTestId("field-breederId").selectOption({ label: nume });
     await page.getByTestId("field-commissionPercent").fill("23");
     await page.getByTestId("field-slug").fill(`Burca Ionuț ${id}`);

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login } from "./helpers";
+import { login, asteaptaFormularViu } from "./helpers";
 
 /**
  * Secțiunile noi din meniu: bara de sus cu ceas, preț fix, produse + coș,
@@ -360,6 +360,7 @@ test.describe("Concursuri — linkuri catre site-uri externe", () => {
     // adauga si sterg linkuri, iar „primul" nu e mereu acelasi.
     const rand = page.locator("tr").filter({ hasText: "Clasamente 2026" });
     await rand.getByTestId("link-edit").click();
+    await asteaptaFormularViu(page, "field-url");
     await page.getByTestId("field-url").fill("https://example.org/clasamente-2027");
     await page.getByTestId("editor-save").click();
     await expect(page.getByTestId("editor-saved")).toBeVisible();

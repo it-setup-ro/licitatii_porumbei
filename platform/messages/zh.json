@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "您出价的鸽子将在 {minutes} 分钟后结拍。",
     "PIGEON_UNAVAILABLE": "拍卖结束后，鸽子 {lot} 已无法交付，订单已取消。",
     "PAYMENT_INSTRUCTIONS": "您以 {price} 购得“{lot}”。付款信息请查看您的订单。",
-    "ORDER_CANCELLED": "“{lot}”的交易已取消：未收到付款。"
+    "ORDER_CANCELLED": "“{lot}”的交易已取消：未收到付款。",
+    "ARTICLE_PUBLISHED": "您的文章“{titlu}”已发布。",
+    "ARTICLE_REJECTED": "文章“{titlu}”暂时还没有发布。"
   },
   "sell": {
     "title": "上架鸽子",
@@ -567,7 +569,8 @@
     "unsubIntro": "点击按钮后，您将不再收到我们的任何邮件。",
     "unsubButton": "退订",
     "unsubDone": "您已退订，不会再收到我们的邮件。",
-    "unsubBad": "此链接已失效，可能您已使用过。"
+    "unsubBad": "此链接已失效，可能您已使用过。",
+    "help": "帮助"
   },
   "articles": {
     "title": "文章",
@@ -575,7 +578,8 @@
     "readMore": "阅读文章",
     "published": "发布于 {date}",
     "empty": "暂无已发布的文章。",
-    "backToList": "← 全部文章"
+    "backToList": "← 全部文章",
+    "propose": "投稿文章"
   },
   "contests": {
     "title": "锦标赛",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "您拍得的鸽子已无法交付",
       "PAYMENT_INSTRUCTIONS": "您所购鸽子的付款信息",
       "ORDER_CANCELLED": "交易已取消",
-      "AUCTION_WITHDRAWN": "您出价的鸽子已被撤回"
+      "AUCTION_WITHDRAWN": "您出价的鸽子已被撤回",
+      "ARTICLE_PUBLISHED": "您的文章已发布",
+      "ARTICLE_REJECTED": "关于您发来的文章"
     },
     "hello": "您好，",
     "lotLabel": "第 {label} 号拍品",
@@ -898,5 +904,47 @@
         "supple": "柔韧"
       }
     }
+  },
+  "help": {
+    "title": "帮助",
+    "intro": "这些是我们最常被问到的问题。如果没有找到答案，请写信给我们。",
+    "empty": "这里还没有问题。写信给我们，我们会回复您。",
+    "stillStuck": "还是不清楚吗？",
+    "stillStuckText": "写信给我们，我们通常当天就回复。",
+    "writeUs": "写信给我们",
+    "howItWorks": "运作方式",
+    "groups": {
+      "ACCOUNT": "账户与注册",
+      "BIDDING": "如何出价",
+      "PAYMENT": "付款",
+      "SHIPPING": "运输与交鸽",
+      "OTHER": "其他"
+    }
+  },
+  "propose": {
+    "title": "投稿文章",
+    "intro": "您有关于自己鸽子的故事、一场比赛的经历，或者想给其他鸽友的建议吗？请发到这里。我们会阅读，如果适合发表，文章就会署上您的名字出现在“文章”栏目里。",
+    "loginNeeded": "请登录后投稿文章。",
+    "login": "登录",
+    "sellersOnly": "文章可以由已通过审核的鸽舍主人投稿。如果您想为本站撰稿，请告诉我们。",
+    "writeUs": "写信给我们",
+    "titleLabel": "标题",
+    "titlePlaceholder": "例如：我是怎样为马拉松赛训练我的鸽子的",
+    "bodyLabel": "文章内容",
+    "bodyPlaceholder": "慢慢写，就像在跟朋友聊天一样。",
+    "bodyHint": "至少 100 个字符。不用担心写错，我们会帮您修改。",
+    "mediaLabel": "照片或短视频（可不填）",
+    "submit": "发送文章",
+    "sending": "正在发送…",
+    "thanksTitle": "我们已收到您的文章，谢谢！",
+    "thanksText": "我们会阅读，发布后会通知您。如果有需要修改的地方，我们会写信给您。",
+    "again": "再投一篇",
+    "tooMany": "您今天已经投了几篇文章。请明天再试。",
+    "failed": "发送失败。请再试一次。",
+    "mine": "您投过的文章",
+    "statusPublished": "已发布",
+    "statusWaiting": "等待中",
+    "adminNote": "我们的回复",
+    "seeIt": "查看文章"
   }
 }

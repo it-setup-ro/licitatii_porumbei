@@ -79,6 +79,7 @@ model User {
   auctionsWon     Auction[]            @relation("winner")
   approvedLots    Auction[]            @relation("approver")
   shopOrders      ShopOrder[]          @relation("shopBuyer")
+  articlesProposed Article[]           @relation("articleAuthor")
 }
 
 /// Link de resetare a parolei. In baza se tine doar amprenta (sha256) —
@@ -429,6 +430,12 @@ model Article {
   /// general, care apare doar la Articole.
   breederId  String?
   breeder    Breeder?  @relation(fields: [breederId], references: [id])
+  /// Cine l-a propus, dacă nu l-a scris administratorul. Propunerea stă
+  /// nepublicată până când adminul o citește; nota rămâne dacă o respinge.
+  proposedById String?
+  proposedBy   User?     @relation("articleAuthor", fields: [proposedById], references: [id])
+  proposedAt   DateTime?
+  reviewNote   String?
   publishedAt DateTime?
 
   media     ArticleMedia[]
@@ -722,4 +729,23 @@ model AlertRecipient {
   updatedAt DateTime @updatedAt
 
   @@index([kind, active])
+}
+
+/// O întrebare de la Ajutor. Scrisă și rearanjată din administrare, ca textele
+/// să le poată schimba clientul fără programator.
+model FaqItem {
+  id         String  @id @default(cuid())
+  /// grupa în care apare: ACCOUNT | BIDDING | PAYMENT | SHIPPING | OTHER
+  category   String  @default("OTHER")
+  questionRo String
+  questionEn String
+  answerRo   String
+  answerEn   String
+  sortIdx    Int     @default(0)
+  published  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, sortIdx])
 }

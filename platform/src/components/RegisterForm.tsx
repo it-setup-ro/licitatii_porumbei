@@ -85,13 +85,35 @@ export default function RegisterForm({
     if (!nicknameTouched) set("nickname", suggestNickname(`${first} ${last}`.trim()));
   };
 
+  /**
+   * Ce scrie chiar în câmp, când starea din React e goală.
+   *
+   * Gestionarele de parole completează câmpul fără să anunțe React, iar ce se
+   * scrie înainte de hidratare se pierde la fel: omul vedea parola în câmp și
+   * platforma se plângea că lipsește.
+   */
+  const dinCamp = (formular: HTMLFormElement, testid: string, dinStare: string) => {
+    if (dinStare) return dinStare;
+    const camp = formular.querySelector(`[data-testid="${testid}"]`) as HTMLInputElement | null;
+    return camp?.value ?? "";
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.password.length < 10) {
+    const formular = e.currentTarget as HTMLFormElement;
+    const parola = dinCamp(formular, "reg-password", form.password);
+    const porecla = dinCamp(formular, "reg-nickname", form.nickname);
+    // ce am cules din câmp intră și în stare, ca să nu se piardă la retrimitere
+    if (parola !== form.password) set("password", parola);
+    if (porecla !== form.nickname) set("nickname", porecla);
+
+    if (parola.length < 10) {
+      setFieldErrors({ password: t("errWeakPassword") });
       setError(t("errWeakPassword"));
       return;
     }
-    if (!NICKNAME_RE.test(form.nickname.trim())) {
+    if (!NICKNAME_RE.test(porecla.trim())) {
+      setFieldErrors({ nickname: t("errNickname") });
       setError(t("errNickname"));
       return;
     }
@@ -99,7 +121,7 @@ export default function RegisterForm({
     setError(null);
     setFieldErrors({});
 
-    const payload: Record<string, unknown> = { ...form, locale };
+    const payload: Record<string, unknown> = { ...form, password: parola, nickname: porecla, locale };
     if (!(sellerSignupEnabled && form.wantsSeller)) {
       delete payload.wantsSeller;
       delete payload.sellerCompany;
@@ -227,6 +249,7 @@ export default function RegisterForm({
             testid="reg-password"
             autoComplete="new-password"
             hint={t("passwordHint")}
+            error={fieldErrors.password}
           />
         </fieldset>
 

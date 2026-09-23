@@ -80,6 +80,7 @@ function groups(): Group[] {
         { href: "/admin/shop-orders", label: "Comenzi magazin", icon: <IconBox />, count: "shopOrders" },
         { href: "/admin/contests", label: "Concursuri", icon: <IconTrophy /> },
         { href: "/admin/content", label: "Pagini", icon: <IconPage /> },
+        { href: "/admin/faq", label: "Ajutor (întrebări)", icon: <IconPage /> },
         { href: "/admin/links", label: "Linkuri", icon: <IconLink /> },
         { href: "/admin/agents", label: "Transport & agenți", icon: <IconTruck /> },
       ],

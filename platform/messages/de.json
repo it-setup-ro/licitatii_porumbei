@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "Die Tauben, auf die Sie geboten haben, enden in {minutes} Minuten.",
     "PIGEON_UNAVAILABLE": "Die Taube {lot} ist nach der Auktion nicht mehr verfügbar. Sie kann nicht übergeben werden, und die Bestellung wurde storniert.",
     "PAYMENT_INSTRUCTIONS": "Sie haben „{lot}“ für {price} gekauft. Die Zahlungsdaten finden Sie in Ihrer Bestellung.",
-    "ORDER_CANCELLED": "Der Verkauf von „{lot}“ wurde storniert: Die Zahlung ist nicht eingegangen."
+    "ORDER_CANCELLED": "Der Verkauf von „{lot}“ wurde storniert: Die Zahlung ist nicht eingegangen.",
+    "ARTICLE_PUBLISHED": "Dein Artikel „{titlu}“ wurde veröffentlicht.",
+    "ARTICLE_REJECTED": "Der Artikel „{titlu}“ wurde noch nicht veröffentlicht."
   },
   "sell": {
     "title": "Taube einstellen",
@@ -567,7 +569,8 @@
     "unsubIntro": "Klicken Sie auf die Schaltfläche, und Sie erhalten keine E-Mails mehr von uns.",
     "unsubButton": "Abmelden",
     "unsubDone": "Sie wurden von der Liste entfernt. Keine E-Mails mehr von uns.",
-    "unsubBad": "Dieser Link ist nicht mehr gültig. Vielleicht haben Sie ihn bereits verwendet."
+    "unsubBad": "Dieser Link ist nicht mehr gültig. Vielleicht haben Sie ihn bereits verwendet.",
+    "help": "Hilfe"
   },
   "articles": {
     "title": "Artikel",
@@ -575,7 +578,8 @@
     "readMore": "Artikel lesen",
     "published": "Veröffentlicht am {date}",
     "empty": "Noch keine Artikel veröffentlicht.",
-    "backToList": "← Alle Artikel"
+    "backToList": "← Alle Artikel",
+    "propose": "Artikel vorschlagen"
   },
   "contests": {
     "title": "Meisterschaftswettbewerbe",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "Die ersteigerte Taube ist nicht mehr verfügbar",
       "PAYMENT_INSTRUCTIONS": "Zahlungsdaten für die gekaufte Taube",
       "ORDER_CANCELLED": "Der Verkauf wurde storniert",
-      "AUCTION_WITHDRAWN": "Eine Taube, auf die Sie geboten haben, wurde zurückgezogen"
+      "AUCTION_WITHDRAWN": "Eine Taube, auf die Sie geboten haben, wurde zurückgezogen",
+      "ARTICLE_PUBLISHED": "Dein Artikel wurde veröffentlicht",
+      "ARTICLE_REJECTED": "Zu dem Artikel, den du uns geschickt hast"
     },
     "hello": "Guten Tag,",
     "lotLabel": "Los {label}",
@@ -898,5 +904,47 @@
         "supple": "Geschmeidig"
       }
     }
+  },
+  "help": {
+    "title": "Hilfe",
+    "intro": "Die Fragen, die wir am häufigsten bekommen. Wenn du deine Antwort nicht findest, schreib uns.",
+    "empty": "Hier stehen noch keine Fragen. Schreib uns und wir antworten dir.",
+    "stillStuck": "Immer noch unklar?",
+    "stillStuckText": "Schreib uns — wir antworten meist am selben Tag.",
+    "writeUs": "Schreib uns",
+    "howItWorks": "So funktioniert es",
+    "groups": {
+      "ACCOUNT": "Konto und Anmeldung",
+      "BIDDING": "So bietest du mit",
+      "PAYMENT": "Zahlung",
+      "SHIPPING": "Versand und Übergabe",
+      "OTHER": "Sonstiges"
+    }
+  },
+  "propose": {
+    "title": "Einen Artikel vorschlagen",
+    "intro": "Hast du eine Geschichte über deine Tauben, über einen Flug oder einen Tipp für andere Züchter? Schick sie hierher. Wir lesen sie und, wenn sie zum Veröffentlichen bereit ist, erscheint sie unter Artikel mit deinem Namen.",
+    "loginNeeded": "Melde dich an, um einen Artikel zu schicken.",
+    "login": "Anmelden",
+    "sellersOnly": "Artikel können von zugelassenen Züchtern geschickt werden. Wenn du für die Seite schreiben möchtest, gib uns ein Zeichen.",
+    "writeUs": "Schreib uns",
+    "titleLabel": "Der Titel",
+    "titlePlaceholder": "Z. B.: Wie ich meine Tauben auf den Marathon vorbereitet habe",
+    "bodyLabel": "Der Artikel",
+    "bodyPlaceholder": "Nimm dir Zeit, so wie wenn du es einem Freund erzählst.",
+    "bodyHint": "Mindestens 100 Zeichen. Mach dir keine Sorgen wegen Fehlern — wir bringen sie in Ordnung.",
+    "mediaLabel": "Fotos oder Videos (nicht nötig)",
+    "submit": "Artikel schicken",
+    "sending": "Wird geschickt…",
+    "thanksTitle": "Wir haben deinen Artikel erhalten, danke!",
+    "thanksText": "Wir lesen ihn und sagen dir, wann er auf der Seite erscheint. Wenn etwas verbessert werden muss, schreiben wir dir.",
+    "again": "Noch einen schicken",
+    "tooMany": "Du hast heute schon einige Artikel geschickt. Versuch es morgen wieder.",
+    "failed": "Es konnte nicht geschickt werden. Versuch es bitte noch einmal.",
+    "mine": "Was du geschickt hast",
+    "statusPublished": "veröffentlicht",
+    "statusWaiting": "wartet",
+    "adminNote": "Unsere Antwort",
+    "seeIt": "Artikel ansehen"
   }
 }

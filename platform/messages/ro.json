@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "Porumbeii pe care ai licitat se închid în {minutes} de minute.",
     "PIGEON_UNAVAILABLE": "Porumbelul {lot} nu mai este disponibil după licitație. Nu poți intra în posesia lui, iar comanda a fost anulată.",
     "PAYMENT_INSTRUCTIONS": "Ai cumpărat „{lot}” la {price}. Datele de plată sunt în comanda ta.",
-    "ORDER_CANCELLED": "Vânzarea porumbelului „{lot}” a fost anulată: plata nu a fost primită."
+    "ORDER_CANCELLED": "Vânzarea porumbelului „{lot}” a fost anulată: plata nu a fost primită.",
+    "ARTICLE_PUBLISHED": "Articolul tău „{titlu}” a fost publicat.",
+    "ARTICLE_REJECTED": "Articolul „{titlu}” nu a fost publicat deocamdată."
   },
   "sell": {
     "title": "Listează un porumbel",
@@ -567,7 +569,8 @@
     "unsubIntro": "Apasă butonul și nu mai primești niciun e-mail de la noi.",
     "unsubButton": "Dezabonează-mă",
     "unsubDone": "Te-am scos de pe listă. Nu mai primești e-mailuri de la noi.",
-    "unsubBad": "Linkul nu mai este valabil. Poate ai apăsat deja o dată."
+    "unsubBad": "Linkul nu mai este valabil. Poate ai apăsat deja o dată.",
+    "help": "Ajutor"
   },
   "articles": {
     "title": "Articole",
@@ -575,7 +578,8 @@
     "readMore": "Citește articolul",
     "published": "Publicat la {date}",
     "empty": "Niciun articol publicat încă.",
-    "backToList": "← Toate articolele"
+    "backToList": "← Toate articolele",
+    "propose": "Propune un articol"
   },
   "contests": {
     "title": "Concursuri Campionat",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "Porumbelul câștigat nu mai este disponibil",
       "PAYMENT_INSTRUCTIONS": "Datele de plată pentru porumbelul cumpărat",
       "ORDER_CANCELLED": "Vânzarea a fost anulată",
-      "AUCTION_WITHDRAWN": "Porumbelul pe care ai licitat a fost retras"
+      "AUCTION_WITHDRAWN": "Porumbelul pe care ai licitat a fost retras",
+      "ARTICLE_PUBLISHED": "Articolul tău a fost publicat",
+      "ARTICLE_REJECTED": "Despre articolul pe care l-ai trimis"
     },
     "hello": "Bună ziua,",
     "lotLabel": "Lotul {label}",
@@ -898,5 +904,47 @@
         "supple": "Suplă"
       }
     }
+  },
+  "help": {
+    "title": "Ajutor",
+    "intro": "Întrebările pe care le primim cel mai des. Dacă nu găsești răspunsul, scrie-ne.",
+    "empty": "Încă nu sunt întrebări scrise aici. Scrie-ne și îți răspundem.",
+    "stillStuck": "Tot nu e clar?",
+    "stillStuckText": "Scrie-ne și îți răspundem, de obicei în aceeași zi.",
+    "writeUs": "Scrie-ne",
+    "howItWorks": "Cum funcționează",
+    "groups": {
+      "ACCOUNT": "Cont și înscriere",
+      "BIDDING": "Cum licitez",
+      "PAYMENT": "Plata",
+      "SHIPPING": "Transport și predare",
+      "OTHER": "Altele"
+    }
+  },
+  "propose": {
+    "title": "Propune un articol",
+    "intro": "Ai o poveste despre porumbeii tăi, un zbor sau un sfat pentru alți crescători? Trimite-o aici. O citim și, dacă e bună de publicat, apare la Articole cu numele tău.",
+    "loginNeeded": "Intră în cont ca să poți trimite un articol.",
+    "login": "Intră în cont",
+    "sellersOnly": "Articolele le pot trimite crescătorii aprobați. Dacă vrei să scrii pentru site, dă-ne un semn.",
+    "writeUs": "Scrie-ne",
+    "titleLabel": "Titlul",
+    "titlePlaceholder": "Ex.: Cum mi-am pregătit porumbeii pentru maraton",
+    "bodyLabel": "Articolul",
+    "bodyPlaceholder": "Scrie pe îndelete, ca și cum ai povesti unui prieten.",
+    "bodyHint": "Cel puțin 100 de litere. Nu-ți face griji pentru greșeli — le îndreptăm noi.",
+    "mediaLabel": "Poze sau clipuri (nu e obligatoriu)",
+    "submit": "Trimite articolul",
+    "sending": "Se trimite…",
+    "thanksTitle": "Am primit articolul, mulțumim!",
+    "thanksText": "Îl citim și îți spunem când apare pe site. Dacă e nevoie de o îndreptare, îți scriem.",
+    "again": "Mai trimit unul",
+    "tooMany": "Ai trimis deja câteva articole azi. Încearcă mâine.",
+    "failed": "Nu s-a putut trimite. Mai încearcă o dată.",
+    "mine": "Ce ai trimis",
+    "statusPublished": "publicat",
+    "statusWaiting": "așteaptă",
+    "adminNote": "Răspunsul nostru",
+    "seeIt": "Vezi articolul"
   }
 }

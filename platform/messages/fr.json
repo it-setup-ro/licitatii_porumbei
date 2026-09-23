@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "Les pigeons sur lesquels vous avez enchéri se clôturent dans {minutes} minutes.",
     "PIGEON_UNAVAILABLE": "Le pigeon {lot} n’est plus disponible après l’enchère. Il ne peut pas être remis et la commande a été annulée.",
     "PAYMENT_INSTRUCTIONS": "Vous avez acheté « {lot} » à {price}. Les informations de paiement se trouvent dans votre commande.",
-    "ORDER_CANCELLED": "La vente de « {lot} » a été annulée : le paiement n’a pas été reçu."
+    "ORDER_CANCELLED": "La vente de « {lot} » a été annulée : le paiement n’a pas été reçu.",
+    "ARTICLE_PUBLISHED": "Votre article « {titlu} » a été publié.",
+    "ARTICLE_REJECTED": "L’article « {titlu} » n’a pas encore été publié."
   },
   "sell": {
     "title": "Mettre un pigeon en vente",
@@ -567,7 +569,8 @@
     "unsubIntro": "Appuyez sur le bouton et vous ne recevrez plus aucun e-mail de notre part.",
     "unsubButton": "Se désabonner",
     "unsubDone": "Vous avez été retiré de la liste. Vous ne recevrez plus d’e-mails de notre part.",
-    "unsubBad": "Ce lien n’est plus valable. Vous l’avez peut-être déjà utilisé."
+    "unsubBad": "Ce lien n’est plus valable. Vous l’avez peut-être déjà utilisé.",
+    "help": "Aide"
   },
   "articles": {
     "title": "Articles",
@@ -575,7 +578,8 @@
     "readMore": "Lire l’article",
     "published": "Publié le {date}",
     "empty": "Aucun article publié pour l’instant.",
-    "backToList": "← Tous les articles"
+    "backToList": "← Tous les articles",
+    "propose": "Proposer un article"
   },
   "contests": {
     "title": "Concours du championnat",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "Le pigeon que vous avez remporté n’est plus disponible",
       "PAYMENT_INSTRUCTIONS": "Informations de paiement pour le pigeon acheté",
       "ORDER_CANCELLED": "La vente a été annulée",
-      "AUCTION_WITHDRAWN": "Un pigeon sur lequel vous avez enchéri a été retiré"
+      "AUCTION_WITHDRAWN": "Un pigeon sur lequel vous avez enchéri a été retiré",
+      "ARTICLE_PUBLISHED": "Votre article a été publié",
+      "ARTICLE_REJECTED": "À propos de l’article que vous nous avez envoyé"
     },
     "hello": "Bonjour,",
     "lotLabel": "Lot {label}",
@@ -898,5 +904,47 @@
         "supple": "Souple"
       }
     }
+  },
+  "help": {
+    "title": "Aide",
+    "intro": "Les questions que l’on nous pose le plus souvent. Si vous ne trouvez pas votre réponse, écrivez-nous.",
+    "empty": "Il n’y a pas encore de questions ici. Écrivez-nous et nous vous répondrons.",
+    "stillStuck": "Ce n’est toujours pas clair ?",
+    "stillStuckText": "Écrivez-nous — nous répondons d’habitude le jour même.",
+    "writeUs": "Écrivez-nous",
+    "howItWorks": "Comment ça marche",
+    "groups": {
+      "ACCOUNT": "Compte et inscription",
+      "BIDDING": "Comment enchérir",
+      "PAYMENT": "Paiement",
+      "SHIPPING": "Transport et remise",
+      "OTHER": "Autres"
+    }
+  },
+  "propose": {
+    "title": "Proposer un article",
+    "intro": "Vous avez une histoire sur vos pigeons, un concours ou un conseil pour d’autres colombophiles ? Envoyez-la ici. Nous la lisons et, si elle est prête à être publiée, elle paraît dans les Articles avec votre nom.",
+    "loginNeeded": "Connectez-vous pour envoyer un article.",
+    "login": "Se connecter",
+    "sellersOnly": "Les articles peuvent être envoyés par les colombophiles approuvés. Si vous souhaitez écrire pour le site, faites-nous signe.",
+    "writeUs": "Écrivez-nous",
+    "titleLabel": "Le titre",
+    "titlePlaceholder": "Ex. : Comment j’ai préparé mes pigeons pour le marathon",
+    "bodyLabel": "L’article",
+    "bodyPlaceholder": "Prenez votre temps, comme si vous le racontiez à un ami.",
+    "bodyHint": "Au moins 100 caractères. Ne vous inquiétez pas des fautes — nous les corrigeons.",
+    "mediaLabel": "Photos ou vidéos (facultatif)",
+    "submit": "Envoyer l’article",
+    "sending": "Envoi…",
+    "thanksTitle": "Nous avons reçu votre article, merci !",
+    "thanksText": "Nous allons le lire et vous dire quand il paraîtra sur le site. Si quelque chose doit être corrigé, nous vous écrirons.",
+    "again": "En envoyer un autre",
+    "tooMany": "Vous avez déjà envoyé plusieurs articles aujourd’hui. Réessayez demain.",
+    "failed": "L’envoi n’a pas abouti. Veuillez réessayer.",
+    "mine": "Ce que vous avez envoyé",
+    "statusPublished": "publié",
+    "statusWaiting": "en attente",
+    "adminNote": "Notre réponse",
+    "seeIt": "Voir l’article"
   }
 }

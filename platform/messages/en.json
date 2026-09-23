@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "The pigeons you bid on close in {minutes} minutes.",
     "PIGEON_UNAVAILABLE": "The pigeon {lot} is no longer available after the auction. It cannot be handed over and the order has been cancelled.",
     "PAYMENT_INSTRUCTIONS": "You bought “{lot}” at {price}. The payment details are in your order.",
-    "ORDER_CANCELLED": "The sale of “{lot}” was cancelled: payment was not received."
+    "ORDER_CANCELLED": "The sale of “{lot}” was cancelled: payment was not received.",
+    "ARTICLE_PUBLISHED": "Your article “{titlu}” has been published.",
+    "ARTICLE_REJECTED": "The article “{titlu}” has not been published yet."
   },
   "sell": {
     "title": "List a pigeon",
@@ -567,7 +569,8 @@
     "unsubIntro": "Press the button and you will not receive any more email from us.",
     "unsubButton": "Unsubscribe",
     "unsubDone": "You are off the list. No more email from us.",
-    "unsubBad": "This link is no longer valid. Perhaps you already used it."
+    "unsubBad": "This link is no longer valid. Perhaps you already used it.",
+    "help": "Help"
   },
   "articles": {
     "title": "Articles",
@@ -575,7 +578,8 @@
     "readMore": "Read the article",
     "published": "Published on {date}",
     "empty": "No articles published yet.",
-    "backToList": "← All articles"
+    "backToList": "← All articles",
+    "propose": "Propose an article"
   },
   "contests": {
     "title": "Championship Contests",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "The pigeon you won is no longer available",
       "PAYMENT_INSTRUCTIONS": "Payment details for the pigeon you bought",
       "ORDER_CANCELLED": "The sale has been cancelled",
-      "AUCTION_WITHDRAWN": "A pigeon you bid on has been withdrawn"
+      "AUCTION_WITHDRAWN": "A pigeon you bid on has been withdrawn",
+      "ARTICLE_PUBLISHED": "Your article has been published",
+      "ARTICLE_REJECTED": "About the article you sent us"
     },
     "hello": "Hello,",
     "lotLabel": "Lot {label}",
@@ -898,5 +904,47 @@
         "supple": "Supple"
       }
     }
+  },
+  "help": {
+    "title": "Help",
+    "intro": "The questions we get most often. If you cannot find your answer, write to us.",
+    "empty": "No questions here yet. Write to us and we will answer.",
+    "stillStuck": "Still not clear?",
+    "stillStuckText": "Write to us — we usually answer the same day.",
+    "writeUs": "Write to us",
+    "howItWorks": "How it works",
+    "groups": {
+      "ACCOUNT": "Account and sign-up",
+      "BIDDING": "How to bid",
+      "PAYMENT": "Payment",
+      "SHIPPING": "Shipping and handover",
+      "OTHER": "Other"
+    }
+  },
+  "propose": {
+    "title": "Propose an article",
+    "intro": "Do you have a story about your pigeons, a race or advice for other fanciers? Send it here. We read it and, if it is ready to publish, it appears under Articles with your name.",
+    "loginNeeded": "Sign in to send an article.",
+    "login": "Sign in",
+    "sellersOnly": "Articles can be sent by approved breeders. If you would like to write for the site, let us know.",
+    "writeUs": "Write to us",
+    "titleLabel": "Title",
+    "titlePlaceholder": "E.g.: How I prepared my pigeons for the marathon",
+    "bodyLabel": "The article",
+    "bodyPlaceholder": "Take your time, as if you were telling a friend.",
+    "bodyHint": "At least 100 characters. Do not worry about mistakes — we fix them.",
+    "mediaLabel": "Photos or clips (optional)",
+    "submit": "Send the article",
+    "sending": "Sending…",
+    "thanksTitle": "We got your article, thank you!",
+    "thanksText": "We will read it and let you know when it goes live. If something needs fixing, we will write to you.",
+    "again": "Send another one",
+    "tooMany": "You have already sent a few articles today. Try again tomorrow.",
+    "failed": "It could not be sent. Please try again.",
+    "mine": "What you sent",
+    "statusPublished": "published",
+    "statusWaiting": "waiting",
+    "adminNote": "Our reply",
+    "seeIt": "See the article"
   }
 }

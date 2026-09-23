@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "Gołębie, które licytujesz, zamykają się za {minutes} minut.",
     "PIGEON_UNAVAILABLE": "Gołąb {lot} nie jest już dostępny po aukcji. Nie może zostać przekazany, a zamówienie zostało anulowane.",
     "PAYMENT_INSTRUCTIONS": "Kupiłeś „{lot}” za {price}. Dane do płatności znajdziesz w zamówieniu.",
-    "ORDER_CANCELLED": "Sprzedaż „{lot}” została anulowana: nie otrzymano płatności."
+    "ORDER_CANCELLED": "Sprzedaż „{lot}” została anulowana: nie otrzymano płatności.",
+    "ARTICLE_PUBLISHED": "Twój artykuł „{titlu}” został opublikowany.",
+    "ARTICLE_REJECTED": "Artykuł „{titlu}” nie został jeszcze opublikowany."
   },
   "sell": {
     "title": "Wystaw gołębia",
@@ -567,7 +569,8 @@
     "unsubIntro": "Naciśnij przycisk, a nie otrzymasz od nas więcej e-maili.",
     "unsubButton": "Wypisz się",
     "unsubDone": "Nie jesteś już na liście. Nie wyślemy Ci więcej e-maili.",
-    "unsubBad": "Ten link nie jest już ważny. Być może został już użyty."
+    "unsubBad": "Ten link nie jest już ważny. Być może został już użyty.",
+    "help": "Pomoc"
   },
   "articles": {
     "title": "Artykuły",
@@ -575,7 +578,8 @@
     "readMore": "Przeczytaj artykuł",
     "published": "Opublikowano {date}",
     "empty": "Nie opublikowano jeszcze żadnych artykułów.",
-    "backToList": "← Wszystkie artykuły"
+    "backToList": "← Wszystkie artykuły",
+    "propose": "Zaproponuj artykuł"
   },
   "contests": {
     "title": "Konkursy mistrzowskie",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "Wygrany przez Ciebie gołąb nie jest już dostępny",
       "PAYMENT_INSTRUCTIONS": "Dane do płatności za kupionego gołębia",
       "ORDER_CANCELLED": "Sprzedaż została anulowana",
-      "AUCTION_WITHDRAWN": "Gołąb, na którego licytowałeś, został wycofany"
+      "AUCTION_WITHDRAWN": "Gołąb, na którego licytowałeś, został wycofany",
+      "ARTICLE_PUBLISHED": "Twój artykuł został opublikowany",
+      "ARTICLE_REJECTED": "W sprawie artykułu, który nam przysłałeś"
     },
     "hello": "Dzień dobry,",
     "lotLabel": "Partia {label}",
@@ -898,5 +904,47 @@
         "supple": "Wysoka"
       }
     }
+  },
+  "help": {
+    "title": "Pomoc",
+    "intro": "Pytania, które dostajemy najczęściej. Jeśli nie znajdziesz swojej odpowiedzi, napisz do nas.",
+    "empty": "Nie ma tu jeszcze żadnych pytań. Napisz do nas, a odpowiemy.",
+    "stillStuck": "Nadal nie jest jasne?",
+    "stillStuckText": "Napisz do nas — zwykle odpowiadamy tego samego dnia.",
+    "writeUs": "Napisz do nas",
+    "howItWorks": "Jak to działa",
+    "groups": {
+      "ACCOUNT": "Konto i rejestracja",
+      "BIDDING": "Jak licytować",
+      "PAYMENT": "Płatność",
+      "SHIPPING": "Transport i przekazanie",
+      "OTHER": "Inne"
+    }
+  },
+  "propose": {
+    "title": "Zaproponuj artykuł",
+    "intro": "Masz historię o swoich gołębiach, o locie albo radę dla innych hodowców? Przyślij ją tutaj. Przeczytamy ją i jeśli będzie gotowa do publikacji, pojawi się w Artykułach pod Twoim nazwiskiem.",
+    "loginNeeded": "Zaloguj się, żeby przysłać artykuł.",
+    "login": "Zaloguj się",
+    "sellersOnly": "Artykuły mogą przysyłać zatwierdzeni hodowcy. Jeśli chcesz pisać dla strony, daj nam znać.",
+    "writeUs": "Napisz do nas",
+    "titleLabel": "Tytuł",
+    "titlePlaceholder": "Np.: Jak przygotowałem gołębie do maratonu",
+    "bodyLabel": "Artykuł",
+    "bodyPlaceholder": "Pisz spokojnie, tak jakbyś opowiadał przyjacielowi.",
+    "bodyHint": "Co najmniej 100 znaków. Nie przejmuj się błędami — poprawimy je.",
+    "mediaLabel": "Zdjęcia lub filmy (nieobowiązkowo)",
+    "submit": "Wyślij artykuł",
+    "sending": "Wysyłanie…",
+    "thanksTitle": "Dostaliśmy Twój artykuł, dziękujemy!",
+    "thanksText": "Przeczytamy go i damy Ci znać, kiedy pojawi się na stronie. Jeśli trzeba będzie coś poprawić, napiszemy do Ciebie.",
+    "again": "Wyślij jeszcze jeden",
+    "tooMany": "Wysłałeś już dziś kilka artykułów. Spróbuj jutro.",
+    "failed": "Nie udało się wysłać. Spróbuj jeszcze raz.",
+    "mine": "Co przysłałeś",
+    "statusPublished": "opublikowany",
+    "statusWaiting": "czeka",
+    "adminNote": "Nasza odpowiedź",
+    "seeIt": "Zobacz artykuł"
   }
 }

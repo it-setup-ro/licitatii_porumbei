@@ -23,6 +23,7 @@ export const ALERT_EVENTS = {
   AUCTION_REQUEST: "Cerere de organizare a unei licitații",
   SHOP_ORDER: "Comandă nouă în magazin",
   AUCTION_ORDER: "Licitație închisă cu câștigător",
+  ARTICLE_PROPOSAL: "Articol propus de un crescător",
 } as const;
 
 export type AlertEvent = keyof typeof ALERT_EVENTS;

@@ -115,3 +115,22 @@ export function readFromTestDb(script: string): string {
   const lines = out.split(/\r?\n/).filter((l) => l.trim().length > 0);
   return lines[lines.length - 1].trim();
 }
+
+/**
+ * Așteaptă până când React a preluat câmpul dat (hidratarea s-a terminat).
+ *
+ * Ce scrie Playwright înainte de hidratare pare că rămâne, dar dispare când
+ * React preia formularul: câmpurile ajung goale, formularul devine nevalid și
+ * browserul oprește trimiterea fără niciun mesaj vizibil. React pune pe element
+ * o cheie „__reactFiber$…” abia la hidratare — aia e dovada.
+ */
+export async function asteaptaFormularViu(page: Page, testid: string) {
+  await page.waitForFunction(
+    (id) => {
+      const el = document.querySelector(`[data-testid="${id}"]`);
+      return !!el && Object.keys(el).some((k) => k.startsWith("__reactFiber$"));
+    },
+    testid,
+    { timeout: 30_000 }
+  );
+}

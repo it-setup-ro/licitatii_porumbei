@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "入札した鳩のオークションが {minutes} 分後に終了します。",
     "PIGEON_UNAVAILABLE": "鳩 {lot} はオークション終了後にお引き渡しできなくなりました。注文はキャンセルされました。",
     "PAYMENT_INSTRUCTIONS": "「{lot}」を {price} で購入しました。お支払い情報は注文ページに記載されています。",
-    "ORDER_CANCELLED": "「{lot}」の販売はキャンセルされました：お支払いが確認できませんでした。"
+    "ORDER_CANCELLED": "「{lot}」の販売はキャンセルされました：お支払いが確認できませんでした。",
+    "ARTICLE_PUBLISHED": "あなたの記事「{titlu}」が公開されました。",
+    "ARTICLE_REJECTED": "記事「{titlu}」はまだ公開されていません。"
   },
   "sell": {
     "title": "鳩を出品する",
@@ -567,7 +569,8 @@
     "unsubIntro": "ボタンを押すと、今後当方からのメールは届かなくなります。",
     "unsubButton": "配信停止",
     "unsubDone": "配信リストから削除されました。今後メールは届きません。",
-    "unsubBad": "このリンクは無効です。すでに使用された可能性があります。"
+    "unsubBad": "このリンクは無効です。すでに使用された可能性があります。",
+    "help": "ヘルプ"
   },
   "articles": {
     "title": "記事",
@@ -575,7 +578,8 @@
     "readMore": "記事を読む",
     "published": "{date} 公開",
     "empty": "まだ公開された記事はありません。",
-    "backToList": "← すべての記事"
+    "backToList": "← すべての記事",
+    "propose": "記事を投稿する"
   },
   "contests": {
     "title": "チャンピオンシップ・コンテスト",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "落札した鳩はお引き渡しできなくなりました",
       "PAYMENT_INSTRUCTIONS": "ご購入の鳩のお支払い情報",
       "ORDER_CANCELLED": "販売がキャンセルされました",
-      "AUCTION_WITHDRAWN": "入札された鳩が取り下げられました"
+      "AUCTION_WITHDRAWN": "入札された鳩が取り下げられました",
+      "ARTICLE_PUBLISHED": "あなたの記事が公開されました",
+      "ARTICLE_REJECTED": "お送りいただいた記事について"
     },
     "hello": "こんにちは。",
     "lotLabel": "ロット {label}",
@@ -898,5 +904,47 @@
         "supple": "しなやか"
       }
     }
+  },
+  "help": {
+    "title": "ヘルプ",
+    "intro": "よくいただくご質問をまとめました。答えが見つからないときは、ご連絡ください。",
+    "empty": "まだ質問はありません。ご連絡いただければお答えします。",
+    "stillStuck": "まだ分かりにくいですか？",
+    "stillStuckText": "ご連絡ください。たいていは同じ日にお返事します。",
+    "writeUs": "お問い合わせ",
+    "howItWorks": "ご利用の流れ",
+    "groups": {
+      "ACCOUNT": "アカウントと登録",
+      "BIDDING": "入札のしかた",
+      "PAYMENT": "お支払い",
+      "SHIPPING": "発送と引き渡し",
+      "OTHER": "その他"
+    }
+  },
+  "propose": {
+    "title": "記事を投稿する",
+    "intro": "ご自分の鳩の話、レースの思い出、ほかの愛好家への助言はありませんか。ここからお送りください。拝読して、公開できる内容であれば、お名前を添えて「記事」に載せます。",
+    "loginNeeded": "記事を送るにはログインしてください。",
+    "login": "ログイン",
+    "sellersOnly": "記事は承認済みの鳩舎の方からお送りいただけます。サイトに書いてみたい方は、ぜひお知らせください。",
+    "writeUs": "お問い合わせ",
+    "titleLabel": "タイトル",
+    "titlePlaceholder": "例：マラソンレースに向けた鳩の仕上げ方",
+    "bodyLabel": "記事の本文",
+    "bodyPlaceholder": "友だちに話すように、ゆっくり書いてください。",
+    "bodyHint": "100文字以上でお願いします。書き間違いは気にしないでください。こちらで直します。",
+    "mediaLabel": "写真や動画（任意）",
+    "submit": "記事を送る",
+    "sending": "送信中…",
+    "thanksTitle": "記事を受け取りました。ありがとうございます！",
+    "thanksText": "拝読して、公開されたらお知らせします。直したいところがあれば、ご連絡します。",
+    "again": "もう一つ送る",
+    "tooMany": "本日はすでに何本か送られています。明日またお試しください。",
+    "failed": "送信できませんでした。もう一度お試しください。",
+    "mine": "送った記事",
+    "statusPublished": "公開済み",
+    "statusWaiting": "確認中",
+    "adminNote": "こちらからの返信",
+    "seeIt": "記事を見る"
   }
 }

@@ -376,7 +376,9 @@
     "LOTS_ENDING_BIDDER": "Njiwa uliowatolea zabuni wanafungwa baada ya dakika {minutes}.",
     "PIGEON_UNAVAILABLE": "Njiwa {lot} hapatikani tena baada ya mnada. Hawezi kukabidhiwa na oda imeghairiwa.",
     "PAYMENT_INSTRUCTIONS": "Umenunua “{lot}” kwa {price}. Maelezo ya malipo yako kwenye oda yako.",
-    "ORDER_CANCELLED": "Uuzaji wa “{lot}” umeghairiwa: malipo hayakupokelewa."
+    "ORDER_CANCELLED": "Uuzaji wa “{lot}” umeghairiwa: malipo hayakupokelewa.",
+    "ARTICLE_PUBLISHED": "Makala yako “{titlu}” imechapishwa.",
+    "ARTICLE_REJECTED": "Makala “{titlu}” haijachapishwa bado."
   },
   "sell": {
     "title": "Orodhesha njiwa",
@@ -567,7 +569,8 @@
     "unsubIntro": "Bonyeza kitufe na hutapokea tena barua pepe yoyote kutoka kwetu.",
     "unsubButton": "Jiondoe",
     "unsubDone": "Umeondolewa kwenye orodha. Hakuna barua pepe zaidi kutoka kwetu.",
-    "unsubBad": "Kiungo hiki si halali tena. Huenda umeshakitumia."
+    "unsubBad": "Kiungo hiki si halali tena. Huenda umeshakitumia.",
+    "help": "Msaada"
   },
   "articles": {
     "title": "Makala",
@@ -575,7 +578,8 @@
     "readMore": "Soma makala",
     "published": "Imechapishwa tarehe {date}",
     "empty": "Bado hakuna makala zilizochapishwa.",
-    "backToList": "← Makala zote"
+    "backToList": "← Makala zote",
+    "propose": "Pendekeza makala"
   },
   "contests": {
     "title": "Mashindano ya Ubingwa",
@@ -726,7 +730,9 @@
       "PIGEON_UNAVAILABLE": "Njiwa uliyemshinda hapatikani tena",
       "PAYMENT_INSTRUCTIONS": "Maelezo ya malipo kwa njiwa uliyemnunua",
       "ORDER_CANCELLED": "Uuzaji umeghairiwa",
-      "AUCTION_WITHDRAWN": "Njiwa uliyemwekea zabuni ameondolewa"
+      "AUCTION_WITHDRAWN": "Njiwa uliyemwekea zabuni ameondolewa",
+      "ARTICLE_PUBLISHED": "Makala yako imechapishwa",
+      "ARTICLE_REJECTED": "Kuhusu makala uliyotutumia"
     },
     "hello": "Habari,",
     "lotLabel": "Kundi {label}",
@@ -898,5 +904,47 @@
         "supple": "Nyumbufu"
       }
     }
+  },
+  "help": {
+    "title": "Msaada",
+    "intro": "Maswali tunayoulizwa mara nyingi zaidi. Kama hujapata jibu lako, tuandikie.",
+    "empty": "Bado hakuna maswali hapa. Tuandikie na tutakujibu.",
+    "stillStuck": "Bado haijaeleweka?",
+    "stillStuckText": "Tuandikie — kwa kawaida tunajibu siku hiyo hiyo.",
+    "writeUs": "Tuandikie",
+    "howItWorks": "Jinsi inavyofanya kazi",
+    "groups": {
+      "ACCOUNT": "Akaunti na kujiandikisha",
+      "BIDDING": "Jinsi ya kupiga bei",
+      "PAYMENT": "Malipo",
+      "SHIPPING": "Usafirishaji na kukabidhi njiwa",
+      "OTHER": "Mengine"
+    }
+  },
+  "propose": {
+    "title": "Pendekeza makala",
+    "intro": "Una hadithi kuhusu njiwa zako, mashindano ya mbio au ushauri kwa wafugaji wengine? Tutumie hapa. Tunaisoma na, ikiwa inafaa kuchapishwa, itaonekana katika Makala pamoja na jina lako.",
+    "loginNeeded": "Ingia katika akaunti yako ili kutuma makala.",
+    "login": "Ingia katika akaunti",
+    "sellersOnly": "Makala zinaweza kutumwa na wafugaji waliokubaliwa. Kama ungependa kuandika kwa tovuti hii, tujulishe.",
+    "writeUs": "Tuandikie",
+    "titleLabel": "Kichwa",
+    "titlePlaceholder": "Mfano: Jinsi nilivyowaandaa njiwa wangu kwa mbio ndefu",
+    "bodyLabel": "Makala",
+    "bodyPlaceholder": "Andika kwa utulivu, kama unamweleza rafiki.",
+    "bodyHint": "Angalau herufi 100. Usijali kuhusu makosa — tunayasahihisha sisi.",
+    "mediaLabel": "Picha au video (si lazima)",
+    "submit": "Tuma makala",
+    "sending": "Inatumwa…",
+    "thanksTitle": "Tumepokea makala yako, asante!",
+    "thanksText": "Tutaisoma na kukujulisha itakapoonekana kwenye tovuti. Kama kuna kitu kinachohitaji kurekebishwa, tutakuandikia.",
+    "again": "Natuma nyingine",
+    "tooMany": "Umetuma makala kadhaa leo. Jaribu tena kesho.",
+    "failed": "Haikuwezekana kutuma. Tafadhali jaribu tena.",
+    "mine": "Ulizotuma",
+    "statusPublished": "imechapishwa",
+    "statusWaiting": "inasubiri",
+    "adminNote": "Jibu letu",
+    "seeIt": "Ona makala"
   }
 }

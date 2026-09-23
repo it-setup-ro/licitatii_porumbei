@@ -1,6 +1,8 @@
 import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import ResendEmailButton from "@/components/admin/ResendEmailButton";
+import EmailSetupCard from "@/components/admin/EmailSetupCard";
+import { smtpStatus } from "@/lib/smtp-status";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +37,7 @@ export default async function AdminEmailsPage({
   const q = (sp.q ?? "").trim();
   const status = STARI.some((s) => s.key === sp.status) ? (sp.status ?? "") : "";
   const page = Math.max(1, Number(sp.page ?? "1") || 1);
-  const smtpPornit = Boolean(process.env.SMTP_URL);
+  const smtp = smtpStatus();
 
   const contains = { contains: q, mode: "insensitive" as const };
   const where = {
@@ -56,6 +58,12 @@ export default async function AdminEmailsPage({
     prisma.emailLog.count({ where: { error: { not: null } } }),
   ]);
 
+  // pentru caseta de sus: cum stam cu trimiterea, pe toata istoria
+  const [trimise, neplecate] = await Promise.all([
+    prisma.emailLog.count({ where: { sentAt: { not: null } } }),
+    prisma.emailLog.count({ where: { sentAt: null, error: null } }),
+  ]);
+
   const when = new Intl.DateTimeFormat("ro-RO", {
     dateStyle: "short",
     timeStyle: "short",
@@ -74,12 +82,22 @@ export default async function AdminEmailsPage({
     <div>
       <h1 className="font-display mb-2 text-2xl font-bold sm:text-3xl">E-mailuri</h1>
 
-      {!smtpPornit ? (
-        <p className="mb-6 rounded-2xl border border-wing-orange/40 bg-wing-orange/5 p-4 text-sm">
-          Nu e conectat un serviciu de e-mail, deci mesajele nu pleacă efectiv — se scriu aici.
-          Linkurile de resetare a parolei se pot citi de mai jos, în timpul testelor.
-        </p>
-      ) : (
+      <div className="mb-6">
+        <EmailSetupCard
+          configurat={smtp.configurat}
+          host={smtp.host}
+          port={smtp.port}
+          user={smtp.user}
+          furnizor={smtp.furnizor}
+          expeditor={smtp.expeditor}
+          limita={smtp.limita}
+          trimise={trimise}
+          esuate={esuate}
+          neplecate={neplecate}
+        />
+      </div>
+
+      {smtp.configurat && (
         esuate > 0 && (
           <p
             className="mb-6 rounded-2xl border border-wing-red/40 bg-wing-red/5 p-4 text-sm"
