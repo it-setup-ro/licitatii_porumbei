@@ -10,6 +10,7 @@ import {
 
 export { reserveState };
 import { emitAuctionEvent } from "./events";
+import { publicBidderName } from "./mask-name";
 import { notify } from "./notify";
 import { notifyLotsEnding } from "./lot-notices";
 import { notifyBuyerWithPaymentDetails } from "./orders";
@@ -215,6 +216,12 @@ async function placeBidOnce(
         distinct: ["bidderId"],
       })
     ).length;
+    // ultima ofertă, ca istoricul din pagină să primească exact ce s-a scris
+    const ultima = await prisma.bid.findFirst({
+      where: { auctionId },
+      orderBy: { createdAt: "desc" },
+      include: { bidder: { select: { nickname: true, name: true } } },
+    });
     const settingsNow = await getSettings();
     const stepCents = incrementFor(r.priceCents, settingsNow.increments);
     const auctionNow = await prisma.auction.findUnique({ where: { id: auctionId } });
@@ -232,6 +239,13 @@ async function placeBidOnce(
       leadingBidderId: leadingNow?.bidderId ?? bidderId,
       endsAt: r.endsAt.toISOString(),
       extended: r.extended,
+      bid: {
+        id: ultima?.id ?? `${auctionId}-${Date.now()}`,
+        name: publicBidderName(ultima?.bidder.nickname ?? null, ultima?.bidder.name ?? ""),
+        amountCents: r.priceCents,
+        at: (ultima?.createdAt ?? new Date()).toISOString(),
+      },
+      leadingBidId: leadingNow?.id ?? null,
     });
     if (outbidUserId) {
       await notify(outbidUserId, "OUTBID", { priceCents: r.priceCents }, `/auctions/${auctionId}`);

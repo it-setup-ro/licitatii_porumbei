@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { incrementFor } from "@/lib/bidding";
 import { bidderCountForAuction, nextMinimumForAuction, reserveState } from "@/lib/auction-service";
+import { publicBidderName } from "@/lib/mask-name";
 
 export const dynamic = "force-dynamic";
 
@@ -65,9 +66,18 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
             getSettings(),
           ]);
           if (!auction) return;
+          const ultimele = await prisma.bid.findMany({
+            where: { auctionId: id },
+            orderBy: { createdAt: "desc" },
+            take: 10,
+            include: { bidder: { select: { nickname: true, name: true } } },
+          });
           const [bidderCount, leading, minNext] = await Promise.all([
             bidderCountForAuction(id),
-            prisma.bid.findFirst({ where: { auctionId: id, isLeading: true }, select: { bidderId: true } }),
+            prisma.bid.findFirst({
+              where: { auctionId: id, isLeading: true },
+              select: { id: true, bidderId: true },
+            }),
             nextMinimumForAuction(id),
           ]);
           const priceCents =
@@ -83,6 +93,13 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
             reserve: reserveState(auction.reservePriceCents, priceCents),
             leadingBidderId: leading?.bidderId ?? null,
             endsAt: auction.endsAt.toISOString(),
+            bids: ultimele.map((b) => ({
+              id: b.id,
+              name: publicBidderName(b.bidder.nickname, b.bidder.name),
+              amountCents: b.amountCents,
+              at: b.createdAt.toISOString(),
+            })),
+            leadingBidId: leading?.id ?? null,
           });
         } catch {
           // dacă starea nu se poate citi, fluxul rămâne deschis pentru evenimente

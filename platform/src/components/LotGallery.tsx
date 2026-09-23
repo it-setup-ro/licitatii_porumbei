@@ -139,7 +139,9 @@ export default function LotGallery({
             <img
               src={current.url}
               alt={current.title ?? alt}
-              className="aspect-[4/3] w-full object-cover"
+              // Clientul: „nu incape toata poza, e taiat ciocul sau nu intra tot
+              // scrisul". Poza intreaga, cu fundal deschis in jur; la clic se mareste.
+              className="aspect-[4/3] w-full bg-ivory-soft object-contain"
               data-testid="lot-image"
             />
           </button>

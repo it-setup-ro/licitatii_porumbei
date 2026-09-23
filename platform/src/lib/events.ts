@@ -6,6 +6,14 @@ import { EventEmitter } from "events";
  * cu Redis pub/sub in spatele aceleiasi interfete.
  */
 
+/** Oferta așa cum o vede oricine: porecla sau numele mascat, suma, ora. */
+export type PublicBid = {
+  id: string;
+  name: string;
+  amountCents: number;
+  at: string;
+};
+
 export type AuctionEvent =
   | {
       kind: "bid";
@@ -19,10 +27,14 @@ export type AuctionEvent =
       /** cati oameni distincti au licitat */
       bidderCount: number;
       /** „NONE" | „MET" | „NOT_MET" — suma de rezerva ramane ascunsa */
-      reserve: string;
+      reserve: "NONE" | "MET" | "NOT_MET";
       leadingBidderId: string;
       endsAt: string;
       extended: boolean;
+      /** oferta care a produs evenimentul, pentru istoricul din pagină */
+      bid: PublicBid;
+      /** care ofertă conduce acum (id de ofertă, nu de utilizator) */
+      leadingBidId: string | null;
     }
   /**
    * Starea curentă, trimisă la deschiderea fluxului. Fără ea, ofertele date
@@ -37,14 +49,26 @@ export type AuctionEvent =
       stepCents: number;
       bidCount: number;
       bidderCount: number;
-      reserve: string;
+      reserve: "NONE" | "MET" | "NOT_MET";
       leadingBidderId: string | null;
       endsAt: string;
+      /** ultimele oferte, ca istoricul să fie complet și după o reconectare */
+      bids: PublicBid[];
+      leadingBidId: string | null;
     }
   | { kind: "closed"; auctionId: string; winnerId: string | null; priceCents: number }
   /** ora de inchidere s-a schimbat din administrare (deocamdata: unealta de test) */
   | { kind: "rescheduled"; auctionId: string; endsAt: string };
 
+/**
+ * Ce ajunge efectiv la browser: fără id-uri de utilizatori. Serverul le compară
+ * cu sesiunea și trimite doar „tu conduci” / „tu ai câștigat”.
+ */
+export type PublicAuctionEvent =
+  | (Omit<Extract<AuctionEvent, { kind: "bid" }>, "leadingBidderId"> & { youAreLeading: boolean })
+  | (Omit<Extract<AuctionEvent, { kind: "sync" }>, "leadingBidderId"> & { youAreLeading: boolean })
+  | (Omit<Extract<AuctionEvent, { kind: "closed" }>, "winnerId"> & { youWon: boolean })
+  | Extract<AuctionEvent, { kind: "rescheduled" }>;
 const g = globalThis as unknown as { __auctionBus?: EventEmitter };
 
 export function auctionBus(): EventEmitter {

@@ -24,6 +24,7 @@ import ZoomableImage from "@/components/ZoomableImage";
 import WatchButton from "@/components/WatchButton";
 import { lotLabel } from "@/lib/lots";
 import { intlLocale, pick } from "@/lib/locales";
+import { maskName } from "@/lib/mask-name";
 
 /**
  * Pagina unui lot, in structura de pe pipa.be:
@@ -318,7 +319,12 @@ export default async function AuctionDetailPage({
           {auction.saleMode !== "FIXED" && (
             <div data-testid="bid-history-box">
               <h2 className="font-display mb-3 text-xl font-bold">{t("bidHistory")}</h2>
-              <BidHistory bids={bidRows} live={auction.status === "LIVE"} />
+              <BidHistory
+                bids={bidRows}
+                live={auction.status === "LIVE"}
+                auctionId={auction.id}
+                currency={auction.currency}
+              />
             </div>
           )}
 
@@ -557,10 +563,3 @@ function Fact({ label, value, testid }: { label: string; value: string; testid?:
   );
 }
 
-/** Confidentialitate: numele ofertantilor apar mascate public (M. P***) */
-function maskName(name: string) {
-  const parts = name.split(" ");
-  return parts
-    .map((p, i) => (i === 0 ? p[0] + "." : p.slice(0, 1) + "***"))
-    .join(" ");
-}

@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { subscribeAuction } from "@/lib/live-auction";
+import { formatMoney } from "@/lib/money";
+import { intlLocale } from "@/lib/locales";
 
 /**
  * Istoricul ofertelor, ca pe pipa.be: se vad ultimele cateva, iar restul se
@@ -16,11 +19,55 @@ const VISIBLE = 3;
 
 export type BidRow = { id: string; name: string; amount: string; when: string; leading: boolean };
 
-export default function BidHistory({ bids, live }: { bids: BidRow[]; live: boolean }) {
+export default function BidHistory({
+  bids,
+  live,
+  auctionId,
+  currency,
+}: {
+  bids: BidRow[];
+  live: boolean;
+  /** lipsesc la licitațiile încheiate: acolo lista nu se mai schimbă */
+  auctionId?: string;
+  currency?: string;
+}) {
   const t = useTranslations("auction");
+  const locale = useLocale();
   const [expanded, setExpanded] = useState(false);
+  const [rows, setRows] = useState<BidRow[]>(bids);
 
-  if (bids.length === 0) {
+  // Ofertele vin pe aceeași legătură live ca prețul. Înainte lista rămânea
+  // cea de la deschiderea paginii: licitai de trei ori și vedeai doar prima.
+  useEffect(() => {
+    if (!live || !auctionId || !currency) return;
+    const oraFmt = new Intl.DateTimeFormat(intlLocale(locale), {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
+    const toRow = (b: { id: string; name: string; amountCents: number; at: string }): BidRow => ({
+      id: b.id,
+      name: b.name,
+      amount: formatMoney(b.amountCents, currency, locale),
+      when: oraFmt.format(new Date(b.at)),
+      leading: false,
+    });
+    const cuLider = (lista: BidRow[], leadingBidId: string | null) =>
+      lista.map((r) => ({ ...r, leading: leadingBidId !== null && r.id === leadingBidId }));
+
+    return subscribeAuction(auctionId, (ev) => {
+      if (ev.kind === "bid") {
+        setRows((vechi) => {
+          const fara = vechi.filter((r) => r.id !== ev.bid.id);
+          return cuLider([toRow(ev.bid), ...fara], ev.leadingBidId);
+        });
+      } else if (ev.kind === "sync" && ev.bids.length > 0) {
+        // la (re)conectare: lista completă, ca să nu lipsească ce s-a pierdut
+        setRows(cuLider(ev.bids.map(toRow), ev.leadingBidId));
+      }
+    });
+  }, [live, auctionId, currency, locale]);
+
+  if (rows.length === 0) {
     return (
       <p className="text-sm text-ink/50" data-testid="bid-history-empty">
         {t("noBidsYet")}
@@ -28,7 +75,7 @@ export default function BidHistory({ bids, live }: { bids: BidRow[]; live: boole
     );
   }
 
-  const shown = expanded ? bids : bids.slice(0, VISIBLE);
+  const shown = expanded ? rows : rows.slice(0, VISIBLE);
 
   return (
     <div data-testid="bid-history">
@@ -53,7 +100,7 @@ export default function BidHistory({ bids, live }: { bids: BidRow[]; live: boole
         </table>
       </div>
 
-      {bids.length > VISIBLE && (
+      {rows.length > VISIBLE && (
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
@@ -61,7 +108,7 @@ export default function BidHistory({ bids, live }: { bids: BidRow[]; live: boole
           data-testid="bid-history-toggle"
           className="mt-2 rounded-lg px-3 py-2 text-sm font-semibold text-wing-blue hover:bg-wing-blue/10"
         >
-          {expanded ? t("hideAllBids") : t("showAllBids", { count: bids.length })}
+          {expanded ? t("hideAllBids") : t("showAllBids", { count: rows.length })}
         </button>
       )}
     </div>

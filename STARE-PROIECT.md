@@ -1,6 +1,6 @@
 # Stare proiect — No.1 & Best Pigeons
 
-**Ultima actualizare:** 22 septembrie 2026
+**Ultima actualizare:** 23 septembrie 2026
 **Site live (test):** http://207.180.241.165:3000
 **Cod:** https://github.com/it-setup-ro/licitatii_porumbei (public, branch `main`)
 **Credențiale:** `credentiale-acces.md` (local, exclus din git)
@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză, japoneză, olandeză, franceză, germană, spaniolă, poloneză, arabă, hindi, gujarati, swahili), construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 151 teste unitare + 245 teste end-to-end, toate verzi (16 sept 2026).
+**Stare: funcțională cap-coadă pentru testare.** 151 teste unitare + 257 teste end-to-end, toate verzi (23 sept 2026).
 
 ---
 
@@ -228,4 +228,5 @@ platform/src/
 | 22 sep | Articolele sus pe prima pagină, concursuri active în carusel, subcategorii la linkurile de concursuri, povestea crescătorului cu „Citește mai mult" + articolele lui, istoricul ofertelor în dreapta; șterși 5 porumbei demo (nu mai există preț fix în bază) |
 | 16 sep | Meniu de sus scurt (fără submeniuri, fără Informații/Transport/Despre/Contact), articole în casete mici pe rânduri, carduri „Vreau să organizez o licitație" și „Urmărește-ne" pe prima pagină, adresa și programul în subsol |
 | 16 sep | Site în 13 limbi (listă de alegere, arabă în oglindă, e-mailuri în limba contului); pe prima pagină toți crescătorii cu licitații active |
+| 23 sep | Istoricul ofertelor se actualizează live (venea doar la randare — creșterile următoare nu apăreau); o singură legătură live pe pagină, împărțită de panou și istoric; numele ofertantului mascat într-un singur loc; pozele porumbeilor intră întregi în cadru; teste intensive: istoric live pe mai multe ecrane, trei licitatori pe același porumbel, vânzarea până la decont |
 | 14 sep | Faza 1 a licitațiilor pe loturi: crescător → licitație → loturi cu „Start lot", prelungire 10/10 înghețată, comision pe licitație, conturi aprobate de admin, pagina publică a licitației, avizul de 30 de minute, trimitere SMTP |

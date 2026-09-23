@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { subscribeAuction } from "@/lib/live-auction";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { formatMoney } from "@/lib/money";
@@ -90,10 +91,9 @@ export default function LiveAuctionPanel(props: Props) {
   // Abonare la actualizari live (SSE)
   useEffect(() => {
     if (status !== "LIVE") return;
-    const es = new EventSource(`/api/auctions/${props.auctionId}/stream`);
-    es.onmessage = (e) => {
-      try {
-        const ev = JSON.parse(e.data);
+    // o singură legătură pe pagină, împărțită cu istoricul ofertelor
+    return subscribeAuction(props.auctionId, (ev) => {
+      {
         if (ev.kind === "bid") {
           setPriceCents(ev.priceCents);
           setBidCount(ev.bidCount);
@@ -155,11 +155,8 @@ export default function LiveAuctionPanel(props: Props) {
           }
           router.refresh();
         }
-      } catch {
-        // mesaj invalid — ignoram
       }
-    };
-    return () => es.close();
+    });
   }, [props.auctionId, props.userId, props.winAnimationEnabled, status, router, bumpInput]);
 
   const nudge = (delta: number) => {
