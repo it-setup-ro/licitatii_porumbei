@@ -22,8 +22,19 @@ export function handleApiError(e: unknown) {
   if (e instanceof AuthError) {
     return jsonError(e.code, e.code === "UNAUTHENTICATED" ? 401 : 403);
   }
+  // Corp de cerere care nu e JSON valid — de obicei gol. E greșeala celui care
+  // cheamă ruta, nu o defecțiune a serverului: înainte ieșea „INTERNAL" 500 și
+  // părea că s-a stricat ceva (s-a întâmplat la ascunderea unei licitații).
+  if (isJsonParseError(e)) {
+    return jsonError("INVALID_JSON", 400);
+  }
   console.error(e);
   return jsonError("INTERNAL", 500);
+}
+
+/** Eroarea pe care o dă `request.json()` când corpul lipsește sau e stricat. */
+export function isJsonParseError(e: unknown): boolean {
+  return e instanceof SyntaxError && /JSON/i.test(e.message);
 }
 
 /**

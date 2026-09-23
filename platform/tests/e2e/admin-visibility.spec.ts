@@ -60,3 +60,20 @@ test.describe("Ascunderea unui porumbel", () => {
     await expect(page.getByTestId("fixed-card").filter({ hasText: nume }).first()).toBeVisible();
   });
 });
+
+test.describe("Cereri fără corp", () => {
+  test("o cerere goală primește un răspuns curat, nu eroare de server", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    // Prins pe serverul viu: ascunderea unei licitații trimisă fără corp JSON
+    // răspundea „INTERNAL" 500, ca și cum s-ar fi stricat ceva.
+    const gol = await page.request.post("/api/admin/auctions/oricare/hide");
+    expect(gol.status()).toBe(400);
+    expect((await gol.json()).error).toBe("INVALID_JSON");
+
+    // cu corp bun, dar pe o licitație inexistentă, răspunsul e cel așteptat
+    const inexistent = await page.request.post("/api/admin/auctions/oricare/hide", {
+      data: { hidden: true },
+    });
+    expect(inexistent.status()).toBe(404);
+  });
+});
