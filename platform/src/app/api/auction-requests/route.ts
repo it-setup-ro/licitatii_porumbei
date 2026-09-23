@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { alertAdmin } from "@/lib/alerts";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { jsonOk, jsonError, jsonTooManyRequests, handleApiError, validationFields } from "@/lib/api";
 import { sendEmail } from "@/lib/mailer";
@@ -52,6 +53,12 @@ export async function POST(req: Request) {
         ].join("\n"),
       });
     }
+
+    await alertAdmin("AUCTION_REQUEST", {
+      titlu: d.name,
+      linii: [`Telefon: ${d.phone}`, `E-mail: ${d.email}`, `Locul: ${d.place}`],
+      cale: "/ro/admin/auction-requests",
+    });
 
     return jsonOk({ id: saved.id });
   } catch (e) {

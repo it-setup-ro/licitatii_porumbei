@@ -10,6 +10,7 @@ export async function register() {
 
   const { sweepAuctions } = await import("./lib/auction-service");
   const { refreshBnrRate } = await import("./lib/fx");
+  const { pollTelegramLinks } = await import("./lib/telegram-link");
 
   setInterval(async () => {
     try {
@@ -22,6 +23,12 @@ export async function register() {
       await refreshBnrRate();
     } catch (e) {
       console.error("[curs BNR]", e);
+    }
+    try {
+      // cine a apăsat „Start" pe bot de la ultima rundă încoace
+      await pollTelegramLinks();
+    } catch (e) {
+      console.error("[telegram]", e);
     }
   }, 15_000);
 }

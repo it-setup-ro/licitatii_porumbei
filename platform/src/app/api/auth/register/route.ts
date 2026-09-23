@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { alertAdmin } from "@/lib/alerts";
 import { hashPassword, createSessionCookie } from "@/lib/auth";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { getSettings } from "@/lib/settings";
@@ -95,6 +96,19 @@ export async function POST(req: Request) {
         where: { email: d.email },
         update: { locale: d.locale, consentAt: new Date(), consentText, unsubscribedAt: null },
         create: { email: d.email, locale: d.locale, consentText, unsubToken: newUnsubToken() },
+      });
+    }
+
+    // Cererile de cont așteptau nevăzute: adminul afla doar dacă intra pe site.
+    if (user.accountStatus === "PENDING") {
+      await alertAdmin("ACCOUNT_PENDING", {
+        titlu: `${user.name ?? user.email}`,
+        linii: [
+          `E-mail: ${user.email}`,
+          ...(user.phone ? [`Telefon: ${user.phone}`] : []),
+          ...(user.addressCity ? [`Localitate: ${user.addressCity}`] : []),
+        ],
+        cale: "/ro/admin/accounts",
       });
     }
 

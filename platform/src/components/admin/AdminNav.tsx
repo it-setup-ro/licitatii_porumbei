@@ -92,6 +92,7 @@ function groups(): Group[] {
         { href: "/admin/messages", label: "Mesaje", icon: <IconMail />, count: "messages" },
         { href: "/admin/newsletter", label: "Newsletter", icon: <IconSend /> },
         { href: "/admin/emails", label: "E-mailuri", icon: <IconSend /> },
+        { href: "/admin/alerts", label: "Anunțuri", icon: <IconBell /> },
         { href: "/admin/audit", label: "Jurnal", icon: <IconList /> },
       ],
     },
@@ -313,6 +314,14 @@ function IconSend() {
     <svg {...ico}>
       <path d="M21 3 10.5 13.5" />
       <path d="M21 3l-6.8 18-3.7-7.5L3 9.8z" />
+    </svg>
+  );
+}
+function IconBell() {
+  return (
+    <svg {...ico}>
+      <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.7 21a2 2 0 0 1-3.4 0" />
     </svg>
   );
 }

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { alertAdmin } from "@/lib/alerts";
 import { requireUser } from "@/lib/auth";
 import { readCart, writeCart } from "@/lib/cart";
 import { rateLimit } from "@/lib/rate-limit";
@@ -83,6 +84,14 @@ export async function POST(req: Request) {
     });
 
     await writeCart({});
+    await alertAdmin("SHOP_ORDER", {
+      titlu: `${(order.totalCents / 100).toFixed(0)} ${order.currency}`,
+      linii: [
+        `Cumpărător: ${order.shippingName} (${user.email})`,
+        ...lines.map((l) => `${l.quantity} × ${l.product.nameRo}`),
+      ],
+      cale: "/ro/admin/shop-orders",
+    });
     return jsonOk({ orderId: order.id });
   } catch (e) {
     if (e instanceof Error && e.message === "OUT_OF_STOCK") {

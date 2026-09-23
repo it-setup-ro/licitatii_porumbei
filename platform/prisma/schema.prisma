@@ -697,3 +697,29 @@ model Settlement {
   @@index([saleId])
   @@index([offeredBy])
 }
+
+/// Cine primește anunțurile pentru administrator: o adresă de e-mail sau un
+/// chat de Telegram (persoană sau grup). Fiecare rând își alege evenimentele,
+/// ca să i se poată trimite clientului doar ce-l privește.
+model AlertRecipient {
+  id    String  @id @default(cuid())
+  /// EMAIL | TELEGRAM
+  kind  String
+  label String
+  email String?
+  /// chat-ul Telegram, completat când omul apasă „Start” pe bot
+  chatId String?
+  /// codul din linkul de invitație; rămâne pentru urmă, dar se folosește o dată
+  code   String? @unique
+  codeAt DateTime?
+  linkedAt DateTime?
+  /// evenimentele la care e abonat, ca JSON: ["ACCOUNT_PENDING", ...]
+  events String
+  active Boolean @default(true)
+  lastSentAt DateTime?
+  lastError  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([kind, active])
+}

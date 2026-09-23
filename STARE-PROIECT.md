@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză, japoneză, olandeză, franceză, germană, spaniolă, poloneză, arabă, hindi, gujarati, swahili), construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 153 teste unitare + 259 teste end-to-end, toate verzi (23 sept 2026).
+**Stare: funcțională cap-coadă pentru testare.** 158 teste unitare + 261 teste end-to-end, toate verzi (23 sept 2026).
 
 ---
 
@@ -230,4 +230,5 @@ platform/src/
 | 16 sep | Site în 13 limbi (listă de alegere, arabă în oglindă, e-mailuri în limba contului); pe prima pagină toți crescătorii cu licitații active |
 | 23 sep | Istoricul ofertelor se actualizează live (venea doar la randare — creșterile următoare nu apăreau); o singură legătură live pe pagină, împărțită de panou și istoric; numele ofertantului mascat într-un singur loc; pozele porumbeilor intră întregi în cadru; teste intensive: istoric live pe mai multe ecrane, trei licitatori pe același porumbel, vânzarea până la decont |
 | 23 sep | Proba pe două ecrane (telefon + calculator, două conturi) **verificat pe serverul viu**, pe o licitație de test retrasă și ascunsă după; o cerere fără corp JSON răspunde `INVALID_JSON` 400, nu „INTERNAL” 500 (toate rutele, prin `handleApiError`) |
+| 23 sep | Anunțuri pe Telegram și e-mail pentru administrator: cerere de cont, mesaj de contact, porumbel de aprobat, cerere de licitație, comandă în magazin. Destinatarii se leagă singuri dintr-un link cu cod (Administrare → Anunțuri), fiecare cu bifele lui; token-ul botului se pune cu `scripts/set-telegram.sh` |
 | 14 sep | Faza 1 a licitațiilor pe loturi: crescător → licitație → loturi cu „Start lot", prelungire 10/10 înghețată, comision pe licitație, conturi aprobate de admin, pagina publică a licitației, avizul de 30 de minute, trimitere SMTP |

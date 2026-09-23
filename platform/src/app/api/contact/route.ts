@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { alertAdmin } from "@/lib/alerts";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/api";
 
@@ -19,7 +20,16 @@ export async function POST(req: Request) {
     const body = schema.safeParse(await req.json());
     if (!body.success) return jsonError("VALIDATION", 422);
 
-    await prisma.contactMessage.create({ data: body.data });
+    const mesaj = await prisma.contactMessage.create({ data: body.data });
+    await alertAdmin("CONTACT_MESSAGE", {
+      titlu: mesaj.subject,
+      linii: [
+        `De la: ${mesaj.name} (${mesaj.email})`,
+        "",
+        mesaj.message.slice(0, 500),
+      ],
+      cale: "/ro/admin/messages",
+    });
     return jsonOk();
   } catch (e) {
     return handleApiError(e);

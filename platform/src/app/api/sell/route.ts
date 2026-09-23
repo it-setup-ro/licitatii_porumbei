@@ -1,6 +1,7 @@
 import { yearFromRing } from "@/lib/pigeon";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { alertAdmin } from "@/lib/alerts";
 import { requireApprovedSeller } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import {
@@ -169,6 +170,14 @@ export async function POST(req: Request) {
       },
       include: { auction: true },
     });
+
+    if (pigeon.auction?.status === "PENDING_APPROVAL") {
+      await alertAdmin("PIGEON_PENDING", {
+        titlu: `${pigeon.name ?? pigeon.ringNumber}`,
+        linii: [`Inel: ${pigeon.ringNumber}`, `Trimis de: ${seller.name ?? seller.email}`],
+        cale: "/ro/admin/lots",
+      });
+    }
 
     return jsonOk({
       pigeonId: pigeon.id,
