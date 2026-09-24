@@ -144,7 +144,7 @@ export default function SiteHeader({
     <header className="sticky top-0 z-40 border-b border-ink/10 bg-ivory/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2.5">
         <Link href="/" className="flex items-center gap-2" data-testid="logo-home">
-          <LogoMark size={38} />
+          <LogoMark size={38} alt={siteName} />
           <span className="font-display text-base font-bold leading-tight tracking-tight sm:text-lg">
             {siteName}
           </span>

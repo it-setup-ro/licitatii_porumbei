@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getSettings } from "@/lib/settings";
 import { requireAdmin } from "@/lib/auth";
 import { jsonOk, jsonError, handleApiError, jsonValidationError } from "@/lib/api";
 import { sendEmail } from "@/lib/mailer";
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
 
     const { sent } = await sendEmail({
       to: body.data.to,
-      subject: "Probă — No.1 & Best Pigeons",
+      subject: `Probă — ${(await getSettings()).siteName}`,
       text: [
         "Acesta e un e-mail de probă trimis din administrare.",
         "",

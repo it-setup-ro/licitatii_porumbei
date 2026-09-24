@@ -147,7 +147,7 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   dnaSexGuaranteeMandatory: false,
   emailEnabled: true,
   smsEnabled: false,
-  siteName: "No.1 & Best Pigeons",
+  siteName: "No.1° & Best Racing Pigeons",
   blogEnabled: false,
   contactEmail: "",
   contactPhone: "",

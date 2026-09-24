@@ -13,7 +13,7 @@ import { prisma } from "./db";
  * e-mail al firmei —, deci alegerea furnizorului nu cere nicio schimbare de cod:
  *
  *   SMTP_URL=smtps://utilizator:parola@smtp-relay.brevo.com:465
- *   SMTP_FROM="No.1 & Best Pigeons <licitatii@domeniu.ro>"
+ *   SMTP_FROM="Numele platformei <licitatii@domeniu.ro>"
  */
 
 export type OutgoingEmail = { to: string; subject: string; text: string };

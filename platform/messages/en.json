@@ -104,7 +104,7 @@
     "soon": "Soon",
     "atHour": "At",
     "organizeTitle": "I want to run an auction",
-    "organizeText": "Do you have pigeons to sell and want your own auction on No.1 & Best Pigeons? Leave your details and we will call you.",
+    "organizeText": "Do you have pigeons to sell and want your own auction on {site}? Leave your details and we will call you.",
     "organizeCta": "Send the request",
     "organizeName": "Full name",
     "organizePhone": "Phone number",

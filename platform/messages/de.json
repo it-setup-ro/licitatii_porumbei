@@ -104,7 +104,7 @@
     "soon": "Demnächst",
     "atHour": "Um",
     "organizeTitle": "Ich möchte eine Auktion veranstalten",
-    "organizeText": "Sie haben Tauben zu verkaufen und möchten Ihre eigene Auktion auf No.1 & Best Pigeons? Hinterlassen Sie uns Ihre Daten, wir rufen Sie an.",
+    "organizeText": "Sie haben Tauben zu verkaufen und möchten Ihre eigene Auktion auf {site}? Hinterlassen Sie uns Ihre Daten, wir rufen Sie an.",
     "organizeCta": "Anfrage senden",
     "organizeName": "Vor- und Nachname",
     "organizePhone": "Telefonnummer",

@@ -104,7 +104,7 @@
     "soon": "Pronto",
     "atHour": "A las",
     "organizeTitle": "Quiero organizar una subasta",
-    "organizeText": "¿Tienes palomas para vender y quieres tu propia subasta en No.1 & Best Pigeons? Déjanos tus datos y te llamamos.",
+    "organizeText": "¿Tienes palomas para vender y quieres tu propia subasta en {site}? Déjanos tus datos y te llamamos.",
     "organizeCta": "Enviar la solicitud",
     "organizeName": "Nombre y apellidos",
     "organizePhone": "Número de teléfono",

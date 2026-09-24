@@ -1,4 +1,5 @@
 import { prisma } from "./db";
+import { getSettings } from "./settings";
 import { openSecret, sealSecret } from "./secret-box";
 
 /**
@@ -47,7 +48,7 @@ function curata(x: unknown): Stocat | null {
     user: o.user,
     passEnc: o.passEnc,
     fromEmail: typeof o.fromEmail === "string" ? o.fromEmail : o.user,
-    fromName: typeof o.fromName === "string" ? o.fromName : "No.1 & Best Pigeons",
+    fromName: typeof o.fromName === "string" ? o.fromName : "",
     updatedAt: typeof o.updatedAt === "string" ? o.updatedAt : new Date().toISOString(),
   };
 }
@@ -79,13 +80,14 @@ export async function smtpSettings(): Promise<{
   host: string;
   user: string;
 } | null> {
+  const { siteName: numeSite } = await getSettings();
   const dinServer = process.env.SMTP_URL?.trim();
   if (dinServer) {
     try {
       const u = new URL(dinServer);
       return {
         url: dinServer,
-        from: process.env.SMTP_FROM?.trim() || "No.1 & Best Pigeons <no-reply@localhost>",
+        from: process.env.SMTP_FROM?.trim() || `${numeSite} <no-reply@localhost>`,
         source: "server",
         host: u.hostname,
         user: u.username ? decodeURIComponent(u.username) : "",
@@ -102,7 +104,7 @@ export async function smtpSettings(): Promise<{
   const url = `smtp://${encodeURIComponent(c.user)}:${encodeURIComponent(parola)}@${c.host}:${c.port}`;
   return {
     url,
-    from: `${c.fromName} <${c.fromEmail}>`,
+    from: `${c.fromName || numeSite} <${c.fromEmail}>`,
     source: "site",
     host: c.host,
     user: c.user,

@@ -17,7 +17,8 @@ const prisma = new PrismaClient();
       where: { archivedAt: null, lots: { some: { status: { not: "DRAFT" } } } },
       select: { id: true, slug: true },
     }),
-    prisma.contest.findFirst({ select: { slug: true } }),
+    // doar concursurile publicate au pagină; ciornele dau 404, pe bună dreptate
+    prisma.contest.findFirst({ where: { published: true }, select: { slug: true } }),
     // pagina „crescătorului" din meniu e a unui cont de vânzător aprobat
     prisma.user.findFirst({ where: { sellerStatus: "APPROVED" }, select: { id: true } }),
     // doar paginile care chiar se deschid la /info/… („Transport și Agenți"

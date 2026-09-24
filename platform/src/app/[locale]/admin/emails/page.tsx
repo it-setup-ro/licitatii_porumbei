@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import { getSettings } from "@/lib/settings";
 import { prisma } from "@/lib/db";
 import ResendEmailButton from "@/components/admin/ResendEmailButton";
 import EmailSetupCard from "@/components/admin/EmailSetupCard";
@@ -38,7 +39,11 @@ export default async function AdminEmailsPage({
   const q = (sp.q ?? "").trim();
   const status = STARI.some((s) => s.key === sp.status) ? (sp.status ?? "") : "";
   const page = Math.max(1, Number(sp.page ?? "1") || 1);
-  const [smtp, smtpConfig] = await Promise.all([smtpStatusFull(), smtpConfigPublic()]);
+  const [smtp, smtpConfig, setari] = await Promise.all([
+    smtpStatusFull(),
+    smtpConfigPublic(),
+    getSettings(),
+  ]);
 
   const contains = { contains: q, mode: "insensitive" as const };
   const where = {
@@ -96,6 +101,7 @@ export default async function AdminEmailsPage({
           esuate={esuate}
           sursa={smtp.sursa}
           config={smtpConfig}
+          numeSite={setari.siteName}
           neplecate={neplecate}
         />
       </div>

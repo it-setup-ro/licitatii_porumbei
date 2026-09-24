@@ -49,7 +49,7 @@ export default function SiteFooter({
         {/* ── Cine suntem ── */}
         <div>
           <div className="flex items-center gap-2">
-            <LogoMark size={32} />
+            <LogoMark size={32} alt={siteName} />
             <span className="font-display text-lg font-bold">{siteName}</span>
           </div>
           <p className="mt-3 text-sm leading-relaxed text-ivory/70">{t("about")}</p>

@@ -66,7 +66,7 @@ export async function GET(req: Request) {
       d ? d.toLocaleDateString("ro-RO", { timeZone: "Europe/Bucharest" }) : "";
 
     const wb = new ExcelJS.Workbook();
-    wb.creator = "No.1 & Best Pigeons";
+    wb.creator = (await getSettings()).siteName;
     const ws = wb.addWorksheet("Decont");
     [10, 28, 20, 28, 16, 14, 14, 20, 16, 12, 12, 12, 13].forEach((w, i) => (ws.getColumn(i + 1).width = w));
 

@@ -1,5 +1,4 @@
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
-import { heroTexts } from "@/lib/page-texts";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/db";
 import { getAuctionsByStatus } from "@/lib/queries";
@@ -28,8 +27,6 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("home");
-  // titlul mare și deviza se pot scrie din Administrare → Pagini („Acasă")
-  const hero = await heroTexts(locale);
   const currentLocale = await getLocale();
 
   const [live, liveLots, legacyRows, articles, contests, stats] = await Promise.all([
@@ -224,7 +221,7 @@ export default async function HomePage({
               {t("kicker")}
             </p>
             <h1 className="font-display hero-shadow mt-4 text-4xl font-bold leading-[1.05] text-white sm:text-6xl">
-              {hero.titlu ?? t("heroTitle")}
+              {t("heroTitle")}
             </h1>
             {/* Deviza scrisa de mana, ca in macheta */}
             <p
@@ -234,7 +231,7 @@ export default async function HomePage({
               {t("motto")}
             </p>
             <p className="hero-shadow mt-4 max-w-xl text-lg leading-relaxed text-white/90">
-              {hero.text ?? t("heroSubtitle")}
+              {t("heroSubtitle")}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -446,7 +443,7 @@ export default async function HomePage({
               și îl sună administratorul. */}
           <div className="rounded-2xl bg-ink p-6 text-white sm:p-8" data-testid="organize-card">
             <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("organizeTitle")}</h2>
-            <p className="mt-2 max-w-xl text-white/80">{t("organizeText")}</p>
+            <p className="mt-2 max-w-xl text-white/80">{t("organizeText", { site: settings.siteName })}</p>
             <div className="mt-5 max-w-md">
               <AuctionRequestForm />
             </div>

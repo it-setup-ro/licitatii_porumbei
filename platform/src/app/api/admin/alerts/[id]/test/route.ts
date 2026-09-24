@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { getSettings } from "@/lib/settings";
 import { requireAdmin } from "@/lib/auth";
 import { jsonOk, jsonError, handleApiError } from "@/lib/api";
 import { sendEmail } from "@/lib/mailer";
@@ -15,10 +16,11 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
     const d = await prisma.alertRecipient.findUnique({ where: { id } });
     if (!d) return jsonError("NOT_FOUND", 404);
 
-    const text = "Test de la No.1 & Best Pigeons: legătura merge. Aici vor ajunge anunțurile de pe site.";
+    const { siteName } = await getSettings();
+    const text = `Test de la ${siteName}: legătura merge. Aici vor ajunge anunțurile de pe site.`;
     try {
       if (d.kind === "EMAIL" && d.email) {
-        await sendEmail({ to: d.email, subject: "Test anunțuri — No.1 & Best Pigeons", text });
+        await sendEmail({ to: d.email, subject: `Test anunțuri — ${siteName}`, text });
       } else if (d.kind === "TELEGRAM" && d.chatId) {
         if (!telegramConfigured()) return jsonError("TELEGRAM_NECONFIGURAT", 409);
         await telegramSend(d.chatId, text);

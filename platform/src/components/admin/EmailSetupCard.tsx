@@ -58,6 +58,7 @@ export default function EmailSetupCard({
   esuate,
   neplecate,
   config,
+  numeSite,
 }: {
   configurat: boolean;
   sursa: "server" | "site" | null;
@@ -71,6 +72,8 @@ export default function EmailSetupCard({
   esuate: number;
   neplecate: number;
   config: Config;
+  /** numele platformei, din Setări — apare ca expeditor */
+  numeSite: string;
 }) {
   const router = useRouter();
   const [deschis, setDeschis] = useState(!configurat);
@@ -81,7 +84,7 @@ export default function EmailSetupCard({
     user: config?.user ?? "",
     pass: "",
     fromEmail: config?.fromEmail ?? "",
-    fromName: config?.fromName ?? "No.1 & Best Pigeons",
+    fromName: config?.fromName ?? numeSite,
   });
   const [erori, setErori] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState<string | null>(null);

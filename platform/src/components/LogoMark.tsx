@@ -6,15 +6,18 @@
 export default function LogoMark({
   size = 36,
   shape = "round",
+  alt = "",
 }: {
   size?: number;
   shape?: "round" | "card";
+  /** numele platformei, pentru cititoarele de ecran; vine din Setări */
+  alt?: string;
 }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src="/brand/logo.jpeg"
-      alt="No.1 & Best Pigeons"
+      alt={alt}
       width={size}
       height={size}
       className={`shrink-0 object-cover ${

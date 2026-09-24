@@ -104,7 +104,7 @@
     "soon": "Bientôt",
     "atHour": "À",
     "organizeTitle": "Je veux organiser une vente",
-    "organizeText": "Vous avez des pigeons à vendre et souhaitez votre propre vente sur No.1 & Best Pigeons ? Laissez-nous vos coordonnées et nous vous rappelons.",
+    "organizeText": "Vous avez des pigeons à vendre et souhaitez votre propre vente sur {site} ? Laissez-nous vos coordonnées et nous vous rappelons.",
     "organizeCta": "Envoyer la demande",
     "organizeName": "Nom et prénom",
     "organizePhone": "Numéro de téléphone",

@@ -13,7 +13,7 @@
 
 Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză, japoneză, olandeză, franceză, germană, spaniolă, poloneză, arabă, hindi, gujarati, swahili), construită de la zero: Next.js 16 + PostgreSQL, rulează ca serviciu pe VPS-ul Contabo existent (același server cu Cleanware, complet izolate).
 
-**Stare: funcțională cap-coadă pentru testare.** 180 teste unitare + 299 teste end-to-end, toate verzi (24 sept 2026).
+**Stare: funcțională cap-coadă pentru testare.** 184 teste unitare + 297 teste end-to-end, toate verzi (24 sept 2026).
 
 ---
 
@@ -244,4 +244,5 @@ platform/src/
 | 24 sep | Istoricul ofertelor devine jurnal de fapte: cel depasit instant apare cu suma lui (plafonul batut se vede), raspunsul platformei pentru lider e un rand nou marcat „automat”, si niciun rand scris nu se mai modifica. Gasit de Daniel pe site: doua randuri cu 850 lei. „N oferte” numara doar ofertele oamenilor. Transportul din magazin a devenit setare |
 | 24 sep | Cele patru lipsuri semnalate, rezolvate: transportul din magazin e setare, titlul și deviza de pe prima pagină și pagina „Cum funcționează” se scriu din Administrare → Pagini, iar **newsletterul se trimite din site** — în reprize (20 la fiecare rundă de sweeper), fiecare abonat în limba lui, cu link de dezabonare, cu progres vizibil |
 | 14 sep | Faza 1 a licitațiilor pe loturi: crescător → licitație → loturi cu „Start lot", prelungire 10/10 înghețată, comision pe licitație, conturi aprobate de admin, pagina publică a licitației, avizul de 30 de minute, trimitere SMTP |
+| 24 sep | Numele platformei vine dintr-un singur loc: Setări → „Numele site-ului” (era scris de mână în opt locuri, iar e-mailurile plecau cu numele vechi). Adresa de contact mutată de pe domeniul vechi pe Gmail. Pe card scrie „1 ofertă”, nu „o ofertă” — se citea ca „0 oferte”. Textele de pagină editabile din admin (prima pagină, „Cum funcționează”) **puse pe hold**: clientul le vrea traduse în fiecare limbă, nu doar română/engleză |
 | 24 sep | Reparat: două oferte scrise în același moment (oferta omului și răspunsul automat) primesc aceeași oră în baza de date, deci o pagină deschisă de la zero le putea arăta în ordine inversă. Ofertele au acum un număr de ordine, folosit peste tot |

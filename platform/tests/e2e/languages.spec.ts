@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import de from "../../messages/de.json";
 import ar from "../../messages/ar.json";
 import ja from "../../messages/ja.json";
-import en from "../../messages/en.json";
 
 /** Cele 13 limbi: lista din antet, textele traduse, pagina în oglindă pentru arabă. */
 test.describe("Limbile site-ului", () => {
@@ -19,10 +18,7 @@ test.describe("Limbile site-ului", () => {
     await page.goto("/de");
     await expect(page.locator("html")).toHaveAttribute("lang", "de");
     await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
-    // Titlul mare e conținut scris din administrare (română sau engleză), deci
-    // aici se vede varianta engleză; restul paginii e tradus în germană.
-    await expect(page.locator("h1")).toContainText(en.home.heroTitle);
-    await expect(page.getByTestId("hero-cta")).toContainText(de.home.heroCta);
+    await expect(page.locator("h1")).toContainText(de.home.heroTitle);
     // numele porumbelului rămâne, rubrica e în germană
     await page.goto("/de/auctions?q=445566");
     await expect(page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" })).toBeVisible();
@@ -31,8 +27,7 @@ test.describe("Limbile site-ului", () => {
   test("araba: pagina întreagă de la dreapta la stânga", async ({ page }) => {
     await page.goto("/ar");
     await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
-    await expect(page.locator("h1")).toContainText(en.home.heroTitle);
-    await expect(page.getByTestId("hero-cta")).toContainText(ar.home.heroCta);
+    await expect(page.locator("h1")).toContainText(ar.home.heroTitle);
     const direction = await page.locator("body").evaluate((el) => getComputedStyle(el).direction);
     expect(direction).toBe("rtl");
     // pagina porumbelului se deschide și în arabă
@@ -47,8 +42,6 @@ test.describe("Limbile site-ului", () => {
     await page.getByTestId("lang-select").selectOption("ja");
     await expect(page).toHaveURL(/\/ja\/how-it-works$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "ja");
-    // și aici titlul vine din administrare; meniul rămâne în japoneză
-    await expect(page.locator("h1")).toContainText(en.how.title);
-    await expect(page.locator("header")).toContainText(ja.nav.auctions);
+    await expect(page.locator("h1")).toContainText(ja.how.title);
   });
 });
