@@ -198,7 +198,8 @@
     "errACCOUNT_REJECTED": "Je account is niet goedgekeurd om te bieden. Stuur ons een bericht via de contactpagina.",
     "lotLabel": "Lot {label}",
     "allBreederPigeons": "Alle duiven in deze veiling",
-    "unavailableNotice": "Deze duif is na de veiling niet meer beschikbaar (ziek geworden of gestorven). De winnaar is op de hoogte gebracht."
+    "unavailableNotice": "Deze duif is na de veiling niet meer beschikbaar (ziek geworden of gestorven). De winnaar is op de hoogte gebracht.",
+    "bidAuto": "automatisch"
   },
   "pigeon": {
     "ring": "Ringnummer",

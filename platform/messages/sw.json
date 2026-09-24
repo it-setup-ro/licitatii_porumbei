@@ -198,7 +198,8 @@
     "errACCOUNT_REJECTED": "Akaunti yako haikuidhinishwa kutoa zabuni. Tafadhali tuandikie kupitia ukurasa wa mawasiliano.",
     "lotLabel": "Kundi {label}",
     "allBreederPigeons": "Njiwa wote katika mnada huu",
-    "unavailableNotice": "Njiwa huyu hapatikani tena baada ya mnada (aliugua au alikufa). Mshindi amearifiwa."
+    "unavailableNotice": "Njiwa huyu hapatikani tena baada ya mnada (aliugua au alikufa). Mshindi amearifiwa.",
+    "bidAuto": "kiotomatiki"
   },
   "pigeon": {
     "ring": "Nambari ya pete",

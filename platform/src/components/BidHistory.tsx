@@ -17,7 +17,15 @@ import { intlLocale } from "@/lib/locales";
 
 const VISIBLE = 3;
 
-export type BidRow = { id: string; name: string; amount: string; when: string; leading: boolean };
+export type BidRow = {
+  id: string;
+  name: string;
+  amount: string;
+  when: string;
+  leading: boolean;
+  /** răspunsul automat al platformei pentru lider, nu o apăsare de buton */
+  auto: boolean;
+};
 
 export default function BidHistory({
   bids,
@@ -44,12 +52,19 @@ export default function BidHistory({
       dateStyle: "short",
       timeStyle: "short",
     });
-    const toRow = (b: { id: string; name: string; amountCents: number; at: string }): BidRow => ({
+    const toRow = (b: {
+      id: string;
+      name: string;
+      amountCents: number;
+      at: string;
+      auto: boolean;
+    }): BidRow => ({
       id: b.id,
       name: b.name,
       amount: formatMoney(b.amountCents, currency, locale),
       when: oraFmt.format(new Date(b.at)),
       leading: false,
+      auto: b.auto,
     });
     const cuLider = (lista: BidRow[], leadingBidId: string | null) =>
       lista.map((r) => ({ ...r, leading: leadingBidId !== null && r.id === leadingBidId }));
@@ -57,8 +72,11 @@ export default function BidHistory({
     return subscribeAuction(auctionId, (ev) => {
       if (ev.kind === "bid") {
         setRows((vechi) => {
-          const fara = vechi.filter((r) => r.id !== ev.bid.id);
-          return cuLider([toRow(ev.bid), ...fara], ev.leadingBidId);
+          // pot veni două: oferta omului și răspunsul automat al liderului
+          const noi = ev.newBids.map(toRow).reverse();
+          const idNoi = new Set(noi.map((r) => r.id));
+          const fara = vechi.filter((r) => !idNoi.has(r.id));
+          return cuLider([...noi, ...fara], ev.leadingBidId);
         });
       } else if (ev.kind === "sync" && ev.bids.length > 0) {
         // la (re)conectare: lista completă, ca să nu lipsească ce s-a pierdut
@@ -92,7 +110,14 @@ export default function BidHistory({
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-2.5 font-semibold">{b.amount}</td>
+                <td className="px-4 py-2.5 font-semibold">
+                  {b.amount}
+                  {b.auto && (
+                    <span className="ms-2 text-xs font-normal text-ink/50" data-testid="bid-auto">
+                      {t("bidAuto")}
+                    </span>
+                  )}
+                </td>
                 <td className="px-4 py-2.5 text-end text-ink/50">{b.when}</td>
               </tr>
             ))}

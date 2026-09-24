@@ -198,7 +198,8 @@
     "errACCOUNT_REJECTED": "Tu cuenta no ha sido aprobada para pujar. Escríbenos desde la página de contacto.",
     "lotLabel": "Lote {label}",
     "allBreederPigeons": "Todas las palomas de esta subasta",
-    "unavailableNotice": "Esta paloma ya no está disponible tras la subasta (enfermó o murió). Se ha avisado al ganador."
+    "unavailableNotice": "Esta paloma ya no está disponible tras la subasta (enfermó o murió). Se ha avisado al ganador.",
+    "bidAuto": "automática"
   },
   "pigeon": {
     "ring": "Número de anilla",

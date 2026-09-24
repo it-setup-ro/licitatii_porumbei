@@ -35,6 +35,7 @@ const SETTING_SCHEMAS: Record<keyof PlatformSettings, z.ZodTypeAny> = {
   fxBnrRate: z.number().min(0).max(100),
   fxBnrDate: z.string().max(10),
   minStartPriceCents: money,
+  shopShippingCents: money,
   defaultDurationDays: z.number().int().min(1).max(365),
   sellerChoosesDuration: z.boolean(),
   reservePriceEnabled: z.boolean(),

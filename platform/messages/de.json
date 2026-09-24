@@ -198,7 +198,8 @@
     "errACCOUNT_REJECTED": "Ihr Konto wurde nicht zum Bieten freigegeben. Bitte schreiben Sie uns über die Kontaktseite.",
     "lotLabel": "Los {label}",
     "allBreederPigeons": "Alle Tauben dieser Auktion",
-    "unavailableNotice": "Diese Taube ist nach der Auktion nicht mehr verfügbar (sie ist erkrankt oder verendet). Der Gewinner wurde benachrichtigt."
+    "unavailableNotice": "Diese Taube ist nach der Auktion nicht mehr verfügbar (sie ist erkrankt oder verendet). Der Gewinner wurde benachrichtigt.",
+    "bidAuto": "automatisch"
   },
   "pigeon": {
     "ring": "Ringnummer",

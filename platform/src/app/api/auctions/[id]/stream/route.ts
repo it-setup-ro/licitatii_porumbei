@@ -60,7 +60,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
                 startPriceCents: true,
                 reservePriceCents: true,
                 endsAt: true,
-                _count: { select: { bids: true } },
+                _count: { select: { bids: { where: { auto: false } } } },
               },
             }),
             getSettings(),
@@ -98,6 +98,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
               name: publicBidderName(b.bidder.nickname, b.bidder.name),
               amountCents: b.amountCents,
               at: b.createdAt.toISOString(),
+              auto: b.auto,
             })),
             leadingBidId: leading?.id ?? null,
           });

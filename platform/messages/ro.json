@@ -198,7 +198,8 @@
     "errACCOUNT_REJECTED": "Contul tău nu a fost aprobat pentru licitare. Scrie-ne din pagina de contact.",
     "lotLabel": "Lotul {label}",
     "allBreederPigeons": "Toți porumbeii licitației",
-    "unavailableNotice": "Porumbelul nu mai este disponibil după licitație (s-a îmbolnăvit sau a murit). Câștigătorul a fost anunțat."
+    "unavailableNotice": "Porumbelul nu mai este disponibil după licitație (s-a îmbolnăvit sau a murit). Câștigătorul a fost anunțat.",
+    "bidAuto": "automat"
   },
   "pigeon": {
     "ring": "Serie inel",

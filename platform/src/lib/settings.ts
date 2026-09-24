@@ -27,6 +27,8 @@ export type PlatformSettings = {
   fxBnrRate: number;
   fxBnrDate: string;
   minStartPriceCents: number;
+  /** transportul pentru comenzile din magazin (nu pentru porumbei) */
+  shopShippingCents: number;
   defaultDurationDays: number;
   sellerChoosesDuration: boolean;
   /** crescatorii pot pune un pret de rezerva (suma ramane ascunsa) */
@@ -115,6 +117,7 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   fxBnrRate: 0,
   fxBnrDate: "",
   minStartPriceCents: 10_000, // 100 EUR
+  shopShippingCents: 2_500, // 25 EUR, cât era scris în cod
   defaultDurationDays: 14,
   sellerChoosesDuration: false,
   reservePriceEnabled: true,

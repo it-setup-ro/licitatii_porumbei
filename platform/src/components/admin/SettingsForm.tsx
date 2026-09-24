@@ -38,6 +38,7 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
         { key: "platformCurrency", label: "Moneda platformei (RON = lei)", type: "select", options: ["EUR", "RON"] },
         { key: "currencyEquivalentEnabled", label: "Arată echivalentul în cealaltă monedă (lei / €)", type: "boolean" },
         { key: "minStartPriceCents", label: "Preț minim de pornire (cenți)", type: "number" },
+        { key: "shopShippingCents", label: "Transport magazin (cenți)", type: "number" },
         { key: "defaultDurationDays", label: "Durata licitației (zile)", type: "number" },
         { key: "sellerChoosesDuration", label: "Vânzătorul alege durata", type: "boolean" },
         { key: "reservePriceEnabled", label: "Preț de rezervă permis", type: "boolean" },

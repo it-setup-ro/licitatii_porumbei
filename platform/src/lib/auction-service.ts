@@ -11,6 +11,7 @@ import {
 export { reserveState };
 import { emitAuctionEvent } from "./events";
 import { publicBidderName } from "./mask-name";
+import { planBidRows } from "./bid-history";
 import { notify } from "./notify";
 import { notifyLotsEnding } from "./lot-notices";
 import { notifyBuyerWithPaymentDetails } from "./orders";
@@ -71,6 +72,8 @@ async function placeBidOnce(
   bidderId: string,
   maxCents: number
 ): Promise<PlaceBidResult> {
+  // reper: tot ce se scrie de aici încolo aparține acestei oferte
+  const inceput = new Date();
   const settings = await getSettings();
 
   const bidder = await prisma.user.findUnique({ where: { id: bidderId } });
@@ -149,31 +152,21 @@ async function placeBidOnce(
       maxExtensions: lot?.maxExtensions ?? settings.maxExtensions,
     });
 
-    if (outcome.raisedOwnCeiling && leadingBid) {
+    // Istoricul e un jurnal de fapte: nu se rescrie niciun rând deja scris.
+    // Planul spune ce se adaugă (vezi lib/bid-history.ts).
+    const plan = planBidRows({ bidderId, maxCents, outcome, leader });
+
+    if (plan.plafonNou !== null && leadingBid) {
       await tx.bid.update({
         where: { id: leadingBid.id },
-        data: { maxAmountCents: maxCents },
+        data: { maxAmountCents: plan.plafonNou },
       });
-    } else {
-      if (leadingBid && outcome.newLeader.bidderId !== leadingBid.bidderId) {
-        await tx.bid.update({ where: { id: leadingBid.id }, data: { isLeading: false } });
-      }
-      await tx.bid.create({
-        data: {
-          auctionId,
-          bidderId,
-          amountCents: outcome.newPriceCents,
-          maxAmountCents: maxCents,
-          isLeading: outcome.callerIsLeading,
-        },
-      });
-      // Cand plafonul nou e insuficient, liderul ramane dar oferta lui vizibila creste:
-      if (!outcome.callerIsLeading && leadingBid) {
-        await tx.bid.update({
-          where: { id: leadingBid.id },
-          data: { amountCents: outcome.newPriceCents, isLeading: true },
-        });
-      }
+    }
+    if (plan.vechiulLiderNuMaiConduce && leadingBid) {
+      await tx.bid.update({ where: { id: leadingBid.id }, data: { isLeading: false } });
+    }
+    for (const rand of plan.randuri) {
+      await tx.bid.create({ data: { auctionId, ...rand } });
     }
 
     await tx.auction.update({
@@ -201,7 +194,8 @@ async function placeBidOnce(
 
   const r = result as PlaceBidResult | null;
   if (r && r.ok) {
-    const bidCount = await prisma.bid.count({ where: { auctionId } });
+    // „N oferte” = câte au dat oamenii; răspunsurile automate nu se numără
+    const bidCount = await prisma.bid.count({ where: { auctionId, auto: false } });
     const leadingNow = await prisma.bid.findFirst({
       where: { auctionId, isLeading: true },
     });
@@ -216,10 +210,10 @@ async function placeBidOnce(
         distinct: ["bidderId"],
       })
     ).length;
-    // ultima ofertă, ca istoricul din pagină să primească exact ce s-a scris
-    const ultima = await prisma.bid.findFirst({
-      where: { auctionId },
-      orderBy: { createdAt: "desc" },
+    // rândurile scrise chiar acum: oferta omului și, uneori, răspunsul automat
+    const scriseAcum = await prisma.bid.findMany({
+      where: { auctionId, createdAt: { gte: inceput } },
+      orderBy: { createdAt: "asc" },
       include: { bidder: { select: { nickname: true, name: true } } },
     });
     const settingsNow = await getSettings();
@@ -239,12 +233,13 @@ async function placeBidOnce(
       leadingBidderId: leadingNow?.bidderId ?? bidderId,
       endsAt: r.endsAt.toISOString(),
       extended: r.extended,
-      bid: {
-        id: ultima?.id ?? `${auctionId}-${Date.now()}`,
-        name: publicBidderName(ultima?.bidder.nickname ?? null, ultima?.bidder.name ?? ""),
-        amountCents: r.priceCents,
-        at: (ultima?.createdAt ?? new Date()).toISOString(),
-      },
+      newBids: scriseAcum.map((b) => ({
+        id: b.id,
+        name: publicBidderName(b.bidder.nickname, b.bidder.name),
+        amountCents: b.amountCents,
+        at: b.createdAt.toISOString(),
+        auto: b.auto,
+      })),
       leadingBidId: leadingNow?.id ?? null,
     });
     if (outbidUserId) {

@@ -226,6 +226,8 @@ model Bid {
   amountCents    Int // oferta vizibila la momentul plasarii
   maxAmountCents Int // plafonul proxy (secret)
   isLeading      Boolean  @default(false)
+  /// răspunsul automat al platformei în numele liderului, nu o apăsare de buton
+  auto      Boolean  @default(false)
   createdAt      DateTime @default(now())
 
   @@index([auctionId, createdAt])

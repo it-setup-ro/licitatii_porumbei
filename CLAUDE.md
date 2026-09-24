@@ -11,7 +11,7 @@ Platformă de licitații de porumbei pentru Daniel (intermediar) și clientul lu
 
 | Domeniu | Unde |
 |---|---|
-| Motorul de licitare (proxy, prelungire) | `lib/bidding.ts` (pur, testat), `lib/auction-service.ts` (tranzacții, sweeper, închidere, comision) |
+| Motorul de licitare (proxy, prelungire) | `lib/bidding.ts` (pur, testat), `lib/bid-history.ts` (ce se scrie in istoric: jurnal de fapte, randuri care nu se rescriu, raspuns `auto` pentru lider), `lib/auction-service.ts` (tranzactii, sweeper, inchidere, comision) |
 | Licitații pe loturi (crescător → licitație → lot → porumbei) | `lib/lots.ts` (reguli pure), `lib/lot-service.ts` (Start lot), `lib/lot-notices.ts` (aviz 30 min), `lib/lot-cards.ts`; admin: `app/[locale]/admin/sales/**`, `components/admin/LotAdminPanel.tsx`; public: `app/[locale]/sales/[slug]` |
 | Setări (cheie → JSON, cache 5 s) | `lib/settings.ts` + `app/api/admin/settings/route.ts` (schema zod) + `components/admin/SettingsForm.tsx` |
 | Bani și curs lei / € | `lib/money.ts` (`formatMoney`, RON → „lei"), `lib/fx-math.ts` (pur: BNR, conversie, echivalent), `lib/fx.ts` (server: `getEurRate`, `refreshBnrRate`), `components/PriceInput.tsx`, `components/admin/FxRateCard.tsx` |

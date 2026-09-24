@@ -198,7 +198,8 @@
     "errACCOUNT_REJECTED": "Your account was not approved for bidding. Please write to us from the contact page.",
     "lotLabel": "Lot {label}",
     "allBreederPigeons": "All pigeons in this auction",
-    "unavailableNotice": "This pigeon is no longer available after the auction (it fell ill or died). The winner has been notified."
+    "unavailableNotice": "This pigeon is no longer available after the auction (it fell ill or died). The winner has been notified.",
+    "bidAuto": "automatic"
   },
   "pigeon": {
     "ring": "Ring number",

@@ -264,3 +264,50 @@ test.describe("Pagini de conținut și jurnal", () => {
     expect((await stearsa.json()).ok).toBe(true);
   });
 });
+
+test.describe("Setări care se văd pe site", () => {
+  /**
+   * Transportul din magazin era scris în cod, în două locuri. Acum e o setare:
+   * adminul o schimbă, clientul vede altă sumă la coș.
+   */
+  test("transportul din magazin se schimbă din Setări", async ({ page, browser }) => {
+    test.setTimeout(180_000);
+    await login(page, "admin@nbp.test", "admin1234");
+
+    const pune = async (cents: number) => {
+      const res = await page.request.post("/api/admin/settings", {
+        data: { updates: { shopShippingCents: cents } },
+      });
+      expect((await res.json()).ok, `nu s-a salvat transportul ${cents}`).toBe(true);
+    };
+
+    const ctx = await browser.newContext({ locale: "ro-RO" });
+    const client = await ctx.newPage();
+    await login(client, "buyer1@nbp.test", "buyer1234");
+    await client.goto("/ro/products");
+    await client.getByTestId("product-card").first().click();
+    await client.waitForURL(/\/products\/[^/]+$/);
+    const adaugat = client.waitForResponse((r) => r.url().includes("/api/cart") && r.request().method() === "POST");
+    await client.getByTestId("add-to-cart").click();
+    expect((await adaugat).status()).toBe(200);
+
+    try {
+      await pune(3_000);
+      await expect(async () => {
+        await client.goto("/ro/cart");
+        await expect(client.locator("main")).toContainText("30", { timeout: 2_000 });
+      }).toPass({ timeout: 20_000 });
+
+      await pune(1_000);
+      await expect(async () => {
+        await client.goto("/ro/cart");
+        await expect(client.locator("main")).toContainText("10", { timeout: 2_000 });
+      }).toPass({ timeout: 20_000 });
+    } finally {
+      // baza de test e comună: punem valoarea la loc
+      await pune(2_500);
+      await client.getByTestId("cart-remove").first().click().catch(() => {});
+      await ctx.close();
+    }
+  });
+});

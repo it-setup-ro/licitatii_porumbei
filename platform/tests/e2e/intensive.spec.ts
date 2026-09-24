@@ -428,4 +428,66 @@ test.describe("Licitare intensivă și vânzare completă", () => {
     await ctx2.close();
     await ctxAdmin.close();
   });
+
+  /**
+   * Daniel, pe site: „nu e normal să fie 2 cu același preț”. Era: cel depășit
+   * instant apărea cu prețul rezultat, nu cu suma lui, iar rândul liderului se
+   * rescria pe loc, păstrându-și ora veche. Acum fiecare rând e o faptă.
+   */
+  test("depășit instant: rândul lui e suma lui, iar răspunsul automat e un rând nou", async ({
+    browser,
+  }) => {
+    test.setTimeout(240_000);
+
+    const ctxAdmin = await browser.newContext({ locale: "ro-RO" });
+    const admin = await ctxAdmin.newPage();
+    await login(admin, "admin@nbp.test", "admin1234");
+    const { auctionIds } = await lotPornit(admin, [
+      { name: `Fapte ${uid().slice(-5)}`, startPriceCents: 50_000 },
+    ]);
+    const id = auctionIds[0];
+    const url = `/ro/auctions/${id}`;
+
+    const ctxA = await browser.newContext({ locale: "ro-RO" });
+    const ctxB = await browser.newContext({ locale: "ro-RO" });
+    const lider = await ctxA.newPage();
+    const provocator = await ctxB.newPage();
+    await deschide(lider, id, "buyer1@nbp.test", "buyer1234");
+    await deschide(provocator, id, "buyer2@nbp.test", "buyer1234");
+
+    // liderul intră cu un plafon mare: prețul rămâne la pornire
+    expect((await post(lider.request, `/api/auctions/${id}/bid`, { maxCents: 160_000 })).body.ok).toBe(true);
+    await expect(lider.getByTestId("bid-row")).toHaveCount(1);
+    const inainte = await randuri(lider);
+
+    // provocatorul oferă 800, sub plafonul liderului: e depășit instant
+    expect((await post(provocator.request, `/api/auctions/${id}/bid`, { maxCents: 80_000 })).body.ok).toBe(true);
+    await expect(lider.getByTestId("bid-row")).toHaveCount(3, { timeout: 20_000 });
+
+    const acum = await randuri(lider);
+    // rândurile vechi au rămas neatinse: aceeași sumă, aceeași oră. Steluța de
+    // lider se mută, e normal — o scoatem din comparație.
+    const faraStea = (lista: string[]) => lista.map((t) => t.replace(/★s*/g, "").trim());
+    expect(faraStea(acum.slice(2)), "un rând deja scris s-a schimbat").toEqual(faraStea(inainte));
+
+    // rândul provocatorului arată suma LUI (800), nu prețul rezultat
+    expect(await sumaRandului(lider, 1), "suma celui depășit").toBe(80_000);
+
+    // răspunsul automat al liderului: sus, marcat, la prețul curent
+    const pret = cents(await lider.getByTestId("current-price").innerText());
+    expect(await sumaRandului(lider, 0)).toBe(pret);
+    expect(pret, "prețul trebuie să treacă peste oferta provocatorului").toBeGreaterThan(80_000);
+    await expect(lider.getByTestId("bid-row").first().getByTestId("bid-auto")).toBeVisible();
+
+    // „N oferte” numără oamenii, nu și răspunsul automat
+    await expect(lider.getByTestId("bid-count")).toContainText("2");
+    await expect(lider.getByTestId("bidder-count")).toContainText("2");
+
+    // și pe un ecran deschis de la zero se vede la fel
+    await caPeServer([lider, provocator], admin, url, "după depășirea instantanee");
+
+    await ctxA.close();
+    await ctxB.close();
+    await ctxAdmin.close();
+  });
 });

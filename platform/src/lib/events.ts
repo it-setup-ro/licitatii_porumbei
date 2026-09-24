@@ -12,6 +12,8 @@ export type PublicBid = {
   name: string;
   amountCents: number;
   at: string;
+  /** răspunsul platformei în numele liderului, nu o apăsare de buton */
+  auto: boolean;
 };
 
 export type AuctionEvent =
@@ -31,8 +33,8 @@ export type AuctionEvent =
       leadingBidderId: string;
       endsAt: string;
       extended: boolean;
-      /** oferta care a produs evenimentul, pentru istoricul din pagină */
-      bid: PublicBid;
+      /** rândurile noi de istoric: oferta omului și, uneori, răspunsul automat */
+      newBids: PublicBid[];
       /** care ofertă conduce acum (id de ofertă, nu de utilizator) */
       leadingBidId: string | null;
     }

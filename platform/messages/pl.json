@@ -198,7 +198,8 @@
     "errACCOUNT_REJECTED": "Twoje konto nie zostało zatwierdzone do licytowania. Napisz do nas przez stronę kontaktową.",
     "lotLabel": "Partia {label}",
     "allBreederPigeons": "Wszystkie gołębie na tej aukcji",
-    "unavailableNotice": "Ten gołąb nie jest już dostępny po aukcji (zachorował lub padł). Zwycięzca został powiadomiony."
+    "unavailableNotice": "Ten gołąb nie jest już dostępny po aukcji (zachorował lub padł). Zwycięzca został powiadomiony.",
+    "bidAuto": "automatyczna"
   },
   "pigeon": {
     "ring": "Numer obrączki",

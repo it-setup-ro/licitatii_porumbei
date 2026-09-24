@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getSettings } from "@/lib/settings";
 import { prisma } from "@/lib/db";
 import { alertAdmin } from "@/lib/alerts";
 import { requireUser } from "@/lib/auth";
@@ -14,7 +15,6 @@ const schema = z.object({
 });
 
 /** Transport fix pentru comenzile din magazin (produse fizice). */
-const SHIPPING_CENTS = 2_500;
 
 /**
  * Finalizează comanda din magazin.
@@ -48,7 +48,9 @@ export async function POST(req: Request) {
     if (lines.length === 0) return jsonError("OUT_OF_STOCK", 400);
 
     const subtotalCents = lines.reduce((s, l) => s + l.product.priceCents * l.quantity, 0);
-    const totalCents = subtotalCents + SHIPPING_CENTS;
+    // transportul vine din Setări, ca să-l poată schimba clientul
+    const { shopShippingCents } = await getSettings();
+    const totalCents = subtotalCents + shopShippingCents;
 
     const order = await prisma.$transaction(async (tx) => {
       // scade stocul conditionat: doar daca mai exista cantitatea ceruta
@@ -64,7 +66,7 @@ export async function POST(req: Request) {
         data: {
           buyerId: user.id,
           subtotalCents,
-          shippingCents: SHIPPING_CENTS,
+          shippingCents: shopShippingCents,
           totalCents,
           currency: lines[0].product.currency,
           shippingName: body.data.shippingName,

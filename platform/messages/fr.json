@@ -198,7 +198,8 @@
     "errACCOUNT_REJECTED": "Votre compte n’a pas été approuvé pour enchérir. Écrivez-nous depuis la page de contact.",
     "lotLabel": "Lot {label}",
     "allBreederPigeons": "Tous les pigeons de cette vente",
-    "unavailableNotice": "Ce pigeon n’est plus disponible après l’enchère (il est tombé malade ou est mort). Le gagnant a été prévenu."
+    "unavailableNotice": "Ce pigeon n’est plus disponible après l’enchère (il est tombé malade ou est mort). Le gagnant a été prévenu.",
+    "bidAuto": "automatique"
   },
   "pigeon": {
     "ring": "Numéro de bague",

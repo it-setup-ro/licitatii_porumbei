@@ -2,20 +2,20 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getCartLines } from "@/lib/cart";
 import CartView from "@/components/CartView";
+import { getSettings } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
-
-/** Transport fix — trebuie să coincidă cu SHIPPING_CENTS din /api/shop-orders. */
-const SHIPPING_CENTS = 2_500;
 
 export default async function CartPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("cart");
 
-  const [{ lines, subtotalCents, currency, hasStockIssue }, user] = await Promise.all([
+  // transportul e o setare: îl schimbă clientul din Administrare → Setări
+  const [{ lines, subtotalCents, currency, hasStockIssue }, user, setari] = await Promise.all([
     getCartLines(),
     getCurrentUser(),
+    getSettings(),
   ]);
 
   return (
@@ -24,7 +24,7 @@ export default async function CartPage({ params }: { params: Promise<{ locale: s
       <CartView
         lines={lines}
         subtotalCents={subtotalCents}
-        shippingCents={lines.length > 0 ? SHIPPING_CENTS : 0}
+        shippingCents={lines.length > 0 ? setari.shopShippingCents : 0}
         currency={currency}
         isLoggedIn={user !== null}
         hasStockIssue={hasStockIssue}

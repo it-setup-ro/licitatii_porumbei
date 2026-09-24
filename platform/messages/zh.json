@@ -198,7 +198,8 @@
     "errACCOUNT_REJECTED": "您的账户未获准出价，请通过联系页面与我们联系。",
     "lotLabel": "第 {label} 号拍品",
     "allBreederPigeons": "本场拍卖的全部鸽子",
-    "unavailableNotice": "拍卖结束后，这羽鸽子已无法交付（患病或死亡），已通知得标者。"
+    "unavailableNotice": "拍卖结束后，这羽鸽子已无法交付（患病或死亡），已通知得标者。",
+    "bidAuto": "自动"
   },
   "pigeon": {
     "ring": "足环号",

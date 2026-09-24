@@ -160,6 +160,7 @@ export default async function AuctionDetailPage({
     amount: formatMoney(b.amountCents, auction.currency, currentLocale),
     when: dateFmt.format(b.createdAt),
     leading: b.isLeading,
+    auto: b.auto,
   }));
 
   // fisa detaliata, in stil pipa: doar randurile completate
