@@ -94,13 +94,13 @@ test.describe("Unelte de administrare", () => {
    * că uităm de situație”. În teste nu e configurat niciun serviciu, deci
    * trebuie să se vadă limpede asta, împreună cu pașii.
    */
-  test("starea trimiterii de e-mailuri se vede sus, cu pașii de pornire", async ({ page }) => {
+  test("starea trimiterii de e-mailuri se vede sus, cu formularul de conectare", async ({ page }) => {
     await login(page, "admin@nbp.test", "admin1234");
     await page.goto("/ro/admin/emails");
     const caseta = page.getByTestId("email-setup");
     await expect(caseta).toBeVisible();
     await expect(caseta.getByTestId("email-setup-missing")).toBeVisible();
-    await expect(caseta).toContainText("set-smtp.sh");
+    await expect(caseta.getByTestId("email-config-form")).toBeVisible();
     await expect(caseta).toContainText("Gmail");
     // fără configurare nu are rost butonul de probă
     await expect(page.locator('[data-testid="email-test-send"]')).toHaveCount(0);
@@ -111,5 +111,64 @@ test.describe("Unelte de administrare", () => {
     });
     expect(res.status()).toBe(409);
     expect((await res.json()).error).toBe("SMTP_NECONFIGURAT");
+  });
+
+  /**
+   * Daniel: „tot nu văd unde se scriu datele de Google ca să trimită acum
+   * mailuri”. Se scriu din administrare; parola se păstrează criptată și nu
+   * se mai întoarce niciodată în pagină.
+   */
+  test("datele serviciului de e-mail se scriu din administrare", async ({ page }) => {
+    test.setTimeout(120_000);
+    await login(page, "admin@nbp.test", "admin1234");
+    // pornim de la zero, ca testul să nu depindă de ce a rămas de la alții
+    await page.request.delete("/api/admin/email-config");
+
+    await page.goto("/ro/admin/emails");
+    await expect(page.getByTestId("email-setup-missing")).toBeVisible();
+
+    // formularul e deschis de la sine cât timp nu e nimic configurat
+    const formular = page.getByTestId("email-config-form");
+    await expect(formular).toBeVisible();
+    await expect(formular).toContainText("Parole pentru aplicații");
+
+    // Gmail e prima variantă și completează singură serverul
+    await page.getByTestId("smtp-preset-GMAIL").click();
+    await expect(page.getByTestId("smtp-host")).toHaveValue("smtp.gmail.com");
+
+    // scriem datele prin API: un server care refuză imediat, ca proba să fie rapidă
+    const salvat = await page.request.post("/api/admin/email-config", {
+      data: {
+        provider: "OTHER",
+        host: "127.0.0.1",
+        port: 1,
+        user: "licitatii@exemplu.ro",
+        pass: "parola-de-test",
+        fromEmail: "licitatii@exemplu.ro",
+        fromName: "No.1 & Best Pigeons",
+      },
+    });
+    expect((await salvat.json()).ok).toBe(true);
+
+    // acum starea spune că e configurat, și de unde
+    await page.reload();
+    await expect(page.getByTestId("email-setup-ok")).toContainText("scrise aici");
+    await expect(page.getByTestId("email-setup-ok")).toContainText("licitatii@exemplu.ro");
+
+    // parola nu se întoarce niciodată în pagină
+    const html = await page.content();
+    expect(html).not.toContain("parola-de-test");
+
+    // proba spune limpede că serverul de e-mail nu răspunde
+    const proba = await page.request.post("/api/admin/email-test", {
+      data: { to: "cineva@e2e.test" },
+    });
+    expect(proba.status()).toBe(502);
+
+    // ștergem, ca baza de test să rămână curată pentru celelalte teste
+    const sters = await page.request.delete("/api/admin/email-config");
+    expect((await sters.json()).ok).toBe(true);
+    await page.reload();
+    await expect(page.getByTestId("email-setup-missing")).toBeVisible();
   });
 });

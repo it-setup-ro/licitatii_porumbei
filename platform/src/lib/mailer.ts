@@ -1,4 +1,5 @@
 import type { Transporter } from "nodemailer";
+import { smtpSettings } from "./smtp-config";
 import { prisma } from "./db";
 
 /**
@@ -37,17 +38,19 @@ export async function sendEmail(msg: OutgoingEmail): Promise<{ sent: boolean }> 
 /** Trimiterea propriu-zisă, folosită și la „Trimite din nou” din administrare. */
 export async function deliver(logId: string, msg: OutgoingEmail): Promise<{ sent: boolean }> {
 
-  const url = process.env.SMTP_URL;
-  if (!url) {
+  // întâi ce e pe server, apoi ce a scris administratorul din site
+  const setari = await smtpSettings();
+  if (!setari) {
     if (process.env.NODE_ENV === "development") console.log(`[email -> ${msg.to}] ${msg.subject}`);
-    // fără SMTP nu e o eroare: mesajul se citește din jurnal
+    // fără serviciu de e-mail nu e o eroare: mesajul se citește din jurnal
     return { sent: false };
   }
+  const url = setari.url;
 
   try {
     const transport = await transportFor(url);
     await transport.sendMail({
-      from: process.env.SMTP_FROM ?? "No.1 & Best Pigeons <no-reply@localhost>",
+      from: setari.from,
       to: msg.to,
       subject: msg.subject,
       text: msg.text,

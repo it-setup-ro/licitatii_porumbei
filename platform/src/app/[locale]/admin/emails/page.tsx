@@ -2,7 +2,8 @@ import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import ResendEmailButton from "@/components/admin/ResendEmailButton";
 import EmailSetupCard from "@/components/admin/EmailSetupCard";
-import { smtpStatus } from "@/lib/smtp-status";
+import { smtpStatusFull } from "@/lib/smtp-status";
+import { smtpConfigPublic } from "@/lib/smtp-config";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +38,7 @@ export default async function AdminEmailsPage({
   const q = (sp.q ?? "").trim();
   const status = STARI.some((s) => s.key === sp.status) ? (sp.status ?? "") : "";
   const page = Math.max(1, Number(sp.page ?? "1") || 1);
-  const smtp = smtpStatus();
+  const [smtp, smtpConfig] = await Promise.all([smtpStatusFull(), smtpConfigPublic()]);
 
   const contains = { contains: q, mode: "insensitive" as const };
   const where = {
@@ -93,6 +94,8 @@ export default async function AdminEmailsPage({
           limita={smtp.limita}
           trimise={trimise}
           esuate={esuate}
+          sursa={smtp.sursa}
+          config={smtpConfig}
           neplecate={neplecate}
         />
       </div>

@@ -12,6 +12,8 @@
 
 export type SmtpStatus = {
   configurat: boolean;
+  /** de unde vin datele: din fișierul de pe server sau scrise în administrare */
+  sursa: "server" | "site" | null;
   /** smtp-relay.brevo.com, smtp.gmail.com… */
   host: string | null;
   port: number | null;
@@ -46,7 +48,7 @@ export function smtpStatus(): SmtpStatus {
   const url = process.env.SMTP_URL?.trim();
   const expeditor = process.env.SMTP_FROM?.trim() || null;
   if (!url) {
-    return { configurat: false, host: null, port: null, user: null, furnizor: null, expeditor, limita: null };
+    return { configurat: false, sursa: null, host: null, port: null, user: null, furnizor: null, expeditor, limita: null };
   }
   try {
     const u = new URL(url);
@@ -54,6 +56,7 @@ export function smtpStatus(): SmtpStatus {
     const furnizor = furnizorDupaHost(host);
     return {
       configurat: true,
+      sursa: "server",
       host,
       port: u.port ? Number(u.port) : null,
       user: u.username ? decodeURIComponent(u.username) : null,
@@ -63,6 +66,32 @@ export function smtpStatus(): SmtpStatus {
     };
   } catch {
     // adresă scrisă greșit în .env: mai bine spunem asta decât să tăcem
-    return { configurat: false, host: null, port: null, user: null, furnizor: null, expeditor, limita: null };
+    return { configurat: false, sursa: null, host: null, port: null, user: null, furnizor: null, expeditor, limita: null };
   }
+}
+
+/**
+ * Aceeași stare, dar ținând cont și de datele scrise din administrare.
+ * (Varianta de mai sus rămâne pentru locurile care nu pot aștepta baza de date.)
+ */
+export async function smtpStatusFull(): Promise<SmtpStatus> {
+  const { smtpSettings } = await import("./smtp-config");
+  const dinServer = smtpStatus();
+  if (dinServer.configurat) return dinServer;
+
+  const setari = await smtpSettings();
+  if (!setari) return dinServer;
+
+  const furnizor = furnizorDupaHost(setari.host);
+  const port = Number(new URL(setari.url).port) || null;
+  return {
+    configurat: true,
+    sursa: "site",
+    host: setari.host,
+    port,
+    user: setari.user,
+    furnizor,
+    expeditor: setari.from,
+    limita: (furnizor ? LIMITE[furnizor] : null) ?? null,
+  };
 }

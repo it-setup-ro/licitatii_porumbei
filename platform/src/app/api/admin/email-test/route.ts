@@ -2,7 +2,7 @@ import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { jsonOk, jsonError, handleApiError, jsonValidationError } from "@/lib/api";
 import { sendEmail } from "@/lib/mailer";
-import { smtpStatus } from "@/lib/smtp-status";
+import { smtpStatusFull } from "@/lib/smtp-status";
 
 const schema = z.object({
   to: z.string().trim().email("Scrie o adresă de e-mail validă.").max(200),
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     const body = schema.safeParse(await req.json());
     if (!body.success) return jsonValidationError(body.error);
 
-    const stare = smtpStatus();
+    const stare = await smtpStatusFull();
     if (!stare.configurat) return jsonError("SMTP_NECONFIGURAT", 409);
 
     const { sent } = await sendEmail({
