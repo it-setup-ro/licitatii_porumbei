@@ -1,4 +1,5 @@
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
+import { heroTexts } from "@/lib/page-texts";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/db";
 import { getAuctionsByStatus } from "@/lib/queries";
@@ -27,6 +28,8 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("home");
+  // titlul mare și deviza se pot scrie din Administrare → Pagini („Acasă")
+  const hero = await heroTexts(locale);
   const currentLocale = await getLocale();
 
   const [live, liveLots, legacyRows, articles, contests, stats] = await Promise.all([
@@ -221,7 +224,7 @@ export default async function HomePage({
               {t("kicker")}
             </p>
             <h1 className="font-display hero-shadow mt-4 text-4xl font-bold leading-[1.05] text-white sm:text-6xl">
-              {t("heroTitle")}
+              {hero.titlu ?? t("heroTitle")}
             </h1>
             {/* Deviza scrisa de mana, ca in macheta */}
             <p
@@ -231,7 +234,7 @@ export default async function HomePage({
               {t("motto")}
             </p>
             <p className="hero-shadow mt-4 max-w-xl text-lg leading-relaxed text-white/90">
-              {t("heroSubtitle")}
+              {hero.text ?? t("heroSubtitle")}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link

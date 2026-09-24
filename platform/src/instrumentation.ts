@@ -11,6 +11,7 @@ export async function register() {
   const { sweepAuctions } = await import("./lib/auction-service");
   const { refreshBnrRate } = await import("./lib/fx");
   const { pollTelegramLinks } = await import("./lib/telegram-link");
+  const { sendNewsletterBatch } = await import("./lib/newsletter-campaign");
 
   setInterval(async () => {
     try {
@@ -29,6 +30,12 @@ export async function register() {
       await pollTelegramLinks();
     } catch (e) {
       console.error("[telegram]", e);
+    }
+    try {
+      // newsletterul pleaca in reprize, ca sa nu cada 300 de mesaje odata
+      await sendNewsletterBatch();
+    } catch (e) {
+      console.error("[newsletter]", e);
     }
   }, 15_000);
 }

@@ -68,7 +68,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
           if (!auction) return;
           const ultimele = await prisma.bid.findMany({
             where: { auctionId: id },
-            orderBy: { createdAt: "desc" },
+            orderBy: { seq: "desc" },
             take: 10,
             include: { bidder: { select: { nickname: true, name: true } } },
           });

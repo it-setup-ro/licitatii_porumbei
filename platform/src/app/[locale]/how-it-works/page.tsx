@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { howItWorksTexts } from "@/lib/page-texts";
 
 export default async function HowItWorksPage({
   params,
@@ -8,10 +9,20 @@ export default async function HowItWorksPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("how");
+  // textul se poate scrie din Administrare → Pagini („Cum funcționează")
+  const texte = await howItWorksTexts(locale);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="font-display mb-10 text-3xl font-bold">{t("title")}</h1>
+      <h1 className="font-display mb-10 text-3xl font-bold">{texte.titlu ?? t("title")}</h1>
+
+      {/* Dacă administratorul a scris ceva aici, asta se arată; altfel rămân pașii
+          de pornire de mai jos. */}
+      {texte.text && (
+        <div className="mb-10 whitespace-pre-line text-lg leading-relaxed text-ink/80" data-testid="how-custom">
+          {texte.text}
+        </div>
+      )}
       <div className="grid gap-10 md:grid-cols-2">
         <StepList title={t("buyTitle")} steps={[t("buy1"), t("buy2"), t("buy3")]} />
         <StepList title={t("sellTitle")} steps={[t("sell1"), t("sell2"), t("sell3")]} />

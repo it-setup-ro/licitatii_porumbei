@@ -5,6 +5,8 @@ import RecordEditor from "@/components/admin/RecordEditor";
 export const dynamic = "force-dynamic";
 
 const LABELS: Record<string, string> = {
+  acasa: "Acasă (titlul mare și deviza)",
+  "cum-functioneaza": "Cum funcționează",
   regulament: "Regulament",
   "info-licitatii": "Informații licitații",
   "alte-info": "Alte informații",

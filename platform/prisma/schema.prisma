@@ -228,6 +228,9 @@ model Bid {
   isLeading      Boolean  @default(false)
   /// răspunsul automat al platformei în numele liderului, nu o apăsare de buton
   auto      Boolean  @default(false)
+  /// numărul de ordine al rândului: două oferte scrise în aceeași tranzacție
+  /// au aceeași oră, deci doar el le poate pune în ordinea adevărată
+  seq       Int      @default(autoincrement())
   createdAt      DateTime @default(now())
 
   @@index([auctionId, createdAt])
@@ -750,4 +753,27 @@ model FaqItem {
   updatedAt DateTime @updatedAt
 
   @@index([category, sortIdx])
+}
+
+/// Un newsletter trimis abonaților. Se trimite în reprize, din sweeper:
+/// „cursor” ține minte până unde s-a ajuns, ca nimeni să nu primească de două ori.
+model NewsletterCampaign {
+  id        String    @id @default(cuid())
+  subjectRo String
+  subjectEn String
+  bodyRo    String
+  bodyEn    String
+  /// SENDING | SENT | CANCELLED
+  status    String    @default("SENDING")
+  total     Int       @default(0)
+  sent      Int       @default(0)
+  failed    Int       @default(0)
+  /// ultimul abonat servit (id), ca repriza următoare să continue de acolo
+  cursor    String?
+  createdById String?
+  createdAt DateTime  @default(now())
+  startedAt DateTime?
+  finishedAt DateTime?
+
+  @@index([status, createdAt])
 }

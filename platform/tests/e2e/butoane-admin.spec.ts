@@ -1,5 +1,19 @@
 import { test, expect } from "@playwright/test";
 import { login, asteaptaFormularViu } from "./helpers";
+import { execSync } from "child_process";
+import path from "path";
+import { TEST_DATABASE_URL } from "../../playwright.config";
+
+/** Ce i-a ajuns unei adrese, din jurnalul de e-mailuri. */
+function emails(address: string): { subject: string; body: string }[] {
+  const root = path.resolve(__dirname, "../..");
+  const out = execSync(`npx tsx tests/e2e/fixtures/email-log.ts ${address}`, {
+    cwd: root,
+    env: { ...process.env, DATABASE_URL: TEST_DATABASE_URL },
+  }).toString();
+  const line = out.split(/\r?\n/).filter((l) => l.trim().startsWith("[")).pop()!;
+  return JSON.parse(line);
+}
 
 /**
  * Butoanele din administrare, apăsate pe rând, cu verificarea urmării lor.
@@ -309,5 +323,158 @@ test.describe("Setări care se văd pe site", () => {
       await client.getByTestId("cart-remove").first().click().catch(() => {});
       await ctx.close();
     }
+  });
+});
+
+test.describe("Textele paginilor, scrise din administrare", () => {
+  /**
+   * Clientul cerea de mult să-și poată schimba singur titlul mare și deviza.
+   * Erau în fișierele de traduceri, deci numai un programator le putea atinge.
+   */
+  test("titlul de pe prima pagină se schimbă din Pagini", async ({ page }) => {
+    test.setTimeout(180_000);
+    const id = uid().slice(-5);
+    const titluNou = `Porumbei de soi ${id}`;
+    const devizaNoua = `Licitații cinstite, între crescători ${id}.`;
+
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/content?slug=acasa");
+    await asteaptaFormularViu(page, "field-titleRo");
+
+    const titluVechi = await page.getByTestId("field-titleRo").inputValue();
+    const textVechi = await page.getByLabel("Conținut (RO)").inputValue();
+
+    await page.getByTestId("field-titleRo").fill(titluNou);
+    await page.getByLabel("Conținut (RO)").fill(devizaNoua);
+    const salvat = page.waitForResponse(
+      (r) => r.url().includes("/api/admin/content") && r.request().method() === "POST"
+    );
+    await page.getByTestId("editor-save").click();
+    expect((await salvat).status()).toBe(200);
+
+    // se vede pe prima pagină
+    await page.goto("/ro");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(titluNou);
+    await expect(page.locator("main")).toContainText(devizaNoua);
+
+    // punem la loc, baza de test e comună
+    await page.goto("/ro/admin/content?slug=acasa");
+    await asteaptaFormularViu(page, "field-titleRo");
+    await page.getByTestId("field-titleRo").fill(titluVechi);
+    await page.getByLabel("Conținut (RO)").fill(textVechi);
+    const pus = page.waitForResponse(
+      (r) => r.url().includes("/api/admin/content") && r.request().method() === "POST"
+    );
+    await page.getByTestId("editor-save").click();
+    expect((await pus).status()).toBe(200);
+  });
+
+  test("„Cum funcționează” se poate scrie din administrare", async ({ page }) => {
+    test.setTimeout(180_000);
+    const id = uid().slice(-5);
+    const text = `Pe scurt: te înscrii, licitezi, plătești, primești porumbelul ${id}.`;
+
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/content?slug=cum-functioneaza");
+    await asteaptaFormularViu(page, "field-titleRo");
+    const vechi = await page.getByLabel("Conținut (RO)").inputValue();
+
+    await page.getByLabel("Conținut (RO)").fill(text);
+    const salvat = page.waitForResponse(
+      (r) => r.url().includes("/api/admin/content") && r.request().method() === "POST"
+    );
+    await page.getByTestId("editor-save").click();
+    expect((await salvat).status()).toBe(200);
+
+    await page.goto("/ro/how-it-works");
+    await expect(page.getByTestId("how-custom")).toContainText(text);
+
+    // gol la loc: pagina se întoarce la pașii de pornire
+    await page.goto("/ro/admin/content?slug=cum-functioneaza");
+    await asteaptaFormularViu(page, "field-titleRo");
+    await page.getByLabel("Conținut (RO)").fill(vechi);
+    const pus = page.waitForResponse(
+      (r) => r.url().includes("/api/admin/content") && r.request().method() === "POST"
+    );
+    await page.getByTestId("editor-save").click();
+    expect((await pus).status()).toBe(200);
+  });
+});
+
+test.describe("Newsletter", () => {
+  /**
+   * Lipsea cu totul: abonații se vedeau, dar nu se putea trimite nimic.
+   * Mesajul pleacă în reprize, din sweeper, și are link de dezabonare.
+   */
+  test("se scrie din administrare și ajunge la abonat, cu dezabonare", async ({ page }) => {
+    test.setTimeout(240_000);
+    const id = uid().slice(-6);
+    const abonat = `abonat-${id}@e2e.test`;
+    const subiect = `Licitație nouă ${id}`;
+
+    // un om se abonează de pe site
+    const inscris = await page.request.post("/api/newsletter", {
+      data: { email: abonat, locale: "ro", consent: true },
+    });
+    expect(inscris.status(), await inscris.text()).toBe(200);
+
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/newsletter");
+    await expect(page.getByTestId("newsletter-composer")).toBeVisible();
+
+    // scriem și trimitem
+    const pornit = await page.request.post("/api/admin/newsletter/campaigns", {
+      data: {
+        subjectRo: subiect,
+        subjectEn: `New auction ${id}`,
+        bodyRo: "Sâmbătă pornim o licitație nouă. Te așteptăm pe site!",
+        bodyEn: "On Saturday we open a new auction. See you on the site!",
+      },
+    });
+    const raspuns = await pornit.json();
+    expect(raspuns.ok, JSON.stringify(raspuns)).toBe(true);
+    expect(raspuns.total).toBeGreaterThan(0);
+
+    // sweeperul îl duce la capăt: mesajul ajunge la abonat
+    await expect(async () => {
+      const primite = emails(abonat);
+      expect(
+        primite.some((e) => e.subject === subiect),
+        `nu a ajuns; ce a primit: ${primite.map((e) => e.subject).join(" | ")}`
+      ).toBe(true);
+    }).toPass({ timeout: 120_000, intervals: [5_000] });
+
+    const mesaj = emails(abonat).find((e) => e.subject === subiect)!;
+    expect(mesaj.body).toContain("Te așteptăm");
+    expect(mesaj.body, "lipsește linkul de dezabonare").toContain("/newsletter/unsubscribe?token=");
+
+    // progresul se vede în administrare
+    await expect(async () => {
+      await page.goto("/ro/admin/newsletter");
+      await expect(page.getByTestId("campaign-row").filter({ hasText: subiect })).toContainText(
+        /trimis|se trimite/,
+        { timeout: 2_000 }
+      );
+    }).toPass({ timeout: 30_000 });
+  });
+
+  test("nu se pornesc două trimiteri deodată", async ({ page }) => {
+    test.setTimeout(150_000);
+    const id = uid().slice(-6);
+    await login(page, "admin@nbp.test", "admin1234");
+    const date = {
+      subjectRo: `Prima ${id}`,
+      subjectEn: `First ${id}`,
+      bodyRo: "Un mesaj de probă pentru abonații platformei noastre.",
+      bodyEn: "A test message for the subscribers of our platform.",
+    };
+    const una = await page.request.post("/api/admin/newsletter/campaigns", { data: date });
+    const aDoua = await page.request.post("/api/admin/newsletter/campaigns", {
+      data: { ...date, subjectRo: `A doua ${id}` },
+    });
+    // prima poate porni (sau poate exista deja una în curs), dar două odată nu
+    const stari = [una.status(), aDoua.status()];
+    expect(stari.filter((s) => s === 200).length, `stări: ${stari}`).toBeLessThanOrEqual(1);
+    expect(stari).toContain(409);
   });
 });

@@ -213,7 +213,7 @@ async function placeBidOnce(
     // rândurile scrise chiar acum: oferta omului și, uneori, răspunsul automat
     const scriseAcum = await prisma.bid.findMany({
       where: { auctionId, createdAt: { gte: inceput } },
-      orderBy: { createdAt: "asc" },
+      orderBy: { seq: "asc" },
       include: { bidder: { select: { nickname: true, name: true } } },
     });
     const settingsNow = await getSettings();

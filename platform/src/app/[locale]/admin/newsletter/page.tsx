@@ -2,6 +2,7 @@ import { getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import Pager from "@/components/admin/Pager";
 import RowActions from "@/components/admin/RowActions";
+import NewsletterComposer from "@/components/admin/NewsletterComposer";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,10 @@ export default async function AdminNewsletterPage({
   });
 
   const total = await prisma.newsletterSubscriber.count();
+  const campanii = await prisma.newsletterCampaign.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 10,
+  });
 
   return (
     <div>
@@ -60,6 +65,37 @@ export default async function AdminNewsletterPage({
       <p className="mb-5 text-ink/70" data-testid="newsletter-counts">
         <strong>{active}</strong> abonați activi · {gone} dezabonați
       </p>
+
+      <div className="mb-6">
+        <NewsletterComposer abonati={active} />
+      </div>
+
+      {campanii.length > 0 && (
+        <section className="mb-8" data-testid="newsletter-campaigns">
+          <h2 className="font-display mb-3 text-xl font-bold">Ce s-a trimis</h2>
+          <div className="overflow-hidden rounded-2xl border border-ink/10 bg-white">
+            <table className="w-full text-sm">
+              <tbody>
+                {campanii.map((c) => (
+                  <tr key={c.id} className="border-b border-ink/5 last:border-0" data-testid="campaign-row">
+                    <td className="px-4 py-3">
+                      <span className="font-semibold">{c.subjectRo}</span>
+                      <div className="text-xs text-ink/50">{fmt.format(c.createdAt)}</div>
+                    </td>
+                    <td className="px-4 py-3 text-ink/70">
+                      {c.status === "SENDING" ? "se trimite…" : c.status === "SENT" ? "trimis" : "oprit"}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-3 text-end text-ink/70">
+                      {c.sent} din {c.total}
+                      {c.failed > 0 && <span className="text-wing-red"> · {c.failed} eșuate</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
       {rows.length === 0 ? (
         <p className="text-ink/50" data-testid="no-subscribers">

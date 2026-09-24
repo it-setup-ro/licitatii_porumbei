@@ -543,4 +543,22 @@ export const LEGAL_PAGES = [
     bodyRo: PRIVACY_RO,
     bodyEn: PRIVACY_EN,
   },
+  {
+    slug: "acasa",
+    titleRo: "Pasiunea unește oameni!",
+    titleEn: "Passion brings people together!",
+    bodyRo:
+      "Platformă de licitații pentru porumbei voiajori de performanță — siguranță, transparență, încredere.",
+    bodyEn:
+      "An auction platform for racing pigeons — safe, transparent, trustworthy.",
+  },
+  {
+    slug: "cum-functioneaza",
+    titleRo: "Cum funcționează",
+    titleEn: "How it works",
+    bodyRo:
+      "## Cumperi în 3 pași\n\n1. Îți faci cont și te autentifici. Conturile noi au o limită de licitare până la prima tranzacție.\n2. Setezi oferta ta maximă — platforma licitează automat pentru tine, cu cât mai puțin posibil, iar plafonul tău rămâne secret.\n3. Dacă ești pe primul loc la închidere, primești comanda și datele de plată. Ofertele din ultimele minute prelungesc licitația, ca nimeni să nu câștige pe ultima secundă.\n\n## Vinzi în 3 pași\n\n1. Ne scrii ca să deschidem licitația ta.\n2. Porumbeii se pun cu pedigree, palmares și poze; totul se verifică înainte de pornire.\n3. După vânzare și încasare primești banii, minus comisionul stabilit.",
+    bodyEn:
+      "## Buy in 3 steps\n\n1. Create an account and sign in. New accounts have a bidding limit until the first completed transaction.\n2. Set your maximum bid — the platform bids for you, as little as possible, and your ceiling stays secret.\n3. If you lead at closing, you receive the order and the payment details. Bids in the final minutes extend the auction, so nobody wins on the last second.\n\n## Sell in 3 steps\n\n1. Write to us and we open your auction.\n2. Pigeons are listed with pedigree, results and photos; everything is checked before the start.\n3. After the sale is paid, you receive the money, minus the agreed commission.",
+  },
 ];

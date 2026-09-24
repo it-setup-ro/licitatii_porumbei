@@ -62,7 +62,7 @@ export default async function AuctionDetailPage({
           seller: true,
         },
       },
-      bids: { orderBy: { createdAt: "desc" }, take: 100, include: { bidder: true } },
+      bids: { orderBy: { seq: "desc" }, take: 100, include: { bidder: true } },
       lot: { include: { sale: { include: { breeder: true } } } },
       _count: { select: { bids: true } },
     },
