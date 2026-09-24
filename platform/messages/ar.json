@@ -487,7 +487,8 @@
     "cancelledInfo": "تم إلغاء البيع: لم يتم استلام الدفعة.",
     "methodTRANSFER": "تحويل بنكي",
     "methodCASH": "نقدًا",
-    "adminManage": "سجّل الدفعة في «المبيعات والمدفوعات»"
+    "adminManage": "سجّل الدفعة في «المبيعات والمدفوعات»",
+    "shopStatusDELIVERED": "تم التسليم"
   },
   "reviews": {
     "title": "التقييمات",

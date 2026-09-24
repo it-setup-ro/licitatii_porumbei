@@ -487,7 +487,8 @@
     "cancelledInfo": "बिक्री रद्द कर दी गई: भुगतान प्राप्त नहीं हुआ।",
     "methodTRANSFER": "बैंक ट्रांसफ़र",
     "methodCASH": "नकद",
-    "adminManage": "बिक्री और भुगतान में भुगतान दर्ज करें"
+    "adminManage": "बिक्री और भुगतान में भुगतान दर्ज करें",
+    "shopStatusDELIVERED": "डिलीवर किया गया"
   },
   "reviews": {
     "title": "समीक्षाएँ",

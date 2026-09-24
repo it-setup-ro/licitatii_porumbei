@@ -487,7 +487,8 @@
     "cancelledInfo": "La venta se ha cancelado: no se recibió el pago.",
     "methodTRANSFER": "transferencia bancaria",
     "methodCASH": "efectivo",
-    "adminManage": "Registrar el pago en Ventas y pagos"
+    "adminManage": "Registrar el pago en Ventas y pagos",
+    "shopStatusDELIVERED": "Entregado"
   },
   "reviews": {
     "title": "Valoraciones",

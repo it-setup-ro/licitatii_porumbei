@@ -487,7 +487,8 @@
     "cancelledInfo": "販売はキャンセルされました：お支払いが確認できませんでした。",
     "methodTRANSFER": "銀行振込",
     "methodCASH": "現金",
-    "adminManage": "「販売と支払い」でお支払いを記録"
+    "adminManage": "「販売と支払い」でお支払いを記録",
+    "shopStatusDELIVERED": "配達済み"
   },
   "reviews": {
     "title": "レビュー",

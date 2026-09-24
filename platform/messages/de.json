@@ -487,7 +487,8 @@
     "cancelledInfo": "Der Verkauf wurde storniert: Die Zahlung ist nicht eingegangen.",
     "methodTRANSFER": "Banküberweisung",
     "methodCASH": "bar",
-    "adminManage": "Zahlung unter Verkäufe und Zahlungen erfassen"
+    "adminManage": "Zahlung unter Verkäufe und Zahlungen erfassen",
+    "shopStatusDELIVERED": "Zugestellt"
   },
   "reviews": {
     "title": "Bewertungen",

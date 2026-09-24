@@ -487,7 +487,8 @@
     "cancelledInfo": "The sale was cancelled: payment was not received.",
     "methodTRANSFER": "bank transfer",
     "methodCASH": "cash",
-    "adminManage": "Record the payment in Sales and payments"
+    "adminManage": "Record the payment in Sales and payments",
+    "shopStatusDELIVERED": "Delivered"
   },
   "reviews": {
     "title": "Reviews",

@@ -487,7 +487,8 @@
     "cancelledInfo": "Vânzarea a fost anulată: plata nu a fost primită.",
     "methodTRANSFER": "transfer bancar",
     "methodCASH": "numerar",
-    "adminManage": "Marchează plata în Vânzări și plăți"
+    "adminManage": "Marchează plata în Vânzări și plăți",
+    "shopStatusDELIVERED": "Livrată"
   },
   "reviews": {
     "title": "Recenzii",

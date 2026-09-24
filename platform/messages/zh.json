@@ -487,7 +487,8 @@
     "cancelledInfo": "交易已取消：未收到付款。",
     "methodTRANSFER": "银行转账",
     "methodCASH": "现金",
-    "adminManage": "在“销售与付款”中登记付款"
+    "adminManage": "在“销售与付款”中登记付款",
+    "shopStatusDELIVERED": "已送达"
   },
   "reviews": {
     "title": "评价",

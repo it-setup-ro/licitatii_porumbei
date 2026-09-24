@@ -487,7 +487,8 @@
     "cancelledInfo": "La vente a été annulée : le paiement n’a pas été reçu.",
     "methodTRANSFER": "virement bancaire",
     "methodCASH": "espèces",
-    "adminManage": "Enregistrer le paiement dans Ventes et paiements"
+    "adminManage": "Enregistrer le paiement dans Ventes et paiements",
+    "shopStatusDELIVERED": "Livrée"
   },
   "reviews": {
     "title": "Avis",

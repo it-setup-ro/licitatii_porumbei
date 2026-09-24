@@ -54,7 +54,10 @@ export default async function ShopOrdersPage({
                 </p>
               </div>
               <span className="rounded-full bg-ink/5 px-3 py-1 text-xs font-bold">
-                {to(`status${o.status}` as "statusPAID")}
+                {// la marfă se spune „livrată", nu „predată" ca la porumbei
+                o.status === "DELIVERED"
+                  ? to("shopStatusDELIVERED")
+                  : to(`status${o.status}` as "statusPAID")}
               </span>
             </Link>
           ))}

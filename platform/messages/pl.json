@@ -487,7 +487,8 @@
     "cancelledInfo": "Sprzedaż została anulowana: nie otrzymano płatności.",
     "methodTRANSFER": "przelew bankowy",
     "methodCASH": "gotówka",
-    "adminManage": "Zarejestruj płatność w Sprzedaży i płatnościach"
+    "adminManage": "Zarejestruj płatność w Sprzedaży i płatnościach",
+    "shopStatusDELIVERED": "Dostarczona"
   },
   "reviews": {
     "title": "Opinie",

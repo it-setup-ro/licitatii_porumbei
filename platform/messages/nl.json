@@ -487,7 +487,8 @@
     "cancelledInfo": "De verkoop is geannuleerd: de betaling is niet ontvangen.",
     "methodTRANSFER": "overschrijving",
     "methodCASH": "contant",
-    "adminManage": "Betaling registreren in Verkopen en betalingen"
+    "adminManage": "Betaling registreren in Verkopen en betalingen",
+    "shopStatusDELIVERED": "Bezorgd"
   },
   "reviews": {
     "title": "Beoordelingen",

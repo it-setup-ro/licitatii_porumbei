@@ -487,7 +487,8 @@
     "cancelledInfo": "વેચાણ રદ કરવામાં આવ્યું: ચુકવણી મળી નથી.",
     "methodTRANSFER": "બેંક ટ્રાન્સફર",
     "methodCASH": "રોકડ",
-    "adminManage": "“વેચાણ અને ચુકવણીઓ” માં ચુકવણી નોંધો"
+    "adminManage": "“વેચાણ અને ચુકવણીઓ” માં ચુકવણી નોંધો",
+    "shopStatusDELIVERED": "ડિલિવર થયું"
   },
   "reviews": {
     "title": "સમીક્ષાઓ",

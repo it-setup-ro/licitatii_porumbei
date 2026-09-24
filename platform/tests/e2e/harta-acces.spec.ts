@@ -52,7 +52,7 @@ const PUBLICE = [
   ...(ids.productSlug ? [`/ro/products/${ids.productSlug}`] : []),
   ...(ids.saleSlug ? [`/ro/sales/${ids.saleSlug}`] : []),
   ...(ids.contestSlug ? [`/ro/contests/${ids.contestSlug}`] : []),
-  ...(ids.breederId ? [`/ro/sellers/${ids.breederId}`] : []),
+  ...(ids.sellerUserId ? [`/ro/sellers/${ids.sellerUserId}`] : []),
   ...(ids.infoSlug ? [`/ro/info/${ids.infoSlug}`] : []),
 ];
 
@@ -110,7 +110,10 @@ async function deschide(page: Page, cale: string) {
 /** O pagină care s-a rupt: eroarea Next se vede în corpul paginii. */
 async function areEroare(page: Page) {
   const text = (await page.locator("body").innerText().catch(() => "")).slice(0, 4000);
-  return /Application error|Internal Server Error|Unhandled Runtime Error|500/i.test(text);
+  // atenție: nu căutăm „500" ca număr — apare în prețuri („500 lei")
+  return /Application error|Internal Server Error|Unhandled Runtime Error|This page could not be found|Error: /i.test(
+    text
+  );
 }
 
 test.describe("Harta de acces — vizitator nelogat", () => {

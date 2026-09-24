@@ -83,7 +83,10 @@ export default async function ShopOrderPage({
           {order.note && <p className="mt-2 italic text-ink/60">{order.note}</p>}
           <p className="mt-3">
             <span className="rounded-full bg-ink/5 px-3 py-1 text-xs font-bold" data-testid="shop-order-status">
-              {to(`status${order.status}` as "statusPAID")}
+              {// la marfă se spune „livrată", nu „predată" ca la porumbei
+              order.status === "DELIVERED"
+                ? to("shopStatusDELIVERED")
+                : to(`status${order.status}` as "statusPAID")}
             </span>
           </p>
         </div>

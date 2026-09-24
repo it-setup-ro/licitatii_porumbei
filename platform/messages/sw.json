@@ -487,7 +487,8 @@
     "cancelledInfo": "Uuzaji umeghairiwa: malipo hayakupokelewa.",
     "methodTRANSFER": "uhamisho wa benki",
     "methodCASH": "pesa taslimu",
-    "adminManage": "Rekodi malipo katika Mauzo na malipo"
+    "adminManage": "Rekodi malipo katika Mauzo na malipo",
+    "shopStatusDELIVERED": "Imewasilishwa"
   },
   "reviews": {
     "title": "Tathmini",
