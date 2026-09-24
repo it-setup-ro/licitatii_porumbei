@@ -27,19 +27,36 @@ export function telegramConfigured(): boolean {
   return telegramToken() !== null;
 }
 
+/** O cădere de rețea (conexiune resetată) merită o a doua încercare; un refuz
+ *  al Telegramului (token greșit, chat inexistent) nu — ăla se întoarce la om. */
+function maiIncearca(e: unknown): boolean {
+  return e instanceof TypeError || (e instanceof Error && e.name === "TimeoutError");
+}
+
 async function cheama<T>(metoda: string, payload: Record<string, unknown> = {}): Promise<T> {
   const token = telegramToken();
   if (!token) throw new Error("Telegram nu e configurat (lipsește TELEGRAM_BOT_TOKEN).");
-  const res = await fetch(`${API}/bot${token}/${metoda}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-    // fără termen, o cerere agățată ar bloca sweeperul la fiecare rundă
-    signal: AbortSignal.timeout(20_000),
-  });
-  const body = (await res.json()) as { ok: boolean; result?: T; description?: string };
-  if (!body.ok) throw new Error(body.description ?? `Telegram a răspuns ${res.status}`);
-  return body.result as T;
+
+  const odata = async (): Promise<T> => {
+    const res = await fetch(`${API}/bot${token}/${metoda}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      // fără termen, o cerere agățată ar bloca sweeperul la fiecare rundă
+      signal: AbortSignal.timeout(20_000),
+    });
+    const body = (await res.json()) as { ok: boolean; result?: T; description?: string };
+    if (!body.ok) throw new Error(body.description ?? `Telegram a răspuns ${res.status}`);
+    return body.result as T;
+  };
+
+  try {
+    return await odata();
+  } catch (e) {
+    if (!maiIncearca(e)) throw e;
+    await new Promise((r) => setTimeout(r, 1_000));
+    return odata();
+  }
 }
 
 /** Numele botului, pentru linkul de invitație (t.me/NumeBot?start=COD). */

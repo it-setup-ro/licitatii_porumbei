@@ -100,7 +100,9 @@ export async function pollTelegramLinks(): Promise<{ legate: number }> {
 
     await scrieOffset(Math.max(...updates.map((u) => u.update_id)) + 1);
   } catch (e) {
-    console.error("[telegram]", e);
+    // o cădere trecătoare de rețea nu merită o urmă întreagă de eroare în jurnal
+    const mesaj = e instanceof Error ? e.message : String(e);
+    console.error("[telegram] nu am putut citi mesajele: " + mesaj);
   }
   return { legate };
 }
