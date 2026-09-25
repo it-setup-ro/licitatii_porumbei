@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "「{lot}」を {price} で購入しました。お支払い情報は注文ページに記載されています。",
     "ORDER_CANCELLED": "「{lot}」の販売はキャンセルされました：お支払いが確認できませんでした。",
     "ARTICLE_PUBLISHED": "あなたの記事「{titlu}」が公開されました。",
-    "ARTICLE_REJECTED": "記事「{titlu}」はまだ公開されていません。"
+    "ARTICLE_REJECTED": "記事「{titlu}」はまだ公開されていません。",
+    "LOT_CLOSED_BREEDER": "ロット {lot} が終了しました：{count, plural, =0 {売れた鳩はありません} other {鳩 # 羽が売れました}}、{price}。",
+    "SETTLEMENT_DONE": "「{lot}」の精算：{price} があなたの受取額です。"
   },
   "sell": {
     "title": "鳩を出品する",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "販売がキャンセルされました",
       "AUCTION_WITHDRAWN": "入札された鳩が取り下げられました",
       "ARTICLE_PUBLISHED": "あなたの記事が公開されました",
-      "ARTICLE_REJECTED": "お送りいただいた記事について"
+      "ARTICLE_REJECTED": "お送りいただいた記事について",
+      "LOT_CLOSED_BREEDER": "あなたのロットが終了しました",
+      "SETTLEMENT_DONE": "あなたの精算"
     },
     "hello": "こんにちは。",
     "lotLabel": "ロット {label}",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "{site} のブリーダーアカウント",
       "body": "{name} 様、こんにちは。\n\nご自身のオークション、販売、精算をご確認いただけるよう、またブリーダー情報を最新に保てるよう、サイトにアカウントを作成しました。\n\n下のリンクを開いて、パスワードを設定してください：\n{link}\n\nリンクの有効期限は {days} 日です。期限が過ぎている場合は、新しいリンクをお申し付けください。"
+    },
+    "breeder": {
+      "lotIntro": "「{sale}」オークションのロット {lot} が終了しました。",
+      "sold": "{total} 羽のうち {count} 羽が売れました。",
+      "none": "このロットからは鳩が売れませんでした。",
+      "total": "合計：{amount}",
+      "commission": "手数料（{percent}%）：{amount}",
+      "payout": "あなたの受取額：{amount}",
+      "listTitle": "売れた鳩：",
+      "lotFooter": "お金は買い手が支払うにつれて入ります。支払われた分は「私の精算」に表示されます。",
+      "settlementIntro": "「{sale}」オークションの精算が行われました。",
+      "settlementLine": "支払い済みの鳩 {count} 羽、合計 {total}、手数料 {commission}。",
+      "settlementFooter": "金額は取り決めのとおり、管理者からお受け取りください。",
+      "seeAll": "すべてを見る：{link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "成績（英語）",
     "save": "保存",
     "saved": "保存しました",
-    "saveError": "保存できませんでした。"
+    "saveError": "保存できませんでした。",
+    "notifyLabel": "ロットが終了したときと精算が行われたときにメールで知らせてほしい",
+    "notifyHint": "ロットごとに1通だけで、売れたものとあなたの受取額をまとめます — 鳩ごとには送りません。"
   }
 }

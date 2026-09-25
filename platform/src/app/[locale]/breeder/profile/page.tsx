@@ -53,6 +53,7 @@ export default async function BreederProfilePage({
           storyEn: breeder.storyEn ?? "",
           resultsRo: breeder.resultsRo ?? "",
           resultsEn: breeder.resultsEn ?? "",
+          notifyByEmail: breeder.notifyByEmail,
         }}
       />
     </div>

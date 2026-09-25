@@ -33,7 +33,9 @@ export type NotifyType =
   | "ORDER_CANCELLED"
   | "AUCTION_WITHDRAWN"
   | "ARTICLE_PUBLISHED"
-  | "ARTICLE_REJECTED";
+  | "ARTICLE_REJECTED"
+  | "LOT_CLOSED_BREEDER"
+  | "SETTLEMENT_DONE";
 
 
 export async function notify(

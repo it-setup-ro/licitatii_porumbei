@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "Vous avez acheté « {lot} » à {price}. Les informations de paiement se trouvent dans votre commande.",
     "ORDER_CANCELLED": "La vente de « {lot} » a été annulée : le paiement n’a pas été reçu.",
     "ARTICLE_PUBLISHED": "Votre article « {titlu} » a été publié.",
-    "ARTICLE_REJECTED": "L’article « {titlu} » n’a pas encore été publié."
+    "ARTICLE_REJECTED": "L’article « {titlu} » n’a pas encore été publié.",
+    "LOT_CLOSED_BREEDER": "Le lot {lot} est terminé : {count, plural, =0 {aucun pigeon vendu} one {un pigeon vendu} other {# pigeons vendus}}, {price}.",
+    "SETTLEMENT_DONE": "Décompte pour « {lot} » : {price} vous reviennent."
   },
   "sell": {
     "title": "Mettre un pigeon en vente",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "La vente a été annulée",
       "AUCTION_WITHDRAWN": "Un pigeon sur lequel vous avez enchéri a été retiré",
       "ARTICLE_PUBLISHED": "Votre article a été publié",
-      "ARTICLE_REJECTED": "À propos de l’article que vous nous avez envoyé"
+      "ARTICLE_REJECTED": "À propos de l’article que vous nous avez envoyé",
+      "LOT_CLOSED_BREEDER": "Votre lot est terminé",
+      "SETTLEMENT_DONE": "Votre décompte"
     },
     "hello": "Bonjour,",
     "lotLabel": "Lot {label}",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "Votre compte éleveur sur {site}",
       "body": "Bonjour, {name} !\n\nNous vous avons créé un compte sur le site, afin que vous puissiez suivre vos propres enchères, vos ventes et votre décompte, et tenir à jour votre profil d’éleveur.\n\nOuvrez le lien ci-dessous et choisissez un mot de passe :\n{link}\n\nLe lien est valable {days} jours. S’il a expiré, demandez-nous-en un autre."
+    },
+    "breeder": {
+      "lotIntro": "Le lot {lot} de l’enchère « {sale} » est terminé.",
+      "sold": "{count} pigeons sur {total} ont été vendus.",
+      "none": "Aucun pigeon de ce lot n’a été vendu.",
+      "total": "Total : {amount}",
+      "commission": "Commission ({percent} %) : {amount}",
+      "payout": "Ce qui vous revient : {amount}",
+      "listTitle": "Pigeons vendus :",
+      "lotFooter": "L’argent arrive à mesure que les acheteurs paient ; ce qui a été payé apparaît dans « Mon décompte ».",
+      "settlementIntro": "Le décompte de l’enchère « {sale} » a été fait.",
+      "settlementLine": "{count} pigeons payés, total {total}, commission {commission}.",
+      "settlementFooter": "Vous recevez la somme de l’administrateur, comme convenu.",
+      "seeAll": "Voir tout : {link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "Résultats (anglais)",
     "save": "Enregistrer",
     "saved": "Enregistré",
-    "saveError": "Enregistrement impossible."
+    "saveError": "Enregistrement impossible.",
+    "notifyLabel": "M’envoyer un e-mail quand un lot se termine et quand le décompte est fait",
+    "notifyHint": "Un seul message par lot, avec ce qui a été vendu et ce qui vous revient — pas un par pigeon."
   }
 }

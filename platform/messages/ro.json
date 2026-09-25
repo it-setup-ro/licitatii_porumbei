@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "Ai cumpărat „{lot}” la {price}. Datele de plată sunt în comanda ta.",
     "ORDER_CANCELLED": "Vânzarea porumbelului „{lot}” a fost anulată: plata nu a fost primită.",
     "ARTICLE_PUBLISHED": "Articolul tău „{titlu}” a fost publicat.",
-    "ARTICLE_REJECTED": "Articolul „{titlu}” nu a fost publicat deocamdată."
+    "ARTICLE_REJECTED": "Articolul „{titlu}” nu a fost publicat deocamdată.",
+    "LOT_CLOSED_BREEDER": "Lotul {lot} s-a încheiat: {count, plural, =0 {niciun porumbel vândut} one {un porumbel vândut} few {# porumbei vânduți} other {# de porumbei vânduți}}, {price}.",
+    "SETTLEMENT_DONE": "Decont pentru „{lot}”: îți revin {price}."
   },
   "sell": {
     "title": "Listează un porumbel",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "Vânzarea a fost anulată",
       "AUCTION_WITHDRAWN": "Porumbelul pe care ai licitat a fost retras",
       "ARTICLE_PUBLISHED": "Articolul tău a fost publicat",
-      "ARTICLE_REJECTED": "Despre articolul pe care l-ai trimis"
+      "ARTICLE_REJECTED": "Despre articolul pe care l-ai trimis",
+      "LOT_CLOSED_BREEDER": "Lotul tău s-a încheiat",
+      "SETTLEMENT_DONE": "Decontul tău"
     },
     "hello": "Bună ziua,",
     "lotLabel": "Lotul {label}",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "Contul tău de crescător pe {site}",
       "body": "Bună, {name}!\n\nȚi-am făcut un cont pe site, ca să-ți vezi singur licitațiile, vânzările și decontul, și ca să-ți ții la zi fișa de crescător.\n\nIntră pe linkul de mai jos și pune-ți o parolă:\n{link}\n\nLinkul e valabil {days} zile. Dacă a trecut, cere-ne altul."
+    },
+    "breeder": {
+      "lotIntro": "Lotul {lot} din licitația „{sale}” s-a încheiat.",
+      "sold": "S-au vândut {count} din {total} porumbei.",
+      "none": "Nu s-a vândut niciun porumbel din acest lot.",
+      "total": "Total: {amount}",
+      "commission": "Comision ({percent}%): {amount}",
+      "payout": "Îți revin: {amount}",
+      "listTitle": "Porumbeii vânduți:",
+      "lotFooter": "Banii se strâng după ce cumpărătorii plătesc; ce s-a plătit apare în „Decontul meu”.",
+      "settlementIntro": "Decontul pentru licitația „{sale}” a fost făcut.",
+      "settlementLine": "{count} porumbei plătiți, total {total}, comision {commission}.",
+      "settlementFooter": "Suma o primești de la administrator, cum ați vorbit.",
+      "seeAll": "Vezi tot: {link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "Rezultate (engleză)",
     "save": "Salvează",
     "saved": "Salvat",
-    "saveError": "Nu am putut salva."
+    "saveError": "Nu am putut salva.",
+    "notifyLabel": "Vreau e-mail când se încheie un lot și când se face decontul",
+    "notifyHint": "Un singur mesaj pe lot, cu ce s-a vândut și ce îți revine — nu câte unul pe porumbel."
   }
 }

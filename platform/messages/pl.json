@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "Kupiłeś „{lot}” za {price}. Dane do płatności znajdziesz w zamówieniu.",
     "ORDER_CANCELLED": "Sprzedaż „{lot}” została anulowana: nie otrzymano płatności.",
     "ARTICLE_PUBLISHED": "Twój artykuł „{titlu}” został opublikowany.",
-    "ARTICLE_REJECTED": "Artykuł „{titlu}” nie został jeszcze opublikowany."
+    "ARTICLE_REJECTED": "Artykuł „{titlu}” nie został jeszcze opublikowany.",
+    "LOT_CLOSED_BREEDER": "Partia {lot} została zamknięta: {count, plural, =0 {nie sprzedano żadnego gołębia} one {sprzedano jednego gołębia} few {sprzedano # gołębie} many {sprzedano # gołębi} other {sprzedano # gołębia}}, {price}.",
+    "SETTLEMENT_DONE": "Rozliczenie za „{lot}”: należy się Tobie {price}."
   },
   "sell": {
     "title": "Wystaw gołębia",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "Sprzedaż została anulowana",
       "AUCTION_WITHDRAWN": "Gołąb, na którego licytowałeś, został wycofany",
       "ARTICLE_PUBLISHED": "Twój artykuł został opublikowany",
-      "ARTICLE_REJECTED": "W sprawie artykułu, który nam przysłałeś"
+      "ARTICLE_REJECTED": "W sprawie artykułu, który nam przysłałeś",
+      "LOT_CLOSED_BREEDER": "Twoja partia została zamknięta",
+      "SETTLEMENT_DONE": "Twoje rozliczenie"
     },
     "hello": "Dzień dobry,",
     "lotLabel": "Partia {label}",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "Twoje konto hodowcy w {site}",
       "body": "Dzień dobry, {name}.\n\nUtworzyliśmy dla Ciebie konto na stronie, abyś mógł śledzić własne aukcje, sprzedaż i rozliczenia oraz aktualizować swój profil hodowcy.\n\nOtwórz poniższy link i ustaw hasło:\n{link}\n\nLink jest ważny {days} dni. Jeśli wygasł, poproś nas o nowy."
+    },
+    "breeder": {
+      "lotIntro": "Partia {lot} aukcji „{sale}” została zamknięta.",
+      "sold": "Sprzedano {count} z {total} gołębi.",
+      "none": "Z tej partii nie sprzedano żadnego gołębia.",
+      "total": "Razem: {amount}",
+      "commission": "Prowizja ({percent}%): {amount}",
+      "payout": "Należy się Tobie: {amount}",
+      "listTitle": "Sprzedane gołębie:",
+      "lotFooter": "Pieniądze wpływają w miarę tego, jak kupujący płacą; to, co zostało już zapłacone, widać w „Moim rozliczeniu”.",
+      "settlementIntro": "Rozliczenie aukcji „{sale}” zostało wykonane.",
+      "settlementLine": "Opłaconych gołębi: {count}, razem {total}, prowizja {commission}.",
+      "settlementFooter": "Kwotę otrzymasz od administratora, zgodnie z ustaleniami.",
+      "seeAll": "Zobacz wszystko: {link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "Wyniki (po angielsku)",
     "save": "Zapisz",
     "saved": "Zapisano",
-    "saveError": "Nie udało się zapisać."
+    "saveError": "Nie udało się zapisać.",
+    "notifyLabel": "Chcę e-mail, gdy partia się zamknie i gdy zostanie zrobione rozliczenie",
+    "notifyHint": "Jedna wiadomość na partię, z tym, co się sprzedało i co należy się Tobie — nie po jednej na gołębia."
   }
 }

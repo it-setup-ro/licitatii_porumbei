@@ -14,6 +14,7 @@ export type BreederProfileData = {
   storyEn: string;
   resultsRo: string;
   resultsEn: string;
+  notifyByEmail: boolean;
 };
 
 /**
@@ -31,7 +32,7 @@ export default function BreederProfileForm({ initial }: { initial: BreederProfil
   const [saved, setSaved] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const set = (k: keyof BreederProfileData, v: string) => {
+  const set = (k: keyof BreederProfileData, v: string | boolean) => {
     setForm((f) => ({ ...f, [k]: v }));
     setSaved(false);
     setErrors((e) => {
@@ -70,7 +71,12 @@ export default function BreederProfileForm({ initial }: { initial: BreederProfil
   const field = (k: keyof BreederProfileData, label: string, testid: string, hint?: string) => (
     <label className="block text-sm">
       <span className="font-medium">{label}</span>
-      <input value={form[k]} onChange={(e) => set(k, e.target.value)} data-testid={testid} className={cls(k)} />
+      <input
+        value={String(form[k])}
+        onChange={(e) => set(k, e.target.value)}
+        data-testid={testid}
+        className={cls(k)}
+      />
       {hint && !errors[k] && <span className="mt-1 block text-xs text-ink/50">{hint}</span>}
       {errors[k] && <span className="mt-1 block text-wing-red">{errors[k]}</span>}
     </label>
@@ -80,7 +86,7 @@ export default function BreederProfileForm({ initial }: { initial: BreederProfil
     <label className="block text-sm">
       <span className="font-medium">{label}</span>
       <textarea
-        value={form[k]}
+        value={String(form[k])}
         onChange={(e) => set(k, e.target.value)}
         rows={rows}
         data-testid={testid}
@@ -131,6 +137,21 @@ export default function BreederProfileForm({ initial }: { initial: BreederProfil
         {area("resultsRo", t("results"), "breeder-results-ro")}
         {area("resultsEn", t("resultsEn"), "breeder-results-en", 4)}
       </div>
+
+      <label className="mt-6 flex items-start gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={form.notifyByEmail}
+          onChange={(e) => set("notifyByEmail", e.target.checked)}
+          data-testid="breeder-notify"
+          className="mt-0.5 h-5 w-5 shrink-0 accent-wing-blue"
+        />
+        <span>
+          <span className="font-medium">{t("notifyLabel")}</span>
+          <br />
+          <span className="text-xs text-ink/60">{t("notifyHint")}</span>
+        </span>
+      </label>
 
       {errors.form && <p className="mt-3 text-sm text-wing-red">{errors.form}</p>}
       <div className="mt-5 flex items-center gap-4">

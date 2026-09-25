@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "Has comprado «{lot}» por {price}. Los datos de pago están en tu pedido.",
     "ORDER_CANCELLED": "La venta de «{lot}» se ha cancelado: no se recibió el pago.",
     "ARTICLE_PUBLISHED": "Tu artículo “{titlu}” ha sido publicado.",
-    "ARTICLE_REJECTED": "El artículo “{titlu}” todavía no ha sido publicado."
+    "ARTICLE_REJECTED": "El artículo “{titlu}” todavía no ha sido publicado.",
+    "LOT_CLOSED_BREEDER": "El lote {lot} se ha cerrado: {count, plural, =0 {ninguna paloma vendida} one {una paloma vendida} other {# palomas vendidas}}, {price}.",
+    "SETTLEMENT_DONE": "Liquidación de «{lot}»: te corresponden {price}."
   },
   "sell": {
     "title": "Publicar una paloma",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "La venta se ha cancelado",
       "AUCTION_WITHDRAWN": "Una paloma por la que has pujado ha sido retirada",
       "ARTICLE_PUBLISHED": "Tu artículo ha sido publicado",
-      "ARTICLE_REJECTED": "Sobre el artículo que nos enviaste"
+      "ARTICLE_REJECTED": "Sobre el artículo que nos enviaste",
+      "LOT_CLOSED_BREEDER": "Tu lote se ha cerrado",
+      "SETTLEMENT_DONE": "Tu liquidación"
     },
     "hello": "Hola:",
     "lotLabel": "Lote {label}",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "Tu cuenta de criador en {site}",
       "body": "¡Hola, {name}!\n\nHemos creado una cuenta para ti en el sitio, para que puedas seguir tus propias subastas, ventas y liquidaciones, y mantener actualizado tu perfil de criador.\n\nAbre el enlace de abajo y establece una contraseña:\n{link}\n\nEl enlace es válido durante {days} días. Si ha caducado, pídenos otro."
+    },
+    "breeder": {
+      "lotIntro": "El lote {lot} de la subasta «{sale}» se ha cerrado.",
+      "sold": "Se han vendido {count} de {total} palomas.",
+      "none": "No se ha vendido ninguna paloma de este lote.",
+      "total": "Total: {amount}",
+      "commission": "Comisión ({percent}%): {amount}",
+      "payout": "Te corresponde: {amount}",
+      "listTitle": "Palomas vendidas:",
+      "lotFooter": "El dinero entra a medida que los compradores pagan; lo que se ha pagado aparece en «Mi liquidación».",
+      "settlementIntro": "Se ha hecho la liquidación de la subasta «{sale}».",
+      "settlementLine": "{count} palomas pagadas, total {total}, comisión {commission}.",
+      "settlementFooter": "El importe lo recibes del administrador, según lo acordado.",
+      "seeAll": "Verlo todo: {link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "Resultados (inglés)",
     "save": "Guardar",
     "saved": "Guardado",
-    "saveError": "No se ha podido guardar."
+    "saveError": "No se ha podido guardar.",
+    "notifyLabel": "Quiero un correo cuando se cierre un lote y cuando se haga la liquidación",
+    "notifyHint": "Un solo mensaje por lote, con lo que se ha vendido y lo que te corresponde — no uno por paloma."
   }
 }

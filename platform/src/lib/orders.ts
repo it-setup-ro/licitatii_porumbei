@@ -7,6 +7,7 @@ import { lotLabel } from "./lots";
 import { paymentInstructionsText } from "./payment-instructions";
 import { normalizeLocale } from "./locales";
 import { SETTLEABLE_STATUSES, settlementSummary } from "./settlement-math";
+import { notifyBreederSettled } from "./breeder-notices";
 
 /**
  * Faza 2 — plata în afara site-ului.
@@ -154,6 +155,14 @@ export async function loadSettlementGroup(g: SettlementGroup) {
 }
 
 export async function settleGroup(g: SettlementGroup, adminId: string) {
+  // decontul se face întâi; anunțul către crescător vine după, ca o pană de
+  // e-mail să nu întoarcă tranzacția
+  const decont = await creeazaDecont(g, adminId);
+  await notifyBreederSettled(decont.id);
+  return decont;
+}
+
+async function creeazaDecont(g: SettlementGroup, adminId: string) {
   const orders = await prisma.order.findMany({
     where: { ...orderWhereForGroup(g), status: { in: SETTLEABLE_STATUSES }, settlementId: null },
     select: { id: true, amountCents: true, commissionCents: true, currency: true },

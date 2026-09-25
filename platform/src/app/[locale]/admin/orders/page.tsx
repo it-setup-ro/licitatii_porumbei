@@ -147,6 +147,7 @@ export default async function AdminOrdersPage({
                 key={o.id}
                 className="rounded-2xl border border-ink/10 bg-white p-4"
                 data-testid="order-row"
+                data-order-id={o.id}
               >
                 <div className="flex flex-wrap justify-between gap-3">
                   <div className="min-w-0">

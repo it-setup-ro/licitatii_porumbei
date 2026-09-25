@@ -13,6 +13,7 @@ import { emitAuctionEvent } from "./events";
 import { publicBidderName } from "./mask-name";
 import { planBidRows } from "./bid-history";
 import { notify } from "./notify";
+import { notifyBreederLotClosed } from "./breeder-notices";
 import { notifyLotsEnding } from "./lot-notices";
 import { notifyBuyerWithPaymentDetails } from "./orders";
 
@@ -484,6 +485,8 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
         where: { id: lot.id },
         data: { status: "CLOSED", closedAt: new Date() },
       });
+      // crescătorul primește un singur rezumat pe lot, nu un e-mail pe porumbel
+      await notifyBreederLotClosed(lot.id);
     }
   }
 

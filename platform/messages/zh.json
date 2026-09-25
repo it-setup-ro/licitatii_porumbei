@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "您以 {price} 购得“{lot}”。付款信息请查看您的订单。",
     "ORDER_CANCELLED": "“{lot}”的交易已取消：未收到付款。",
     "ARTICLE_PUBLISHED": "您的文章“{titlu}”已发布。",
-    "ARTICLE_REJECTED": "文章“{titlu}”暂时还没有发布。"
+    "ARTICLE_REJECTED": "文章“{titlu}”暂时还没有发布。",
+    "LOT_CLOSED_BREEDER": "第 {lot} 号批次已结束：{count, plural, =0 {没有鸽子售出} other {售出 # 羽鸽子}}，{price}。",
+    "SETTLEMENT_DONE": "“{lot}”的结算：您应得 {price}。"
   },
   "sell": {
     "title": "上架鸽子",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "交易已取消",
       "AUCTION_WITHDRAWN": "您出价的鸽子已被撤回",
       "ARTICLE_PUBLISHED": "您的文章已发布",
-      "ARTICLE_REJECTED": "关于您发来的文章"
+      "ARTICLE_REJECTED": "关于您发来的文章",
+      "LOT_CLOSED_BREEDER": "您的批次已结束",
+      "SETTLEMENT_DONE": "您的结算"
     },
     "hello": "您好，",
     "lotLabel": "第 {label} 号拍品",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "您在 {site} 的鸽舍主账户",
       "body": "{name}，您好！\n\n我们为您在网站上开通了账户，方便您自己查看拍卖、销售和结算，并随时更新您的鸽舍主资料。\n\n请打开下面的链接并设置密码：\n{link}\n\n链接有效期为 {days} 天。若已过期，请向我们索取新的链接。"
+    },
+    "breeder": {
+      "lotIntro": "“{sale}”拍卖的第 {lot} 号批次已结束。",
+      "sold": "{total} 羽鸽子中已售出 {count} 羽。",
+      "none": "本批次没有鸽子售出。",
+      "total": "合计：{amount}",
+      "commission": "佣金（{percent}%）：{amount}",
+      "payout": "您应得：{amount}",
+      "listTitle": "已售出的鸽子：",
+      "lotFooter": "款项随买家付款陆续到账；已付款的部分会显示在“我的结算”中。",
+      "settlementIntro": "“{sale}”拍卖的结算已完成。",
+      "settlementLine": "{count} 羽鸽子已付款，合计 {total}，佣金 {commission}。",
+      "settlementFooter": "款项由管理员按约定支付给您。",
+      "seeAll": "查看全部：{link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "成绩（英语）",
     "save": "保存",
     "saved": "已保存",
-    "saveError": "无法保存。"
+    "saveError": "无法保存。",
+    "notifyLabel": "当一个批次结束以及结算完成时，给我发送邮件",
+    "notifyHint": "每个批次只发一封邮件，说明售出了哪些以及您应得多少 —— 不是每羽鸽子一封。"
   }
 }

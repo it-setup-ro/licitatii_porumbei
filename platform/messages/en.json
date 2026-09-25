@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "You bought “{lot}” at {price}. The payment details are in your order.",
     "ORDER_CANCELLED": "The sale of “{lot}” was cancelled: payment was not received.",
     "ARTICLE_PUBLISHED": "Your article “{titlu}” has been published.",
-    "ARTICLE_REJECTED": "The article “{titlu}” has not been published yet."
+    "ARTICLE_REJECTED": "The article “{titlu}” has not been published yet.",
+    "LOT_CLOSED_BREEDER": "Lot {lot} has closed: {count, plural, =0 {no pigeon sold} one {one pigeon sold} other {# pigeons sold}}, {price}.",
+    "SETTLEMENT_DONE": "Settlement for “{lot}”: {price} is yours."
   },
   "sell": {
     "title": "List a pigeon",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "The sale has been cancelled",
       "AUCTION_WITHDRAWN": "A pigeon you bid on has been withdrawn",
       "ARTICLE_PUBLISHED": "Your article has been published",
-      "ARTICLE_REJECTED": "About the article you sent us"
+      "ARTICLE_REJECTED": "About the article you sent us",
+      "LOT_CLOSED_BREEDER": "Your lot has closed",
+      "SETTLEMENT_DONE": "Your settlement"
     },
     "hello": "Hello,",
     "lotLabel": "Lot {label}",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "Your breeder account on {site}",
       "body": "Hello, {name}!\n\nWe created an account for you on the site, so you can follow your own auctions, sales and settlement, and keep your breeder profile up to date.\n\nOpen the link below and set a password:\n{link}\n\nThe link is valid for {days} days. If it has expired, ask us for another one."
+    },
+    "breeder": {
+      "lotIntro": "Lot {lot} of the “{sale}” auction has closed.",
+      "sold": "{count} of {total} pigeons sold.",
+      "none": "No pigeon sold from this lot.",
+      "total": "Total: {amount}",
+      "commission": "Commission ({percent}%): {amount}",
+      "payout": "Yours: {amount}",
+      "listTitle": "Pigeons sold:",
+      "lotFooter": "The money comes in as the buyers pay; whatever has been paid shows up in “My settlement”.",
+      "settlementIntro": "The settlement for the “{sale}” auction has been made.",
+      "settlementLine": "{count} pigeons paid, total {total}, commission {commission}.",
+      "settlementFooter": "You receive the amount from the administrator, as agreed.",
+      "seeAll": "See everything: {link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "Results (English)",
     "save": "Save",
     "saved": "Saved",
-    "saveError": "Could not save."
+    "saveError": "Could not save.",
+    "notifyLabel": "E-mail me when a lot closes and when the settlement is made",
+    "notifyHint": "One message per lot, with what sold and what is yours — not one per pigeon."
   }
 }

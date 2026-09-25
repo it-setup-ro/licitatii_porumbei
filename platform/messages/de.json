@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "Sie haben „{lot}“ für {price} gekauft. Die Zahlungsdaten finden Sie in Ihrer Bestellung.",
     "ORDER_CANCELLED": "Der Verkauf von „{lot}“ wurde storniert: Die Zahlung ist nicht eingegangen.",
     "ARTICLE_PUBLISHED": "Dein Artikel „{titlu}“ wurde veröffentlicht.",
-    "ARTICLE_REJECTED": "Der Artikel „{titlu}“ wurde noch nicht veröffentlicht."
+    "ARTICLE_REJECTED": "Der Artikel „{titlu}“ wurde noch nicht veröffentlicht.",
+    "LOT_CLOSED_BREEDER": "Los {lot} ist beendet: {count, plural, =0 {keine Taube verkauft} one {eine Taube verkauft} other {# Tauben verkauft}}, {price}.",
+    "SETTLEMENT_DONE": "Abrechnung für „{lot}“: {price} stehen Ihnen zu."
   },
   "sell": {
     "title": "Taube einstellen",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "Der Verkauf wurde storniert",
       "AUCTION_WITHDRAWN": "Eine Taube, auf die Sie geboten haben, wurde zurückgezogen",
       "ARTICLE_PUBLISHED": "Dein Artikel wurde veröffentlicht",
-      "ARTICLE_REJECTED": "Zu dem Artikel, den du uns geschickt hast"
+      "ARTICLE_REJECTED": "Zu dem Artikel, den du uns geschickt hast",
+      "LOT_CLOSED_BREEDER": "Ihr Los ist beendet",
+      "SETTLEMENT_DONE": "Ihre Abrechnung"
     },
     "hello": "Guten Tag,",
     "lotLabel": "Los {label}",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "Ihr Züchterkonto bei {site}",
       "body": "Guten Tag, {name}.\n\nWir haben für Sie ein Konto auf der Website eingerichtet, damit Sie Ihre eigenen Auktionen, Verkäufe und Abrechnungen verfolgen und Ihr Züchterprofil aktuell halten können.\n\nÖffnen Sie den folgenden Link und legen Sie ein Passwort fest:\n{link}\n\nDer Link ist {days} Tage gültig. Wenn er abgelaufen ist, bitten Sie uns um einen neuen."
+    },
+    "breeder": {
+      "lotIntro": "Los {lot} der Auktion „{sale}“ ist beendet.",
+      "sold": "{count} von {total} Tauben verkauft.",
+      "none": "Aus diesem Los wurde keine Taube verkauft.",
+      "total": "Gesamt: {amount}",
+      "commission": "Provision ({percent} %): {amount}",
+      "payout": "Ihr Anteil: {amount}",
+      "listTitle": "Verkaufte Tauben:",
+      "lotFooter": "Das Geld kommt herein, sobald die Käufer zahlen; was bezahlt wurde, sehen Sie unter „Meine Abrechnung“.",
+      "settlementIntro": "Die Abrechnung für die Auktion „{sale}“ wurde gemacht.",
+      "settlementLine": "{count} Tauben bezahlt, gesamt {total}, Provision {commission}.",
+      "settlementFooter": "Den Betrag erhalten Sie wie vereinbart vom Administrator.",
+      "seeAll": "Alles ansehen: {link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "Ergebnisse (Englisch)",
     "save": "Speichern",
     "saved": "Gespeichert",
-    "saveError": "Speichern nicht möglich."
+    "saveError": "Speichern nicht möglich.",
+    "notifyLabel": "Ich möchte eine E-Mail, wenn ein Los endet und wenn die Abrechnung gemacht wird",
+    "notifyHint": "Eine Nachricht pro Los, mit dem, was verkauft wurde, und dem, was Ihnen zusteht — nicht eine pro Taube."
   }
 }

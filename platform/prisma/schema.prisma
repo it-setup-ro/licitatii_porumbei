@@ -634,6 +634,8 @@ model Breeder {
   /// administratorul, din Administrare → Crescători.
   userId    String?  @unique
   user      User?    @relation("breederAccount", fields: [userId], references: [id])
+  /// Vrea e-mail la închiderea lotului și la decont. Bifa e în Fișa mea.
+  notifyByEmail Boolean @default(true)
 
   sales Sale[]
   articles Article[]

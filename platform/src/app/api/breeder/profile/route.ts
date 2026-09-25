@@ -30,6 +30,8 @@ const schema = z.object({
   storyEn: text(20_000),
   resultsRo: text(20_000),
   resultsEn: text(20_000),
+  // formularul o trimite mereu; lipsa ei nu opreste salvarea restului fisei
+  notifyByEmail: z.boolean().default(true),
 });
 
 const orNull = (v: string | undefined) => (v && v.trim() ? v.trim() : null);
@@ -65,6 +67,7 @@ export async function POST(req: Request) {
         storyEn: orNull(d.storyEn),
         resultsRo: orNull(d.resultsRo),
         resultsEn: orNull(d.resultsEn),
+        notifyByEmail: d.notifyByEmail,
       },
     });
 

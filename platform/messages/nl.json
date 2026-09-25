@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "Je hebt “{lot}” gekocht voor {price}. De betalingsgegevens staan in je bestelling.",
     "ORDER_CANCELLED": "De verkoop van “{lot}” is geannuleerd: de betaling is niet ontvangen.",
     "ARTICLE_PUBLISHED": "Je artikel ‘{titlu}’ is gepubliceerd.",
-    "ARTICLE_REJECTED": "Het artikel ‘{titlu}’ is nog niet gepubliceerd."
+    "ARTICLE_REJECTED": "Het artikel ‘{titlu}’ is nog niet gepubliceerd.",
+    "LOT_CLOSED_BREEDER": "Lot {lot} is gesloten: {count, plural, =0 {geen duif verkocht} one {één duif verkocht} other {# duiven verkocht}}, {price}.",
+    "SETTLEMENT_DONE": "Afrekening voor “{lot}”: {price} is voor jou."
   },
   "sell": {
     "title": "Duif aanbieden",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "De verkoop is geannuleerd",
       "AUCTION_WITHDRAWN": "Een duif waarop je hebt geboden is teruggetrokken",
       "ARTICLE_PUBLISHED": "Je artikel is gepubliceerd",
-      "ARTICLE_REJECTED": "Over het artikel dat je ons stuurde"
+      "ARTICLE_REJECTED": "Over het artikel dat je ons stuurde",
+      "LOT_CLOSED_BREEDER": "Je lot is gesloten",
+      "SETTLEMENT_DONE": "Je afrekening"
     },
     "hello": "Hallo,",
     "lotLabel": "Lot {label}",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "Jouw kwekersaccount op {site}",
       "body": "Hallo {name},\n\nWe hebben een account voor je aangemaakt op de site, zodat je zelf je veilingen, verkopen en afrekening kunt volgen en je kwekersprofiel bij kunt houden.\n\nOpen de onderstaande link en kies een wachtwoord:\n{link}\n\nDe link is {days} dagen geldig. Is hij verlopen? Vraag ons dan een nieuwe."
+    },
+    "breeder": {
+      "lotIntro": "Lot {lot} van de veiling “{sale}” is gesloten.",
+      "sold": "{count} van {total} duiven verkocht.",
+      "none": "Er is geen duif verkocht uit dit lot.",
+      "total": "Totaal: {amount}",
+      "commission": "Commissie ({percent}%): {amount}",
+      "payout": "Voor jou: {amount}",
+      "listTitle": "Verkochte duiven:",
+      "lotFooter": "Het geld komt binnen zodra de kopers betalen; wat betaald is, zie je bij “Mijn afrekening”.",
+      "settlementIntro": "De afrekening voor de veiling “{sale}” is gemaakt.",
+      "settlementLine": "{count} duiven betaald, totaal {total}, commissie {commission}.",
+      "settlementFooter": "Je ontvangt het bedrag van de beheerder, zoals afgesproken.",
+      "seeAll": "Bekijk alles: {link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "Resultaten (Engels)",
     "save": "Opslaan",
     "saved": "Opgeslagen",
-    "saveError": "Kon niet opslaan."
+    "saveError": "Kon niet opslaan.",
+    "notifyLabel": "Mail mij wanneer een lot sluit en wanneer de afrekening wordt gemaakt",
+    "notifyHint": "Eén bericht per lot, met wat er verkocht is en wat voor jou is — niet één per duif."
   }
 }

@@ -380,7 +380,9 @@
     "PAYMENT_INSTRUCTIONS": "Umenunua “{lot}” kwa {price}. Maelezo ya malipo yako kwenye oda yako.",
     "ORDER_CANCELLED": "Uuzaji wa “{lot}” umeghairiwa: malipo hayakupokelewa.",
     "ARTICLE_PUBLISHED": "Makala yako “{titlu}” imechapishwa.",
-    "ARTICLE_REJECTED": "Makala “{titlu}” haijachapishwa bado."
+    "ARTICLE_REJECTED": "Makala “{titlu}” haijachapishwa bado.",
+    "LOT_CLOSED_BREEDER": "Kundi {lot} limefungwa: {count, plural, =0 {hakuna njiwa aliyeuzwa} one {njiwa mmoja ameuzwa} other {njiwa # wameuzwa}}, {price}.",
+    "SETTLEMENT_DONE": "Hesabu ya malipo kwa “{lot}”: {price} ni yako."
   },
   "sell": {
     "title": "Orodhesha njiwa",
@@ -735,7 +737,9 @@
       "ORDER_CANCELLED": "Uuzaji umeghairiwa",
       "AUCTION_WITHDRAWN": "Njiwa uliyemwekea zabuni ameondolewa",
       "ARTICLE_PUBLISHED": "Makala yako imechapishwa",
-      "ARTICLE_REJECTED": "Kuhusu makala uliyotutumia"
+      "ARTICLE_REJECTED": "Kuhusu makala uliyotutumia",
+      "LOT_CLOSED_BREEDER": "Kundi lako limefungwa",
+      "SETTLEMENT_DONE": "Hesabu yako ya malipo"
     },
     "hello": "Habari,",
     "lotLabel": "Kundi {label}",
@@ -778,6 +782,20 @@
     "breederInvite": {
       "subject": "Akaunti yako ya mfugaji kwenye {site}",
       "body": "Habari, {name}!\n\nTumekutengenezea akaunti kwenye tovuti, ili uweze kufuatilia minada, mauzo na hesabu yako ya malipo, na kuweka wasifu wako wa mfugaji katika hali ya kisasa.\n\nFungua kiungo kilicho hapa chini na uweke nenosiri:\n{link}\n\nKiungo kinafaa kwa siku {days}. Kama muda wake umepita, tuombe kiungo kingine."
+    },
+    "breeder": {
+      "lotIntro": "Kundi {lot} la mnada “{sale}” limefungwa.",
+      "sold": "Njiwa {count} kati ya {total} wameuzwa.",
+      "none": "Hakuna njiwa aliyeuzwa kutoka kundi hili.",
+      "total": "Jumla: {amount}",
+      "commission": "Kamisheni ({percent}%): {amount}",
+      "payout": "Unapata: {amount}",
+      "listTitle": "Njiwa waliouzwa:",
+      "lotFooter": "Pesa zinaingia kadiri wanunuzi wanapolipa; kilicholipwa kinaonekana katika “Hesabu yangu ya malipo”.",
+      "settlementIntro": "Hesabu ya malipo kwa mnada “{sale}” imefanywa.",
+      "settlementLine": "Njiwa {count} wamelipiwa, jumla {total}, kamisheni {commission}.",
+      "settlementFooter": "Unapokea kiasi hicho kutoka kwa msimamizi, kama mlivyoafikiana.",
+      "seeAll": "Ona kila kitu: {link}"
     }
   },
   "traits": {
@@ -997,6 +1015,8 @@
     "resultsEn": "Matokeo (Kiingereza)",
     "save": "Hifadhi",
     "saved": "Imehifadhiwa",
-    "saveError": "Haikuweza kuhifadhiwa."
+    "saveError": "Haikuweza kuhifadhiwa.",
+    "notifyLabel": "Nitumie barua pepe kundi linapofungwa na hesabu ya malipo inapofanywa",
+    "notifyHint": "Ujumbe mmoja kwa kila kundi, ukieleza kilichouzwa na unachopata wewe — si ujumbe mmoja kwa kila njiwa."
   }
 }
