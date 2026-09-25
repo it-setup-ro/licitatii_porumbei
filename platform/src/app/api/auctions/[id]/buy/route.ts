@@ -65,7 +65,7 @@ export async function POST(_req: Request, ctx: { params: Promise<{ id: string }>
     await notify(
       auction.sellerId,
       "SELLER_SOLD",
-      { lot: auction.pigeon.name, priceCents },
+      { lot: auction.pigeon.name, priceCents, currency: auction.currency },
       "/account/sales"
     );
 

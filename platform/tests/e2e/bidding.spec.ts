@@ -1,5 +1,19 @@
+import { execSync } from "node:child_process";
+import path from "node:path";
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers";
+import { TEST_DATABASE_URL } from "../../playwright.config";
+
+/** Ce i-a ajuns unei adrese, din jurnalul de e-mailuri. */
+function emails(address: string): { subject: string; body: string }[] {
+  const root = path.resolve(__dirname, "../..");
+  const out = execSync(`npx tsx tests/e2e/fixtures/email-log.ts ${address}`, {
+    cwd: root,
+    env: { ...process.env, DATABASE_URL: TEST_DATABASE_URL },
+  }).toString();
+  const line = out.split(/\r?\n/).filter((l) => l.trim().startsWith("[")).pop()!;
+  return JSON.parse(line);
+}
 
 /**
  * Razboi de oferte intre doi utilizatori reali, in doua sesiuni de browser,
@@ -70,6 +84,16 @@ test.describe("Licitare live: proxy-bidding intre doi utilizatori", () => {
     // 6) Notificarea de outbid a ajuns la buyer1
     await pageA.goto("/ro/account/notifications");
     await expect(pageA.getByTestId("notif-outbid").first()).toContainText("depășită");
+
+    // 7) În e-mail omul vede suma, nu parametrul din baza de date (cererea clientului)
+    const catreA = emails("buyer1@nbp.test");
+    const depasire = catreA.find((m) => m.body.includes("depășită"));
+    expect(depasire, "e-mailul de depășire n-a ajuns în jurnal").toBeTruthy();
+    // lotul din seed e in euro, deci suma se scrie in moneda licitatiei
+    expect(depasire!.body).toContain("525 €");
+    expect(depasire!.body).not.toContain("priceCents");
+    // și linkul e apăsabil: adresă întreagă, cu limba contului
+    expect(depasire!.body).toMatch(/https?:\/\/\S+\/ro\/auctions\//);
 
     await ctxA.close();
     await ctxB.close();

@@ -95,6 +95,8 @@ async function placeBidOnce(
   }
 
   let outbidUserId: string | null = null;
+  /** moneda licitației, ca notificarea să spună suma în ea */
+  let monedaLicitatie = "";
   let result: PlaceBidResult | null = null;
 
   // Serializable: doua oferte simultane pe acelasi lot nu mai pot citi acelasi
@@ -182,6 +184,7 @@ async function placeBidOnce(
     if (outcome.outbidBidderId && outcome.outbidBidderId !== bidderId) {
       outbidUserId = outcome.outbidBidderId;
     }
+    monedaLicitatie = auction.currency;
 
     result = {
       ok: true,
@@ -243,7 +246,12 @@ async function placeBidOnce(
       leadingBidId: leadingNow?.id ?? null,
     });
     if (outbidUserId) {
-      await notify(outbidUserId, "OUTBID", { priceCents: r.priceCents }, `/auctions/${auctionId}`);
+      await notify(
+        outbidUserId,
+        "OUTBID",
+        { priceCents: r.priceCents, currency: monedaLicitatie },
+        `/auctions/${auctionId}`
+      );
     }
   }
   return r ?? { ok: false, error: "NOT_FOUND" };
@@ -422,7 +430,7 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
         await notify(
           final.sellerId,
           "RESERVE_NOT_MET",
-          { lot: lotName, priceCents: final.currentPriceCents },
+          { lot: lotName, priceCents: final.currentPriceCents, currency: final.currency },
           `/account/lots`
         );
       }
@@ -440,14 +448,14 @@ export async function sweepAuctions(): Promise<{ started: number; closed: number
           await notify(
             final.winnerId,
             "AUCTION_WON",
-            { lot: lotName, priceCents: final.currentPriceCents },
+            { lot: lotName, priceCents: final.currentPriceCents, currency: final.currency },
             `/auctions/${final.id}`
           );
         }
         await notify(
           final.sellerId,
           "SELLER_SOLD",
-          { lot: lotName, priceCents: final.currentPriceCents },
+          { lot: lotName, priceCents: final.currentPriceCents, currency: final.currency },
           `/account/sales`
         );
         const losers = await prisma.bid.findMany({

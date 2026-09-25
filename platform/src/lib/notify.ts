@@ -1,7 +1,9 @@
 import { prisma } from "./db";
 import { getSettings } from "./settings";
 import { sendEmail } from "./mailer";
-import { emailTranslator } from "./messages";
+import { emailTranslator, notifTranslator } from "./messages";
+import { absoluteLink, notifValues } from "./notif-text";
+import { normalizeLocale } from "./locales";
 
 /**
  * Notificari in-app + e-mail. In dev, e-mailul se scrie in EmailLog (si consola)
@@ -53,15 +55,42 @@ export async function notify(
   if (settings.emailEnabled) {
     // subiectul în limba contului (email.subjects din messages/<limbă>.json)
     const subject = emailTranslator(user.locale)(`subjects.${type}`);
-    const body =
-      opts.emailText ??
-      `${subject}\n\n` +
-      Object.entries(params)
-        .map(([k, v]) => `${k}: ${v}`)
-        .join("\n") +
-      (link ? `\n\n${link}` : "");
+    const body = textEmail(type, params, settings.platformCurrency, user.locale, link, opts.emailText);
     await sendEmail({ to: user.email, subject, text: body });
   }
   // SMS: intentionat neimplementat la lansare — canalul primar e e-mail (D16).
   // Integrarea (Twilio/SMSLink) se ataseaza aici cand settings.smsEnabled devine true.
 }
+
+/**
+ * Textul e-mailului: același șablon tradus ca la clopoțel, cu suma scrisă
+ * pentru om, plus adresa întreagă a paginii. Dacă un tip de notificare n-are
+ * șablon (are text propriu, ca retragerea unui porumbel), rămâne subiectul.
+ */
+function textEmail(
+  type: NotifyType,
+  params: Record<string, string | number>,
+  currency: string,
+  locale: string | null | undefined,
+  link: string | undefined,
+  /** text propriu, când lista de parametri nu ajunge (ex. datele de plată) */
+  propriu?: string
+): string {
+  const limba = normalizeLocale(locale);
+  let mesaj = propriu ?? "";
+  if (!mesaj) {
+    const valori = notifValues(params, currency, limba);
+    try {
+      mesaj = notifTranslator(limba)(type as "OUTBID", valori as Record<string, string>);
+    } catch {
+      mesaj = "";
+    }
+    // next-intl întoarce cheia („notif.X") când șablonul lipsește, fără să arunce
+    if (!mesaj || mesaj.includes(type)) mesaj = emailTranslator(limba)(`subjects.${type}`);
+  }
+  // un text propriu care are deja adresa lui (datele de plată) nu mai are nevoie
+  if (/https?:\/\//i.test(mesaj)) return mesaj;
+  const url = absoluteLink(process.env.SITE_URL ?? process.env.PUBLIC_BASE_URL, limba, link);
+  return url ? `${mesaj}\n\n${url}` : mesaj;
+}
+

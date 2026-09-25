@@ -70,6 +70,8 @@ export default defineConfig({
       // bifa „Nu sunt robot": browserele de test nu rezolvă provocări;
       // verificarea serverului e acoperită de testele unitare
       CAPTCHA_DISABLED: "1",
+      // linkurile din e-mailuri trebuie să fie adrese întregi, ca în producție
+      PUBLIC_BASE_URL: "http://localhost:3100",
     },
     stdout: "pipe",
     stderr: "pipe",

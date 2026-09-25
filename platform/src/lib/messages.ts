@@ -32,6 +32,12 @@ export function messagesFor(locale: string | null | undefined): Messages {
   return ALL[normalizeLocale(locale)];
 }
 
+/** Textul notificărilor (clopoțel și e-mail), în limba contului. */
+export function notifTranslator(locale: string | null | undefined) {
+  const l = normalizeLocale(locale);
+  return createTranslator({ locale: l, messages: ALL[l], namespace: "notif" });
+}
+
 /** Traducătorul pentru e-mailuri, în limba contului (necunoscută → română). */
 export function emailTranslator(locale: string | null | undefined) {
   const l = normalizeLocale(locale);

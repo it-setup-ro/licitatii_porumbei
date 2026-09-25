@@ -231,7 +231,7 @@ export async function notifyBuyerWithPaymentDetails(orderId: string, kind: "WON"
   await notify(
     order.buyerId,
     kind === "WON" ? "AUCTION_WON" : "PAYMENT_INSTRUCTIONS",
-    { lot: order.auction.pigeon.name, priceCents: order.amountCents },
+    { lot: order.auction.pigeon.name, priceCents: order.amountCents, currency: order.currency },
     `/orders/${order.id}`,
     { emailText: text }
   );

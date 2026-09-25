@@ -3,7 +3,7 @@ import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { formatMoney } from "@/lib/money";
+import { notifValues } from "@/lib/notif-text";
 import AccountNav from "@/components/AccountNav";
 import MarkAllReadButton from "@/components/MarkAllReadButton";
 import { intlLocale } from "@/lib/locales";
@@ -38,14 +38,7 @@ export default async function NotificationsPage({
     } catch {
       // parametri corupti — afisam fara
     }
-    const values: Record<string, string | number> = { ...p };
-    if (typeof p.priceCents === "number")
-      values.price = formatMoney(p.priceCents, platformCurrency, currentLocale);
-    if (typeof p.amountCents === "number")
-      values.price = formatMoney(p.amountCents, platformCurrency, currentLocale);
-    values.lot = String(p.lot ?? "");
-    values.reason = String(p.reason ?? "");
-    values.rating = p.rating ?? "";
+    const values = notifValues(p, platformCurrency, currentLocale);
     try {
       return tn(type as "OUTBID", values as Record<string, string>);
     } catch {
