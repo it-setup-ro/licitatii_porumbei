@@ -50,7 +50,8 @@
     "searchPlaceholder": "Zoek duif, ring, kweker…",
     "community": "Gemeenschap",
     "breeders": "Kwekers",
-    "ourContests": "Onze wedstrijden"
+    "ourContests": "Onze wedstrijden",
+    "breeder": "Kweker"
   },
   "home": {
     "heroTitle": "Passie brengt mensen samen!",
@@ -773,6 +774,10 @@
     "withdrawn": {
       "body": "De duif {pigeon} (ring {ring}) is door de organisator uit de veiling teruggetrokken. Je bod vervalt en je bent niets verschuldigd.",
       "reason": "Reden: {reason}"
+    },
+    "breederInvite": {
+      "subject": "Jouw kwekersaccount op {site}",
+      "body": "Hallo {name},\n\nWe hebben een account voor je aangemaakt op de site, zodat je zelf je veilingen, verkopen en afrekening kunt volgen en je kwekersprofiel bij kunt houden.\n\nOpen de onderstaande link en kies een wachtwoord:\n{link}\n\nDe link is {days} dagen geldig. Is hij verlopen? Vraag ons dan een nieuwe."
     }
   },
   "traits": {
@@ -948,5 +953,50 @@
     "statusWaiting": "in afwachting",
     "adminNote": "Onze reactie",
     "seeIt": "Bekijk het artikel"
+  },
+  "breeder": {
+    "myAuctions": "Mijn veilingen",
+    "mySales": "Mijn verkopen",
+    "mySettlement": "Mijn afrekening",
+    "myProfile": "Mijn profiel",
+    "intro": "De veilingen die voor je zijn voorbereid, met hun loten en tijden.",
+    "noAuctions": "Je hebt nog geen veiling. De beheerder is die aan het voorbereiden.",
+    "noLots": "Deze veiling heeft nog geen loten.",
+    "commission": "Commissie: {percent}%",
+    "lotStatusDRAFT": "In voorbereiding",
+    "viewOnSite": "Bekijk op de site",
+    "colPigeon": "Duif",
+    "colPrice": "Prijs",
+    "colBuyer": "Koper",
+    "colStatus": "Status",
+    "lotShort": "Lot {number}.{position}",
+    "unsold": "Niet verkocht",
+    "noSales": "Er is nog geen verkoop afgerond.",
+    "buyerAfterPaid": "Tot de betaling zie je alleen de schuilnaam van de koper. Zodra de betaling geregistreerd is, zie je de naam en de woonplaats.",
+    "settlementIntro": "Alleen betaalde duiven komen in de afrekening. De onbetaalde staan apart vermeld.",
+    "due": "Te ontvangen",
+    "commissionKept": "Ingehouden commissie",
+    "unpaid": "Nog niet betaald",
+    "pigeonsPaid": "{count, plural, =0 {geen duif} one {één duif betaald} other {# duiven betaald}}",
+    "pigeonsWaiting": "{count, plural, =0 {geen duif} one {één duif} other {# duiven}}",
+    "settlements": "Afrekeningen",
+    "noSettlementsYet": "Er is nog geen afrekening gemaakt.",
+    "noSettlement": "Er is nog niets af te rekenen.",
+    "profileIntro": "Wat de site over je laat zien.",
+    "nameLabel": "Naam",
+    "nameFixed": "De beheerder wijzigt de naam: de titels van de veilingen hangen ervan af.",
+    "alias": "Schuilnaam",
+    "aliasHint": "De naam waaronder je in de biedgeschiedenis verschijnt.",
+    "city": "Woonplaats",
+    "country": "Land",
+    "photo": "Foto",
+    "photoHint": "Jijzelf, het hok of een representatieve duif.",
+    "story": "Verhaal (Roemeens)",
+    "storyEn": "Verhaal (Engels)",
+    "results": "Resultaten (Roemeens)",
+    "resultsEn": "Resultaten (Engels)",
+    "save": "Opslaan",
+    "saved": "Opgeslagen",
+    "saveError": "Kon niet opslaan."
   }
 }

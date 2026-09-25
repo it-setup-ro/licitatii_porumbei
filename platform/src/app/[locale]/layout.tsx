@@ -56,6 +56,10 @@ export default async function LocaleLayout({
     ? await prisma.notification.count({ where: { userId: user.id, readAt: null } })
     : 0;
   const cartCount = await cartItemCount();
+  // fișa de crescător legată de cont — scoate „Crescător" în caseta de cont
+  const breeder = user
+    ? await prisma.breeder.findUnique({ where: { userId: user.id }, select: { id: true } })
+    : null;
   const contestLinks = await prisma.externalLink.findMany({
     where: { group: "CONTESTS", active: true },
     orderBy: { sortIdx: "asc" },
@@ -82,6 +86,7 @@ export default async function LocaleLayout({
             cartCount={cartCount}
             contestLinks={contestLinks}
             sellEnabled={settings.breederSelfServiceEnabled}
+            isBreeder={breeder !== null}
           />
           {user &&
             settings.accountApprovalRequired &&

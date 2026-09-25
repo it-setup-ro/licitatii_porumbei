@@ -5,6 +5,7 @@ import path from "path";
 import { pipeline } from "stream/promises";
 import { Readable } from "stream";
 import { requireApprovedSeller, requireAdmin, AuthError } from "@/lib/auth";
+import { requireBreeder } from "@/lib/breeder-access";
 import { rateLimit } from "@/lib/rate-limit";
 import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/api";
 
@@ -143,8 +144,15 @@ export async function POST(req: Request) {
       uploaderId = seller.id;
     } catch (e) {
       if (!(e instanceof AuthError)) throw e;
-      const admin = await requireAdmin();
-      uploaderId = admin.id;
+      try {
+        // poza din fisa lui o pune crescatorul cu cont
+        const { user } = await requireBreeder();
+        uploaderId = user.id;
+      } catch (e2) {
+        if (!(e2 instanceof AuthError)) throw e2;
+        const admin = await requireAdmin();
+        uploaderId = admin.id;
+      }
     }
 
     const check = rateLimit(`upload:${uploaderId}`, 60, 60 * 60_000);

@@ -26,9 +26,12 @@ export default function AccountMenu({
   unreadCount,
   variant,
   sellEnabled = true,
+  isBreeder = false,
 }: {
   user: AccountUser;
   unreadCount: number;
+  /** are fișă de crescător legată de cont: vede „Crescător" */
+  isBreeder?: boolean;
   /** fluxul vechi, prin care crescătorii își puneau singuri porumbeii */
   sellEnabled?: boolean;
   /** "icon" = buton rotund (telefon); "full" = nume sau butoane text (desktop) */
@@ -149,6 +152,9 @@ export default function AccountMenu({
                 }
                 testid="menu-notifications"
               />
+              {isBreeder && (
+                <Item href="/breeder" label={t("breeder")} testid="menu-breeder" accent />
+              )}
               {canSell && <Item href="/sell" label={t("sell")} testid="menu-sell" />}
               {user.role === "ADMIN" && (
                 <Item href="/admin" label={t("admin")} testid="menu-admin" accent />

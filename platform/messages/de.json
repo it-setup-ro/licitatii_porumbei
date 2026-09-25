@@ -50,7 +50,8 @@
     "searchPlaceholder": "Taube, Ring, Züchter suchen…",
     "community": "Gemeinschaft",
     "breeders": "Züchter",
-    "ourContests": "Unsere Wettbewerbe"
+    "ourContests": "Unsere Wettbewerbe",
+    "breeder": "Züchter"
   },
   "home": {
     "heroTitle": "Leidenschaft verbindet!",
@@ -773,6 +774,10 @@
     "withdrawn": {
       "body": "Die Taube {pigeon} (Ring {ring}) wurde vom Veranstalter aus der Auktion zurückgezogen. Ihr Gebot ist damit hinfällig und Sie müssen nichts bezahlen.",
       "reason": "Grund: {reason}"
+    },
+    "breederInvite": {
+      "subject": "Ihr Züchterkonto bei {site}",
+      "body": "Guten Tag, {name}.\n\nWir haben für Sie ein Konto auf der Website eingerichtet, damit Sie Ihre eigenen Auktionen, Verkäufe und Abrechnungen verfolgen und Ihr Züchterprofil aktuell halten können.\n\nÖffnen Sie den folgenden Link und legen Sie ein Passwort fest:\n{link}\n\nDer Link ist {days} Tage gültig. Wenn er abgelaufen ist, bitten Sie uns um einen neuen."
     }
   },
   "traits": {
@@ -948,5 +953,50 @@
     "statusWaiting": "wartet",
     "adminNote": "Unsere Antwort",
     "seeIt": "Artikel ansehen"
+  },
+  "breeder": {
+    "myAuctions": "Meine Auktionen",
+    "mySales": "Meine Verkäufe",
+    "mySettlement": "Meine Abrechnung",
+    "myProfile": "Mein Profil",
+    "intro": "Die für Sie vorbereiteten Auktionen mit ihren Losen und Zeiten.",
+    "noAuctions": "Sie haben noch keine Auktion. Der Administrator bereitet sie vor.",
+    "noLots": "Diese Auktion hat noch keine Lose.",
+    "commission": "Provision: {percent} %",
+    "lotStatusDRAFT": "In Vorbereitung",
+    "viewOnSite": "Auf der Website ansehen",
+    "colPigeon": "Taube",
+    "colPrice": "Preis",
+    "colBuyer": "Käufer",
+    "colStatus": "Status",
+    "lotShort": "Los {number}.{position}",
+    "unsold": "Nicht verkauft",
+    "noSales": "Es ist noch kein Verkauf abgeschlossen.",
+    "buyerAfterPaid": "Bis zur Zahlung sehen Sie nur das Pseudonym des Käufers. Sobald die Zahlung erfasst ist, sehen Sie den Namen und den Ort.",
+    "settlementIntro": "In die Abrechnung kommen nur bezahlte Tauben. Die unbezahlten sind getrennt aufgeführt.",
+    "due": "Zu erhalten",
+    "commissionKept": "Einbehaltene Provision",
+    "unpaid": "Noch nicht bezahlt",
+    "pigeonsPaid": "{count, plural, =0 {keine Taube} one {eine Taube bezahlt} other {# Tauben bezahlt}}",
+    "pigeonsWaiting": "{count, plural, =0 {keine Taube} one {eine Taube} other {# Tauben}}",
+    "settlements": "Abrechnungen",
+    "noSettlementsYet": "Es wurde noch keine Abrechnung erstellt.",
+    "noSettlement": "Es gibt noch nichts abzurechnen.",
+    "profileIntro": "Was die Website über Sie zeigt.",
+    "nameLabel": "Name",
+    "nameFixed": "Den Namen ändert der Administrator: Die Auktionstitel hängen davon ab.",
+    "alias": "Pseudonym",
+    "aliasHint": "Der Name, unter dem Sie in der Gebotshistorie erscheinen.",
+    "city": "Ort",
+    "country": "Land",
+    "photo": "Foto",
+    "photoHint": "Sie, der Schlag oder eine repräsentative Taube.",
+    "story": "Geschichte (Rumänisch)",
+    "storyEn": "Geschichte (Englisch)",
+    "results": "Ergebnisse (Rumänisch)",
+    "resultsEn": "Ergebnisse (Englisch)",
+    "save": "Speichern",
+    "saved": "Gespeichert",
+    "saveError": "Speichern nicht möglich."
   }
 }

@@ -50,7 +50,8 @@
     "searchPlaceholder": "搜索鸽子、足环号、鸽舍…",
     "community": "社区",
     "breeders": "鸽舍",
-    "ourContests": "我们的比赛"
+    "ourContests": "我们的比赛",
+    "breeder": "鸽舍主"
   },
   "home": {
     "heroTitle": "热爱让我们相聚！",
@@ -773,6 +774,10 @@
     "withdrawn": {
       "body": "鸽子 {pigeon}（足环号 {ring}）已被主办方从拍卖中撤回。您的出价不再有效，您无需支付任何费用。",
       "reason": "原因：{reason}"
+    },
+    "breederInvite": {
+      "subject": "您在 {site} 的鸽舍主账户",
+      "body": "{name}，您好！\n\n我们为您在网站上开通了账户，方便您自己查看拍卖、销售和结算，并随时更新您的鸽舍主资料。\n\n请打开下面的链接并设置密码：\n{link}\n\n链接有效期为 {days} 天。若已过期，请向我们索取新的链接。"
     }
   },
   "traits": {
@@ -948,5 +953,50 @@
     "statusWaiting": "等待中",
     "adminNote": "我们的回复",
     "seeIt": "查看文章"
+  },
+  "breeder": {
+    "myAuctions": "我的拍卖",
+    "mySales": "我的销售",
+    "mySettlement": "我的结算",
+    "myProfile": "我的资料",
+    "intro": "为您准备的拍卖，以及各批次和时间。",
+    "noAuctions": "您还没有拍卖。管理员正在筹备。",
+    "noLots": "这场拍卖还没有批次。",
+    "commission": "佣金：{percent}%",
+    "lotStatusDRAFT": "筹备中",
+    "viewOnSite": "在网站上查看",
+    "colPigeon": "鸽子",
+    "colPrice": "价格",
+    "colBuyer": "买家",
+    "colStatus": "状态",
+    "lotShort": "第 {number}.{position} 号批次",
+    "unsold": "未售出",
+    "noSales": "还没有完成任何销售。",
+    "buyerAfterPaid": "付款之前，您只看到买家的昵称。付款登记之后，您会看到姓名和所在地。",
+    "settlementIntro": "只有已付款的鸽子才进入结算。尚未付款的单独列出。",
+    "due": "应收",
+    "commissionKept": "已扣佣金",
+    "unpaid": "尚未付款",
+    "pigeonsPaid": "{count, plural, =0 {没有鸽子} other {# 羽鸽子已付款}}",
+    "pigeonsWaiting": "{count, plural, =0 {没有鸽子} other {# 羽鸽子}}",
+    "settlements": "结算",
+    "noSettlementsYet": "还没有做过结算。",
+    "noSettlement": "暂时没有需要结算的内容。",
+    "profileIntro": "网站上关于您显示的内容。",
+    "nameLabel": "姓名",
+    "nameFixed": "姓名由管理员修改：拍卖的标题取决于它。",
+    "alias": "昵称",
+    "aliasHint": "您在出价记录中显示的名称。",
+    "city": "所在地",
+    "country": "国家",
+    "photo": "照片",
+    "photoHint": "您本人、鸽舍或一羽有代表性的鸽子。",
+    "story": "介绍（罗马尼亚语）",
+    "storyEn": "介绍（英语）",
+    "results": "成绩（罗马尼亚语）",
+    "resultsEn": "成绩（英语）",
+    "save": "保存",
+    "saved": "已保存",
+    "saveError": "无法保存。"
   }
 }

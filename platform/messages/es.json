@@ -50,7 +50,8 @@
     "searchPlaceholder": "Buscar paloma, anilla, criador…",
     "community": "Comunidad",
     "breeders": "Criadores",
-    "ourContests": "Nuestros concursos"
+    "ourContests": "Nuestros concursos",
+    "breeder": "Criador"
   },
   "home": {
     "heroTitle": "¡La pasión nos une!",
@@ -773,6 +774,10 @@
     "withdrawn": {
       "body": "La paloma {pigeon} (anilla {ring}) ha sido retirada de la subasta por el organizador. Tu puja ya no es válida y no tienes que pagar nada.",
       "reason": "Motivo: {reason}"
+    },
+    "breederInvite": {
+      "subject": "Tu cuenta de criador en {site}",
+      "body": "¡Hola, {name}!\n\nHemos creado una cuenta para ti en el sitio, para que puedas seguir tus propias subastas, ventas y liquidaciones, y mantener actualizado tu perfil de criador.\n\nAbre el enlace de abajo y establece una contraseña:\n{link}\n\nEl enlace es válido durante {days} días. Si ha caducado, pídenos otro."
     }
   },
   "traits": {
@@ -948,5 +953,50 @@
     "statusWaiting": "en espera",
     "adminNote": "Nuestra respuesta",
     "seeIt": "Ver el artículo"
+  },
+  "breeder": {
+    "myAuctions": "Mis subastas",
+    "mySales": "Mis ventas",
+    "mySettlement": "Mi liquidación",
+    "myProfile": "Mi perfil",
+    "intro": "Las subastas preparadas para ti, con sus lotes y sus horarios.",
+    "noAuctions": "Todavía no tienes ninguna subasta. El administrador la está preparando.",
+    "noLots": "Esta subasta aún no tiene lotes.",
+    "commission": "Comisión: {percent}%",
+    "lotStatusDRAFT": "En preparación",
+    "viewOnSite": "Ver en el sitio",
+    "colPigeon": "Paloma",
+    "colPrice": "Precio",
+    "colBuyer": "Comprador",
+    "colStatus": "Estado",
+    "lotShort": "Lote {number}.{position}",
+    "unsold": "No vendida",
+    "noSales": "Todavía no se ha cerrado ninguna venta.",
+    "buyerAfterPaid": "Hasta el pago solo ves el alias del comprador. Una vez registrado el pago, ves el nombre y la localidad.",
+    "settlementIntro": "En la liquidación solo entran las palomas pagadas. Las que no están pagadas se listan aparte.",
+    "due": "Por recibir",
+    "commissionKept": "Comisión retenida",
+    "unpaid": "Aún sin pagar",
+    "pigeonsPaid": "{count, plural, =0 {ninguna paloma} one {una paloma pagada} other {# palomas pagadas}}",
+    "pigeonsWaiting": "{count, plural, =0 {ninguna paloma} one {una paloma} other {# palomas}}",
+    "settlements": "Liquidaciones",
+    "noSettlementsYet": "Todavía no se ha hecho ninguna liquidación.",
+    "noSettlement": "Aún no hay nada que liquidar.",
+    "profileIntro": "Lo que el sitio muestra sobre ti.",
+    "nameLabel": "Nombre",
+    "nameFixed": "El nombre lo cambia el administrador: los títulos de las subastas dependen de él.",
+    "alias": "Alias",
+    "aliasHint": "El nombre con el que apareces en el historial de pujas.",
+    "city": "Localidad",
+    "country": "País",
+    "photo": "Foto",
+    "photoHint": "Tú, el palomar o una paloma representativa.",
+    "story": "Historia (rumano)",
+    "storyEn": "Historia (inglés)",
+    "results": "Resultados (rumano)",
+    "resultsEn": "Resultados (inglés)",
+    "save": "Guardar",
+    "saved": "Guardado",
+    "saveError": "No se ha podido guardar."
   }
 }

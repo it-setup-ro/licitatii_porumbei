@@ -50,7 +50,8 @@
     "searchPlaceholder": "鳩、足環番号、ブリーダーを検索…",
     "community": "コミュニティ",
     "breeders": "ブリーダー",
-    "ourContests": "主催コンテスト"
+    "ourContests": "主催コンテスト",
+    "breeder": "ブリーダー"
   },
   "home": {
     "heroTitle": "情熱が人をつなぐ！",
@@ -773,6 +774,10 @@
     "withdrawn": {
       "body": "鳩 {pigeon}（足環番号 {ring}）は主催者によりオークションから取り下げられました。お客様の入札は無効となり、お支払いいただくものはございません。",
       "reason": "理由：{reason}"
+    },
+    "breederInvite": {
+      "subject": "{site} のブリーダーアカウント",
+      "body": "{name} 様、こんにちは。\n\nご自身のオークション、販売、精算をご確認いただけるよう、またブリーダー情報を最新に保てるよう、サイトにアカウントを作成しました。\n\n下のリンクを開いて、パスワードを設定してください：\n{link}\n\nリンクの有効期限は {days} 日です。期限が過ぎている場合は、新しいリンクをお申し付けください。"
     }
   },
   "traits": {
@@ -948,5 +953,50 @@
     "statusWaiting": "確認中",
     "adminNote": "こちらからの返信",
     "seeIt": "記事を見る"
+  },
+  "breeder": {
+    "myAuctions": "私のオークション",
+    "mySales": "私の販売",
+    "mySettlement": "私の精算",
+    "myProfile": "私のプロフィール",
+    "intro": "あなたのために用意されたオークションと、そのロットおよび時刻です。",
+    "noAuctions": "まだオークションはありません。管理者が準備しています。",
+    "noLots": "このオークションにはまだロットがありません。",
+    "commission": "手数料：{percent}%",
+    "lotStatusDRAFT": "準備中",
+    "viewOnSite": "サイトで見る",
+    "colPigeon": "鳩",
+    "colPrice": "価格",
+    "colBuyer": "購入者",
+    "colStatus": "状態",
+    "lotShort": "ロット {number}.{position}",
+    "unsold": "未落札",
+    "noSales": "まだ成立した販売はありません。",
+    "buyerAfterPaid": "入金までは購入者のニックネームだけが見えます。入金が記録されると、氏名と市町村が見えます。",
+    "settlementIntro": "精算に入るのは支払い済みの鳩だけです。未払いのものは別に表示されます。",
+    "due": "受取額",
+    "commissionKept": "差し引かれた手数料",
+    "unpaid": "まだ未払い",
+    "pigeonsPaid": "{count, plural, =0 {鳩なし} other {支払い済みの鳩 # 羽}}",
+    "pigeonsWaiting": "{count, plural, =0 {鳩なし} other {鳩 # 羽}}",
+    "settlements": "精算",
+    "noSettlementsYet": "まだ精算は行われていません。",
+    "noSettlement": "まだ精算するものはありません。",
+    "profileIntro": "サイトに表示されるあなたの情報です。",
+    "nameLabel": "氏名",
+    "nameFixed": "氏名は管理者が変更します。オークションの題名がこれに左右されるためです。",
+    "alias": "ニックネーム",
+    "aliasHint": "入札履歴に表示される名前です。",
+    "city": "市町村",
+    "country": "国",
+    "photo": "写真",
+    "photoHint": "ご本人、鳩舎、または代表的な鳩。",
+    "story": "紹介（ルーマニア語）",
+    "storyEn": "紹介（英語）",
+    "results": "成績（ルーマニア語）",
+    "resultsEn": "成績（英語）",
+    "save": "保存",
+    "saved": "保存しました",
+    "saveError": "保存できませんでした。"
   }
 }

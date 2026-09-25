@@ -1,6 +1,6 @@
 # Stare proiect — No.1 & Best Pigeons
 
-**Ultima actualizare:** 23 septembrie 2026
+**Ultima actualizare:** 25 septembrie 2026
 **Site live (test):** http://207.180.241.165:3000
 **Cod:** https://github.com/it-setup-ro/licitatii_porumbei (public, branch `main`)
 **Credențiale:** `credentiale-acces.md` (local, exclus din git)
@@ -54,7 +54,7 @@ Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză
 - Bară de sus cu **ora oficială a platformei** (ora serverului — reper comun la închiderea licitațiilor)
 
 ### Licitații pe loturi (faza 1 din `CERINTE-LICITATII-PE-PARTI.md` v4)
-- **Structura clientului**: licitația unui crescător → până la 5 loturi → până la 20 de porumbei, numerotați „Lotul 1.01". Crescătorul e un profil (nume, localitate, poveste, rezultate), fără cont
+- **Structura clientului**: licitația unui crescător → până la 5 loturi → până la 20 de porumbei, numerotați „Lotul 1.01". Crescătorul e un profil (nume, localitate, poveste, rezultate), căruia administratorul îi poate face și un cont (vezi „Contul crescătorului")
 - **Doar administratorii pun porumbei** (Administrare → Licitații pe loturi). Varianta cu crescătorul care își pune singur porumbeii există, dar e oprită din Setări („breederSelfServiceEnabled")
 - **Fiecare lot are ora lui de start și de final și butonul „Start lot"**. Un lot pornit rămâne pornit: orele, prețul și porumbeii nu se mai schimbă. Un lot cu ora de start în viitor devine „Programat" și pornește singur
 - **Prelungirea 10 / 10, nelimitată**, setabilă din Setări și înghețată pe lot în momentul pornirii
@@ -90,6 +90,13 @@ Platformă de licitații de porumbei, în 13 limbi (română, engleză, chineză
 - **Parola**: buton de arătat/ascuns la autentificare, înregistrare și resetare; „Am uitat parola" cu link valabil o oră, de unică folosință; schimbarea parolei din Contul meu (cu parola veche)
 - Ofertele mele, favorite, cumpărături, vânzări, loturile mele, comenzi magazin, notificări
 - **Caseta de cont** (iconița din antet): autentificare/înregistrare când ești delogat; cont + ieșire când ești logat — totul într-un singur loc
+
+### Contul crescătorului
+- **Invitația o face administratorul**, din Administrare → Crescători, butonul „Fă-i cont": scrie adresa de e-mail și omul primește un link prin care își pune parola (valabil 7 zile). Dacă adresa are deja cont pe site, acela se leagă de fișă — nimeni nu ajunge cu două conturi. „Trimite iar linkul" retrimite, „Dezleagă" rupe legătura
+- **Patru pagini, numai de citit** (în afară de fișă): *Licitațiile mele* (licitația lui, loturile, orele, starea), *Vânzările mele* (porumbelul, prețul, cumpărătorul, starea comenzii), *Decontul meu* (de încasat, comision reținut, încă neplătite, deconturile făcute), *Fișa mea*
+- **Ce vede despre cumpărător**: până la plată doar aliasul și suma; după ce administratorul marchează „Plătit", numele și localitatea. Telefonul și adresa completă rămân la administrator, care face transportul
+- **Fișa mea** se scrie de crescător: poza, localitatea, țara, povestea și rezultatele (română și engleză) și **aliasul** cu care apare în istoricul ofertelor. Numele crescătorului rămâne al administratorului — de el atârnă titlurile licitațiilor
+- Nu capătă nimic din administrare: tot ce vede trece prin fișa lui (`Breeder.userId`), niciodată prin rol. Porumbeii la preț fix („oferit de") nu intră aici — doar licitațiile pe loturi
 
 ### Admin
 - **Istoric tranzacții** — toate vânzările, cu filtre pe perioadă, licitație, stare și căutare; totaluri (câte, cât s-a vândut, comision, cât rămâne crescătorilor), paginare și export Excel pentru contabilitate
@@ -246,3 +253,5 @@ platform/src/
 | 14 sep | Faza 1 a licitațiilor pe loturi: crescător → licitație → loturi cu „Start lot", prelungire 10/10 înghețată, comision pe licitație, conturi aprobate de admin, pagina publică a licitației, avizul de 30 de minute, trimitere SMTP |
 | 24 sep | Numele platformei vine dintr-un singur loc: Setări → „Numele site-ului” (era scris de mână în opt locuri, iar e-mailurile plecau cu numele vechi). Adresa de contact mutată de pe domeniul vechi pe Gmail. Pe card scrie „1 ofertă”, nu „o ofertă” — se citea ca „0 oferte”. Textele de pagină editabile din admin (prima pagină, „Cum funcționează”) **puse pe hold**: clientul le vrea traduse în fiecare limbă, nu doar română/engleză |
 | 24 sep | Reparat: două oferte scrise în același moment (oferta omului și răspunsul automat) primesc aceeași oră în baza de date, deci o pagină deschisă de la zero le putea arăta în ordine inversă. Ofertele au acum un număr de ordine, folosit peste tot |
+| 25 sep | **E-mailurile spun suma scrisă pentru om**, nu parametrul din baza de date: clientul primea „priceCents: 170000" în loc de „1.700 lei", iar linkul nu era apăsabil. Textul vine acum din același șablon tradus ca la clopoțelul din cont, în limba contului și în moneda licitației, cu adresa întreagă a paginii (`lib/notif-text.ts`) |
+| 25 sep | **Conturi de crescător**: administratorul îi face cont din fișă („Fă-i cont" → link de parolă pe e-mail, 7 zile), iar crescătorul își vede singur licitațiile, vânzările și decontul și își scrie fișa (poză, localitate, poveste, rezultate) și aliasul. Cumpărătorul i se arată cu aliasul până la plată și cu numele și localitatea după; telefonul și adresa rămân la administrator |

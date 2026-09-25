@@ -80,6 +80,7 @@ model User {
   approvedLots    Auction[]            @relation("approver")
   shopOrders      ShopOrder[]          @relation("shopBuyer")
   articlesProposed Article[]           @relation("articleAuthor")
+  breeder          Breeder?             @relation("breederAccount")
 }
 
 /// Link de resetare a parolei. In baza se tine doar amprenta (sha256) —
@@ -628,6 +629,11 @@ model Breeder {
   hiddenAt  DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  /// Contul cu care crescătorul își vede singur licitațiile. Îl face
+  /// administratorul, din Administrare → Crescători.
+  userId    String?  @unique
+  user      User?    @relation("breederAccount", fields: [userId], references: [id])
 
   sales Sale[]
   articles Article[]

@@ -50,6 +50,7 @@
     "searchPlaceholder": "Tafuta njiwa, pete, mfugaji…",
     "community": "Jumuiya",
     "breeders": "Wafugaji",
+    "breeder": "Mfugaji",
     "ourContests": "Mashindano yetu"
   },
   "home": {
@@ -773,6 +774,10 @@
     "withdrawn": {
       "body": "Njiwa {pigeon} (pete {ring}) ameondolewa kwenye mnada na mwandaaji. Zabuni yako haitumiki tena na huna deni lolote.",
       "reason": "Sababu: {reason}"
+    },
+    "breederInvite": {
+      "subject": "Akaunti yako ya mfugaji kwenye {site}",
+      "body": "Habari, {name}!\n\nTumekutengenezea akaunti kwenye tovuti, ili uweze kufuatilia minada, mauzo na hesabu yako ya malipo, na kuweka wasifu wako wa mfugaji katika hali ya kisasa.\n\nFungua kiungo kilicho hapa chini na uweke nenosiri:\n{link}\n\nKiungo kinafaa kwa siku {days}. Kama muda wake umepita, tuombe kiungo kingine."
     }
   },
   "traits": {
@@ -948,5 +953,50 @@
     "statusWaiting": "inasubiri",
     "adminNote": "Jibu letu",
     "seeIt": "Ona makala"
+  },
+  "breeder": {
+    "myAuctions": "Minada yangu",
+    "mySales": "Mauzo yangu",
+    "mySettlement": "Hesabu yangu ya malipo",
+    "myProfile": "Wasifu wangu",
+    "intro": "Minada iliyoandaliwa kwa ajili yako, pamoja na makundi na saa zake.",
+    "noAuctions": "Bado hauna mnada. Msimamizi anauandaa.",
+    "noLots": "Mnada huu bado hauna makundi.",
+    "commission": "Kamisheni: {percent}%",
+    "lotStatusDRAFT": "Inaandaliwa",
+    "viewOnSite": "Tazama kwenye tovuti",
+    "colPigeon": "Njiwa",
+    "colPrice": "Bei",
+    "colBuyer": "Mnunuzi",
+    "colStatus": "Hali",
+    "lotShort": "Kundi {number}.{position}",
+    "unsold": "Hakuuzwa",
+    "noSales": "Hakuna mauzo yaliyokamilika bado.",
+    "buyerAfterPaid": "Hadi malipo yafanyike unaona jina la utani la mnunuzi tu. Baada ya malipo kurekodiwa, unaona jina na mji.",
+    "settlementIntro": "Njiwa waliolipiwa tu wanaingia katika hesabu. Wale wasiolipiwa wameorodheshwa kando.",
+    "due": "Utakayopokea",
+    "commissionKept": "Kamisheni iliyozuiliwa",
+    "unpaid": "Bado hakulipwa",
+    "pigeonsPaid": "{count, plural, =0 {hakuna njiwa} one {njiwa mmoja amelipiwa} other {njiwa # wamelipiwa}}",
+    "pigeonsWaiting": "{count, plural, =0 {hakuna njiwa} one {njiwa mmoja} other {njiwa #}}",
+    "settlements": "Hesabu za malipo",
+    "noSettlementsYet": "Hakuna hesabu iliyofanyika bado.",
+    "noSettlement": "Hakuna kitu cha kufanyia hesabu bado.",
+    "profileIntro": "Kile tovuti inaonyesha kukuhusu.",
+    "nameLabel": "Jina",
+    "nameFixed": "Msimamizi hubadilisha jina: vichwa vya minada vinategemea jina hilo.",
+    "alias": "Jina la utani",
+    "aliasHint": "Jina unaloonekana kwalo katika historia ya zabuni.",
+    "city": "Mji",
+    "country": "Nchi",
+    "photo": "Picha",
+    "photoHint": "Wewe, banda la njiwa au njiwa wa kuvutia.",
+    "story": "Hadithi (Kiromania)",
+    "storyEn": "Hadithi (Kiingereza)",
+    "results": "Matokeo (Kiromania)",
+    "resultsEn": "Matokeo (Kiingereza)",
+    "save": "Hifadhi",
+    "saved": "Imehifadhiwa",
+    "saveError": "Haikuweza kuhifadhiwa."
   }
 }

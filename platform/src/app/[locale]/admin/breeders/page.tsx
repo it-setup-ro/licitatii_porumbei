@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import RecordEditor, { type FieldDef } from "@/components/admin/RecordEditor";
 import RowActions from "@/components/admin/RowActions";
+import BreederAccountForm from "@/components/admin/BreederAccountForm";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +54,10 @@ export default async function AdminBreedersPage({
 
   const breeders = await prisma.breeder.findMany({
     orderBy: { name: "asc" },
-    include: { _count: { select: { sales: true } } },
+    include: {
+      _count: { select: { sales: true } },
+      user: { select: { email: true } },
+    },
   });
   const editing = sp.new ? null : breeders.find((b) => b.id === sp.id);
 
@@ -92,9 +96,11 @@ export default async function AdminBreedersPage({
           + Crescător nou
         </a>
       </div>
-      <p className="mb-6 text-sm text-ink/60">
-        Profilurile celor care vând. Nu au cont pe site: datele le primești pe e-mail și le
-        introduci aici, apoi le faci licitația din <em>Licitații pe loturi</em>.
+      <p className="mb-6 max-w-3xl text-sm text-ink/60">
+        Profilurile celor care vând. Fișa o completezi tu, apoi le faci licitația din{" "}
+        <em>Licitații pe loturi</em>. Cu <strong>„Fă-i cont"</strong> crescătorul primește pe
+        e-mail un link prin care își pune parola: după aceea își vede singur licitațiile,
+        vânzările și decontul, și își poate ține la zi fișa.
       </p>
 
       {breeders.length > 0 && (
@@ -109,6 +115,9 @@ export default async function AdminBreedersPage({
                   </td>
                   <td className="px-4 py-2.5 text-ink/60">
                     {b._count.sales === 1 ? "1 licitație" : `${b._count.sales} licitații`}
+                  </td>
+                  <td className="px-4 py-2.5">
+                    <BreederAccountForm breederId={b.id} email={b.user?.email ?? null} />
                   </td>
                   <td className="px-4 py-2.5 text-end">
                     <a

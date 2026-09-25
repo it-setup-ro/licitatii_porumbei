@@ -55,6 +55,7 @@ export default function SiteHeader({
   cartCount,
   contestLinks,
   sellEnabled = true,
+  isBreeder = false,
 }: {
   siteName: string;
   user: HeaderUser;
@@ -63,6 +64,8 @@ export default function SiteHeader({
   contestLinks: ExternalNavLink[];
   /** „+ Vinde un porumbel" — doar cât fluxul crescătorilor e pornit din Setări */
   sellEnabled?: boolean;
+  /** contul are fișă de crescător: în caseta de cont apare „Crescător" */
+  isBreeder?: boolean;
 }) {
   const t = useTranslations("nav");
   const locale = useLocale();
@@ -195,7 +198,7 @@ export default function SiteHeader({
 
           {/* Caseta de cont (telefon) — autentificare SI iesire in acelasi loc */}
           <div className="lg:hidden">
-            <AccountMenu user={user} unreadCount={unreadCount} variant="icon" sellEnabled={sellEnabled} />
+            <AccountMenu user={user} unreadCount={unreadCount} variant="icon" sellEnabled={sellEnabled} isBreeder={isBreeder} />
           </div>
 
           {/* Clopoțel notificări */}
@@ -236,7 +239,7 @@ export default function SiteHeader({
 
           {/* Caseta de cont (desktop) */}
           <div className="hidden lg:block">
-            <AccountMenu user={user} unreadCount={unreadCount} variant="full" sellEnabled={sellEnabled} />
+            <AccountMenu user={user} unreadCount={unreadCount} variant="full" sellEnabled={sellEnabled} isBreeder={isBreeder} />
           </div>
 
           <button

@@ -50,7 +50,8 @@
     "searchPlaceholder": "Caută porumbel, serie, crescător…",
     "community": "Comunitate",
     "breeders": "Crescători",
-    "ourContests": "Concursurile noastre"
+    "ourContests": "Concursurile noastre",
+    "breeder": "Crescător"
   },
   "home": {
     "heroTitle": "Pasiunea unește oameni!",
@@ -773,6 +774,10 @@
     "withdrawn": {
       "body": "Porumbelul {pigeon} (serie {ring}) a fost retras din licitație de organizator. Oferta ta nu mai are efect și nu ai nimic de plătit.",
       "reason": "Motivul: {reason}"
+    },
+    "breederInvite": {
+      "subject": "Contul tău de crescător pe {site}",
+      "body": "Bună, {name}!\n\nȚi-am făcut un cont pe site, ca să-ți vezi singur licitațiile, vânzările și decontul, și ca să-ți ții la zi fișa de crescător.\n\nIntră pe linkul de mai jos și pune-ți o parolă:\n{link}\n\nLinkul e valabil {days} zile. Dacă a trecut, cere-ne altul."
     }
   },
   "traits": {
@@ -948,5 +953,50 @@
     "statusWaiting": "așteaptă",
     "adminNote": "Răspunsul nostru",
     "seeIt": "Vezi articolul"
+  },
+  "breeder": {
+    "myAuctions": "Licitațiile mele",
+    "mySales": "Vânzările mele",
+    "mySettlement": "Decontul meu",
+    "myProfile": "Fișa mea",
+    "intro": "Licitațiile pregătite pentru tine, cu loturile și orele lor.",
+    "noAuctions": "Încă nu ai nicio licitație. Administratorul ți-o pregătește.",
+    "noLots": "Licitația nu are încă loturi.",
+    "commission": "Comision: {percent}%",
+    "lotStatusDRAFT": "În pregătire",
+    "viewOnSite": "Vezi pe site",
+    "colPigeon": "Porumbel",
+    "colPrice": "Preț",
+    "colBuyer": "Cumpărător",
+    "colStatus": "Starea",
+    "lotShort": "Lotul {number}.{position}",
+    "unsold": "Nevândut",
+    "noSales": "Încă nu s-a încheiat nicio vânzare.",
+    "buyerAfterPaid": "Până la plată vezi doar aliasul cumpărătorului. După ce plata e înregistrată, vezi numele și localitatea.",
+    "settlementIntro": "În decont intră doar porumbeii plătiți. Cei încă neplătiți apar separat.",
+    "due": "De încasat",
+    "commissionKept": "Comision reținut",
+    "unpaid": "Încă neplătite",
+    "pigeonsPaid": "{count, plural, =0 {niciun porumbel} one {un porumbel plătit} few {# porumbei plătiți} other {# de porumbei plătiți}}",
+    "pigeonsWaiting": "{count, plural, =0 {niciun porumbel} one {un porumbel} few {# porumbei} other {# de porumbei}}",
+    "settlements": "Deconturi",
+    "noSettlementsYet": "Încă nu s-a făcut niciun decont.",
+    "noSettlement": "Încă nu e nimic de decontat.",
+    "profileIntro": "Ce se vede despre tine pe site.",
+    "nameLabel": "Nume",
+    "nameFixed": "Numele îl schimbă administratorul: de el atârnă titlurile licitațiilor.",
+    "alias": "Alias",
+    "aliasHint": "Numele sub care apari în istoricul ofertelor.",
+    "city": "Localitate",
+    "country": "Țara",
+    "photo": "Fotografie",
+    "photoHint": "Tu, crescătoria sau un porumbel reprezentativ.",
+    "story": "Povestea (română)",
+    "storyEn": "Povestea (engleză)",
+    "results": "Rezultate (română)",
+    "resultsEn": "Rezultate (engleză)",
+    "save": "Salvează",
+    "saved": "Salvat",
+    "saveError": "Nu am putut salva."
   }
 }

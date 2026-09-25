@@ -50,7 +50,8 @@
     "searchPlaceholder": "Search pigeon, ring, breeder…",
     "community": "Community",
     "breeders": "Breeders",
-    "ourContests": "Our contests"
+    "ourContests": "Our contests",
+    "breeder": "Breeder"
   },
   "home": {
     "heroTitle": "Passion brings people together!",
@@ -773,6 +774,10 @@
     "withdrawn": {
       "body": "The pigeon {pigeon} (ring {ring}) has been withdrawn from the auction by the organiser. Your bid no longer stands and you owe nothing.",
       "reason": "Reason: {reason}"
+    },
+    "breederInvite": {
+      "subject": "Your breeder account on {site}",
+      "body": "Hello, {name}!\n\nWe created an account for you on the site, so you can follow your own auctions, sales and settlement, and keep your breeder profile up to date.\n\nOpen the link below and set a password:\n{link}\n\nThe link is valid for {days} days. If it has expired, ask us for another one."
     }
   },
   "traits": {
@@ -948,5 +953,50 @@
     "statusWaiting": "waiting",
     "adminNote": "Our reply",
     "seeIt": "See the article"
+  },
+  "breeder": {
+    "myAuctions": "My auctions",
+    "mySales": "My sales",
+    "mySettlement": "My settlement",
+    "myProfile": "My profile",
+    "intro": "The auctions prepared for you, with their lots and times.",
+    "noAuctions": "You have no auction yet. The administrator is preparing it.",
+    "noLots": "This auction has no lots yet.",
+    "commission": "Commission: {percent}%",
+    "lotStatusDRAFT": "In preparation",
+    "viewOnSite": "View on the site",
+    "colPigeon": "Pigeon",
+    "colPrice": "Price",
+    "colBuyer": "Buyer",
+    "colStatus": "Status",
+    "lotShort": "Lot {number}.{position}",
+    "unsold": "Unsold",
+    "noSales": "No sale has closed yet.",
+    "buyerAfterPaid": "Until payment you only see the buyer's alias. Once the payment is recorded, you see the name and the town.",
+    "settlementIntro": "Only paid pigeons go into the settlement. The unpaid ones are listed separately.",
+    "due": "To receive",
+    "commissionKept": "Commission withheld",
+    "unpaid": "Not paid yet",
+    "pigeonsPaid": "{count, plural, =0 {no pigeon} one {one pigeon paid} other {# pigeons paid}}",
+    "pigeonsWaiting": "{count, plural, =0 {no pigeon} one {one pigeon} other {# pigeons}}",
+    "settlements": "Settlements",
+    "noSettlementsYet": "No settlement has been made yet.",
+    "noSettlement": "There is nothing to settle yet.",
+    "profileIntro": "What the site shows about you.",
+    "nameLabel": "Name",
+    "nameFixed": "The administrator changes the name: the auction titles depend on it.",
+    "alias": "Alias",
+    "aliasHint": "The name you appear under in the bid history.",
+    "city": "Town",
+    "country": "Country",
+    "photo": "Photo",
+    "photoHint": "You, the loft or a representative pigeon.",
+    "story": "Story (Romanian)",
+    "storyEn": "Story (English)",
+    "results": "Results (Romanian)",
+    "resultsEn": "Results (English)",
+    "save": "Save",
+    "saved": "Saved",
+    "saveError": "Could not save."
   }
 }

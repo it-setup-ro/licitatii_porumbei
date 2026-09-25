@@ -50,7 +50,8 @@
     "searchPlaceholder": "Szukaj gołębia, obrączki, hodowcy…",
     "community": "Społeczność",
     "breeders": "Hodowcy",
-    "ourContests": "Nasze konkursy"
+    "ourContests": "Nasze konkursy",
+    "breeder": "Hodowca"
   },
   "home": {
     "heroTitle": "Pasja łączy ludzi!",
@@ -773,6 +774,10 @@
     "withdrawn": {
       "body": "Gołąb {pigeon} (obrączka {ring}) został wycofany z aukcji przez organizatora. Twoja oferta nie jest już ważna i nie masz nic do zapłaty.",
       "reason": "Powód: {reason}"
+    },
+    "breederInvite": {
+      "subject": "Twoje konto hodowcy w {site}",
+      "body": "Dzień dobry, {name}.\n\nUtworzyliśmy dla Ciebie konto na stronie, abyś mógł śledzić własne aukcje, sprzedaż i rozliczenia oraz aktualizować swój profil hodowcy.\n\nOtwórz poniższy link i ustaw hasło:\n{link}\n\nLink jest ważny {days} dni. Jeśli wygasł, poproś nas o nowy."
     }
   },
   "traits": {
@@ -948,5 +953,50 @@
     "statusWaiting": "czeka",
     "adminNote": "Nasza odpowiedź",
     "seeIt": "Zobacz artykuł"
+  },
+  "breeder": {
+    "myAuctions": "Moje aukcje",
+    "mySales": "Moja sprzedaż",
+    "mySettlement": "Moje rozliczenie",
+    "myProfile": "Mój profil",
+    "intro": "Aukcje przygotowane dla Ciebie, wraz z partiami i terminami.",
+    "noAuctions": "Nie masz jeszcze żadnej aukcji. Administrator ją przygotowuje.",
+    "noLots": "Ta aukcja nie ma jeszcze partii.",
+    "commission": "Prowizja: {percent}%",
+    "lotStatusDRAFT": "W przygotowaniu",
+    "viewOnSite": "Zobacz na stronie",
+    "colPigeon": "Gołąb",
+    "colPrice": "Cena",
+    "colBuyer": "Kupujący",
+    "colStatus": "Status",
+    "lotShort": "Partia {number}.{position}",
+    "unsold": "Niesprzedany",
+    "noSales": "Żadna sprzedaż nie została jeszcze zakończona.",
+    "buyerAfterPaid": "Do momentu płatności widzisz tylko pseudonim kupującego. Gdy płatność zostanie zapisana, zobaczysz nazwisko i miejscowość.",
+    "settlementIntro": "Do rozliczenia wchodzą tylko opłacone gołębie. Nieopłacone są wymienione osobno.",
+    "due": "Do otrzymania",
+    "commissionKept": "Potrącona prowizja",
+    "unpaid": "Jeszcze nieopłacone",
+    "pigeonsPaid": "{count, plural, =0 {brak gołębi} one {jeden gołąb opłacony} few {# gołębie opłacone} many {# gołębi opłaconych} other {# gołębia opłaconego}}",
+    "pigeonsWaiting": "{count, plural, =0 {brak gołębi} one {jeden gołąb} few {# gołębie} many {# gołębi} other {# gołębia}}",
+    "settlements": "Rozliczenia",
+    "noSettlementsYet": "Nie sporządzono jeszcze żadnego rozliczenia.",
+    "noSettlement": "Nie ma jeszcze nic do rozliczenia.",
+    "profileIntro": "To, co strona pokazuje o Tobie.",
+    "nameLabel": "Nazwa",
+    "nameFixed": "Nazwę zmienia administrator: od niej zależą tytuły aukcji.",
+    "alias": "Pseudonim",
+    "aliasHint": "Nazwa, pod którą widniejesz w historii ofert.",
+    "city": "Miejscowość",
+    "country": "Kraj",
+    "photo": "Zdjęcie",
+    "photoHint": "Ty, gołębnik albo reprezentatywny gołąb.",
+    "story": "Historia (po rumuńsku)",
+    "storyEn": "Historia (po angielsku)",
+    "results": "Wyniki (po rumuńsku)",
+    "resultsEn": "Wyniki (po angielsku)",
+    "save": "Zapisz",
+    "saved": "Zapisano",
+    "saveError": "Nie udało się zapisać."
   }
 }
