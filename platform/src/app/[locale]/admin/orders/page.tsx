@@ -6,6 +6,7 @@ import { equivalentLabel } from "@/lib/fx-math";
 import { formatMoney } from "@/lib/money";
 import { lotLabel } from "@/lib/lots";
 import OrderAdminActions from "@/components/admin/OrderAdminActions";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -81,7 +82,7 @@ export default async function AdminOrdersPage({
     counts
       .filter((c) => (key === "PAID" ? ["PAID", "SHIPPED"].includes(c.status) : c.status === key))
       .reduce((n, c) => n + c._count._all, 0);
-  const dateFmt = new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium", timeZone: "Europe/Bucharest" });
+  const dateFmt = platformFormat("ro-RO", { dateStyle: "medium", timeZone: "Europe/Bucharest" });
 
   return (
     <div>

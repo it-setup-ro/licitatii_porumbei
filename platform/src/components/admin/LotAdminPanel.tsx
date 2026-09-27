@@ -7,6 +7,7 @@ import { formatMoney } from "@/lib/money";
 import PriceInput from "@/components/PriceInput";
 import type { FxInfo } from "@/lib/fx-math";
 import { isoToLocalInput, localInputToIso } from "@/lib/local-datetime";
+import { platformFormat } from "@/lib/platform-time";
 
 /**
  * Un lot, în pagina licitației din administrare.
@@ -98,7 +99,7 @@ export default function LotAdminPanel({
   const [added, setAdded] = useState<{ auctionId: string; label: string } | null>(null);
 
   const fmt = (cents: number) => formatMoney(cents, currency, locale);
-  const dateFmt = new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "ro-RO", {
+  const dateFmt = platformFormat(locale === "en" ? "en-GB" : "ro-RO", {
     dateStyle: "medium",
     timeStyle: "short",
   });

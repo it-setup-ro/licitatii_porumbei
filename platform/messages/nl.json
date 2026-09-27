@@ -200,7 +200,9 @@
     "lotLabel": "Lot {label}",
     "allBreederPigeons": "Alle duiven in deze veiling",
     "unavailableNotice": "Deze duif is na de veiling niet meer beschikbaar (ziek geworden of gestorven). De winnaar is op de hoogte gebracht.",
-    "bidAuto": "automatisch"
+    "bidAuto": "automatisch",
+    "closingNow": "sluit nu",
+    "startingNow": "start nu"
   },
   "pigeon": {
     "ring": "Ringnummer",

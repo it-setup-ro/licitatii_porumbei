@@ -2,6 +2,7 @@ import { getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import Pager from "@/components/admin/Pager";
 import RowActions from "@/components/admin/RowActions";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -60,7 +61,7 @@ export default async function AdminMessagesPage({
                   }}
                 />
                 <span className="text-xs text-ink/50">
-                  {new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+                  {platformFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
                     dateStyle: "medium",
                     timeStyle: "short",
                   }).format(m.createdAt)}

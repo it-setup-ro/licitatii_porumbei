@@ -200,7 +200,9 @@
     "lotLabel": "第 {label} 号拍品",
     "allBreederPigeons": "本场拍卖的全部鸽子",
     "unavailableNotice": "拍卖结束后，这羽鸽子已无法交付（患病或死亡），已通知得标者。",
-    "bidAuto": "自动"
+    "bidAuto": "自动",
+    "closingNow": "即将结束",
+    "startingNow": "即将开始"
   },
   "pigeon": {
     "ring": "足环号",

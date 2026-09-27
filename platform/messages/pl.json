@@ -200,7 +200,9 @@
     "lotLabel": "Partia {label}",
     "allBreederPigeons": "Wszystkie gołębie na tej aukcji",
     "unavailableNotice": "Ten gołąb nie jest już dostępny po aukcji (zachorował lub padł). Zwycięzca został powiadomiony.",
-    "bidAuto": "automatyczna"
+    "bidAuto": "automatyczna",
+    "closingNow": "kończy się teraz",
+    "startingNow": "zaczyna się teraz"
   },
   "pigeon": {
     "ring": "Numer obrączki",

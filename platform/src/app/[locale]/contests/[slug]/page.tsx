@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { cardInclude, toCardData } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
 import RichText from "@/components/RichText";
+import { platformFormat } from "@/lib/platform-time";
 import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
@@ -30,7 +31,7 @@ export default async function ContestPage({
   const rules = pick(currentLocale, contest.rulesRo, contest.rulesEn);
 
   const fmt = (d: Date) =>
-    new Intl.DateTimeFormat(intlLocale(currentLocale), {
+    platformFormat(intlLocale(currentLocale), {
       dateStyle: "long",
     }).format(d);
 

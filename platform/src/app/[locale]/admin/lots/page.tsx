@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { getSettings } from "@/lib/settings";
 import ModerationButtons from "@/components/admin/ModerationButtons";
 import ShortenButton from "@/components/admin/ShortenButton";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +38,7 @@ export default async function AdminLotsPage({
       })
     : [];
 
-  const when = new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+  const when = platformFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
     dateStyle: "short",
     timeStyle: "short",
   });

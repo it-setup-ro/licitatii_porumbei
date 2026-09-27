@@ -3,6 +3,7 @@ import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { Link } from "@/i18n/navigation";
 import RichText from "@/components/RichText";
+import { platformFormat } from "@/lib/platform-time";
 import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
@@ -45,7 +46,7 @@ export default async function ArticlePage({
       <p className="mt-2 text-sm text-ink/50">
         {article.publishedAt
           ? t("published", {
-              date: new Intl.DateTimeFormat(intlLocale(currentLocale), {
+              date: platformFormat(intlLocale(currentLocale), {
                 dateStyle: "long",
               }).format(article.publishedAt),
             })

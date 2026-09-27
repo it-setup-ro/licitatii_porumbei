@@ -294,7 +294,11 @@ export default function LiveAuctionPanel(props: Props) {
         {status === "LIVE" && (
           <div className="mt-4 rounded-xl bg-ivory-soft px-4 py-3">
             <p className="text-xs uppercase tracking-wide text-ink/50">{t("endsIn")}</p>
-            <Countdown target={endsAt} onZero={() => fetch("/api/sweep", { method: "POST" })} />
+            <Countdown
+              target={endsAt}
+              zeroLabel={t("closingNow")}
+              onZero={() => fetch("/api/sweep", { method: "POST" })}
+            />
             {extendedNote && (
               <p className="mt-1 text-xs font-bold text-wing-red" data-testid="extended-note">
                 {t("extended")}

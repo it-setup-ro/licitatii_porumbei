@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import Pager from "@/components/admin/Pager";
 import RequestHandledButton from "@/components/admin/RequestHandledButton";
 import RowActions from "@/components/admin/RowActions";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -30,7 +31,7 @@ export default async function AdminAuctionRequestsPage({
     skip: (page - 1) * PE_PAGINA,
     take: PE_PAGINA,
   });
-  const when = new Intl.DateTimeFormat("ro-RO", {
+  const when = platformFormat("ro-RO", {
     dateStyle: "medium",
     timeStyle: "short",
     timeZone: "Europe/Bucharest",

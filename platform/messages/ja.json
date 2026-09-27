@@ -200,7 +200,9 @@
     "lotLabel": "ロット {label}",
     "allBreederPigeons": "このオークションのすべての鳩",
     "unavailableNotice": "この鳩はオークション終了後に病気または死亡したため、お引き渡しできなくなりました。落札者には通知済みです。",
-    "bidAuto": "自動"
+    "bidAuto": "自動",
+    "closingNow": "まもなく終了",
+    "startingNow": "まもなく開始"
   },
   "pigeon": {
     "ring": "足環番号",

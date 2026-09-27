@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import Pager from "@/components/admin/Pager";
 import { getSettings } from "@/lib/settings";
 import AccountReview from "@/components/admin/AccountReview";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +53,7 @@ export default async function AdminAccountsPage({
   const total = await prisma.user.count({ where });
   const count = (k: string) => counts.find((c) => c.accountStatus === k)?._count._all ?? 0;
 
-  const dateFmt = new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium", timeStyle: "short" });
+  const dateFmt = platformFormat("ro-RO", { dateStyle: "medium", timeStyle: "short" });
 
   return (
     <div>

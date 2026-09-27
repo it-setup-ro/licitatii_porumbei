@@ -200,7 +200,9 @@
     "lotLabel": "Lote {label}",
     "allBreederPigeons": "Todas las palomas de esta subasta",
     "unavailableNotice": "Esta paloma ya no está disponible tras la subasta (enfermó o murió). Se ha avisado al ganador.",
-    "bidAuto": "automática"
+    "bidAuto": "automática",
+    "closingNow": "termina ahora",
+    "startingNow": "empieza ahora"
   },
   "pigeon": {
     "ring": "Número de anilla",

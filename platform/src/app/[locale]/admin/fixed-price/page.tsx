@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/money";
 import AuctionVisibility from "@/components/admin/AuctionVisibility";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -49,7 +50,7 @@ export default async function AdminFixedPricePage({
     take: 200,
   });
 
-  const dateFmt = new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium", timeZone: "Europe/Bucharest" });
+  const dateFmt = platformFormat("ro-RO", { dateStyle: "medium", timeZone: "Europe/Bucharest" });
 
   return (
     <div>

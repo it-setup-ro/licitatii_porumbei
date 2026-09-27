@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { breederOfCurrentUser } from "@/lib/breeder-access";
 import { pick, intlLocale } from "@/lib/locales";
 import BreederNav from "@/components/BreederNav";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +43,7 @@ export default async function BreederAuctionsPage({
   });
 
   const cand = (d: Date) =>
-    new Intl.DateTimeFormat(intlLocale(currentLocale), {
+    platformFormat(intlLocale(currentLocale), {
       dateStyle: "medium",
       timeStyle: "short",
     }).format(d);

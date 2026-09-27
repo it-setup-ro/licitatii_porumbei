@@ -6,6 +6,7 @@ import { getEurRate } from "@/lib/fx";
 import { equivalentLabel } from "@/lib/fx-math";
 import { SEX_SYMBOL } from "@/lib/pigeon";
 import { intlLocale, pick } from "@/lib/locales";
+import { platformFormat } from "@/lib/platform-time";
 
 export type AuctionCardData = {
   id: string;
@@ -140,11 +141,13 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
                     : auction.endsAt
                   ).toISOString()}
                   compact
+                  zeroLabel={auction.status === "SCHEDULED" ? t("startingNow") : t("closingNow")}
+                  refreshOnZero
                 />
               </span>
             ) : (
               <span className="text-sm font-semibold">
-                {new Intl.DateTimeFormat(intlLocale(locale), {
+                {platformFormat(intlLocale(locale), {
                   dateStyle: "medium",
                 }).format(auction.endsAt)}
               </span>

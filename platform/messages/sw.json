@@ -200,7 +200,9 @@
     "lotLabel": "Kundi {label}",
     "allBreederPigeons": "Njiwa wote katika mnada huu",
     "unavailableNotice": "Njiwa huyu hapatikani tena baada ya mnada (aliugua au alikufa). Mshindi amearifiwa.",
-    "bidAuto": "kiotomatiki"
+    "bidAuto": "kiotomatiki",
+    "closingNow": "unaisha sasa",
+    "startingNow": "unaanza sasa"
   },
   "pigeon": {
     "ring": "Nambari ya pete",

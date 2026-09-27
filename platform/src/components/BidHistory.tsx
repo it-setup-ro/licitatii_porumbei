@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { subscribeAuction } from "@/lib/live-auction";
 import { formatMoney } from "@/lib/money";
 import { intlLocale } from "@/lib/locales";
+import { platformFormat } from "@/lib/platform-time";
 
 /**
  * Istoricul ofertelor, ca pe pipa.be: se vad ultimele cateva, iar restul se
@@ -48,7 +49,7 @@ export default function BidHistory({
   // cea de la deschiderea paginii: licitai de trei ori și vedeai doar prima.
   useEffect(() => {
     if (!live || !auctionId || !currency) return;
-    const oraFmt = new Intl.DateTimeFormat(intlLocale(locale), {
+    const oraFmt = platformFormat(intlLocale(locale), {
       dateStyle: "short",
       timeStyle: "short",
     });

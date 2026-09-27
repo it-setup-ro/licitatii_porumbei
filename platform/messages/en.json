@@ -200,7 +200,9 @@
     "lotLabel": "Lot {label}",
     "allBreederPigeons": "All pigeons in this auction",
     "unavailableNotice": "This pigeon is no longer available after the auction (it fell ill or died). The winner has been notified.",
-    "bidAuto": "automatic"
+    "bidAuto": "automatic",
+    "closingNow": "closing now",
+    "startingNow": "starting now"
   },
   "pigeon": {
     "ring": "Ring number",

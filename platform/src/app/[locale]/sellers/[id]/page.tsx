@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { toCardData, cardInclude } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
 import StarRating from "@/components/StarRating";
+import { platformFormat } from "@/lib/platform-time";
 import { intlLocale } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
@@ -95,7 +96,7 @@ export default async function SellerProfilePage({
                     </span>
                   </div>
                   <span className="text-xs text-ink/50">
-                    {new Intl.DateTimeFormat(intlLocale(currentLocale), {
+                    {platformFormat(intlLocale(currentLocale), {
                       dateStyle: "medium",
                     }).format(r.createdAt)}
                   </span>

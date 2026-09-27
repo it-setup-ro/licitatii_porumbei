@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/money";
 import ShopOrderActions from "@/components/admin/ShopOrderActions";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -70,7 +71,7 @@ export default async function AdminShopOrdersPage({
   ]);
 
   const count = (key: string) => counts.find((c) => c.status === key)?._count._all ?? 0;
-  const dateFmt = new Intl.DateTimeFormat("ro-RO", {
+  const dateFmt = platformFormat("ro-RO", {
     dateStyle: "medium",
     timeStyle: "short",
     timeZone: "Europe/Bucharest",

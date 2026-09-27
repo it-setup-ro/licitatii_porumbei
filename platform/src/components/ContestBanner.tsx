@@ -1,5 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { formatDistance } from "@/lib/distance";
+import { platformFormat } from "@/lib/platform-time";
 import { intlLocale } from "@/lib/locales";
 
 /**
@@ -61,9 +62,9 @@ export default function ContestBanner({
 }) {
   const loc = intlLocale(locale);
   const zi = (d: Date) =>
-    new Intl.DateTimeFormat(loc, { day: "numeric", month: "long", year: "numeric" }).format(d);
+    platformFormat(loc, { day: "numeric", month: "long", year: "numeric" }).format(d);
   const ora = (d: Date) =>
-    new Intl.DateTimeFormat(loc, { hour: "2-digit", minute: "2-digit" }).format(d);
+    platformFormat(loc, { hour: "2-digit", minute: "2-digit" }).format(d);
 
   const cells: { key: string; icon: React.ReactNode; label: string; lines: React.ReactNode[] }[] =
     [];

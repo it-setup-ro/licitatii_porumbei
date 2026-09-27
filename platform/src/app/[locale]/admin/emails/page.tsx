@@ -5,6 +5,7 @@ import ResendEmailButton from "@/components/admin/ResendEmailButton";
 import EmailSetupCard from "@/components/admin/EmailSetupCard";
 import { smtpStatusFull } from "@/lib/smtp-status";
 import { smtpConfigPublic } from "@/lib/smtp-config";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -70,7 +71,7 @@ export default async function AdminEmailsPage({
     prisma.emailLog.count({ where: { sentAt: null, error: null } }),
   ]);
 
-  const when = new Intl.DateTimeFormat("ro-RO", {
+  const when = platformFormat("ro-RO", {
     dateStyle: "short",
     timeStyle: "short",
     timeZone: "Europe/Bucharest",

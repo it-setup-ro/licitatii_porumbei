@@ -24,6 +24,7 @@ import ZoomableImage from "@/components/ZoomableImage";
 import WatchButton from "@/components/WatchButton";
 import { lotLabel } from "@/lib/lots";
 import { intlLocale, pick } from "@/lib/locales";
+import { platformFormat } from "@/lib/platform-time";
 import { maskName } from "@/lib/mask-name";
 
 /**
@@ -148,7 +149,7 @@ export default async function AuctionDetailPage({
       ? leadingBid.maxAmountCents + incrementFor(auction.currentPriceCents, settings.increments)
       : minNext;
 
-  const dateFmt = new Intl.DateTimeFormat(intlLocale(currentLocale), {
+  const dateFmt = platformFormat(intlLocale(currentLocale), {
     dateStyle: "short",
     timeStyle: "short",
   });

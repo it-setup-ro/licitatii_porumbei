@@ -2,6 +2,7 @@ import { formatMoney } from "@/lib/money";
 import { lotLabel } from "@/lib/lots";
 import { loadSettlementGroup, type SettlementGroup } from "@/lib/orders";
 import SettlementActions from "./SettlementActions";
+import { platformFormat } from "@/lib/platform-time";
 
 /**
  * Decontul unui grup (licitația crescătorului sau, la preț fix, „Oferit de"):
@@ -21,7 +22,7 @@ export default async function SettlementSection({
 }) {
   const { orders, settlements, summary } = await loadSettlementGroup(group);
   const fmt = (c: number) => formatMoney(c, currency, "ro");
-  const dateFmt = new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium", timeZone: "Europe/Bucharest" });
+  const dateFmt = platformFormat("ro-RO", { dateStyle: "medium", timeZone: "Europe/Bucharest" });
   const unpaid = orders.filter((o) => o.status === "PENDING_PAYMENT");
   const exportHref =
     "saleId" in group

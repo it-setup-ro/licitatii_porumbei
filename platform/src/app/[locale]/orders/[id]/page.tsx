@@ -10,6 +10,7 @@ import { formatMoney } from "@/lib/money";
 import { lotLabel } from "@/lib/lots";
 import ReviewForm from "@/components/ReviewForm";
 import { intlLocale } from "@/lib/locales";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +62,7 @@ export default async function OrderPage({
   const reference = label ? `${t("lotPrefix", { label })} ${pigeon.name}` : pigeon.name;
   const amount = formatMoney(order.amountCents, order.currency, currentLocale);
   const equiv = eurRate ? equivalentLabel(order.amountCents, order.currency, currentLocale, eurRate) : null;
-  const dateFmt = new Intl.DateTimeFormat(intlLocale(currentLocale), {
+  const dateFmt = platformFormat(intlLocale(currentLocale), {
     dateStyle: "medium",
     timeZone: "Europe/Bucharest",
   });

@@ -1,6 +1,7 @@
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import { Link } from "@/i18n/navigation";
+import { platformFormat } from "@/lib/platform-time";
 import { intlLocale, pick } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
@@ -28,7 +29,7 @@ export default async function ContestsPage({
   });
 
   const fmt = (d: Date) =>
-    new Intl.DateTimeFormat(intlLocale(currentLocale), {
+    platformFormat(intlLocale(currentLocale), {
       dateStyle: "medium",
     }).format(d);
 

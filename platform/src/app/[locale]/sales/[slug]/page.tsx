@@ -14,6 +14,7 @@ import RichText from "@/components/RichText";
 import ExpandableText from "@/components/ExpandableText";
 import ViewToggle from "@/components/ViewToggle";
 import { intlLocale, pick } from "@/lib/locales";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +62,7 @@ export default async function SalePage({
     take: 12,
     select: { id: true, slug: true, titleRo: true, titleEn: true, coverUrl: true, publishedAt: true },
   });
-  const articleDate = new Intl.DateTimeFormat(intlLocale(currentLocale), { dateStyle: "medium" });
+  const articleDate = platformFormat(intlLocale(currentLocale), { dateStyle: "medium" });
 
   const title = en ? sale.titleEn : sale.titleRo;
   const desc = en ? (sale.descEn ?? sale.descRo) : sale.descRo;
@@ -78,7 +79,7 @@ export default async function SalePage({
   const period = salePeriod(sale.lots);
   const status = saleStatus(sale.lots);
 
-  const dateFmt = new Intl.DateTimeFormat(intlLocale(currentLocale), {
+  const dateFmt = platformFormat(intlLocale(currentLocale), {
     dateStyle: "medium",
     timeStyle: "short",
     timeZone: "Europe/Bucharest",
@@ -241,14 +242,24 @@ export default async function SalePage({
                           <span className="block text-xs uppercase tracking-wide text-ink/50">
                             {t("startsAtLabel")} {dateFmt.format(lot.startsAt)}
                           </span>
-                          <Countdown target={lot.startsAt.toISOString()} compact />
+                          <Countdown
+                            target={lot.startsAt.toISOString()}
+                            compact
+                            zeroLabel={ta("startingNow")}
+                            refreshOnZero
+                          />
                         </>
                       ) : lot.status === "LIVE" ? (
                         <>
                           <span className="block text-xs uppercase tracking-wide text-ink/50">
                             {t("endsAtLabel")} {dateFmt.format(lot.endsAt)}
                           </span>
-                          <Countdown target={lot.endsAt.toISOString()} compact />
+                          <Countdown
+                            target={lot.endsAt.toISOString()}
+                            compact
+                            zeroLabel={ta("closingNow")}
+                            refreshOnZero
+                          />
                         </>
                       ) : (
                         <span className="text-ink/60">

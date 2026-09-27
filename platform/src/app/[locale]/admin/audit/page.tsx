@@ -1,6 +1,7 @@
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import Pager from "@/components/admin/Pager";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +38,7 @@ export default async function AdminAuditPage({
             {logs.map((l) => (
               <tr key={l.id} className="border-b border-ink/5 last:border-0">
                 <td className="px-4 py-2.5 text-ink/50">
-                  {new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+                  {platformFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
                     dateStyle: "short",
                     timeStyle: "medium",
                   }).format(l.createdAt)}

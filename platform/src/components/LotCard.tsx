@@ -2,6 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import Countdown from "./Countdown";
 import { intlLocale } from "@/lib/locales";
+import { platformFormat } from "@/lib/platform-time";
 
 /**
  * Cardul unui lot, în lista de licitații.
@@ -28,12 +29,13 @@ export type LotCardData = {
 
 export default async function LotCard({ lot }: { lot: LotCardData }) {
   const t = await getTranslations("sales");
+  const ta = await getTranslations("auction");
   const locale = await getLocale();
   // conținutul scris de administrator: română sau, altfel, engleză
   const en = locale !== "ro";
   const saleTitle = en ? lot.saleTitleEn : lot.saleTitleRo;
 
-  const when = new Intl.DateTimeFormat(intlLocale(locale), {
+  const when = platformFormat(intlLocale(locale), {
     day: "2-digit",
     month: "2-digit",
     hour: "2-digit",
@@ -87,6 +89,8 @@ export default async function LotCard({ lot }: { lot: LotCardData }) {
             <Countdown
               target={(lot.status === "SCHEDULED" ? lot.startsAt : lot.endsAt).toISOString()}
               compact
+              zeroLabel={lot.status === "SCHEDULED" ? ta("startingNow") : ta("closingNow")}
+              refreshOnZero
             />
           </div>
         )}

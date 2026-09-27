@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db";
 import { notifValues } from "@/lib/notif-text";
 import AccountNav from "@/components/AccountNav";
 import MarkAllReadButton from "@/components/MarkAllReadButton";
+import { platformFormat } from "@/lib/platform-time";
 import { intlLocale } from "@/lib/locales";
 
 export const dynamic = "force-dynamic";
@@ -67,7 +68,7 @@ export default async function NotificationsPage({
             >
               <p className="font-medium">{render(n.type, n.paramsJson)}</p>
               <p className="mt-1 text-xs text-ink/50">
-                {new Intl.DateTimeFormat(intlLocale(currentLocale), {
+                {platformFormat(intlLocale(currentLocale), {
                   dateStyle: "medium",
                   timeStyle: "short",
                 }).format(n.createdAt)}

@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { Link } from "@/i18n/navigation";
 import { intlLocale } from "@/lib/locales";
 import ProposeArticleForm from "@/components/ProposeArticleForm";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +36,7 @@ export default async function ProposeArticlePage({
       })
     : [];
 
-  const dataFmt = new Intl.DateTimeFormat(intlLocale(locale), { dateStyle: "medium" });
+  const dataFmt = platformFormat(intlLocale(locale), { dateStyle: "medium" });
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">

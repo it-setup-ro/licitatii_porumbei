@@ -200,7 +200,9 @@
     "lotLabel": "لوت {label}",
     "allBreederPigeons": "جميع الحمام في هذا المزاد",
     "unavailableNotice": "هذه الحمامة لم تعد متاحة بعد المزاد (مرضت أو نفقت). تم إبلاغ الفائز.",
-    "bidAuto": "تلقائي"
+    "bidAuto": "تلقائي",
+    "closingNow": "ينتهي الآن",
+    "startingNow": "يبدأ الآن"
   },
   "pigeon": {
     "ring": "رقم الحلقة",

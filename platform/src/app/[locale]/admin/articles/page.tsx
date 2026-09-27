@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import ArticleComposer from "@/components/admin/ArticleComposer";
 import RowActions from "@/components/admin/RowActions";
 import ProposalActions from "@/components/admin/ProposalActions";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -83,7 +84,7 @@ export default async function AdminArticlesPage({
                   <span className="text-xs text-ink/50">
                     {a.proposedBy?.sellerCompany || a.proposedBy?.name || a.proposedBy?.email} ·{" "}
                     {a.proposedAt
-                      ? new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium" }).format(a.proposedAt)
+                      ? platformFormat("ro-RO", { dateStyle: "medium" }).format(a.proposedAt)
                       : ""}
                   </span>
                 </a>
@@ -120,7 +121,7 @@ export default async function AdminArticlesPage({
                 <span className="block truncate font-semibold">{a.titleRo}</span>
                 <span className="text-xs text-ink/50">
                   {a.publishedAt
-                    ? new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium" }).format(a.publishedAt)
+                    ? platformFormat("ro-RO", { dateStyle: "medium" }).format(a.publishedAt)
                     : "ciornă"}
                   {a._count.media > 0 && ` · ${a._count.media} fișiere`}
                 </span>

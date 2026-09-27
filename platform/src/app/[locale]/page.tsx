@@ -8,6 +8,7 @@ import AuctionRequestForm from "@/components/AuctionRequestForm";
 import { IconFacebook, IconInstagram, IconYouTube } from "@/components/SocialIcons";
 import { getSettings } from "@/lib/settings";
 import { intlLocale, pick } from "@/lib/locales";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -167,7 +168,7 @@ export default async function HomePage({
   });
   const breederCards = [...byBreeder.values(), ...legacyCards].sort((a, b) => b.count - a.count);
 
-  const dateFmt = new Intl.DateTimeFormat(intlLocale(currentLocale), {
+  const dateFmt = platformFormat(intlLocale(currentLocale), {
     dateStyle: "medium",
   });
 

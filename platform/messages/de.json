@@ -200,7 +200,9 @@
     "lotLabel": "Los {label}",
     "allBreederPigeons": "Alle Tauben dieser Auktion",
     "unavailableNotice": "Diese Taube ist nach der Auktion nicht mehr verfügbar (sie ist erkrankt oder verendet). Der Gewinner wurde benachrichtigt.",
-    "bidAuto": "automatisch"
+    "bidAuto": "automatisch",
+    "closingNow": "endet jetzt",
+    "startingNow": "beginnt jetzt"
   },
   "pigeon": {
     "ring": "Ringnummer",

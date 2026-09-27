@@ -8,6 +8,7 @@ import { getSettings } from "@/lib/settings";
 import { formatMoney } from "@/lib/money";
 import { intlLocale } from "@/lib/locales";
 import BreederNav from "@/components/BreederNav";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -54,7 +55,7 @@ export default async function BreederSettlementPage({
   const sumar = settlementSummary(orders);
   const bani = (cents: number) => formatMoney(cents, platformCurrency, currentLocale);
   const cand = (d: Date) =>
-    new Intl.DateTimeFormat(intlLocale(currentLocale), { dateStyle: "medium" }).format(d);
+    platformFormat(intlLocale(currentLocale), { dateStyle: "medium" }).format(d);
 
   const card = (label: string, value: string, hint: string | null, testid: string) => (
     <div className="rounded-2xl border border-ink/10 bg-white p-5" data-testid={testid}>

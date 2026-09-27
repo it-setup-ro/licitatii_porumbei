@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import Pager from "@/components/admin/Pager";
 import RowActions from "@/components/admin/RowActions";
 import NewsletterComposer from "@/components/admin/NewsletterComposer";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,7 @@ export default async function AdminNewsletterPage({
     prisma.newsletterSubscriber.count({ where: { unsubscribedAt: { not: null } } }),
   ]);
 
-  const fmt = new Intl.DateTimeFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
+  const fmt = platformFormat(currentLocale === "ro" ? "ro-RO" : "en-GB", {
     dateStyle: "short",
     timeStyle: "short",
   });

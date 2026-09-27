@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { formatMoney } from "@/lib/money";
 import { lotLabel } from "@/lib/lots";
+import { platformFormat } from "@/lib/platform-time";
 
 export const dynamic = "force-dynamic";
 
@@ -107,7 +108,7 @@ export default async function AdminTransactionsPage({
   const moneda = settings.platformCurrency;
   const suma = sume._sum.amountCents ?? 0;
   const comision = sume._sum.commissionCents ?? 0;
-  const dateFmt = new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium", timeZone: "Europe/Bucharest" });
+  const dateFmt = platformFormat("ro-RO", { dateStyle: "medium", timeZone: "Europe/Bucharest" });
   const pagini = Math.max(1, Math.ceil(total / PE_PAGINA));
 
   const qs = (extra: Record<string, string>) => {
