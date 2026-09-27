@@ -202,7 +202,10 @@
     "unavailableNotice": "Esta paloma ya no está disponible tras la subasta (enfermó o murió). Se ha avisado al ganador.",
     "bidAuto": "automática",
     "closingNow": "termina ahora",
-    "startingNow": "empieza ahora"
+    "startingNow": "empieza ahora",
+    "yourCeiling": "Tu máximo: {amount}",
+    "minimumToRaise": "Para subir tu máximo: al menos {amount}",
+    "errBELOW_MINIMUM_LEADER": "Ya vas ganando. Para subir tu máximo, puja al menos {minimum}."
   },
   "pigeon": {
     "ring": "Número de anilla",

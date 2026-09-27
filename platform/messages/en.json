@@ -202,7 +202,10 @@
     "unavailableNotice": "This pigeon is no longer available after the auction (it fell ill or died). The winner has been notified.",
     "bidAuto": "automatic",
     "closingNow": "closing now",
-    "startingNow": "starting now"
+    "startingNow": "starting now",
+    "yourCeiling": "Your maximum: {amount}",
+    "minimumToRaise": "To raise your maximum: at least {amount}",
+    "errBELOW_MINIMUM_LEADER": "You are already leading. To raise your maximum, bid at least {minimum}."
   },
   "pigeon": {
     "ring": "Ring number",

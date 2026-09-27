@@ -202,7 +202,10 @@
     "unavailableNotice": "Ten gołąb nie jest już dostępny po aukcji (zachorował lub padł). Zwycięzca został powiadomiony.",
     "bidAuto": "automatyczna",
     "closingNow": "kończy się teraz",
-    "startingNow": "zaczyna się teraz"
+    "startingNow": "zaczyna się teraz",
+    "yourCeiling": "Twój limit: {amount}",
+    "minimumToRaise": "Aby podnieść swój limit: co najmniej {amount}",
+    "errBELOW_MINIMUM_LEADER": "Już prowadzisz. Aby podnieść swój limit, zaoferuj co najmniej {minimum}."
   },
   "pigeon": {
     "ring": "Numer obrączki",

@@ -32,7 +32,9 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     const auction = await prisma.auction.findUnique({ where: { id } });
     return jsonOk({
       priceCents: result.priceCents,
-      minNextCents: (await nextMinimumForAuction(id)) ?? result.priceCents,
+      // minimul LUI: dacă tocmai a preluat conducerea, următoarea ofertă
+      // trebuie să treacă peste plafonul pe care abia l-a pus
+      minNextCents: (await nextMinimumForAuction(id, user.id)) ?? result.priceCents,
       reserve: reserveState(auction?.reservePriceCents ?? null, result.priceCents),
       leading: result.leading,
       extended: result.extended,

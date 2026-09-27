@@ -202,7 +202,10 @@
     "unavailableNotice": "この鳩はオークション終了後に病気または死亡したため、お引き渡しできなくなりました。落札者には通知済みです。",
     "bidAuto": "自動",
     "closingNow": "まもなく終了",
-    "startingNow": "まもなく開始"
+    "startingNow": "まもなく開始",
+    "yourCeiling": "あなたの上限額：{amount}",
+    "minimumToRaise": "上限額を引き上げるには：{amount} 以上",
+    "errBELOW_MINIMUM_LEADER": "すでに最高入札者です。上限額を引き上げるには、{minimum} 以上で入札してください。"
   },
   "pigeon": {
     "ring": "足環番号",

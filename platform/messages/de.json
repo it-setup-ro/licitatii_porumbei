@@ -202,7 +202,10 @@
     "unavailableNotice": "Diese Taube ist nach der Auktion nicht mehr verfügbar (sie ist erkrankt oder verendet). Der Gewinner wurde benachrichtigt.",
     "bidAuto": "automatisch",
     "closingNow": "endet jetzt",
-    "startingNow": "beginnt jetzt"
+    "startingNow": "beginnt jetzt",
+    "yourCeiling": "Ihr Höchstgebot: {amount}",
+    "minimumToRaise": "Um Ihr Höchstgebot zu erhöhen: mindestens {amount}",
+    "errBELOW_MINIMUM_LEADER": "Sie führen bereits. Um Ihr Höchstgebot zu erhöhen, bieten Sie mindestens {minimum}."
   },
   "pigeon": {
     "ring": "Ringnummer",

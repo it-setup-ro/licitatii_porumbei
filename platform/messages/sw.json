@@ -202,7 +202,10 @@
     "unavailableNotice": "Njiwa huyu hapatikani tena baada ya mnada (aliugua au alikufa). Mshindi amearifiwa.",
     "bidAuto": "kiotomatiki",
     "closingNow": "unaisha sasa",
-    "startingNow": "unaanza sasa"
+    "startingNow": "unaanza sasa",
+    "yourCeiling": "Kikomo chako: {amount}",
+    "minimumToRaise": "Kuongeza kikomo chako: angalau {amount}",
+    "errBELOW_MINIMUM_LEADER": "Unaongoza tayari. Ili kuongeza kikomo chako, toa zabuni ya angalau {minimum}."
   },
   "pigeon": {
     "ring": "Nambari ya pete",

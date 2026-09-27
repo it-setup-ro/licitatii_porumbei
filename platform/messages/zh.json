@@ -202,7 +202,10 @@
     "unavailableNotice": "拍卖结束后，这羽鸽子已无法交付（患病或死亡），已通知得标者。",
     "bidAuto": "自动",
     "closingNow": "即将结束",
-    "startingNow": "即将开始"
+    "startingNow": "即将开始",
+    "yourCeiling": "您的最高出价：{amount}",
+    "minimumToRaise": "提高最高出价：至少 {amount}",
+    "errBELOW_MINIMUM_LEADER": "您当前已经领先。若要提高最高出价，请至少出 {minimum}。"
   },
   "pigeon": {
     "ring": "足环号",

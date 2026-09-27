@@ -202,7 +202,10 @@
     "unavailableNotice": "Porumbelul nu mai este disponibil după licitație (s-a îmbolnăvit sau a murit). Câștigătorul a fost anunțat.",
     "bidAuto": "automat",
     "closingNow": "se închide acum",
-    "startingNow": "începe acum"
+    "startingNow": "începe acum",
+    "yourCeiling": "Plafonul tău: {amount}",
+    "minimumToRaise": "Ca să-ți ridici plafonul: minimum {amount}",
+    "errBELOW_MINIMUM_LEADER": "Conduci deja licitația. Ca să-ți ridici plafonul, oferă cel puțin {minimum}."
   },
   "pigeon": {
     "ring": "Serie inel",

@@ -202,7 +202,10 @@
     "unavailableNotice": "Ce pigeon n’est plus disponible après l’enchère (il est tombé malade ou est mort). Le gagnant a été prévenu.",
     "bidAuto": "automatique",
     "closingNow": "se termine maintenant",
-    "startingNow": "commence maintenant"
+    "startingNow": "commence maintenant",
+    "yourCeiling": "Votre plafond : {amount}",
+    "minimumToRaise": "Pour relever votre plafond : au moins {amount}",
+    "errBELOW_MINIMUM_LEADER": "Vous êtes déjà en tête. Pour relever votre plafond, enchérissez au moins {minimum}."
   },
   "pigeon": {
     "ring": "Numéro de bague",

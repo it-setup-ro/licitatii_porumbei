@@ -202,7 +202,10 @@
     "unavailableNotice": "هذه الحمامة لم تعد متاحة بعد المزاد (مرضت أو نفقت). تم إبلاغ الفائز.",
     "bidAuto": "تلقائي",
     "closingNow": "ينتهي الآن",
-    "startingNow": "يبدأ الآن"
+    "startingNow": "يبدأ الآن",
+    "yourCeiling": "حدّك الأقصى: {amount}",
+    "minimumToRaise": "لرفع حدّك الأقصى: {amount} على الأقل",
+    "errBELOW_MINIMUM_LEADER": "أنت في الصدارة بالفعل. لرفع حدّك الأقصى، زايد بمبلغ {minimum} على الأقل."
   },
   "pigeon": {
     "ring": "رقم الحلقة",

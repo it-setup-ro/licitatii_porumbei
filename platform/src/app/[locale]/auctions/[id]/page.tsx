@@ -262,6 +262,7 @@ export default async function AuctionDetailPage({
               initialBidderCount={bidderCount}
               initialEndsAt={auction.endsAt.toISOString()}
               minNextCents={minNextForViewer}
+              yourMaxCents={viewerIsLeading && leadingBid ? leadingBid.maxAmountCents : null}
               stepCents={stepCents}
               reserve={reserve}
               userId={user?.id ?? null}

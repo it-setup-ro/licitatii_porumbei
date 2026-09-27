@@ -37,6 +37,8 @@ type Props = {
   userId: string | null;
   userIsSeller: boolean;
   userIsLeading: boolean;
+  /** plafonul MEU, dacă eu conduc: ca să știu peste cât trebuie să trec */
+  yourMaxCents?: number | null;
   winAnimationEnabled: boolean;
   winSoundEnabled: boolean;
   snipeMinutes: number;
@@ -59,6 +61,8 @@ export default function LiveAuctionPanel(props: Props) {
   const [endsAt, setEndsAt] = useState(props.initialEndsAt);
   const [leading, setLeading] = useState(props.userIsLeading);
   const [minNext, setMinNext] = useState(props.minNextCents);
+  /** plafonul meu de acum; 0 = nu conduc sau nu am licitat */
+  const [yourMax, setYourMax] = useState(props.yourMaxCents ?? 0);
   const [step, setStep] = useState(props.stepCents);
   const [reserve, setReserve] = useState<ReserveState>(props.reserve);
   /** Campul porneste pe suma minima — asta e „oferta propusa". */
@@ -110,6 +114,7 @@ export default function LiveAuctionPanel(props: Props) {
             bumpInput(ev.minNextCents);
           }
           setFlash((f) => f + 1);
+          setMessage(null);
           if (ev.extended) {
             setExtendedNote(true);
             setTimeout(() => setExtendedNote(false), 5000);
@@ -123,6 +128,8 @@ export default function LiveAuctionPanel(props: Props) {
               setShowOutbid(true);
             }
             if (isLeadingNow) setShowOutbid(false);
+            // plafonul meu a fost bătut: nu mai are ce arăta
+            if (!isLeadingNow) setYourMax(0);
             wasLeading.current = isLeadingNow;
           }
         } else if (ev.kind === "sync") {
@@ -185,12 +192,19 @@ export default function LiveAuctionPanel(props: Props) {
           setMessage({ kind: "info", text: t("bidPlacedOutbid") });
           setShake((s) => s + 1);
         }
+        // serverul întoarce minimul MEU: dacă acum conduc, e peste plafonul
+        // pe care tocmai l-am pus, nu prețul afișat plus un pas
         const nou = data.minNextCents ?? data.priceCents;
         setMinNext(nou);
         setInput(String(nou / 100));
+        if (data.leading) setYourMax(Math.round(value * 100));
         if (data.reserve) setReserve(data.reserve);
       } else {
-        const key = `err${data.error}` as const;
+        // liderului nu-i spunem „ofertă prea mică" la o sumă peste preț: lui îi
+        // trebuie peste propriul plafon, și asta e altceva
+        const key = (
+          data.error === "BELOW_MINIMUM" && leading ? "errBELOW_MINIMUM_LEADER" : `err${data.error}`
+        ) as "errBELOW_MINIMUM";
         const params: Record<string, string> = {};
         if (data.minimumCents) params.minimum = fmt(data.minimumCents);
         if (data.limitCents) params.limit = fmt(data.limitCents);
@@ -316,6 +330,11 @@ export default function LiveAuctionPanel(props: Props) {
                 data-testid="leading-badge"
               >
                 ✓ {t("youAreLeading")}
+                {yourMax > 0 && (
+                  <span className="block font-normal text-ink/70" data-testid="your-ceiling">
+                    {t("yourCeiling", { amount: fmt(yourMax) })}
+                  </span>
+                )}
               </p>
             )}
             {!leading && showOutbid && (
@@ -351,7 +370,10 @@ export default function LiveAuctionPanel(props: Props) {
                 min={minNext / 100}
                 step={step / 100}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  setMessage(null);
+                }}
                 onKeyDown={(e) => e.key === "Enter" && !submitting && submitBid()}
                 className="w-full min-w-0 bg-transparent px-3 py-3 text-center text-xl font-bold outline-none"
               />
@@ -381,7 +403,9 @@ export default function LiveAuctionPanel(props: Props) {
               data-testid="bid-use-minimum"
               className="-mx-1 mt-2 rounded-lg px-1 py-1.5 text-xs text-ink/55 transition-colors hover:bg-ink/5 hover:text-wing-blue"
             >
-              {t("minimumBid", { amount: fmt(minNext) })}
+              {leading && yourMax > 0
+                ? t("minimumToRaise", { amount: fmt(minNext) })
+                : t("minimumBid", { amount: fmt(minNext) })}
             </button>
 
             {message && (

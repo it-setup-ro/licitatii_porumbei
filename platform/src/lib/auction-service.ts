@@ -279,11 +279,31 @@ export async function bidderCountForAuction(auctionId: string): Promise<number> 
 }
 
 /** Minimul acceptat pentru urmatoarea oferta (pentru UI). */
-export async function nextMinimumForAuction(auctionId: string): Promise<number | null> {
+/**
+ * Cât trebuie să ofere omul data viitoare.
+ *
+ * Nu e aceeași sumă pentru toți: cine conduce licitația nu se bate cu prețul
+ * afișat, ci cu propriul plafon — ca să-l ridice, trebuie să treacă peste el.
+ * Fără `viewerId` se întoarce minimul public, cel pentru un contracandidat.
+ */
+export async function nextMinimumForAuction(
+  auctionId: string,
+  viewerId?: string | null
+): Promise<number | null> {
   const auction = await prisma.auction.findUnique({ where: { id: auctionId } });
   if (!auction) return null;
   const settings = await getSettings();
   const hasBids = (await prisma.bid.count({ where: { auctionId } })) > 0;
+
+  if (viewerId) {
+    const lider = await prisma.bid.findFirst({
+      where: { auctionId, isLeading: true },
+      orderBy: { createdAt: "desc" },
+    });
+    if (lider && lider.bidderId === viewerId) {
+      return lider.maxAmountCents + incrementFor(auction.currentPriceCents, settings.increments);
+    }
+  }
   return minimumAcceptableMax(
     auction.currentPriceCents,
     hasBids,
