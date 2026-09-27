@@ -796,6 +796,18 @@
       "settlementLine": "{count} Tauben bezahlt, gesamt {total}, Provision {commission}.",
       "settlementFooter": "Den Betrag erhalten Sie wie vereinbart vom Administrator.",
       "seeAll": "Alles ansehen: {link}"
+    },
+    "outbid": {
+      "subject": "Sie wurden bei {pigeon} überboten — Los {lot}",
+      "subjectNoLot": "Sie wurden bei {pigeon} überboten",
+      "intro": "Sie wurden bei {pigeon} überboten, Los {lot} von {sale}.",
+      "introLot": "Sie wurden bei {pigeon} überboten, Los {lot}.",
+      "introNoLot": "Sie wurden bei {pigeon} überboten.",
+      "price": "Aktueller Preis: {amount}",
+      "yours": "Ihr Gebot bis: {amount}",
+      "next": "Um wieder zu führen: mindestens {amount}",
+      "endsAt": "Endet: {when}",
+      "link": "Taube ansehen: {link}"
     }
   },
   "traits": {

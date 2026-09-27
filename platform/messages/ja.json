@@ -796,6 +796,18 @@
       "settlementLine": "支払い済みの鳩 {count} 羽、合計 {total}、手数料 {commission}。",
       "settlementFooter": "金額は取り決めのとおり、管理者からお受け取りください。",
       "seeAll": "すべてを見る：{link}"
+    },
+    "outbid": {
+      "subject": "{pigeon} で入札額を上回られました — ロット {lot}",
+      "subjectNoLot": "{pigeon} で入札額を上回られました",
+      "intro": "{sale} のロット {lot}、{pigeon} で入札額を上回られました。",
+      "introLot": "ロット {lot} の {pigeon} で入札額を上回られました。",
+      "introNoLot": "{pigeon} で入札額を上回られました。",
+      "price": "現在の価格：{amount}",
+      "yours": "お客様の入札上限：{amount}",
+      "next": "再び最高額になるには：{amount} 以上",
+      "endsAt": "終了：{when}",
+      "link": "鳩を見る：{link}"
     }
   },
   "traits": {

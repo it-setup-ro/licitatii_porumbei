@@ -13,6 +13,7 @@ import { emitAuctionEvent } from "./events";
 import { publicBidderName } from "./mask-name";
 import { planBidRows } from "./bid-history";
 import { notify } from "./notify";
+import { notifyOutbid } from "./outbid-notice";
 import { notifyBreederLotClosed } from "./breeder-notices";
 import { notifyLotsEnding } from "./lot-notices";
 import { notifyBuyerWithPaymentDetails } from "./orders";
@@ -98,6 +99,8 @@ async function placeBidOnce(
   let outbidUserId: string | null = null;
   /** moneda licitației, ca notificarea să spună suma în ea */
   let monedaLicitatie = "";
+  /** plafonul celui depășit, pentru anunțul lui */
+  let plafonDepasit = 0;
   let result: PlaceBidResult | null = null;
 
   // Serializable: doua oferte simultane pe acelasi lot nu mai pot citi acelasi
@@ -184,6 +187,8 @@ async function placeBidOnce(
 
     if (outcome.outbidBidderId && outcome.outbidBidderId !== bidderId) {
       outbidUserId = outcome.outbidBidderId;
+      // plafonul lui, ca să-i scriem în e-mail până la cât licitase
+      plafonDepasit = leadingBid?.maxAmountCents ?? 0;
     }
     monedaLicitatie = auction.currency;
 
@@ -247,12 +252,17 @@ async function placeBidOnce(
       leadingBidId: leadingNow?.id ?? null,
     });
     if (outbidUserId) {
-      await notify(
-        outbidUserId,
-        "OUTBID",
-        { priceCents: r.priceCents, currency: monedaLicitatie },
-        `/auctions/${auctionId}`
-      );
+      // clientul: „sa se trimita link cu porumbelul la care a fost depasit si
+      // sa-i spuna lotul, numele, ce o mai fi relevant"
+      await notifyOutbid({
+        auctionId,
+        userId: outbidUserId,
+        yourMaxCents: plafonDepasit,
+        priceCents: r.priceCents,
+        minNextCents: r.priceCents + stepCents,
+        endsAt: r.endsAt,
+        currency: monedaLicitatie,
+      });
     }
   }
   return r ?? { ok: false, error: "NOT_FOUND" };

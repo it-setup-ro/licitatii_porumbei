@@ -796,6 +796,18 @@
       "settlementLine": "Njiwa {count} wamelipiwa, jumla {total}, kamisheni {commission}.",
       "settlementFooter": "Unapokea kiasi hicho kutoka kwa msimamizi, kama mlivyoafikiana.",
       "seeAll": "Ona kila kitu: {link}"
+    },
+    "outbid": {
+      "subject": "Zabuni yako kwa {pigeon} imezidiwa — Kundi {lot}",
+      "subjectNoLot": "Zabuni yako kwa {pigeon} imezidiwa",
+      "intro": "Zabuni yako kwa {pigeon} imezidiwa, Kundi {lot} la mnada {sale}.",
+      "introLot": "Zabuni yako kwa {pigeon} imezidiwa, Kundi {lot}.",
+      "introNoLot": "Zabuni yako kwa {pigeon} imezidiwa.",
+      "price": "Bei ya sasa: {amount}",
+      "yours": "Ulitoa zabuni hadi: {amount}",
+      "next": "Kuongoza tena: angalau {amount}",
+      "endsAt": "Inafungwa: {when}",
+      "link": "Ona njiwa: {link}"
     }
   },
   "traits": {

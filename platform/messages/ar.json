@@ -796,6 +796,18 @@
       "settlementLine": "{count} حمامة مدفوعة، الإجمالي {total}، العمولة {commission}.",
       "settlementFooter": "تستلم المبلغ من المسؤول، حسب ما اتفقتما عليه.",
       "seeAll": "اطّلع على كل شيء: {link}"
+    },
+    "outbid": {
+      "subject": "تم تجاوز مزايدتك على {pigeon} — لوت {lot}",
+      "subjectNoLot": "تم تجاوز مزايدتك على {pigeon}",
+      "intro": "تم تجاوز مزايدتك على {pigeon}، لوت {lot} من مزاد {sale}.",
+      "introLot": "تم تجاوز مزايدتك على {pigeon}، لوت {lot}.",
+      "introNoLot": "تم تجاوز مزايدتك على {pigeon}.",
+      "price": "السعر الحالي: {amount}",
+      "yours": "زايدت حتى: {amount}",
+      "next": "لتعود إلى الصدارة: {amount} على الأقل",
+      "endsAt": "يُغلق: {when}",
+      "link": "اطّلع على الحمامة: {link}"
     }
   },
   "traits": {

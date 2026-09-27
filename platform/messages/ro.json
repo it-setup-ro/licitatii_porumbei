@@ -796,6 +796,18 @@
       "settlementLine": "{count} porumbei plătiți, total {total}, comision {commission}.",
       "settlementFooter": "Suma o primești de la administrator, cum ați vorbit.",
       "seeAll": "Vezi tot: {link}"
+    },
+    "outbid": {
+      "subject": "Ai fost depășit la {pigeon} — Lotul {lot}",
+      "subjectNoLot": "Ai fost depășit la {pigeon}",
+      "intro": "Ai fost depășit la {pigeon}, Lotul {lot} din {sale}.",
+      "introLot": "Ai fost depășit la {pigeon}, Lotul {lot}.",
+      "introNoLot": "Ai fost depășit la {pigeon}.",
+      "price": "Prețul curent: {amount}",
+      "yours": "Tu ai licitat până la: {amount}",
+      "next": "Ca să reiei conducerea: minimum {amount}",
+      "endsAt": "Se închide: {when}",
+      "link": "Vezi porumbelul: {link}"
     }
   },
   "traits": {

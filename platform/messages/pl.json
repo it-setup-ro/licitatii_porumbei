@@ -796,6 +796,18 @@
       "settlementLine": "Opłaconych gołębi: {count}, razem {total}, prowizja {commission}.",
       "settlementFooter": "Kwotę otrzymasz od administratora, zgodnie z ustaleniami.",
       "seeAll": "Zobacz wszystko: {link}"
+    },
+    "outbid": {
+      "subject": "Twoja oferta na {pigeon} została przebita — Partia {lot}",
+      "subjectNoLot": "Twoja oferta na {pigeon} została przebita",
+      "intro": "Twoja oferta na {pigeon} została przebita, Partia {lot} aukcji {sale}.",
+      "introLot": "Twoja oferta na {pigeon} została przebita, Partia {lot}.",
+      "introNoLot": "Twoja oferta na {pigeon} została przebita.",
+      "price": "Aktualna cena: {amount}",
+      "yours": "Licytowałeś do: {amount}",
+      "next": "Aby znów prowadzić: co najmniej {amount}",
+      "endsAt": "Zamknięcie: {when}",
+      "link": "Zobacz gołębia: {link}"
     }
   },
   "traits": {

@@ -796,6 +796,18 @@
       "settlementLine": "{count} कबूतरों का भुगतान हुआ, कुल {total}, कमीशन {commission}।",
       "settlementFooter": "यह राशि आपको एडमिनिस्ट्रेटर से मिलेगी, जैसा तय हुआ था।",
       "seeAll": "सब कुछ देखें: {link}"
+    },
+    "outbid": {
+      "subject": "{pigeon} पर आपकी बोली पीछे छूट गई है — लॉट {lot}",
+      "subjectNoLot": "{pigeon} पर आपकी बोली पीछे छूट गई है",
+      "intro": "{pigeon} पर आपकी बोली पीछे छूट गई है, {sale} का लॉट {lot}।",
+      "introLot": "{pigeon} पर आपकी बोली पीछे छूट गई है, लॉट {lot}।",
+      "introNoLot": "{pigeon} पर आपकी बोली पीछे छूट गई है।",
+      "price": "वर्तमान कीमत: {amount}",
+      "yours": "आपने इतनी तक बोली लगाई: {amount}",
+      "next": "फिर से आगे निकलने के लिए: कम से कम {amount}",
+      "endsAt": "बंद होगी: {when}",
+      "link": "कबूतर देखें: {link}"
     }
   },
   "traits": {

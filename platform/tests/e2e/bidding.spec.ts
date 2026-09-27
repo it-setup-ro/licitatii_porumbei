@@ -85,12 +85,16 @@ test.describe("Licitare live: proxy-bidding intre doi utilizatori", () => {
     await pageA.goto("/ro/account/notifications");
     await expect(pageA.getByTestId("notif-outbid").first()).toContainText("depășită");
 
-    // 7) În e-mail omul vede suma, nu parametrul din baza de date (cererea clientului)
+    // 7) E-mailul de depășire: la CARE porumbel, cu sumele scrise pentru om
+    //    (cererea clientului) și cu linkul direct la el
     const catreA = emails("buyer1@nbp.test");
-    const depasire = catreA.find((m) => m.body.includes("depășită"));
+    const depasire = catreA.find((m) => m.subject.includes("Ai fost depășit la"));
     expect(depasire, "e-mailul de depășire n-a ajuns în jurnal").toBeTruthy();
+    expect(depasire!.subject).toContain("Fulger Albastru");
+    expect(depasire!.body).toContain("Fulger Albastru");
     // lotul din seed e in euro, deci suma se scrie in moneda licitatiei
-    expect(depasire!.body).toContain("525 €");
+    expect(depasire!.body).toContain("Prețul curent: 525 €");
+    expect(depasire!.body).toContain("Ca să reiei conducerea");
     expect(depasire!.body).not.toContain("priceCents");
     // și linkul e apăsabil: adresă întreagă, cu limba contului
     expect(depasire!.body).toMatch(/https?:\/\/\S+\/ro\/auctions\//);

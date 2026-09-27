@@ -43,8 +43,9 @@ export async function notify(
   type: NotifyType,
   params: Record<string, string | number>,
   link?: string,
-  /** textul e-mailului, când lista de parametri nu ajunge (ex. datele de plată) */
-  opts: { emailText?: string } = {}
+  /** textul e-mailului, când lista de parametri nu ajunge (ex. datele de plată),
+   *  și subiectul, când merită să spună despre ce e vorba (ex. care porumbel) */
+  opts: { emailText?: string; subject?: string } = {}
 ) {
   const user = await prisma.user.findUnique({ where: { id: userId } });
   if (!user) return;
@@ -56,7 +57,7 @@ export async function notify(
   const settings = await getSettings();
   if (settings.emailEnabled) {
     // subiectul în limba contului (email.subjects din messages/<limbă>.json)
-    const subject = emailTranslator(user.locale)(`subjects.${type}`);
+    const subject = opts.subject ?? emailTranslator(user.locale)(`subjects.${type}`);
     const body = textEmail(type, params, settings.platformCurrency, user.locale, link, opts.emailText);
     await sendEmail({ to: user.email, subject, text: body });
   }

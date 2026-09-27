@@ -796,6 +796,18 @@
       "settlementLine": "{count} palomas pagadas, total {total}, comisión {commission}.",
       "settlementFooter": "El importe lo recibes del administrador, según lo acordado.",
       "seeAll": "Verlo todo: {link}"
+    },
+    "outbid": {
+      "subject": "Te han superado en {pigeon} — Lote {lot}",
+      "subjectNoLot": "Te han superado en {pigeon}",
+      "intro": "Te han superado en {pigeon}, Lote {lot} de {sale}.",
+      "introLot": "Te han superado en {pigeon}, Lote {lot}.",
+      "introNoLot": "Te han superado en {pigeon}.",
+      "price": "Precio actual: {amount}",
+      "yours": "Tú pujaste hasta: {amount}",
+      "next": "Para volver a ir ganando: al menos {amount}",
+      "endsAt": "Cierra: {when}",
+      "link": "Ver la paloma: {link}"
     }
   },
   "traits": {

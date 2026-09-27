@@ -796,6 +796,18 @@
       "settlementLine": "{count} pigeons payés, total {total}, commission {commission}.",
       "settlementFooter": "Vous recevez la somme de l’administrateur, comme convenu.",
       "seeAll": "Voir tout : {link}"
+    },
+    "outbid": {
+      "subject": "Vous avez été surenchéri sur {pigeon} — Lot {lot}",
+      "subjectNoLot": "Vous avez été surenchéri sur {pigeon}",
+      "intro": "Vous avez été surenchéri sur {pigeon}, Lot {lot} de {sale}.",
+      "introLot": "Vous avez été surenchéri sur {pigeon}, Lot {lot}.",
+      "introNoLot": "Vous avez été surenchéri sur {pigeon}.",
+      "price": "Prix actuel : {amount}",
+      "yours": "Vous avez enchéri jusqu’à : {amount}",
+      "next": "Pour reprendre la tête : au moins {amount}",
+      "endsAt": "Clôture : {when}",
+      "link": "Voir le pigeon : {link}"
     }
   },
   "traits": {

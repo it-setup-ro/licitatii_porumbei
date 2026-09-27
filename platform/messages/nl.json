@@ -796,6 +796,18 @@
       "settlementLine": "{count} duiven betaald, totaal {total}, commissie {commission}.",
       "settlementFooter": "Je ontvangt het bedrag van de beheerder, zoals afgesproken.",
       "seeAll": "Bekijk alles: {link}"
+    },
+    "outbid": {
+      "subject": "Je bent overboden op {pigeon} — Lot {lot}",
+      "subjectNoLot": "Je bent overboden op {pigeon}",
+      "intro": "Je bent overboden op {pigeon}, Lot {lot} van {sale}.",
+      "introLot": "Je bent overboden op {pigeon}, Lot {lot}.",
+      "introNoLot": "Je bent overboden op {pigeon}.",
+      "price": "Huidige prijs: {amount}",
+      "yours": "Jij bood tot: {amount}",
+      "next": "Om weer aan de leiding te gaan: minstens {amount}",
+      "endsAt": "Sluit: {when}",
+      "link": "Bekijk de duif: {link}"
     }
   },
   "traits": {

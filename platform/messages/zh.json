@@ -796,6 +796,18 @@
       "settlementLine": "{count} 羽鸽子已付款，合计 {total}，佣金 {commission}。",
       "settlementFooter": "款项由管理员按约定支付给您。",
       "seeAll": "查看全部：{link}"
+    },
+    "outbid": {
+      "subject": "您对 {pigeon} 的出价已被超过 — 第 {lot} 号批次",
+      "subjectNoLot": "您对 {pigeon} 的出价已被超过",
+      "intro": "您对 {pigeon} 的出价已被超过，它属于 {sale} 的第 {lot} 号批次。",
+      "introLot": "您对 {pigeon} 的出价已被超过，第 {lot} 号批次。",
+      "introNoLot": "您对 {pigeon} 的出价已被超过。",
+      "price": "当前价格：{amount}",
+      "yours": "您的出价上限：{amount}",
+      "next": "若要重新领先：至少 {amount}",
+      "endsAt": "结束时间：{when}",
+      "link": "查看这羽鸽子：{link}"
     }
   },
   "traits": {

@@ -796,6 +796,18 @@
       "settlementLine": "{count} કબૂતરોની ચુકવણી થઈ, કુલ {total}, કમિશન {commission}.",
       "settlementFooter": "આ રકમ આપને એડમિનિસ્ટ્રેટર તરફથી મળશે, જેમ નક્કી થયું હતું.",
       "seeAll": "બધું જુઓ: {link}"
+    },
+    "outbid": {
+      "subject": "{pigeon} પર આપની બોલી પાછળ પડી ગઈ છે — લોટ {lot}",
+      "subjectNoLot": "{pigeon} પર આપની બોલી પાછળ પડી ગઈ છે",
+      "intro": "{pigeon} પર આપની બોલી પાછળ પડી ગઈ છે, {sale} નો લોટ {lot}.",
+      "introLot": "{pigeon} પર આપની બોલી પાછળ પડી ગઈ છે, લોટ {lot}.",
+      "introNoLot": "{pigeon} પર આપની બોલી પાછળ પડી ગઈ છે.",
+      "price": "હાલની કિંમત: {amount}",
+      "yours": "આપે આટલા સુધી બોલી લગાવી: {amount}",
+      "next": "ફરી આગળ નીકળવા માટે: ઓછામાં ઓછું {amount}",
+      "endsAt": "બંધ થશે: {when}",
+      "link": "કબૂતર જુઓ: {link}"
     }
   },
   "traits": {

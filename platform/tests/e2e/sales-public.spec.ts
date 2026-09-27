@@ -206,6 +206,41 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
     expect(toate).toHaveLength(1);
   });
 
+  test("e-mailul de depășire spune la care porumbel și din ce lot", async ({ page, browser }) => {
+    test.setTimeout(180_000);
+    await login(page, "admin@nbp.test", "admin1234");
+    const s = await sale(page);
+    const l = await lot(page, s.saleId, new Date(Date.now() - MIN), new Date(Date.now() + 120 * MIN));
+    const a = await pigeon(page, l, "Depășitul Test");
+    expect((await post(page.request, `/api/admin/sale-lots/${l}/start`)).body.ok).toBe(true);
+
+    const ctx1 = await browser.newContext({ locale: "ro-RO" });
+    const primul = await ctx1.newPage();
+    await login(primul, "buyer1@nbp.test", "buyer1234");
+    expect((await post(primul.request, `/api/auctions/${a}/bid`, { maxCents: 20_000 })).body.ok).toBe(true);
+
+    const ctx2 = await browser.newContext({ locale: "ro-RO" });
+    const aldoilea = await ctx2.newPage();
+    await login(aldoilea, "buyer2@nbp.test", "buyer1234");
+    expect((await post(aldoilea.request, `/api/auctions/${a}/bid`, { maxCents: 30_000 })).body.ok).toBe(true);
+
+    const mesaj = emails("buyer1@nbp.test").find((m) => m.subject.includes("Depășitul Test"));
+    expect(mesaj, "e-mailul de depășire n-a ajuns").toBeTruthy();
+    // clientul: „sa-i spuna lotul, numele, ce o mai fi relevant"
+    expect(mesaj!.subject).toContain("Lotul 1.01");
+    expect(mesaj!.body).toContain("Lotul 1.01");
+    expect(mesaj!.body).toContain(s.title);
+    expect(mesaj!.body).toContain("Prețul curent:");
+    // porumbeii de test sunt în euro; suma se scrie în moneda licitației
+    expect(mesaj!.body).toContain("Tu ai licitat până la: 200 €");
+    expect(mesaj!.body).toContain("Ca să reiei conducerea:");
+    expect(mesaj!.body).toContain("Se închide:");
+    expect(mesaj!.body).toContain(`/auctions/${a}`);
+
+    await ctx1.close();
+    await ctx2.close();
+  });
+
   test("linkul de dezabonare fără semnătură validă nu oprește nimic", async ({ page }) => {
     await page.goto("/ro/ending-notices/unsubscribe?u=oricine&t=gresit");
     await page.getByTestId("ending-unsub-button").click();

@@ -796,6 +796,18 @@
       "settlementLine": "{count} pigeons paid, total {total}, commission {commission}.",
       "settlementFooter": "You receive the amount from the administrator, as agreed.",
       "seeAll": "See everything: {link}"
+    },
+    "outbid": {
+      "subject": "You have been outbid on {pigeon} — Lot {lot}",
+      "subjectNoLot": "You have been outbid on {pigeon}",
+      "intro": "You have been outbid on {pigeon}, Lot {lot} of {sale}.",
+      "introLot": "You have been outbid on {pigeon}, Lot {lot}.",
+      "introNoLot": "You have been outbid on {pigeon}.",
+      "price": "Current price: {amount}",
+      "yours": "You bid up to: {amount}",
+      "next": "To lead again: at least {amount}",
+      "endsAt": "Closes: {when}",
+      "link": "See the pigeon: {link}"
     }
   },
   "traits": {
