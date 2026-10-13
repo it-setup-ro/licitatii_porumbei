@@ -35,6 +35,12 @@ scp -o BatchMode=yes -q <scratchpad>/deploy.sh root@207.180.241.165:/tmp/deploy.
 ssh -o BatchMode=yes root@207.180.241.165 "bash /tmp/deploy.sh 2>&1 | grep -v '^npm warn' | tail -25; rm -f /tmp/deploy.sh"
 ```
 
+3b. **Repornirea durează ~10 secunde.** Serviciul are `TimeoutStopSec=10s`:
+fluxurile live se închid singure la SIGTERM (`lib/live-streams.ts`), dar
+serverul Next tot nu iese, iar înainte systemd aștepta 90 s — adică 90 s de
+site picat la fiecare publicare. Dacă vezi din nou „final-sigterm timed
+out", verifică să nu fi dispărut linia din unitate.
+
 4. Raportează: commit-ul de pe server, migrările aplicate, `active`, codurile HTTP, erorile din jurnal (sau lipsa lor). 307 pe paginile de admin/cont = redirect la login, e normal.
 
 **Niciodată** `reset-demo.sh` sau `db:seed` după publicare.

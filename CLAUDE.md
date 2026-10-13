@@ -1,88 +1,129 @@
 # No.1 & Best Pigeons — ghid de lucru
 
-Platformă de licitații de porumbei pentru Daniel (intermediar) și clientul lui, **Buca Ionuț (Demeco Arad)**. Codul e în `platform/` (Next.js 16 App Router, React 19, Prisma 6 + PostgreSQL, next-intl în 13 limbi, Tailwind 4, zod 4, Playwright + Vitest). Repo **public** — nimic secret în cod.
+Platformă de licitații de porumbei pentru Daniel (intermediar) și clientul lui,
+**Buca Ionuț (Demeco Arad)**. Codul e în `platform/` (Next.js 16 App Router,
+React 19, Prisma 6 + PostgreSQL, next-intl în 13 limbi, Tailwind 4, zod 4,
+Playwright + Vitest). Repo **public** — nimic secret în cod.
 
-**Nu parcurge proiectul.** Citește doar ce trebuie, în ordinea asta:
-1. `STARE-PROIECT.md` — ce funcționează, ce rămâne, istoric.
-2. `CERINTE-LICITATII-PE-PARTI.md` — cerințele clientului pentru licitațiile pe loturi (v4 + răspunsuri).
-3. Harta de mai jos → fișierul exact.
+**Nu parcurge proiectul.** Citește doar ce-ți trebuie: `STARE-PROIECT.md` (ce
+merge, ce rămâne, istoric) → harta de mai jos → fișierul exact.
+
+## Cum lucrez o cerere
+
+Cererile vin de la client, pe WhatsApp, în liste scurte. Ordinea care
+funcționează:
+
+1. **Împarte lista** în puncte și ia-le pe rând, cu cel care îl blochează întâi.
+2. **Întreabă doar ce schimbă munca** (2–3 întrebări, cu o recomandare la
+   fiecare). Restul alege-le singur și spune ce ai ales.
+3. **Caută în hartă, nu în proiect.** O singură citire țintită per fișier.
+4. **Scrie cu script, nu cu editări oarbe** → skill `batch-edits`.
+5. **Texte noi** → skill `texte-13-limbi` (nu lăsa o limbă pe dinafară).
+6. **Verifică**: `npx tsc --noEmit`, `npm test`, apoi e2e țintit → skill `e2e`.
+   Suita completă (~24 min, 304 teste) doar înainte de publicare.
+7. **Scrie în documente**: rând în istoricul din `STARE-PROIECT.md`, rând nou în
+   harta de aici dacă a apărut un fișier care contează.
+8. **Commit doar la cerere**; publicarea → skill `deploy`.
+9. **Răspunde-i lui Daniel** cu ce se vede, nu cu ce ai scris: ce apasă clientul,
+   unde, ce se schimbă. Plus un mesaj gata de trimis clientului, în română,
+   stil WhatsApp.
+
+Când clientul reclamă ceva ce testele nu prind (actualizare live, mesaje,
+e-mailuri), nu te apăra cu testele: fă proba pe server → skill `proba-live`.
+
+## Skill-uri
+
+| Când | Skill |
+|---|---|
+| Modificări în peste 3 fișiere | `batch-edits` |
+| Orice text nou pe ecran sau în e-mail | `texte-13-limbi` |
+| Teste Playwright, țintite sau complete | `e2e` |
+| Publicare pe server | `deploy` |
+| Citit sau schimbat date pe producție | `prod-script` |
+| „La mine nu merge" — probă pe serverul viu | `proba-live` |
 
 ## Harta codului (`platform/src`)
 
 | Domeniu | Unde |
 |---|---|
-| Motorul de licitare (proxy, prelungire) | `lib/bidding.ts` (pur, testat), `lib/bid-history.ts` (ce se scrie in istoric: jurnal de fapte, randuri care nu se rescriu, raspuns `auto` pentru lider), `lib/auction-service.ts` (tranzactii, sweeper, inchidere, comision) |
-| Cât trebuie să ofere omul (minimul e altul pentru lider) | `lib/bidding.ts` (`minimumAcceptableMax` = minimul public; pentru LIDER, `computeBid` cere plafonul lui + un pas), `nextMinimumForAuction(auctionId, viewerId)` din `lib/auction-service.ts` — **orice loc care propune o sumă trebuie să dea minimul CELUI care se uită**, altfel pagina propune o sumă pe care serverul o refuză (s-a întâmplat: câmpul arăta 325, iar răspunsul „minimul este 1.750”). Pagina: `minNextForViewer` + `yourMaxCents` → `components/LiveAuctionPanel.tsx`; test: `tests/e2e/plafon-propriu.spec.ts` |
-| Licitații pe loturi (crescător → licitație → lot → porumbei) | `lib/lots.ts` (reguli pure), `lib/lot-service.ts` (Start lot), `lib/lot-notices.ts` (aviz 30 min), `lib/lot-cards.ts`; admin: `app/[locale]/admin/sales/**`, `components/admin/LotAdminPanel.tsx`; public: `app/[locale]/sales/[slug]` |
-| Setări (cheie → JSON, cache 5 s) | `lib/settings.ts` + `app/api/admin/settings/route.ts` (schema zod) + `components/admin/SettingsForm.tsx` |
-| Bani și curs lei / € | `lib/money.ts` (`formatMoney`, RON → „lei"), `lib/fx-math.ts` (pur: BNR, conversie, echivalent), `lib/fx.ts` (server: `getEurRate`, `refreshBnrRate`), `components/PriceInput.tsx`, `components/admin/FxRateCard.tsx` |
-| Porumbelul | `lib/pigeon.ts` (`yearFromRing`, `SEX_SYMBOL`), `lib/pigeon-traits.ts`, `lib/lot-editing.ts` |
-| Pagini porumbel / listare | `app/[locale]/auctions/[id]/page.tsx`, `components/LiveAuctionPanel.tsx`, `BuyNowPanel.tsx`, `SellForm.tsx`, `LotEditForm.tsx`, `AuctionCard.tsx` |
-| Conturi, aprobare, admini | `lib/registration.ts` (schema contului: PF/PJ, obligatorii), `lib/company.ts` (CUI, IBAN), `lib/regions.ts`, `components/RegisterForm.tsx`, `app/api/auth/register`, `app/api/auth/login` (e-mail sau nume de utilizator), `app/[locale]/admin/accounts`, `lib/nickname.ts` |
-| „Nu sunt robot" | `lib/captcha.ts` (ALTCHA pe serverul nostru), `app/api/captcha`, `components/CaptchaField.tsx`; oprit în e2e cu `CAPTCHA_DISABLED=1`, verificat în `tests/unit/captcha.test.ts` |
-| Textele legale | `prisma/legal-texts.ts` (textele de pornire RO/EN), `lib/legal-placeholders.ts` ({{firma}}… din Setări), `app/[locale]/info/[slug]` |
-| Comenzi, plată în afara site-ului, decont (faza 2) | `lib/orders.ts` (Plătit / Predat / anulare / decont, e-mail cu datele de plată), `lib/settlement-math.ts` (pur), `lib/payment-instructions.ts` (pur); admin: `app/[locale]/admin/orders`, `admin/settlements`, `components/admin/SettlementSection.tsx`, export `app/api/admin/settlements/export` (exceljs); cumpărător: `app/[locale]/orders/[id]` |
-| Texte de pagină editabile din admin | `lib/page-texts.ts` (prima pagină: `acasa`; „Cum funcționează”: `cum-functioneaza`) — dacă rândul lipsește sau e gol, rămân textele din traduceri |
-| Newsletter: trimitere | `lib/newsletter-campaign.ts` (reprize din sweeper, cursor ca să nu primească nimeni de două ori, link de dezabonare în fiecare mesaj), `api/admin/newsletter/campaigns`, `components/admin/NewsletterComposer.tsx`, progres în `app/[locale]/admin/newsletter` |
-| E-mail și notificări | `lib/mailer.ts` (EmailLog + SMTP), `lib/notify.ts` (tipuri + subiecte; textul e-mailului), `lib/notif-text.ts` (pur: suma scrisă pentru om din `...Cents` + moneda înregistrării, linkul ca adresă întreagă — folosit și de pagina de notificări), `lib/newsletter.ts` |
-| E-mailul „ai fost depășit” | `lib/outbid-email.ts` (pur: subiectul și textul — porumbel, serie, lot, licitație, preț, plafonul lui, cât îi trebuie, ora închiderii), `lib/outbid-notice.ts` (adună datele după tranzacție și cheamă `notify` cu subiect propriu); chemat din `lib/auction-service.ts`; teste: `tests/unit/outbid-email.test.ts`, `tests/e2e/sales-public.spec.ts` |
-| Prima pagină: carusel concursuri, subcategorii meniu | `components/ContestCarousel.tsx` (rotire + puncte), `components/ContestBanner.tsx` (banda întreagă e link), subcategorii: `ExternalLink.category` → `components/SiteHeader.tsx` (`linkGroups`), admin: `app/[locale]/admin/links` |
-| Pagina crescătorului | `app/[locale]/sales/[slug]` (poveste cu `components/ExpandableText.tsx` + articolele lui), legătura articol → crescător: `Article.breederId`, admin: `components/admin/ArticleComposer.tsx` |
-| Contul de crescător (patru pagini + fișa lui) | `lib/breeder-access.ts` (legătura fișă ↔ cont: `Breeder.userId`), `lib/breeder-view.ts` (ce vede despre cumpărător: alias până la plată, nume + localitate după), public: `app/[locale]/breeder/**` + `components/BreederNav.tsx`, `BreederProfileForm.tsx`, `api/breeder/profile` (fișa + aliasul); admin: `components/admin/BreederAccountForm.tsx` + `api/admin/breeders/[id]/account` (invitație prin link de parolă, 7 zile); test: `tests/e2e/crescator.spec.ts` |
-| Avizele crescătorului (rezumat pe lot + decont) | `lib/breeder-notices.ts` (nu aruncă niciodată; bifa `Breeder.notifyByEmail`), `lib/lot-summary.ts` și `lib/breeder-emails.ts` (pure: socoteala și textul), cârlige: închiderea lotului în `lib/auction-service.ts`, decontul în `lib/orders.ts` (`settleGroup`); teste: `tests/e2e/crescator-avize.spec.ts`, `tests/unit/breeder-emails.test.ts` |
-| Cereri „Vreau să organizez o licitație" | `components/AuctionRequestForm.tsx` (cardul de pe prima pagină), `app/api/auction-requests`, admin: `app/[locale]/admin/auction-requests` + `components/admin/RequestHandledButton.tsx` |
-| Evidențe și unelte de admin | istoric: `app/[locale]/admin/transactions` + export `app/api/admin/transactions/export`; magazin: `app/[locale]/admin/shop-orders` + `app/api/admin/shop-orders/[id]`; preț fix: `app/[locale]/admin/fixed-price`; paginare: `components/admin/Pager.tsx` |
-| Ascundere / arhivare / ștergere | `Auction.hiddenAt`, `Sale.archivedAt`, `Breeder.hiddenAt` (filtrate în toate paginile publice); rute: `api/admin/auctions/[id]` (DELETE), `/hide`, `/withdraw` (anunță ofertanții), `api/admin/sales/[id]` (DELETE) + `/archive`, `api/admin/sale-lots/[id]` (DELETE); butoane: `components/admin/AuctionVisibility.tsx`, `SaleAdminActions.tsx`, `RowActions.tsx`, `RecordEditor.tsx` (prop `deletable`) |
-| Anunțuri pentru administrator (cont nou, mesaj de contact, porumbel de aprobat, cerere de licitație, comandă) | `lib/alerts.ts` (catalogul de evenimente + `alertAdmin`, nu aruncă niciodată), `lib/telegram.ts` (API-ul botului, token în `.env`), `lib/telegram-link.ts` (legarea prin cod, ascultată din sweeper), admin: `app/[locale]/admin/alerts` + `components/admin/AlertsPanel.tsx`, rute: `api/admin/alerts/**`; pe server: `scripts/set-telegram.sh` |
-| E-mail: cum se configurează | **din administrare** (Administrare → E-mailuri, caseta de sus): `components/admin/EmailSetupCard.tsx` + `api/admin/email-config`, datele în `PlatformSetting.smtpConfig` cu parola criptată (`lib/secret-box.ts`, cheie din `AUTH_SECRET`); rezolvarea în `lib/smtp-config.ts` — **serverul are întâietate** (`.env`: `SMTP_URL`, `SMTP_FROM`, puse cu `scripts/set-smtp.sh`); starea fără parolă: `lib/smtp-status.ts` (`smtpStatusFull`), probă: `api/admin/email-test` |
-| E-mailuri: ce a plecat | `EmailLog.sentAt/error/attempts`, `lib/mailer.ts` (`deliver`), retrimitere: `api/admin/emails/[id]/resend`, pagina `app/[locale]/admin/emails` |
-| Ajutor (întrebări frecvente) | `lib/faq.ts` (grupele fixe, ca titlurile să fie traduse), `prisma/faq-texts.ts` (întrebările de pornire, în seed), public: `app/[locale]/help`, admin: `app/[locale]/admin/faq` + `api/admin/faq/**` (formularul generic `RecordEditor`) |
-| Articole propuse de crescători | `api/articles/propose` (doar crescători aprobați, 3/zi), public: `app/[locale]/articles/propose` + `components/ProposeArticleForm.tsx`; admin: secțiunea de propuneri din `app/[locale]/admin/articles` + `components/admin/ProposalActions.tsx` + `api/admin/articles/[id]/review` (publică / respinge cu motiv, autorul e anunțat) |
-| Erori pe câmpuri | `lib/api.ts` (`jsonValidationError`, `validationFields`; cerere fără corp JSON → `INVALID_JSON` 400, nu 500 — `handleApiError`) |
-| Actualizare live (preț, istoric, cronometru) | `lib/events.ts` (`AuctionEvent`, `PublicAuctionEvent`, `PublicBid`), `app/api/auctions/[id]/stream` (instantaneu la conectare + keepalive), `lib/live-auction.ts` (o singură legătură pe pagină), `lib/mask-name.ts` (numele public, același pe server și live); teste: `tests/e2e/intensive.spec.ts`, `live-sync.spec.ts` |
-| Orele de pe site | `lib/platform-time.ts` (`platformFormat`, `PLATFORM_TZ` = Europe/Bucharest) — **orice dată arătată omului trece pe aici**, altfel iese fusul serverului la randare și fusul telefonului în browser (clientul a licitat la 20:55 și vedea 19:55). Serviciul de pe server are și `TZ=Europe/Bucharest`. Cronometrul: `components/Countdown.tsx` (`zeroLabel` = „se închide acum”, `refreshOnZero` = cardul își cere datele noi, o dată la 15 s pe pagină, fiindcă listele n-au legătură live și nu vedeau prelungirile) |
-| Acoperire pe roluri (anonim / cumpărător / crescător / admin) | `tests/e2e/harta-acces.spec.ts` (toate paginile, cine unde intră), `permisiuni-api.spec.ts` (toate rutele de administrare, chemate direct), `butoane-admin.spec.ts` și `butoane-client.spec.ts` (butoanele și urmarea lor); adresele de probă: `tests/e2e/fixtures/ids.ts` |
+| Motorul de licitare | `lib/bidding.ts` (pur: proxy, pași, rezervă), `lib/bid-history.ts` (jurnal de fapte: rândurile nu se rescriu, răspunsul liderului e marcat `auto`), `lib/auction-service.ts` (tranzacții serializate + retry, sweeper, închidere, comision) |
+| Cât trebuie să ofere omul | `minimumAcceptableMax` = minimul public; pentru **lider**, `computeBid` cere plafonul lui + un pas. `nextMinimumForAuction(auctionId, viewerId)` dă minimul **celui care se uită** — orice loc care propune o sumă trebuie să-l folosească, altfel pagina propune o sumă pe care serverul o refuză. Pagina: `minNextForViewer` + `yourMaxCents` → `components/LiveAuctionPanel.tsx`; test: `tests/e2e/plafon-propriu.spec.ts` |
+| Licitații pe loturi (crescător → licitație → lot → porumbei) | `lib/lots.ts` (reguli pure), `lib/lot-service.ts` (Start lot), `lib/lot-notices.ts` (aviz 30 min), `lib/sale-cards.ts` + `components/SaleCard.tsx` (lista publică: **un card pe licitație, fără porumbei**), `lib/lot-cards.ts`; admin: `app/[locale]/admin/sales/**`, `components/admin/LotAdminPanel.tsx` (inclusiv mutarea finalului și ștergerea unui lot pornit, cât n-a licitat nimeni) |
+| Pagina unei licitații (macheta clientului) | `app/[locale]/sales/[slug]/page.tsx`: cap de pagină cu fundal din Setări (`saleHeroUrl`), poza crescătorului, cifre, `components/CountdownBoxes.tsx`; „Despre crescător" scurt cu `ExpandableText`; „Rezultate importante" din `lib/breeder-results.ts` (`Loc 1 \| Maraton – Berlin \| 2025`); loturile cu insignă aurie |
+| Pagina porumbelului | `app/[locale]/auctions/[id]/page.tsx` (fișa: serie, reprodus de, **vândut de**), `components/LiveAuctionPanel.tsx`, `BuyNowPanel.tsx`, `SellForm.tsx`, `LotEditForm.tsx`, `AuctionCard.tsx` |
+| Actualizare live | `lib/events.ts`, `app/api/auctions/[id]/stream` (SSE: `sync` la conectare, keepalive, se închide curat la oprirea serviciului), `lib/live-auction.ts` (o legătură pe pagină; se reface la revenirea în pagină sau a internetului), `lib/live-streams.ts` (registrul fluxurilor + oprirea), `lib/mask-name.ts` |
+| Setări (cheie → JSON, cache 5 s) | `lib/settings.ts` + `app/api/admin/settings/route.ts` (schema zod) + `components/admin/SettingsForm.tsx` (are și câmp de tip `image`) |
+| Bani și curs lei / € | `lib/money.ts` (`formatMoney`, RON → „lei"), `lib/fx-math.ts` (pur), `lib/fx.ts` (BNR), `components/PriceInput.tsx` |
+| Orele de pe site | `lib/platform-time.ts` (`platformFormat`, `PLATFORM_TZ` = Europe/Bucharest) — **orice dată arătată omului trece pe aici**; serviciul are și `TZ=Europe/Bucharest`. Cronometrul: `components/Countdown.tsx` (`zeroLabel` = „se închide acum", `refreshOnZero` pentru carduri) |
+| Porumbelul | `lib/pigeon.ts`, `lib/pigeon-traits.ts`, `lib/lot-editing.ts` |
+| Conturi, aprobare, admini | `lib/registration.ts`, `lib/company.ts`, `lib/regions.ts`, `components/RegisterForm.tsx`, `app/api/auth/**`, `app/[locale]/admin/accounts`, `lib/nickname.ts` |
+| Contul de crescător | `lib/breeder-access.ts` (`Breeder.userId`), `lib/breeder-view.ts` (cumpărătorul: alias până la plată, nume + localitate după), `app/[locale]/breeder/**`, `api/breeder/profile`; admin: `components/admin/BreederAccountForm.tsx` + `api/admin/breeders/[id]/account` |
+| Avizele crescătorului | `lib/breeder-notices.ts` (nu aruncă niciodată; bifa `Breeder.notifyByEmail`), `lib/lot-summary.ts`, `lib/breeder-emails.ts` (pure) |
+| E-mail și notificări | `lib/mailer.ts`, `lib/notify.ts` (tipuri, subiecte, textul), `lib/notif-text.ts` (pur: suma scrisă din `...Cents`, link întreg), `lib/outbid-email.ts` + `lib/outbid-notice.ts` („ai fost depășit": porumbel, lot, preț, plafonul lui, ora închiderii) |
+| E-mail: configurare | din Administrare → E-mailuri: `components/admin/EmailSetupCard.tsx` + `api/admin/email-config`, parola criptată (`lib/secret-box.ts`); `.env` are întâietate (`scripts/set-smtp.sh`); jurnal: `app/[locale]/admin/emails` |
+| Comenzi, plată, decont | `lib/orders.ts`, `lib/settlement-math.ts`, `lib/payment-instructions.ts` (pure); admin: `app/[locale]/admin/orders`, `admin/settlements`; cumpărător: `app/[locale]/orders/[id]` |
+| Anunțuri pentru administrator | `lib/alerts.ts`, `lib/telegram.ts`, `lib/telegram-link.ts`, `app/[locale]/admin/alerts`; pe server: `scripts/set-telegram.sh` |
+| Prima pagină, concursuri, meniu | `app/[locale]/page.tsx`, `components/ContestCarousel.tsx`, `ContestBanner.tsx`, `SiteHeader.tsx` (`linkGroups`), `AccountMenu.tsx` |
+| Ajutor, articole, magazin | `lib/faq.ts` + `app/[locale]/help`; articole: `app/[locale]/articles/**`, propuneri: `api/articles/propose`; magazin: `admin/shop-orders`, `admin/products` |
+| Ascundere / arhivare / ștergere | `Auction.hiddenAt`, `Sale.archivedAt`, `Breeder.hiddenAt`; rute `/hide`, `/withdraw`, `/archive`, DELETE; butoane: `AuctionVisibility.tsx`, `SaleAdminActions.tsx`, `RowActions.tsx` |
+| Erori pe câmpuri | `lib/api.ts` (`jsonValidationError`, `validationFields`; corp fără JSON → `INVALID_JSON` 400) |
+| Acoperire pe roluri | `tests/e2e/harta-acces.spec.ts`, `permisiuni-api.spec.ts`, `butoane-admin.spec.ts`, `butoane-client.spec.ts`; adrese de probă: `tests/e2e/fixtures/ids.ts`; pagina unui porumbel: `deschidePorumbel()` din `helpers.ts` |
 | Sweeper (15 s) | `instrumentation.ts` |
-| Limbile (13) | `lib/locales.ts` (lista, `pick` = conținutul adminului: română sau, altfel, engleză; `intlLocale` pentru date/numere; araba e RTL), `i18n/routing.ts`, `components/LanguageSwitcher.tsx`; e-mailuri în limba contului: `lib/messages.ts` (`emailTranslator`, doar pe server) |
-| Texte | `platform/messages/<limbă>.json` — `ro`, `en` + zh ja nl fr de es pl ar hi gu sw; verificare: `node scripts/check-locale.cjs --all` |
+| Limbile (13) | `lib/locales.ts` (`pick` = română sau engleză pentru conținutul adminului; `intlLocale`; araba e RTL), `lib/messages.ts` (`emailTranslator`, `notifTranslator` — doar pe server), `messages/<limbă>.json` |
 
 ## Comenzi (din `platform/`)
 
 ```bash
-npx tsc --noEmit                         # tipuri
+npx tsc --noEmit                         # tipuri (ignoră erorile din .next/)
 npx eslint <fișiere>                     # 2 erori vechi cunoscute: Countdown, WinCelebration
 npm test                                 # unitare (Vitest)
-npx playwright test tests/e2e/<spec>.ts --reporter=line   # e2e țintit; toate: ~9 min
+npx playwright test tests/e2e/<spec>.ts --reporter=line
+node scripts/check-locale.cjs --all      # aceleași chei în toate limbile
 ```
-
-Publicare și scripturi pe server: skill-urile `deploy` și `prod-script`. E2e: skill-ul `e2e`.
 
 ## Convenții
 
-- **Comentarii și UI în română**, cu diacritice; explică *de ce*, nu *ce*. Cererile clientului se citează scurt în comentariu.
-- **Texte noi**: script node în scratchpad care face merge în `messages/ro.json` + `en.json` **și în celelalte 11 limbi** (traduse; un agent pe limbă merge bine), apoi `node scripts/check-locale.cjs --all` (aceleași chei și argumente ICU). Fără `\"` în ICU — ghilimele tipografice.
-- **Nu scrie `locale === "en"`**: conținut din baza de date → `pick(locale, ro, en)`; date și numere → `intlLocale(locale)`; limba contului → `normalizeLocale`. Clasele de spațiere sunt logice (`ms-`/`me-`/`ps-`/`pe-`/`start-`/`end-`/`text-start`), ca araba să se oglindească.
-- **Setare nouă** = 4 locuri: tip + default în `settings.ts`, schema în `api/admin/settings/route.ts`, câmp în `SettingsForm.tsx` (dacă e editabilă), și, dacă schimbă comportamentul testelor vechi, `tests/e2e/fixtures/pin-test-settings.ts`.
-- **Migrări doar aditive** (coloane/tabele noi). Fișier în `prisma/migrations/<timestamp>_<nume>/migration.sql`, apoi `npx prisma migrate deploy && npx prisma generate` (oprește întâi serverul de dev — EPERM).
-- **Bani în bani/cenți** (`...Cents`), cu `currency` pe înregistrare. Moneda platformei pe server: RON, cu echivalent €.
-- Erori de formular: API întoarce `fields` (mesaje în română), formularul le arată sub câmp.
-- `data-testid` pe tot ce testează e2e.
-- Mesaje pentru client: română, stil WhatsApp, fără termeni tehnici.
+- **Comentarii și UI în română**, cu diacritice; explică *de ce*, nu *ce*.
+  Cererea clientului se citează scurt în comentariu, acolo unde a născut codul.
+- **Nu scrie `locale === "en"`**: conținut din baza de date → `pick(locale, ro, en)`;
+  date și ore → `platformFormat`; limba contului → `normalizeLocale`. Spațierea
+  e logică (`ms-`/`me-`/`ps-`/`pe-`/`start-`/`end-`), ca araba să se oglindească.
+- **Setare nouă** = 4 locuri: tip + default în `settings.ts`, schema în
+  `api/admin/settings/route.ts`, câmp în `SettingsForm.tsx`, și
+  `tests/e2e/fixtures/pin-test-settings.ts` dacă schimbă testele vechi.
+- **Migrări doar aditive**. Fișier în `prisma/migrations/<timestamp>_<nume>/`,
+  apoi `npx prisma migrate deploy && npx prisma generate` (oprește întâi dev-ul).
+- **Bani în bani/cenți** (`...Cents`), cu `currency` pe înregistrare; moneda
+  platformei pe server: RON.
+- `data-testid` pe tot ce verifică e2e.
 
 ## Reguli de siguranță
 
-- **Nu rula `reset-demo.sh` / `db:seed` pe server** fără acordul explicit al lui Daniel — șterge date reale (s-a întâmplat).
-- Scripturi care modifică date pe producție: spune ce fac, cere acordul, afișează înainte/după.
-- Parolele și tokenurile stau doar în `credentiale-acces.md` (exclus din git). Cheile SMTP le introduce Daniel singur (`platform/scripts/set-smtp.sh`).
+- **Nu rula `reset-demo.sh` / `db:seed` pe server** fără acordul lui Daniel —
+  șterge date reale (s-a întâmplat).
+- Scripturi care modifică date pe producție: spune ce fac, cere acordul, arată
+  înainte/după.
+- Parolele stau doar în `credentiale-acces.md` (exclus din git).
 - Commit doar la cerere; push: `git push origin master:main`.
 
 ## Capcane (au mușcat deja)
 
-- Bash heredoc cu ghilimele amestecate eșuează → scrie scriptul cu Write în scratchpad și rulează-l.
-- Python `io.open` în mod text transformă CRLF în LF → diff pe tot fișierul; e doar zgomot.
-- Câmpurile React controlate pierd ce scrie Playwright înainte de hidratare. Rescrisul până rămâne valoarea nu e destul: ce s-a scris pare că stă, dar dispare când React preia formularul, iar salvarea pleacă cu valorile vechi (sau deloc, dacă un câmp obligatoriu rămâne gol — browserul o oprește fără mesaj). Înaintea oricărei completări în administrare: `await asteaptaFormularViu(page, "field-…")` (`tests/e2e/helpers.ts`, așteaptă cheia React de pe câmp).
+- **Bash heredoc cu ghilimele amestecate** eșuează, iar backslash-urile dintr-un
+  script Python trimis prin heredoc pot ajunge altfel decât le-ai scris (`\\n`
+  devine newline). Scrie scriptul cu `Write` în scratchpad și rulează-l; în
+  ancore, evită textele cu backslash.
+- **Ghilimelele românești**: `„text"` cu ghilimea dreaptă la final rupe scriptul.
+  Închide cu `”`.
+- Python `io.open` în mod text transformă CRLF în LF → diff pe tot fișierul.
+- **Câmpurile React** pierd ce scrie Playwright înainte de hidratare:
+  `await asteaptaFormularViu(page, "field-…")` înainte de orice completare.
+- **Catalogul de traduceri e trimis întreg browserului**: `grep` după un text în
+  HTML-ul paginii dă potriviri și pe o pagină 404. Caută `data-testid`.
 - Baza e2e e comună: testele nu se bazează pe ce apare „primul" într-o listă.
-- Screenshot-urile din Browser pane ies des goale → verifică prin `get_page_text` / JS.
-- React pune `<!-- -->` între bucăți de text → grep pe HTML după ce le scoți.
-- „Nu sunt robot" (ALTCHA) folosește `crypto.subtle`, pe care browserul îl dă doar pe HTTPS sau localhost. Pe serverul `http://IP` bifa eșuează, deci acolo `.env` are `CAPTCHA_DISABLED=1` (bifa se ascunde). **După domeniu + HTTPS: scoate linia și repornește serviciul.**
-- BNR: fișierul e la `https://curs.bnr.ro/nbrfxrates.xml` (adresa veche redirecționează) și **acceptă doar TLS 1.2** — `fetch` din Node (TLS 1.3) primește ECONNRESET, deși `curl` merge. Folosește `https.get` cu `minVersion/maxVersion: "TLSv1.2"` (vezi `lib/fx.ts`).
+- Screenshot-urile din Browser pane ies des goale → `get_page_text` sau JS.
+- **Cronometrul și ora**: SSR și browserul nu pot afișa aceeași secundă →
+  `suppressHydrationWarning` pe elementul cu textul, nu pe părinte.
+- „Nu sunt robot" (ALTCHA) cere HTTPS sau localhost; pe `http://IP` e oprit din
+  `.env` (`CAPTCHA_DISABLED=1`). **După domeniu + HTTPS: scoate linia.**
+- BNR: `https://curs.bnr.ro/nbrfxrates.xml`, numai TLS 1.2 — `https.get` cu
+  `minVersion/maxVersion` (vezi `lib/fx.ts`).
