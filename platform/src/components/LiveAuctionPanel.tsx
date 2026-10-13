@@ -363,6 +363,12 @@ export default function LiveAuctionPanel(props: Props) {
             <label className="text-sm font-medium" htmlFor="bid-input">
               {t("yourMaxBid")}
             </label>
+            {/* Clientul a întrebat „cum se pune prețul automat?" — explicația era
+                ascunsă sub un buton pliant. Acum stă la vedere, sub câmp: nu e
+                nimic de pornit, orice ofertă e deja automată. */}
+            <p className="mt-1 text-xs text-ink/60" data-testid="proxy-hint">
+              {t("proxyExplain")}
+            </p>
 
             {/* Stepper: pe telefon, a scrie o suma de mana dupa fiecare oferta
                 noua e cea mai sigura cale spre „oferta prea mica". */}
@@ -437,11 +443,8 @@ export default function LiveAuctionPanel(props: Props) {
               </p>
             )}
 
-            <details className="mt-3 text-xs text-ink/60" data-testid="proxy-explain">
-              <summary className="cursor-pointer py-1 font-medium">{t("proxyTitle")}</summary>
-              <p className="mt-1">{t("proxyExplain")}</p>
-            </details>
-            <p className="mt-1 text-xs text-ink/50">
+            {/* lămurirea stă acum sub câmp, la vedere; pliantul nu mai avea ce ascunde */}
+            <p className="mt-3 text-xs text-ink/50">
               {t("antiSnipeNote", {
                 minutes: props.snipeMinutes,
                 extension: props.extensionMinutes,
