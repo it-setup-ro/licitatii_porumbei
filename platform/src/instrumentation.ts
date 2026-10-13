@@ -11,7 +11,7 @@ export async function register() {
   // La oprire (deploy, repornire), fluxurile live tin procesul in viata si
   // systemd ajunge sa-l omoare dupa un minut si jumatate — timp in care site-ul
   // e picat, tocmai in minutele de licitatie. Le inchidem noi, frumos.
-  const { ascultaOprirea } = await import("./lib/live-streams");
+  const { ascultaOprirea, laOprire } = await import("./lib/live-streams");
   ascultaOprirea();
 
   const { sweepAuctions } = await import("./lib/auction-service");
@@ -19,7 +19,7 @@ export async function register() {
   const { pollTelegramLinks } = await import("./lib/telegram-link");
   const { sendNewsletterBatch } = await import("./lib/newsletter-campaign");
 
-  setInterval(async () => {
+  const ceas = setInterval(async () => {
     try {
       await sweepAuctions();
     } catch (e) {
@@ -44,4 +44,9 @@ export async function register() {
       console.error("[newsletter]", e);
     }
   }, 15_000);
+
+  // Ceasul nu are voie să țină procesul în viață la oprire: `unref` îl scoate
+  // din socoteala buclei, iar la SIGTERM îl oprim de tot.
+  ceas.unref?.();
+  laOprire(() => clearInterval(ceas));
 }
