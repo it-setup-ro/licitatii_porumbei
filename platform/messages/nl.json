@@ -211,7 +211,8 @@
     "boxHours": "uur",
     "boxMinutes": "minuten",
     "boxSeconds": "seconden",
-    "bidRaisedCeiling": "Je hebt je maximumbod verhoogd naar {max}. De prijs blijft {price} — die stijgt alleen zoveel als nodig is om de anderen te overtreffen."
+    "bidRaisedCeiling": "Je hebt je maximumbod verhoogd naar {max}. De prijs blijft {price} — die stijgt alleen zoveel als nodig is om de anderen te overtreffen.",
+    "soldBy": "Verkocht door"
   },
   "pigeon": {
     "ring": "Ringnummer",

@@ -211,7 +211,8 @@
     "boxHours": "horas",
     "boxMinutes": "minutos",
     "boxSeconds": "segundos",
-    "bidRaisedCeiling": "Has subido tu máximo a {max}. El precio se mantiene en {price} — solo sube lo necesario para superar a los demás."
+    "bidRaisedCeiling": "Has subido tu máximo a {max}. El precio se mantiene en {price} — solo sube lo necesario para superar a los demás.",
+    "soldBy": "Vendida por"
   },
   "pigeon": {
     "ring": "Número de anilla",

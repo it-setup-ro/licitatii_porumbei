@@ -211,7 +211,8 @@
     "boxHours": "Stunden",
     "boxMinutes": "Minuten",
     "boxSeconds": "Sekunden",
-    "bidRaisedCeiling": "Sie haben Ihr Höchstgebot auf {max} erhöht. Der Preis bleibt {price} — er steigt nur so weit, wie nötig ist, um die anderen zu überbieten."
+    "bidRaisedCeiling": "Sie haben Ihr Höchstgebot auf {max} erhöht. Der Preis bleibt {price} — er steigt nur so weit, wie nötig ist, um die anderen zu überbieten.",
+    "soldBy": "Verkauft von"
   },
   "pigeon": {
     "ring": "Ringnummer",

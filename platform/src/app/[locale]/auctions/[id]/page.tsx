@@ -372,6 +372,10 @@ export default async function AuctionDetailPage({
             {pigeon.bredBy && (
               <Fact label={tp("bredBy")} value={pigeon.bredBy} testid="fact-bred-by" />
             )}
+            {/* Clientul: „lângă «Reprodus de» să mai scrie vândut de și cine îl
+                vinde". La licitațiile pe loturi e crescătorul; la restul,
+                firma sau numele vânzătorului. */}
+            <Fact label={tp("soldBy")} value={sellerLabel} testid="fact-sold-by" />
             {pigeon.offeredBy && pigeon.offeredBy !== sellerLabel && (
               <Fact label={tp("offeredBy")} value={pigeon.offeredBy} testid="fact-offered-by" />
             )}

@@ -211,7 +211,8 @@
     "boxHours": "ore",
     "boxMinutes": "minute",
     "boxSeconds": "secunde",
-    "bidRaisedCeiling": "Ți-ai ridicat plafonul la {max}. Prețul rămâne {price} — urcă doar cât e nevoie ca să-i întreci pe ceilalți."
+    "bidRaisedCeiling": "Ți-ai ridicat plafonul la {max}. Prețul rămâne {price} — urcă doar cât e nevoie ca să-i întreci pe ceilalți.",
+    "soldBy": "Vândut de"
   },
   "pigeon": {
     "ring": "Serie inel",

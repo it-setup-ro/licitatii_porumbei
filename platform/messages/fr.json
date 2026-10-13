@@ -211,7 +211,8 @@
     "boxHours": "heures",
     "boxMinutes": "minutes",
     "boxSeconds": "secondes",
-    "bidRaisedCeiling": "Vous avez relevé votre plafond à {max}. Le prix reste {price} — il ne monte que ce qu’il faut pour dépasser les autres."
+    "bidRaisedCeiling": "Vous avez relevé votre plafond à {max}. Le prix reste {price} — il ne monte que ce qu’il faut pour dépasser les autres.",
+    "soldBy": "Vendu par"
   },
   "pigeon": {
     "ring": "Numéro de bague",

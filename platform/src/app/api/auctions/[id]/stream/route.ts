@@ -5,6 +5,7 @@ import { getSettings } from "@/lib/settings";
 import { incrementFor } from "@/lib/bidding";
 import { bidderCountForAuction, nextMinimumForAuction, reserveState } from "@/lib/auction-service";
 import { publicBidderName } from "@/lib/mask-name";
+import { registerLiveStream } from "@/lib/live-streams";
 
 export const dynamic = "force-dynamic";
 
@@ -37,11 +38,15 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
 
   const stream = new ReadableStream({
     start(controller) {
+      // Un flux închis nu mai trebuie atins deloc: la oprirea serviciului,
+      // scrisul într-un controller închis ieșea ca „uncaughtException" în jurnal.
+      let inchis = false;
       const send = (event: AuctionEvent) => {
+        if (inchis) return;
         try {
           controller.enqueue(encoder.encode(`data: ${JSON.stringify(toPublic(event))}\n\n`));
         } catch {
-          // stream inchis
+          inchis = true;
         }
       };
       const channel = `auction:${id}`;
@@ -108,22 +113,33 @@ export async function GET(req: Request, ctx: { params: Promise<{ id: string }> }
       })();
 
       const keepalive = setInterval(() => {
+        if (inchis) return;
         try {
           controller.enqueue(encoder.encode(`: ping\n\n`));
         } catch {
+          inchis = true;
           clearInterval(keepalive);
         }
       }, 15_000);
 
-      req.signal.addEventListener("abort", () => {
+      const inchide = () => {
+        if (inchis) return;
+        inchis = true;
         auctionBus().off(channel, send);
         clearInterval(keepalive);
+        uita();
         try {
           controller.close();
         } catch {
           // deja inchis
         }
-      });
+      };
+
+      // La oprirea serviciului fluxurile se închid singure: altfel procesul nu
+      // se mai termină, iar systemd îl omoară după un minut și jumătate — timp
+      // în care site-ul e picat, tocmai în minutele de licitație.
+      const uita = registerLiveStream(inchide);
+      req.signal.addEventListener("abort", inchide);
     },
   });
 

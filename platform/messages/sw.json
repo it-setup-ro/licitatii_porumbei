@@ -211,7 +211,8 @@
     "boxHours": "saa",
     "boxMinutes": "dakika",
     "boxSeconds": "sekunde",
-    "bidRaisedCeiling": "Umepandisha kikomo chako hadi {max}. Bei inasalia {price} — inapanda tu kiasi kinachohitajika kuwashinda wengine."
+    "bidRaisedCeiling": "Umepandisha kikomo chako hadi {max}. Bei inasalia {price} — inapanda tu kiasi kinachohitajika kuwashinda wengine.",
+    "soldBy": "Anauzwa na"
   },
   "pigeon": {
     "ring": "Nambari ya pete",

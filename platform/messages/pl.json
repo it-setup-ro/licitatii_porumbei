@@ -211,7 +211,8 @@
     "boxHours": "godz.",
     "boxMinutes": "min",
     "boxSeconds": "sek.",
-    "bidRaisedCeiling": "Podniosłeś swój limit do {max}. Cena pozostaje {price} — rośnie tylko tyle, ile potrzeba, aby przebić innych."
+    "bidRaisedCeiling": "Podniosłeś swój limit do {max}. Cena pozostaje {price} — rośnie tylko tyle, ile potrzeba, aby przebić innych.",
+    "soldBy": "Sprzedaje"
   },
   "pigeon": {
     "ring": "Numer obrączki",
