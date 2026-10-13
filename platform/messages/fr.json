@@ -211,8 +211,7 @@
     "boxHours": "heures",
     "boxMinutes": "minutes",
     "boxSeconds": "secondes",
-    "bidRaisedCeiling": "Vous avez relevé votre plafond à {max}. Le prix reste {price} — il ne monte que ce qu’il faut pour dépasser les autres.",
-    "soldBy": "Vendu par"
+    "bidRaisedCeiling": "Vous avez relevé votre plafond à {max}. Le prix reste {price} — il ne monte que ce qu’il faut pour dépasser les autres."
   },
   "pigeon": {
     "ring": "Numéro de bague",
@@ -238,6 +237,7 @@
     "tagline": "Description courte (une ligne)",
     "bredBy": "Élevé par",
     "offeredBy": "Proposé par",
+    "soldBy": "Vendu par",
     "videos": "Vidéo",
     "pedigreeScan": "Pedigree",
     "openPedigree": "Ouvrir le pedigree (PDF)",

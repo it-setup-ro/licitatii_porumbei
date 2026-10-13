@@ -211,8 +211,7 @@
     "boxHours": "時間",
     "boxMinutes": "分",
     "boxSeconds": "秒",
-    "bidRaisedCeiling": "上限額を {max} に引き上げました。価格は {price} のままです — 他の方を上回るのに必要な分だけ上がります。",
-    "soldBy": "販売者"
+    "bidRaisedCeiling": "上限額を {max} に引き上げました。価格は {price} のままです — 他の方を上回るのに必要な分だけ上がります。"
   },
   "pigeon": {
     "ring": "足環番号",
@@ -238,6 +237,7 @@
     "tagline": "短い説明（1行）",
     "bredBy": "作出者",
     "offeredBy": "出品者",
+    "soldBy": "販売者",
     "videos": "動画",
     "pedigreeScan": "血統書",
     "openPedigree": "血統書を開く（PDF）",

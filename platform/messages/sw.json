@@ -211,8 +211,7 @@
     "boxHours": "saa",
     "boxMinutes": "dakika",
     "boxSeconds": "sekunde",
-    "bidRaisedCeiling": "Umepandisha kikomo chako hadi {max}. Bei inasalia {price} — inapanda tu kiasi kinachohitajika kuwashinda wengine.",
-    "soldBy": "Anauzwa na"
+    "bidRaisedCeiling": "Umepandisha kikomo chako hadi {max}. Bei inasalia {price} — inapanda tu kiasi kinachohitajika kuwashinda wengine."
   },
   "pigeon": {
     "ring": "Nambari ya pete",
@@ -238,6 +237,7 @@
     "tagline": "Maelezo mafupi (mstari mmoja)",
     "bredBy": "Amefugwa na",
     "offeredBy": "Ametolewa na",
+    "soldBy": "Anauzwa na",
     "videos": "Video",
     "pedigreeScan": "Ukoo (pedigree)",
     "openPedigree": "Fungua ukoo (PDF)",

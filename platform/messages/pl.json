@@ -211,8 +211,7 @@
     "boxHours": "godz.",
     "boxMinutes": "min",
     "boxSeconds": "sek.",
-    "bidRaisedCeiling": "Podniosłeś swój limit do {max}. Cena pozostaje {price} — rośnie tylko tyle, ile potrzeba, aby przebić innych.",
-    "soldBy": "Sprzedaje"
+    "bidRaisedCeiling": "Podniosłeś swój limit do {max}. Cena pozostaje {price} — rośnie tylko tyle, ile potrzeba, aby przebić innych."
   },
   "pigeon": {
     "ring": "Numer obrączki",
@@ -238,6 +237,7 @@
     "tagline": "Krótki opis (jedna linia)",
     "bredBy": "Hodowca",
     "offeredBy": "Oferuje",
+    "soldBy": "Sprzedaje",
     "videos": "Wideo",
     "pedigreeScan": "Rodowód",
     "openPedigree": "Otwórz rodowód (PDF)",

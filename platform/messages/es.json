@@ -211,8 +211,7 @@
     "boxHours": "horas",
     "boxMinutes": "minutos",
     "boxSeconds": "segundos",
-    "bidRaisedCeiling": "Has subido tu máximo a {max}. El precio se mantiene en {price} — solo sube lo necesario para superar a los demás.",
-    "soldBy": "Vendida por"
+    "bidRaisedCeiling": "Has subido tu máximo a {max}. El precio se mantiene en {price} — solo sube lo necesario para superar a los demás."
   },
   "pigeon": {
     "ring": "Número de anilla",
@@ -238,6 +237,7 @@
     "tagline": "Descripción breve (una línea)",
     "bredBy": "Criada por",
     "offeredBy": "Ofrecida por",
+    "soldBy": "Vendida por",
     "videos": "Vídeo",
     "pedigreeScan": "Pedigrí",
     "openPedigree": "Abrir el pedigrí (PDF)",

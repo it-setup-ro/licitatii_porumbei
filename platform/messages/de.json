@@ -211,8 +211,7 @@
     "boxHours": "Stunden",
     "boxMinutes": "Minuten",
     "boxSeconds": "Sekunden",
-    "bidRaisedCeiling": "Sie haben Ihr Höchstgebot auf {max} erhöht. Der Preis bleibt {price} — er steigt nur so weit, wie nötig ist, um die anderen zu überbieten.",
-    "soldBy": "Verkauft von"
+    "bidRaisedCeiling": "Sie haben Ihr Höchstgebot auf {max} erhöht. Der Preis bleibt {price} — er steigt nur so weit, wie nötig ist, um die anderen zu überbieten."
   },
   "pigeon": {
     "ring": "Ringnummer",
@@ -238,6 +237,7 @@
     "tagline": "Kurzbeschreibung (eine Zeile)",
     "bredBy": "Gezüchtet von",
     "offeredBy": "Angeboten von",
+    "soldBy": "Verkauft von",
     "videos": "Video",
     "pedigreeScan": "Abstammung",
     "openPedigree": "Abstammung öffnen (PDF)",

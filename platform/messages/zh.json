@@ -211,8 +211,7 @@
     "boxHours": "小时",
     "boxMinutes": "分钟",
     "boxSeconds": "秒",
-    "bidRaisedCeiling": "您已将最高出价提高到 {max}。价格仍为 {price} — 它只会上涨到足以超过其他人所需的程度。",
-    "soldBy": "出售者"
+    "bidRaisedCeiling": "您已将最高出价提高到 {max}。价格仍为 {price} — 它只会上涨到足以超过其他人所需的程度。"
   },
   "pigeon": {
     "ring": "足环号",
@@ -238,6 +237,7 @@
     "tagline": "简短描述（一行）",
     "bredBy": "育种者",
     "offeredBy": "提供者",
+    "soldBy": "出售者",
     "videos": "视频",
     "pedigreeScan": "血统书",
     "openPedigree": "打开血统书（PDF）",

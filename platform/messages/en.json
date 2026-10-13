@@ -211,8 +211,7 @@
     "boxHours": "hours",
     "boxMinutes": "minutes",
     "boxSeconds": "seconds",
-    "bidRaisedCeiling": "You raised your maximum to {max}. The price stays {price} — it only rises as much as needed to beat the others.",
-    "soldBy": "Sold by"
+    "bidRaisedCeiling": "You raised your maximum to {max}. The price stays {price} — it only rises as much as needed to beat the others."
   },
   "pigeon": {
     "ring": "Ring number",
@@ -238,6 +237,7 @@
     "tagline": "Short description (one line)",
     "bredBy": "Bred by",
     "offeredBy": "Offered by",
+    "soldBy": "Sold by",
     "videos": "Video",
     "pedigreeScan": "Pedigree",
     "openPedigree": "Open the pedigree (PDF)",
