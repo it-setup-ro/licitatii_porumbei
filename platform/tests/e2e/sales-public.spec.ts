@@ -123,7 +123,7 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
     await expect(page).toHaveURL(new RegExp(`/ro/sales/${s.slug}$`));
   });
 
-  test("lista de licitații arată câte un card pe lot, cu datele lui, în fila potrivită", async ({
+  test("lista arată câte un card pe licitație, nu pe porumbel, în fila potrivită", async ({
     page,
   }) => {
     test.setTimeout(90_000);
@@ -141,21 +141,23 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
     await pigeon(page, l2, "Al doilea lot Test");
     expect((await post(page.request, `/api/admin/sale-lots/${l2}/start`)).body.ok).toBe(true);
 
+    // clientul: „să apară doar intrările spre licitații CRESCĂTOR. ATÂT, FĂRĂ PORUMBEI!"
     await page.goto("/ro/auctions?status=SCHEDULED");
-    const cards = page.getByTestId("lot-card").filter({ hasText: s.breeder });
-    await expect(cards).toHaveCount(2);
-    await expect(cards.filter({ hasText: "Lotul 1" })).toContainText("un porumbel");
-    await expect(cards.filter({ hasText: "Lotul 2" })).toBeVisible();
-    // fiecare card are datele lotului lui
-    const d1 = await cards.filter({ hasText: "Lotul 1" }).getByTestId("lot-card-dates").textContent();
-    const d2 = await cards.filter({ hasText: "Lotul 2" }).getByTestId("lot-card-dates").textContent();
-    expect(d1).not.toBe(d2);
+    const card = page.getByTestId("sale-card").filter({ hasText: s.breeder });
+    await expect(card).toHaveCount(1);
+    // cele două loturi și cei doi porumbei se numără pe card, dar nu se văd
+    await expect(card.getByTestId("sale-card-counts")).toContainText("2 loturi");
+    await expect(card.getByTestId("sale-card-counts")).toContainText("2 porumbei");
+    await expect(page.getByTestId("auction-card")).toHaveCount(0);
 
-    await cards.filter({ hasText: "Lotul 2" }).click();
-    await expect(page).toHaveURL(new RegExp(`/ro/sales/${s.slug}#lot-2$`));
+    // cardul duce în licitație, de unde se văd loturile cu porumbeii lor
+    await card.click();
+    await expect(page).toHaveURL(new RegExp(`/ro/sales/${s.slug}$`));
+    await expect(page.getByTestId("sale-lot")).toHaveCount(2);
+    await expect(page.getByText("Programatul Test").first()).toBeVisible();
 
     await page.goto("/ro/auctions?status=LIVE");
-    await expect(page.getByTestId("lot-card").filter({ hasText: s.breeder })).toHaveCount(0);
+    await expect(page.getByTestId("sale-card").filter({ hasText: s.breeder })).toHaveCount(0);
 
     // o licitație doar cu loturi în ciornă nu are pagină publică
     const ciorna = await sale(page);

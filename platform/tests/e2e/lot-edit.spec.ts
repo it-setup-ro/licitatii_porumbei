@@ -192,8 +192,8 @@ test.describe("Lot cu oferte — doar adăugiri", () => {
 
 test.describe("Cine are voie", () => {
   test("un alt vânzător nu poate modifica lotul altcuiva", async ({ page }) => {
-    const html = await (await page.request.get("/ro/auctions")).text();
-    const id = html.match(/\/ro\/auctions\/([a-z0-9]{20,})/)![1];
+    // lista arată doar licitațiile crescătorilor, deci luăm porumbelul direct
+    const { id } = await deschidePorumbel(page);
 
     await login(page, "buyer1@nbp.test", "buyer1234");
     const res = await page.request.post(`/api/lots/${id}`, { data: { note: "hopa" } });

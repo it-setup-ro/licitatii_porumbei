@@ -126,9 +126,8 @@ test.describe("Unealta de test: inchide licitatia in 1 minut", () => {
 
   test("doar adminul poate scurta", async ({ page }) => {
     await login(page, "buyer1@nbp.test", "buyer1234");
-    const t = await page.request.get("/ro/auctions");
-    const html = await t.text();
-    const id = html.match(/\/ro\/auctions\/([a-z0-9]{20,})/)![1];
+    // lista arată doar licitațiile crescătorilor, deci luăm porumbelul direct
+    const { id } = await deschidePorumbel(page);
     const res = await page.request.post(`/api/admin/lots/${id}/shorten`, { data: {} });
     expect(res.status()).toBe(403);
   });
@@ -145,8 +144,8 @@ test.describe("Unealta de test: inchide licitatia in 1 minut", () => {
     await page.goto("/ro/admin/lots");
     await expect(page.getByTestId("test-tools")).toHaveCount(0);
 
-    const html = await (await page.request.get("/ro/auctions")).text();
-    const id = html.match(/\/ro\/auctions\/([a-z0-9]{20,})/)![1];
+    // lista arată doar licitațiile crescătorilor, deci luăm porumbelul direct
+    const { id } = await deschidePorumbel(page);
     res = await page.request.post(`/api/admin/lots/${id}/shorten`, { data: {} });
     expect(res.status()).toBe(403);
     expect((await res.json()).error).toBe("TEST_TOOLS_DISABLED");
