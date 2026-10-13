@@ -11,13 +11,8 @@ export async function register() {
   // La oprire (deploy, repornire), fluxurile live tin procesul in viata si
   // systemd ajunge sa-l omoare dupa un minut si jumatate — timp in care site-ul
   // e picat, tocmai in minutele de licitatie. Le inchidem noi, frumos.
-  const { closeLiveStreams } = await import("./lib/live-streams");
-  for (const semnal of ["SIGTERM", "SIGINT"] as const) {
-    process.once(semnal, () => {
-      const cate = closeLiveStreams();
-      if (cate > 0) console.log(`[oprire] am inchis ${cate} fluxuri live`);
-    });
-  }
+  const { ascultaOprirea } = await import("./lib/live-streams");
+  ascultaOprirea();
 
   const { sweepAuctions } = await import("./lib/auction-service");
   const { refreshBnrRate } = await import("./lib/fx");

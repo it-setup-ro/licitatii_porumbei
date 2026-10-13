@@ -41,3 +41,21 @@ export function closeLiveStreams(): number {
   r.clear();
   return cate;
 }
+
+/**
+ * La oprirea serviciului, fluxurile se închid singure.
+ *
+ * Stă aici, nu în `instrumentation.ts`: acela se compilează și pentru Edge, iar
+ * analizatorul se plângea de `process.once`, deși codul rula doar pe Node.
+ */
+export function ascultaOprirea(): void {
+  const g2 = globalThis as unknown as { __liveShutdownHooked?: boolean };
+  if (g2.__liveShutdownHooked) return;
+  g2.__liveShutdownHooked = true;
+  for (const semnal of ["SIGTERM", "SIGINT"] as const) {
+    process.once(semnal, () => {
+      const cate = closeLiveStreams();
+      if (cate > 0) console.log(`[oprire] am închis ${cate} fluxuri live`);
+    });
+  }
+}
