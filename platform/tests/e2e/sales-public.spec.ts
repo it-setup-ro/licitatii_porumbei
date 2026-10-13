@@ -95,8 +95,10 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
     await pigeon(page, lot2, "Ascunsul Test");
 
     await page.goto(`/ro/sales/${s.slug}`);
-    await expect(page.getByTestId("sale-page-title")).toHaveText(s.title);
-    await expect(page.getByTestId("sale-breeder")).toContainText(s.breeder);
+    // capul paginii, dupa macheta clientului: numele crescatorului mare, titlul sub el
+    await expect(page.getByTestId("sale-page-title")).toHaveText(s.breeder);
+    await expect(page.getByTestId("sale-breeder")).toContainText(s.title);
+    await expect(page.getByTestId("sale-hero")).toBeVisible();
     await expect(page.getByTestId("sale-lot")).toHaveCount(1);
     await expect(page.getByTestId("sale-lot-status")).toHaveText("Se licitează");
     await expect(page.getByText("Ascunsul Test")).toHaveCount(0);

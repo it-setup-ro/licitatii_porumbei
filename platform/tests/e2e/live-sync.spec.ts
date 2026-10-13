@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { login, registrationData } from "./helpers";
+import { login, registrationData, deschidePorumbel } from "./helpers";
 
 /**
  * Sincronizarea între două ecrane deschise pe același lot.
@@ -46,8 +46,7 @@ async function lotActiv(page: Page, sufix: string) {
   await expect(admin.getByTestId("pending-lot-row").filter({ hasText: nume })).toHaveCount(0);
   await ctx.close();
 
-  await page.goto("/ro/auctions");
-  await page.getByTestId("auction-card").filter({ hasText: nume }).click();
+  await deschidePorumbel(page, nume);
   await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
   return { nume, id: page.url().split("/").pop()! };
 }

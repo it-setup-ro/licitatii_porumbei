@@ -205,7 +205,12 @@
     "startingNow": "start nu",
     "yourCeiling": "Jouw maximumbod: {amount}",
     "minimumToRaise": "Om je maximumbod te verhogen: minimaal {amount}",
-    "errBELOW_MINIMUM_LEADER": "Je bent al de hoogste bieder. Bied minimaal {minimum} om je maximumbod te verhogen."
+    "errBELOW_MINIMUM_LEADER": "Je bent al de hoogste bieder. Bied minimaal {minimum} om je maximumbod te verhogen.",
+    "searchPigeons": "Gevonden duiven",
+    "boxDays": "dagen",
+    "boxHours": "uur",
+    "boxMinutes": "minuten",
+    "boxSeconds": "seconden"
   },
   "pigeon": {
     "ring": "Ringnummer",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – Lot {number}",
     "readMore": "Lees meer",
     "readLess": "Minder weergeven",
-    "breederArticles": "Artikels over de kweker"
+    "breederArticles": "Artikels over de kweker",
+    "firstLotEndsIn": "Eerste lot sluit over",
+    "firstLotStartsIn": "Eerste lot start over",
+    "aboutBreederShort": "Over de kweker",
+    "readFullStory": "Lees de volledige presentatie",
+    "importantResults": "Belangrijkste uitslagen",
+    "lotsInAuction": "Loten in deze veiling"
   },
   "email": {
     "subjects": {

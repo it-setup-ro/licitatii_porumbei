@@ -205,7 +205,12 @@
     "startingNow": "empieza ahora",
     "yourCeiling": "Tu máximo: {amount}",
     "minimumToRaise": "Para subir tu máximo: al menos {amount}",
-    "errBELOW_MINIMUM_LEADER": "Ya vas ganando. Para subir tu máximo, puja al menos {minimum}."
+    "errBELOW_MINIMUM_LEADER": "Ya vas ganando. Para subir tu máximo, puja al menos {minimum}.",
+    "searchPigeons": "Palomas encontradas",
+    "boxDays": "días",
+    "boxHours": "horas",
+    "boxMinutes": "minutos",
+    "boxSeconds": "segundos"
   },
   "pigeon": {
     "ring": "Número de anilla",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – Lote {number}",
     "readMore": "Leer más",
     "readLess": "Mostrar menos",
-    "breederArticles": "Artículos sobre el criador"
+    "breederArticles": "Artículos sobre el criador",
+    "firstLotEndsIn": "El primer lote termina en",
+    "firstLotStartsIn": "El primer lote empieza en",
+    "aboutBreederShort": "Sobre el criador",
+    "readFullStory": "Leer toda la presentación",
+    "importantResults": "Resultados principales",
+    "lotsInAuction": "Lotes de esta subasta"
   },
   "email": {
     "subjects": {

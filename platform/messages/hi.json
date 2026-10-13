@@ -205,7 +205,12 @@
     "startingNow": "अभी शुरू हो रही है",
     "yourCeiling": "आपकी अधिकतम सीमा: {amount}",
     "minimumToRaise": "अपनी अधिकतम सीमा बढ़ाने के लिए: कम से कम {amount}",
-    "errBELOW_MINIMUM_LEADER": "आप पहले से आगे हैं। अपनी अधिकतम सीमा बढ़ाने के लिए कम से कम {minimum} की बोली लगाएँ।"
+    "errBELOW_MINIMUM_LEADER": "आप पहले से आगे हैं। अपनी अधिकतम सीमा बढ़ाने के लिए कम से कम {minimum} की बोली लगाएँ।",
+    "searchPigeons": "मिले हुए कबूतर",
+    "boxDays": "दिन",
+    "boxHours": "घंटे",
+    "boxMinutes": "मिनट",
+    "boxSeconds": "सेकंड"
   },
   "pigeon": {
     "ring": "रिंग नंबर",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – लॉट {number}",
     "readMore": "और पढ़ें",
     "readLess": "कम दिखाएँ",
-    "breederArticles": "ब्रीडर के बारे में लेख"
+    "breederArticles": "ब्रीडर के बारे में लेख",
+    "firstLotEndsIn": "पहला लॉट समाप्त होने में",
+    "firstLotStartsIn": "पहला लॉट शुरू होने में",
+    "aboutBreederShort": "ब्रीडर के बारे में",
+    "readFullStory": "ब्रीडर का पूरा परिचय पढ़ें",
+    "importantResults": "मुख्य परिणाम",
+    "lotsInAuction": "इस नीलामी के लॉट"
   },
   "email": {
     "subjects": {

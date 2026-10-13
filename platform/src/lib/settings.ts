@@ -57,6 +57,8 @@ export type PlatformSettings = {
   smsEnabled: boolean;
   // Continut & brand
   siteName: string;
+  /** fundalul din capul paginii unei licitații de crescător (gol = degrade) */
+  saleHeroUrl: string;
   blogEnabled: boolean;
   /* Datele de contact si retelele — apar in subsol. Goale = randul lipseste,
      ca sa nu scrie nimeni un telefon inventat pe pagina de start. */
@@ -148,6 +150,8 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   emailEnabled: true,
   smsEnabled: false,
   siteName: "No.1° & Best Racing Pigeons",
+  // poza de pe prima pagină, până pune clientul alta din Setări
+  saleHeroUrl: "/pigeons/hero-client.jpg",
   blogEnabled: false,
   contactEmail: "",
   contactPhone: "",

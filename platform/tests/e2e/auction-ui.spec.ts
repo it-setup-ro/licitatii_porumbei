@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { login } from "./helpers";
+import { login, deschidePorumbel } from "./helpers";
 
 /**
  * Zona de licitație, refăcută după brief-ul clientului: „licitație live",
@@ -28,8 +28,7 @@ async function lotCuOferte(page: Page, sufix: string, rezerva?: number) {
   await expect(admin.getByTestId("pending-lot-row").filter({ hasText: nume })).toHaveCount(0);
   await ctx.close();
 
-  await page.goto("/ro/auctions");
-  await page.getByTestId("auction-card").filter({ hasText: nume }).click();
+  await deschidePorumbel(page, nume);
   await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
   return { nume, id: page.url().split("/").pop()! };
 }
@@ -140,8 +139,7 @@ test.describe("Prețul de rezervă", () => {
 
 test.describe("Restul paginii", () => {
   test("semnele de încredere stau lângă buton", async ({ page }) => {
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").first().click();
+    await deschidePorumbel(page);
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const trust = page.getByTestId("trust-badges");
     await expect(trust).toBeVisible();
@@ -152,8 +150,7 @@ test.describe("Restul paginii", () => {
   test("pe telefon apare bara fixă cu prețul, după ce derulezi", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await login(page, "buyer1@nbp.test", "buyer1234");
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").first().click();
+    await deschidePorumbel(page);
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
 
     // sus, langa panou, nu are rost

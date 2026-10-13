@@ -117,6 +117,21 @@ export function readFromTestDb(script: string): string {
 }
 
 /**
+ * Deschide pagina unui porumbel, după nume.
+ *
+ * Lista „Licitații" arată acum doar licitațiile crescătorilor (clientul: „ATÂT,
+ * FĂRĂ PORUMBEI"), așa că testele care au treabă cu pagina unui porumbel intră
+ * direct pe ea. Fără nume: primul porumbel live din baza de test.
+ */
+export async function deschidePorumbel(page: Page, nume = "", locale = "ro") {
+  const raw = readFromTestDb(`tests/e2e/fixtures/auction-id.ts ${nume}`);
+  const a = JSON.parse(raw) as { id: string; name: string } | null;
+  if (!a) throw new Error(`niciun porumbel pe numele „${nume}" in baza de test`);
+  await page.goto(`/${locale}/auctions/${a.id}`);
+  return a;
+}
+
+/**
  * Așteaptă până când React a preluat câmpul dat (hidratarea s-a terminat).
  *
  * Ce scrie Playwright înainte de hidratare pare că rămâne, dar dispare când

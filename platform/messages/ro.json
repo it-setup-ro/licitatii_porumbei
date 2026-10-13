@@ -205,7 +205,12 @@
     "startingNow": "începe acum",
     "yourCeiling": "Plafonul tău: {amount}",
     "minimumToRaise": "Ca să-ți ridici plafonul: minimum {amount}",
-    "errBELOW_MINIMUM_LEADER": "Conduci deja licitația. Ca să-ți ridici plafonul, oferă cel puțin {minimum}."
+    "errBELOW_MINIMUM_LEADER": "Conduci deja licitația. Ca să-ți ridici plafonul, oferă cel puțin {minimum}.",
+    "searchPigeons": "Porumbeii găsiți",
+    "boxDays": "zile",
+    "boxHours": "ore",
+    "boxMinutes": "minute",
+    "boxSeconds": "secunde"
   },
   "pigeon": {
     "ring": "Serie inel",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – Lotul {number}",
     "readMore": "Citește mai mult",
     "readLess": "Arată mai puțin",
-    "breederArticles": "Articole despre crescător"
+    "breederArticles": "Articole despre crescător",
+    "firstLotEndsIn": "Primul lot se încheie în",
+    "firstLotStartsIn": "Primul lot începe în",
+    "aboutBreederShort": "Despre crescător",
+    "readFullStory": "Citește toată prezentarea crescătorului",
+    "importantResults": "Rezultate importante",
+    "lotsInAuction": "Loturi în licitație"
   },
   "email": {
     "subjects": {

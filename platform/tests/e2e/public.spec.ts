@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { deschidePorumbel } from "./helpers";
 
 test.describe("Pagini publice & i18n", () => {
   test("homepage RO afiseaza sectiunile din macheta", async ({ page }) => {
@@ -32,13 +33,15 @@ test.describe("Pagini publice & i18n", () => {
     await expect(card).toContainText("Long Distance Arad");
   });
 
-  test("lista de licitatii cu taburi si cautare", async ({ page }) => {
+  test("lista arata licitatiile crescatorilor; porumbeii apar doar la cautare", async ({ page }) => {
+    // clientul: „cand intru pe licitatii sa apara doar intrarile spre licitatii
+    // CRESCATOR. ATAT, FARA PORUMBEI!"
     await page.goto("/ro/auctions");
-    await expect(page.getByTestId("auction-card").first()).toBeVisible();
+    await expect(page.getByTestId("auction-card")).toHaveCount(0);
     await page.getByTestId("tab-closed").click();
-    await expect(
-      page.getByTestId("auction-card").filter({ hasText: "As de Fond" })
-    ).toBeVisible();
+    await expect(page.getByTestId("auction-card")).toHaveCount(0);
+
+    // cine cauta un porumbel anume tot trebuie sa-l gaseasca
     await page.getByTestId("tab-live").click();
     await page.getByTestId("search-input").fill("445566");
     await page.getByTestId("search-input").press("Enter");
@@ -47,8 +50,7 @@ test.describe("Pagini publice & i18n", () => {
   });
 
   test("pagina lotului afiseaza fisa, pedigree, palmares si vanzatorul", async ({ page }) => {
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru");
     await expect(page.getByTestId("lot-title")).toContainText("Fulger Albastru");
     await expect(page.getByTestId("lot-tagline")).toContainText("Arad");
     await expect(page.getByTestId("fact-ring")).toContainText("RO 2023 445566");
@@ -66,8 +68,7 @@ test.describe("Pagini publice & i18n", () => {
   });
 
   test("profilul crescatorului cu rating si recenzii", async ({ page }) => {
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru");
     await page.getByTestId("seller-link").click();
     await expect(page.getByTestId("seller-name")).toContainText("Columbodromul Câmpeanu");
     await expect(page.getByTestId("seller-reviews")).toContainText("Porumbel superb");

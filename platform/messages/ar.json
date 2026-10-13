@@ -205,7 +205,12 @@
     "startingNow": "يبدأ الآن",
     "yourCeiling": "حدّك الأقصى: {amount}",
     "minimumToRaise": "لرفع حدّك الأقصى: {amount} على الأقل",
-    "errBELOW_MINIMUM_LEADER": "أنت في الصدارة بالفعل. لرفع حدّك الأقصى، زايد بمبلغ {minimum} على الأقل."
+    "errBELOW_MINIMUM_LEADER": "أنت في الصدارة بالفعل. لرفع حدّك الأقصى، زايد بمبلغ {minimum} على الأقل.",
+    "searchPigeons": "الحمام المطابق للبحث",
+    "boxDays": "أيام",
+    "boxHours": "ساعات",
+    "boxMinutes": "دقائق",
+    "boxSeconds": "ثوانٍ"
   },
   "pigeon": {
     "ring": "رقم الحلقة",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – لوت {number}",
     "readMore": "اقرأ المزيد",
     "readLess": "عرض أقل",
-    "breederArticles": "مقالات عن المربّي"
+    "breederArticles": "مقالات عن المربّي",
+    "firstLotEndsIn": "اللوت الأول ينتهي خلال",
+    "firstLotStartsIn": "اللوت الأول يبدأ خلال",
+    "aboutBreederShort": "عن المربّي",
+    "readFullStory": "اقرأ تعريف المربّي كاملًا",
+    "importantResults": "أهم النتائج",
+    "lotsInAuction": "لوتات هذا المزاد"
   },
   "email": {
     "subjects": {

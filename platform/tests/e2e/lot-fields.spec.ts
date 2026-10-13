@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import path from "path";
-import { login } from "./helpers";
+import { login, deschidePorumbel } from "./helpers";
 
 /**
  * Campurile cerute pe un lot, in formatul pipa.be:
@@ -122,8 +122,7 @@ test.describe("Pedigree incarcat ca PDF", () => {
     ).toHaveCount(0);
     await adminCtx.close();
 
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Pedigree PDF Test" }).click();
+    await deschidePorumbel(page, "Pedigree PDF Test");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
 
     await expect(page.getByTestId("lot-title")).toHaveText("Pedigree PDF Test");
@@ -172,8 +171,7 @@ test.describe("Pedigree incarcat ca PDF", () => {
 
 test.describe("Pagina lotului", () => {
   test("ofertele: se vad ultimele trei, restul la buton", async ({ page }) => {
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
 
     await expect(page.getByTestId("bid-row")).toHaveCount(3);
@@ -191,8 +189,7 @@ test.describe("Pagina lotului", () => {
 
   test("pedigree-ul e o filă în galerie, iar pretul e inaintea descrierii", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
 
     const galerie = (await page.getByTestId("lot-gallery").boundingBox())!;
@@ -220,7 +217,8 @@ test.describe("Pagina lotului", () => {
   });
 
   test("numele si rubrica apar si pe cardul din listare", async ({ page }) => {
-    await page.goto("/ro/auctions");
+    // lista arata doar licitatiile crescatorilor; cardul porumbelului apare la cautare
+    await page.goto("/ro/auctions?q=Fulger");
     const card = page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" });
     await expect(card).toContainText("Fulger Albastru");
     await expect(card).toContainText("Arad");

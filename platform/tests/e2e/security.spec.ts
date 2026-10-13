@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login, readFromTestDb, registrationData } from "./helpers";
+import { login, readFromTestDb, registrationData, deschidePorumbel } from "./helpers";
 
 /**
  * Teste de regresie pentru problemele gasite la auditul de securitate.
@@ -12,8 +12,7 @@ test.describe("Securitate — abuzuri blocate", () => {
     const auctions = await page.request.get("/ro/auctions");
     expect(auctions.ok()).toBe(true);
 
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const id = page.url().split("/").pop()!;
 
@@ -34,8 +33,7 @@ test.describe("Securitate — abuzuri blocate", () => {
     const reviewId = readFromTestDb("scripts/print-seed-review-id.ts");
 
     // recenzia din seed e vizibila public
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru");
     await page.getByTestId("seller-link").click();
     await page.waitForURL(/\/sellers\/[a-z0-9]+$/);
     const sellerUrl = page.url();
@@ -82,8 +80,7 @@ test.describe("Securitate — abuzuri blocate", () => {
     }
 
     // licitarea inca functioneaza dupa incercarile de sabotaj
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru");
     await expect(page.getByTestId("current-price")).toBeVisible();
   });
 
@@ -144,8 +141,7 @@ test.describe("Securitate — abuzuri blocate", () => {
   });
 
   test("fluxul live nu expune id-urile utilizatorilor", async ({ page }) => {
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const id = page.url().split("/").pop()!;
 

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login } from "./helpers";
+import { login, deschidePorumbel } from "./helpers";
 
 /**
  * Fisa detaliata a porumbelului (ca pe pipa) si unealta de test din admin
@@ -46,8 +46,7 @@ test.describe("Fisa detaliata a porumbelului", () => {
     ).toHaveCount(0);
     await adminCtx.close();
 
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fisa Completa" }).click();
+    await deschidePorumbel(page, "Fisa Completa");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
 
     // fisa nu incarca pagina principala — e sub buton
@@ -63,8 +62,7 @@ test.describe("Fisa detaliata a porumbelului", () => {
   });
 
   test("fisa se traduce in engleza", async ({ page }) => {
-    await page.goto("/en/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru", "en");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
     await page.locator('[data-testid="lot-more"] summary').click();
     await expect(page.getByTestId("trait-row-eyeColor")).toContainText("Orange");
@@ -98,8 +96,7 @@ test.describe("Fisa detaliata a porumbelului", () => {
     await expect(pending).toBeVisible();
     await pending.getByTestId("mod-approve").click();
     await expect(pending).toHaveCount(0);
-    await ap.goto("/ro/auctions");
-    await ap.getByTestId("auction-card").filter({ hasText: "Caracteristici inventate" }).click();
+    await deschidePorumbel(ap, "Caracteristici inventate");
     await ap.waitForURL(/\/auctions\/[a-z0-9]+$/);
     await ap.locator('[data-testid="lot-more"] summary').click();
     await expect(ap.getByTestId("trait-row-muscles")).toBeVisible();
@@ -120,8 +117,7 @@ test.describe("Unealta de test: inchide licitatia in 1 minut", () => {
     await expect(row.getByTestId("lot-shorten-done")).toBeVisible();
 
     // pe pagina lotului, cronometrul arata sub doua minute
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const countdown = await page.getByTestId("countdown").first().innerText();
     expect(countdown).not.toMatch(/\dz/); // fara zile

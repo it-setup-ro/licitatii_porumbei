@@ -2,7 +2,7 @@ import { prisma } from "./db";
 import type { AuctionCardData } from "@/components/AuctionCard";
 import { lotLabel } from "./lots";
 
-type AuctionWithCard = {
+export type AuctionWithCard = {
   id: string;
   status: string;
   currency: string;

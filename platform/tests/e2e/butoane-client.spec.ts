@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login } from "./helpers";
+import { login, deschidePorumbel } from "./helpers";
 
 /**
  * Butoanele pe care le apasă un om obișnuit, de la un capăt la altul:
@@ -95,8 +95,7 @@ test.describe("Paginile de cont, ca un cumpărător", () => {
   test("favoritele: se adaugă de pe porumbel și apar în cont", async ({ page }) => {
     test.setTimeout(150_000);
     await login(page, "buyer1@nbp.test", "buyer1234");
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").first().click();
+    await deschidePorumbel(page);
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const adresa = page.url();
 

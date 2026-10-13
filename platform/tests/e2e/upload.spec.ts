@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import path from "path";
-import { login } from "./helpers";
+import { login, deschidePorumbel } from "./helpers";
 
 const FIXTURE = path.join(__dirname, "fixtures", "test-pigeon.png");
 
@@ -75,8 +75,7 @@ test.describe("Upload poze de pe calculator (formular listare)", () => {
     await adminCtx.close();
 
     // poza urcata apare pe pagina publica a lotului
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Aripă de Foc" }).click();
+    await deschidePorumbel(page, "Aripă de Foc");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const mainImg = page.locator("main img").first();
     await expect(mainImg).toHaveAttribute("src", /^\/api\/files\/[a-z0-9-]+\.png$/);

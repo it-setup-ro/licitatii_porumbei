@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import fs from "fs";
 import path from "path";
-import { login } from "./helpers";
+import { login, deschidePorumbel } from "./helpers";
 
 /**
  * Antetul lotului (serie · an · sex), mărirea pozelor la clic și încărcarea
@@ -11,8 +11,7 @@ import { login } from "./helpers";
 const CLIP = path.join(__dirname, "fixtures", "test-clip.mp4");
 
 async function deschideLot(page: import("@playwright/test").Page, nume = "Fulger Albastru") {
-  await page.goto("/ro/auctions");
-  await page.getByTestId("auction-card").filter({ hasText: nume }).click();
+  await deschidePorumbel(page, nume);
   await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
 }
 
@@ -29,8 +28,7 @@ test.describe("Antetul lotului", () => {
   });
 
   test("se traduc în engleză", async ({ page }) => {
-    await page.goto("/en/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(page, "Fulger Albastru", "en");
     await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
     await expect(page.getByTestId("lot-sex")).toHaveText("♂ Cock");
   });

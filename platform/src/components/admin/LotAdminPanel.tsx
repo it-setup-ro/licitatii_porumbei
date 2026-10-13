@@ -156,10 +156,37 @@ export default function LotAdminPanel({
     }
   };
 
+  /** Mutarea orei de final, pentru un lot pornit din greșeală. */
+  const reschedule = async () => {
+    if (!end) {
+      setTimesError("Alege mai întâi ora de final.");
+      return;
+    }
+    const ok = window.confirm(
+      `Muți finalul Lotului ${lot.number} la ${end.replace("T", ", ")}?\n\n` +
+        "Toți porumbeii încă deschiși din lot primesc ora nouă, iar cine are pagina deschisă o vede pe loc."
+    );
+    if (!ok) return;
+    setTimesError(null);
+    const data = await call("reschedule", `/api/admin/sale-lots/${lot.id}/reschedule`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ endsAt: new Date(end).toISOString() }),
+    });
+    if (data.ok) {
+      setNotice(`Finalul lotului s-a mutat. Porumbei schimbați: ${data.pigeons}.`);
+      router.refresh();
+    } else if (data.fields?.endsAt) {
+      setTimesError(data.fields.endsAt as string);
+    } else {
+      setTimesError("Ora de final nu s-a putut muta.");
+    }
+  };
+
   const deleteLot = async () => {
     const ok = window.confirm(
       `Ștergi Lotul ${lot.number}, cu cei ${lot.pigeons.length} porumbei din el?\n\n` +
-        "Merge doar cât lotul e ciornă și nimeni n-a licitat. Nu se poate da înapoi."
+        "Merge doar cât nimeni n-a licitat, chiar dacă lotul a pornit. Nu se poate da înapoi."
     );
     if (!ok) return;
     const data = await call("del-lot", `/api/admin/sale-lots/${lot.id}`, { method: "DELETE" });
@@ -167,8 +194,8 @@ export default function LotAdminPanel({
       router.refresh();
     } else if (data.error === "HAS_HISTORY") {
       setNotice("Lotul are porumbei cu oferte sau comenzi: nu se șterge.");
-    } else if (data.error === "NOT_DRAFT") {
-      setNotice("Lotul a pornit deja: nu se mai șterge.");
+    } else if (data.error === "CLOSED_LOT") {
+      setNotice("Lotul s-a încheiat: are câștigători, nu se mai șterge.");
     } else {
       setNotice("Lotul nu s-a putut șterge.");
     }
@@ -276,7 +303,7 @@ export default function LotAdminPanel({
           <span className="text-sm text-ink/50">
             {lot.pigeons.length} / {maxPigeons} porumbei
           </span>
-          {draft && (
+          {lot.status !== "CLOSED" && (
             <button
               type="button"
               onClick={deleteLot}
@@ -330,6 +357,44 @@ export default function LotAdminPanel({
               {timesError}
             </p>
           )}
+        </div>
+      )}
+
+      {/* ── îndreptarea unui lot pornit greșit ── */}
+      {lot.status === "LIVE" && (
+        <div className="mt-4 rounded-xl border border-wing-orange/40 bg-wing-orange/5 p-4" data-testid="lot-fix">
+          <p className="text-sm font-semibold">Lotul a pornit</p>
+          <p className="mt-1 text-sm text-ink/70">
+            Orele nu se mai editează — o licitație pornită rămâne pornită. Dacă ora de final e
+            greșită (ai pus din greșeală o lună), o poți muta de aici; rămâne scris în jurnal cine
+            și când a mutat-o.
+          </p>
+          <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+            <label className="text-sm font-medium">
+              Finalul nou
+              <input
+                type="datetime-local"
+                value={end}
+                onChange={(e) => setEnd(e.target.value)}
+                data-testid="lot-fix-end"
+                className={`${input} border-ink/20 bg-white`}
+              />
+            </label>
+            <button
+              type="button"
+              onClick={reschedule}
+              disabled={busy !== null}
+              data-testid="lot-fix-save"
+              className="rounded-xl bg-ink px-4 py-2 text-sm font-bold text-ivory hover:bg-wing-orange disabled:opacity-50"
+            >
+              Mută finalul
+            </button>
+            {timesError && (
+              <p className="text-sm text-wing-red sm:col-span-2" data-testid="lot-fix-error">
+                {timesError}
+              </p>
+            )}
+          </div>
         </div>
       )}
 

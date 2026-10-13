@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { login } from "./helpers";
+import { login, deschidePorumbel } from "./helpers";
 
 /**
  * Modificarea unui lot de către crescător.
@@ -62,9 +62,7 @@ test.describe("Lot fără oferte — se poate schimba tot", () => {
 
     await aproba(page, `${nume} corectat`);
 
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: `${nume} corectat` }).click();
-    await page.waitForURL(/\/auctions\/[a-z0-9]+$/);
+    await deschidePorumbel(page, `${nume} corectat`);
     await expect(page.getByTestId("lot-title")).toHaveText(`${nume} corectat`);
     await expect(page.getByTestId("lot-tagline")).toContainText("corectat");
     await expect(page.getByTestId("fact-bred-by")).toContainText("Crescătoria de Test");
@@ -117,8 +115,7 @@ test.describe("Lot cu oferte — doar adăugiri", () => {
     const ctx = await browser.newContext({ locale: "ro-RO" });
     const buyer = await ctx.newPage();
     await login(buyer, "buyer1@nbp.test", "buyer1234");
-    await buyer.goto("/ro/auctions");
-    await buyer.getByTestId("auction-card").filter({ hasText: nume }).click();
+    await deschidePorumbel(buyer, nume);
     await buyer.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const url = buyer.url();
     const bid = await buyer.request.post(`/api/auctions/${url.split("/").pop()}/bid`, {
@@ -162,8 +159,7 @@ test.describe("Lot cu oferte — doar adăugiri", () => {
     const ctx = await browser.newContext({ locale: "ro-RO" });
     const buyer = await ctx.newPage();
     await login(buyer, "buyer2@nbp.test", "buyer1234");
-    await buyer.goto("/ro/auctions");
-    await buyer.getByTestId("auction-card").filter({ hasText: nume }).click();
+    await deschidePorumbel(buyer, nume);
     await buyer.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const id = buyer.url().split("/").pop()!;
     const bid = await buyer.request.post(`/api/auctions/${id}/bid`, {

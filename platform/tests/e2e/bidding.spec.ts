@@ -1,7 +1,7 @@
 import { execSync } from "node:child_process";
 import path from "node:path";
 import { test, expect } from "@playwright/test";
-import { login } from "./helpers";
+import { login, deschidePorumbel } from "./helpers";
 import { TEST_DATABASE_URL } from "../../playwright.config";
 
 /** Ce i-a ajuns unei adrese, din jurnalul de e-mailuri. */
@@ -31,8 +31,7 @@ test.describe("Licitare live: proxy-bidding intre doi utilizatori", () => {
     await login(pageB, "buyer2@nbp.test", "buyer1234");
 
     // Ambii deschid acelasi lot
-    await pageA.goto("/ro/auctions");
-    await pageA.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" }).click();
+    await deschidePorumbel(pageA, "Fulger Albastru");
     await pageA.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const url = pageA.url();
     await pageB.goto(url);
@@ -106,8 +105,7 @@ test.describe("Licitare live: proxy-bidding intre doi utilizatori", () => {
 
   test("watchlist: adaugare si stergere din favorite", async ({ page }) => {
     await login(page, "buyer1@nbp.test", "buyer1234");
-    await page.goto("/ro/auctions");
-    await page.getByTestId("auction-card").filter({ hasText: "Regina Nordului" }).click();
+    await deschidePorumbel(page, "Regina Nordului");
     await page.getByTestId("watch-button").click();
     await expect(page.getByTestId("watch-button")).toContainText("Scoate");
 

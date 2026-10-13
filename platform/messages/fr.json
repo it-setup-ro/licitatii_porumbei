@@ -205,7 +205,12 @@
     "startingNow": "commence maintenant",
     "yourCeiling": "Votre plafond : {amount}",
     "minimumToRaise": "Pour relever votre plafond : au moins {amount}",
-    "errBELOW_MINIMUM_LEADER": "Vous êtes déjà en tête. Pour relever votre plafond, enchérissez au moins {minimum}."
+    "errBELOW_MINIMUM_LEADER": "Vous êtes déjà en tête. Pour relever votre plafond, enchérissez au moins {minimum}.",
+    "searchPigeons": "Pigeons trouvés",
+    "boxDays": "jours",
+    "boxHours": "heures",
+    "boxMinutes": "minutes",
+    "boxSeconds": "secondes"
   },
   "pigeon": {
     "ring": "Numéro de bague",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – Lot {number}",
     "readMore": "Lire la suite",
     "readLess": "Réduire",
-    "breederArticles": "Articles sur l’éleveur"
+    "breederArticles": "Articles sur l’éleveur",
+    "firstLotEndsIn": "Le premier lot se termine dans",
+    "firstLotStartsIn": "Le premier lot commence dans",
+    "aboutBreederShort": "À propos de l’éleveur",
+    "readFullStory": "Lire toute la présentation",
+    "importantResults": "Résultats principaux",
+    "lotsInAuction": "Lots de cette vente"
   },
   "email": {
     "subjects": {

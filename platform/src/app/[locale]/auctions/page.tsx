@@ -1,45 +1,57 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
-import { cardInclude, toCardData } from "@/lib/queries";
 import { normalizeSearch, DIACRITICE_DIN, DIACRITICE_IN } from "@/lib/search";
+import SaleCard from "@/components/SaleCard";
 import AuctionCard from "@/components/AuctionCard";
-import LotCard from "@/components/LotCard";
-import { getLotCards } from "@/lib/lot-cards";
+import { cardInclude, toCardData, type AuctionWithCard } from "@/lib/queries";
+import { getSaleCards } from "@/lib/sale-cards";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Licitațiile crescătorilor.
+ *
+ * Clientul: „când intru pe licitații să apară doar intrările spre licitații
+ * CRESCĂTOR (foto cu licitațiile active). ATÂT, FĂRĂ PORUMBEI! Doar după ce dau
+ * click pe licitația unui crescător îmi arată lotul sau loturile cu porumbei."
+ *
+ * Căutarea rămâne după porumbel — e felul în care caută omul — dar răspunsul e
+ * licitația în care se află, nu porumbelul scos din context.
+ */
 export default async function AuctionsPage({
   params,
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ status?: string; q?: string; sort?: string }>;
+  searchParams: Promise<{ status?: string; q?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("auction");
+  const ts = await getTranslations("sales");
   const tc = await getTranslations("common");
   const sp = await searchParams;
 
-  const status = ["LIVE", "SCHEDULED", "CLOSED"].includes(sp.status ?? "")
+  const status = (["LIVE", "SCHEDULED", "CLOSED"].includes(sp.status ?? "")
     ? sp.status!
-    : "LIVE";
+    : "LIVE") as "LIVE" | "SCHEDULED" | "CLOSED";
   const q = (sp.q ?? "").trim();
 
+  let carduri = await getSaleCards(status);
+
   /*
-    Cautarea, in doi pasi.
+    Căutarea, în doi pași.
 
-    Intai aflam ce porumbei se potrivesc, cu o interogare care aduce numele,
-    seria, linia si rubrica la litere mici fara diacritice — de partea bazei,
-    nu doar de partea omului. Fara asta, „cuca lui nita" nu gaseste
-    „CUCA lui NIȚĂ": baza compara exact, iar „ț" nu e „t".
+    Întâi aflăm ce porumbei se potrivesc, cu o interogare care aduce numele,
+    seria, linia și rubrica la litere mici fără diacritice — de partea bazei,
+    nu doar de partea omului. Fără asta, „cuca lui nita" nu găsește
+    „CUCA lui NIȚĂ": baza compară exact, iar „ț" nu e „t".
 
-    Apoi filtram licitatiile dupa acei porumbei, cu restul conditiilor
-    obisnuite. Doi pasi, dar fiecare simplu — si nu pierdem sortarea si
-    datele de card pe care le stie deja Prisma.
+    Apoi păstrăm licitațiile care îi conțin: omul caută un porumbel, dar
+    aterizează în licitația crescătorului, de unde vede tot lotul.
   */
-  let pigeonIds: string[] | null = null;
   let potriviriPeStare: Record<string, number> = {};
+  let porumbei: AuctionWithCard[] = [];
   if (q) {
     const termen = `%${normalizeSearch(q)}%`;
     const randuri = await prisma.$queryRaw<{ id: string }[]>`
@@ -51,41 +63,36 @@ export default async function AuctionsPage({
               coalesce("offeredBy", ''),
               ${DIACRITICE_DIN}, ${DIACRITICE_IN})) LIKE ${termen}
       LIMIT 500`;
-    pigeonIds = randuri.map((r) => r.id);
+    const pigeonIds = randuri.map((r) => r.id);
 
-    // cate potriviri sunt in celelalte file — altfel omul vede „niciun rezultat"
-    // desi porumbelul lui e la „Închise" sau la „În curând"
+    const sloganuri = await prisma.sale.findMany({
+      where: {
+        archivedAt: null,
+        lots: { some: { auctions: { some: { pigeonId: { in: pigeonIds }, hiddenAt: null } } } },
+      },
+      select: { slug: true, lots: { select: { status: true } } },
+    });
+    // câte potriviri sunt în celelalte file — altfel omul vede „niciun rezultat"
+    // deși porumbelul lui e la „Închise" sau la „În curând"
     const peStare = await prisma.auction.groupBy({
       by: ["status"],
-      where: { pigeonId: { in: pigeonIds }, saleMode: "AUCTION" },
+      where: { pigeonId: { in: pigeonIds }, saleMode: "AUCTION", hiddenAt: null },
       _count: { _all: true },
     });
     potriviriPeStare = Object.fromEntries(peStare.map((r) => [r.status, r._count._all]));
+
+    const gasite = new Set(sloganuri.map((s) => s.slug));
+    carduri = carduri.filter((c) => gasite.has(c.slug));
+
+    // Cine caută un porumbel anume vrea să-l vadă, nu doar licitația lui. Fără
+    // căutare, lista rămâne curată: numai licitațiile crescătorilor.
+    porumbei = await prisma.auction.findMany({
+      where: { status, saleMode: "AUCTION", hiddenAt: null, pigeonId: { in: pigeonIds } },
+      include: cardInclude,
+      orderBy: status === "CLOSED" ? { closedAt: "desc" } : { endsAt: "asc" },
+      take: 30,
+    });
   }
-
-  const auctions = await prisma.auction.findMany({
-    where: {
-      status,
-      // porumbeii cu preț fix au pagina lor, „Preț fix"
-      saleMode: "AUCTION",
-      // scoși de pe site de administrator
-      hiddenAt: null,
-      ...(pigeonIds ? { pigeonId: { in: pigeonIds } } : {}),
-    },
-    include: cardInclude,
-    orderBy:
-      sp.sort === "price"
-        ? { currentPriceCents: "desc" }
-        : status === "CLOSED"
-          ? { closedAt: "desc" }
-          : { endsAt: "asc" },
-    take: 60,
-  });
-
-  // Loturile crescătorilor din fila curentă, deasupra porumbeilor — câte un card
-  // pe lot, cu datele lui. La căutare nu se arată: omul caută un porumbel anume.
-  const ts = await getTranslations("sales");
-  const lotCards = q ? [] : await getLotCards(status as "LIVE" | "SCHEDULED" | "CLOSED");
 
   const tabs = [
     { key: "LIVE", label: t("statusLive") },
@@ -95,6 +102,9 @@ export default async function AuctionsPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
+      <h1 className="font-display text-3xl font-bold">{ts("sectionTitle")}</h1>
+      <p className="mb-6 mt-1 text-sm text-ink/60">{ts("sectionIntro")}</p>
+
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <div className="flex gap-1 rounded-full border border-ink/15 p-1">
           {tabs.map((tab) => (
@@ -122,23 +132,11 @@ export default async function AuctionsPage({
         </form>
       </div>
 
-      {lotCards.length > 0 && (
-        <section className="mb-10" data-testid="sales-section">
-          <h2 className="font-display text-2xl font-bold">{ts("sectionTitle")}</h2>
-          <p className="mb-4 mt-1 text-sm text-ink/60">{ts("sectionIntro")}</p>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {lotCards.map((l) => (
-              <LotCard key={`${l.saleSlug}-${l.lotNumber}`} lot={l} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {auctions.length === 0 ? (
+      {carduri.length === 0 && porumbei.length === 0 ? (
         <div className="py-16 text-center" data-testid="no-results">
           <p className="text-ink/60">{q ? t("noSearchResults", { q }) : tc("none")}</p>
-          {/* Porumbelul cautat poate fi intr-o alta fila. In loc sa-l lasam pe om
-              sa incerce filele pe rand, ii spunem unde e si il ducem acolo. */}
+          {/* Porumbelul căutat poate fi într-o altă filă. În loc să-l lăsăm pe om
+              să încerce filele pe rând, îi spunem unde e și îl ducem acolo. */}
           {q &&
             tabs
               .filter((tab) => tab.key !== status && (potriviriPeStare[tab.key] ?? 0) > 0)
@@ -149,21 +147,31 @@ export default async function AuctionsPage({
                     data-testid="search-other-tab"
                     className="font-semibold text-wing-blue hover:underline"
                   >
-                    {t("foundInTab", {
-                      count: potriviriPeStare[tab.key] ?? 0,
-                      tab: tab.label,
-                    })}{" "}
-                    →
+                    {t("foundInTab", { count: potriviriPeStare[tab.key] ?? 0, tab: tab.label })} →
                   </a>
                 </p>
               ))}
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {auctions.map((a) => (
-            <AuctionCard key={a.id} auction={toCardData(a)} />
-          ))}
-        </div>
+        <>
+          {carduri.length > 0 && (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-testid="sales-section">
+              {carduri.map((c) => (
+                <SaleCard key={c.slug} sale={c} />
+              ))}
+            </div>
+          )}
+          {porumbei.length > 0 && (
+            <div className="mt-10">
+              <h2 className="font-display mb-4 text-xl font-bold">{t("searchPigeons")}</h2>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {porumbei.map((a) => (
+                  <AuctionCard key={a.id} auction={toCardData(a)} />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

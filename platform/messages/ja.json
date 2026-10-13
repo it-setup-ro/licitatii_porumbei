@@ -205,7 +205,12 @@
     "startingNow": "まもなく開始",
     "yourCeiling": "あなたの上限額：{amount}",
     "minimumToRaise": "上限額を引き上げるには：{amount} 以上",
-    "errBELOW_MINIMUM_LEADER": "すでに最高入札者です。上限額を引き上げるには、{minimum} 以上で入札してください。"
+    "errBELOW_MINIMUM_LEADER": "すでに最高入札者です。上限額を引き上げるには、{minimum} 以上で入札してください。",
+    "searchPigeons": "見つかった鳩",
+    "boxDays": "日",
+    "boxHours": "時間",
+    "boxMinutes": "分",
+    "boxSeconds": "秒"
   },
   "pigeon": {
     "ring": "足環番号",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – ロット {number}",
     "readMore": "続きを読む",
     "readLess": "閉じる",
-    "breederArticles": "ブリーダーについての記事"
+    "breederArticles": "ブリーダーについての記事",
+    "firstLotEndsIn": "最初のロット終了まで",
+    "firstLotStartsIn": "最初のロット開始まで",
+    "aboutBreederShort": "ブリーダーについて",
+    "readFullStory": "ブリーダーの紹介を全文読む",
+    "importantResults": "主な成績",
+    "lotsInAuction": "このオークションのロット"
   },
   "email": {
     "subjects": {

@@ -205,7 +205,12 @@
     "startingNow": "unaanza sasa",
     "yourCeiling": "Kikomo chako: {amount}",
     "minimumToRaise": "Kuongeza kikomo chako: angalau {amount}",
-    "errBELOW_MINIMUM_LEADER": "Unaongoza tayari. Ili kuongeza kikomo chako, toa zabuni ya angalau {minimum}."
+    "errBELOW_MINIMUM_LEADER": "Unaongoza tayari. Ili kuongeza kikomo chako, toa zabuni ya angalau {minimum}.",
+    "searchPigeons": "Njiwa waliopatikana",
+    "boxDays": "siku",
+    "boxHours": "saa",
+    "boxMinutes": "dakika",
+    "boxSeconds": "sekunde"
   },
   "pigeon": {
     "ring": "Nambari ya pete",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – Kundi {number}",
     "readMore": "Soma zaidi",
     "readLess": "Onyesha kidogo",
-    "breederArticles": "Makala kuhusu mfugaji"
+    "breederArticles": "Makala kuhusu mfugaji",
+    "firstLotEndsIn": "Kundi la kwanza linaisha baada ya",
+    "firstLotStartsIn": "Kundi la kwanza linaanza baada ya",
+    "aboutBreederShort": "Kuhusu mfugaji",
+    "readFullStory": "Soma maelezo kamili ya mfugaji",
+    "importantResults": "Matokeo muhimu",
+    "lotsInAuction": "Makundi katika mnada huu"
   },
   "email": {
     "subjects": {

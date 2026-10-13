@@ -8,8 +8,6 @@ import { getCurrentUser } from "@/lib/auth";
 import { formatMoney } from "@/lib/money";
 import { incrementFor, minimumAcceptableMax } from "@/lib/bidding";
 import { bidderCountForAuction, reserveState } from "@/lib/auction-service";
-import { cardInclude, toCardData } from "@/lib/queries";
-import AuctionCard from "@/components/AuctionCard";
 import StickyBidBar from "@/components/StickyBidBar";
 import { Link } from "@/i18n/navigation";
 import LiveAuctionPanel from "@/components/LiveAuctionPanel";
@@ -103,26 +101,6 @@ export default async function AuctionDetailPage({
   const stepCents = incrementFor(auction.currentPriceCents, settings.increments);
   const reserve = reserveState(auction.reservePriceCents, auction.currentPriceCents);
 
-  // Porumbei asemanatori: intai de la acelasi crescator, apoi din aceeasi linie.
-  const similar = await prisma.auction.findMany({
-    where: {
-      status: "LIVE",
-      hiddenAt: null,
-      id: { not: auction.id },
-      // din același lot, dacă face parte dintr-unul; altfel de la același vânzător sau linie
-      ...(auction.lotId
-        ? { lotId: auction.lotId }
-        : {
-            OR: [
-              { sellerId: auction.sellerId },
-              ...(pigeon.strain ? [{ pigeon: { strain: pigeon.strain } }] : []),
-            ],
-          }),
-    },
-    include: cardInclude,
-    orderBy: { endsAt: "asc" },
-    take: 3,
-  });
   // Numele sub care apare contul care vinde. Cand „Oferit de" spune acelasi
   // lucru, nu-l mai repetam in fisa — ar arata ca doua informatii diferite.
   const sellerLabel = breeder?.name ?? seller.sellerCompany ?? seller.name;
@@ -510,18 +488,9 @@ export default async function AuctionDetailPage({
             </details>
           )}
 
-          {/* Porumbei asemanatori — de la acelasi crescator sau din aceeasi linie */}
-          {similar.length > 0 && (
-            <div data-testid="similar-lots">
-              <h2 className="font-display mb-1 text-xl font-bold">{t("similar")}</h2>
-              <p className="mb-4 text-sm text-ink/60">{t("similarHint")}</p>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {similar.map((a) => (
-                  <AuctionCard key={a.id} auction={toCardData(a)} />
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Clientul: „când dau click pe un porumbel să apară DOAR informațiile
+              legate de el. Fără «Porumbei asemănători» — se creează confuzie."
+              Lista lotului rămâne la un clic distanță, pe pagina licitației. */}
 
         </div>
 

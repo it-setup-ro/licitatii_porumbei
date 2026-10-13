@@ -205,7 +205,12 @@
     "startingNow": "zaczyna się teraz",
     "yourCeiling": "Twój limit: {amount}",
     "minimumToRaise": "Aby podnieść swój limit: co najmniej {amount}",
-    "errBELOW_MINIMUM_LEADER": "Już prowadzisz. Aby podnieść swój limit, zaoferuj co najmniej {minimum}."
+    "errBELOW_MINIMUM_LEADER": "Już prowadzisz. Aby podnieść swój limit, zaoferuj co najmniej {minimum}.",
+    "searchPigeons": "Znalezione gołębie",
+    "boxDays": "dni",
+    "boxHours": "godz.",
+    "boxMinutes": "min",
+    "boxSeconds": "sek."
   },
   "pigeon": {
     "ring": "Numer obrączki",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – Partia {number}",
     "readMore": "Czytaj dalej",
     "readLess": "Pokaż mniej",
-    "breederArticles": "Artykuły o hodowcy"
+    "breederArticles": "Artykuły o hodowcy",
+    "firstLotEndsIn": "Koniec pierwszej partii za",
+    "firstLotStartsIn": "Start pierwszej partii za",
+    "aboutBreederShort": "O hodowcy",
+    "readFullStory": "Przeczytaj całą prezentację",
+    "importantResults": "Najważniejsze wyniki",
+    "lotsInAuction": "Partie na tej aukcji"
   },
   "email": {
     "subjects": {

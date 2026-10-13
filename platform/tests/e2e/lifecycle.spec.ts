@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login, runOnTestDb } from "./helpers";
+import { login, runOnTestDb, deschidePorumbel } from "./helpers";
 
 /**
  * Ciclul de viata complet al unui lot: listare vanzator -> moderare admin ->
@@ -51,8 +51,7 @@ test.describe("Ciclul de viata al unei licitatii", () => {
     const ctxBuyer = await browser.newContext({ locale: "ro-RO" });
     const buyer = await ctxBuyer.newPage();
     await login(buyer, "buyer1@nbp.test", "buyer1234");
-    await buyer.goto("/ro/auctions");
-    await buyer.getByTestId("auction-card").filter({ hasText: "Săgeata E2E" }).click();
+    await deschidePorumbel(buyer, "Săgeata E2E");
     await buyer.waitForURL(/\/auctions\/[a-z0-9]+$/);
     const auctionId = buyer.url().split("/").pop()!;
     await buyer.getByTestId("bid-input").fill("200");
@@ -100,9 +99,7 @@ test.describe("Ciclul de viata al unei licitatii", () => {
     await expect(buyer.getByTestId("order-review")).toContainText("5/5");
 
     // Recenzia apare pe profilul public al vanzatorului
-    await buyer.goto("/ro/auctions");
-    await buyer.getByTestId("tab-closed").click();
-    await buyer.getByTestId("auction-card").filter({ hasText: "Săgeata E2E" }).click();
+    await deschidePorumbel(buyer, "Săgeata E2E");
     await buyer.getByTestId("seller-link").click();
     await expect(buyer.getByTestId("seller-reviews")).toContainText("Flux e2e impecabil");
 

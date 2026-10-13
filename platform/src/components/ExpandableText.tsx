@@ -16,11 +16,14 @@ export default function ExpandableText({
   moreLabel,
   lessLabel,
   testid,
+  buttonClassName,
 }: {
   children: React.ReactNode;
   moreLabel: string;
   lessLabel: string;
   testid?: string;
+  /** butonul poate arăta altfel acolo unde macheta cere unul mare, auriu */
+  buttonClassName?: string;
 }) {
   const [desfacut, setDesfacut] = useState(false);
 
@@ -40,7 +43,7 @@ export default function ExpandableText({
         onClick={() => setDesfacut((v) => !v)}
         aria-expanded={desfacut}
         data-testid={testid ? `${testid}-toggle` : undefined}
-        className="mt-2 text-sm font-semibold text-wing-blue hover:underline"
+        className={buttonClassName ?? "mt-2 text-sm font-semibold text-wing-blue hover:underline"}
       >
         {desfacut ? lessLabel : moreLabel} {desfacut ? "↑" : "→"}
       </button>

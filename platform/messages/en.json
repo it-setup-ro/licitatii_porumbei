@@ -205,7 +205,12 @@
     "startingNow": "starting now",
     "yourCeiling": "Your maximum: {amount}",
     "minimumToRaise": "To raise your maximum: at least {amount}",
-    "errBELOW_MINIMUM_LEADER": "You are already leading. To raise your maximum, bid at least {minimum}."
+    "errBELOW_MINIMUM_LEADER": "You are already leading. To raise your maximum, bid at least {minimum}.",
+    "searchPigeons": "Pigeons found",
+    "boxDays": "days",
+    "boxHours": "hours",
+    "boxMinutes": "minutes",
+    "boxSeconds": "seconds"
   },
   "pigeon": {
     "ring": "Ring number",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – Lot {number}",
     "readMore": "Read more",
     "readLess": "Show less",
-    "breederArticles": "Articles about the breeder"
+    "breederArticles": "Articles about the breeder",
+    "firstLotEndsIn": "First lot closes in",
+    "firstLotStartsIn": "First lot starts in",
+    "aboutBreederShort": "About the breeder",
+    "readFullStory": "Read the full presentation",
+    "importantResults": "Key results",
+    "lotsInAuction": "Lots in this auction"
   },
   "email": {
     "subjects": {

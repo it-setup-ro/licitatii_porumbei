@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 import { useTranslations } from "next-intl";
 import type { PlatformSettings } from "@/lib/settings";
 
@@ -12,7 +13,7 @@ import type { PlatformSettings } from "@/lib/settings";
 type FieldDef = {
   key: keyof PlatformSettings;
   label: string;
-  type: "number" | "boolean" | "text" | "select";
+  type: "number" | "boolean" | "text" | "select" | "image";
   options?: string[];
   hint?: string;
 };
@@ -105,6 +106,12 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
       title: t("groupBrand"),
       fields: [
         { key: "siteName", label: "Numele site-ului", type: "text" },
+        {
+          key: "saleHeroUrl",
+          label: "Fundalul paginii de licitație",
+          type: "image",
+          hint: "Imaginea de fundal din capul paginii unei licitații (cer, hulubărie). Una pentru toți crescătorii; goală = degrade de culoare.",
+        },
         { key: "blogEnabled", label: "Blog activ", type: "boolean" },
         { key: "fancyCategoryEnabled", label: "Categoria ornament activă", type: "boolean" },
       ],
@@ -214,7 +221,30 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
             <label className="font-medium" htmlFor={`set-${f.key}`}>
               {f.label}
             </label>
-            {f.type === "boolean" ? (
+            {f.type === "image" ? (
+              <div className="mt-1">
+                {Boolean(values[f.key]) && (
+                  // poza de acum, ca omul să vadă ce schimbă
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={String(values[f.key])}
+                    alt=""
+                    className="mb-2 h-24 w-full rounded-xl object-cover"
+                    data-testid={`setting-${f.key}-preview`}
+                  />
+                )}
+                <MediaPicker
+                  value={
+                    values[f.key]
+                      ? ([{ url: String(values[f.key]), type: "IMAGE" }] as PickedMedia[])
+                      : []
+                  }
+                  onChange={(next) => setValue(f.key, next[0]?.url ?? "")}
+                  maxFiles={1}
+                  allowVideo={false}
+                />
+              </div>
+            ) : f.type === "boolean" ? (
               <div className="mt-1">
                 <button
                   id={`set-${f.key}`}

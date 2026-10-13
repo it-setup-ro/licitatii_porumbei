@@ -96,7 +96,10 @@ export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string 
       },
     });
     if (!lot) return jsonError("NOT_FOUND", 404);
-    if (lot.status !== "DRAFT") return jsonError("NOT_DRAFT", 409, { status: lot.status });
+    // Ce contează e dacă a licitat cineva, nu în ce stare a ajuns lotul: un lot
+    // pornit din greșeală, pe care n-a licitat nimeni, trebuie să poată fi șters.
+    // Un lot încheiat rămâne: acolo sunt câștigători și comenzi.
+    if (lot.status === "CLOSED") return jsonError("CLOSED_LOT", 409, { status: lot.status });
 
     const cuOferte = lot.auctions.filter((a) => a._count.bids > 0).length;
     const cuComenzi = lot.auctions.filter((a) => a.order).length;

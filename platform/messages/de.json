@@ -205,7 +205,12 @@
     "startingNow": "beginnt jetzt",
     "yourCeiling": "Ihr Höchstgebot: {amount}",
     "minimumToRaise": "Um Ihr Höchstgebot zu erhöhen: mindestens {amount}",
-    "errBELOW_MINIMUM_LEADER": "Sie führen bereits. Um Ihr Höchstgebot zu erhöhen, bieten Sie mindestens {minimum}."
+    "errBELOW_MINIMUM_LEADER": "Sie führen bereits. Um Ihr Höchstgebot zu erhöhen, bieten Sie mindestens {minimum}.",
+    "searchPigeons": "Gefundene Tauben",
+    "boxDays": "Tage",
+    "boxHours": "Stunden",
+    "boxMinutes": "Minuten",
+    "boxSeconds": "Sekunden"
   },
   "pigeon": {
     "ring": "Ringnummer",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – Los {number}",
     "readMore": "Weiterlesen",
     "readLess": "Weniger anzeigen",
-    "breederArticles": "Artikel über den Züchter"
+    "breederArticles": "Artikel über den Züchter",
+    "firstLotEndsIn": "Erstes Los endet in",
+    "firstLotStartsIn": "Erstes Los beginnt in",
+    "aboutBreederShort": "Über den Züchter",
+    "readFullStory": "Ganze Vorstellung lesen",
+    "importantResults": "Wichtigste Ergebnisse",
+    "lotsInAuction": "Lose dieser Auktion"
   },
   "email": {
     "subjects": {

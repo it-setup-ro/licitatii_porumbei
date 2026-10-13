@@ -205,7 +205,12 @@
     "startingNow": "હમણાં શરૂ થઈ રહી છે",
     "yourCeiling": "આપની મહત્તમ મર્યાદા: {amount}",
     "minimumToRaise": "આપની મહત્તમ મર્યાદા વધારવા માટે: ઓછામાં ઓછું {amount}",
-    "errBELOW_MINIMUM_LEADER": "આપ પહેલેથી આગળ છો. આપની મહત્તમ મર્યાદા વધારવા માટે ઓછામાં ઓછી {minimum} બોલી લગાવો."
+    "errBELOW_MINIMUM_LEADER": "આપ પહેલેથી આગળ છો. આપની મહત્તમ મર્યાદા વધારવા માટે ઓછામાં ઓછી {minimum} બોલી લગાવો.",
+    "searchPigeons": "મળેલા કબૂતરો",
+    "boxDays": "દિવસ",
+    "boxHours": "કલાક",
+    "boxMinutes": "મિનિટ",
+    "boxSeconds": "સેકન્ડ"
   },
   "pigeon": {
     "ring": "રિંગ નંબર",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – લોટ {number}",
     "readMore": "વધુ વાંચો",
     "readLess": "ઓછું બતાવો",
-    "breederArticles": "બ્રીડર વિશેના લેખો"
+    "breederArticles": "બ્રીડર વિશેના લેખો",
+    "firstLotEndsIn": "પહેલો લોટ સમાપ્ત થવામાં",
+    "firstLotStartsIn": "પહેલો લોટ શરૂ થવામાં",
+    "aboutBreederShort": "બ્રીડર વિશે",
+    "readFullStory": "બ્રીડરનો પૂરો પરિચય વાંચો",
+    "importantResults": "મુખ્ય પરિણામો",
+    "lotsInAuction": "આ હરાજીના લોટ"
   },
   "email": {
     "subjects": {

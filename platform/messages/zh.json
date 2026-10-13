@@ -205,7 +205,12 @@
     "startingNow": "即将开始",
     "yourCeiling": "您的最高出价：{amount}",
     "minimumToRaise": "提高最高出价：至少 {amount}",
-    "errBELOW_MINIMUM_LEADER": "您当前已经领先。若要提高最高出价，请至少出 {minimum}。"
+    "errBELOW_MINIMUM_LEADER": "您当前已经领先。若要提高最高出价，请至少出 {minimum}。",
+    "searchPigeons": "找到的鸽子",
+    "boxDays": "天",
+    "boxHours": "小时",
+    "boxMinutes": "分钟",
+    "boxSeconds": "秒"
   },
   "pigeon": {
     "ring": "足环号",
@@ -716,7 +721,13 @@
     "lotCardTitle": "{breeder} – 第 {number} 批次",
     "readMore": "阅读更多",
     "readLess": "收起",
-    "breederArticles": "关于该鸽舍的文章"
+    "breederArticles": "关于该鸽舍的文章",
+    "firstLotEndsIn": "首个批次距结束",
+    "firstLotStartsIn": "首个批次距开始",
+    "aboutBreederShort": "关于鸽舍",
+    "readFullStory": "阅读鸽舍完整介绍",
+    "importantResults": "主要成绩",
+    "lotsInAuction": "本场拍卖的批次"
   },
   "email": {
     "subjects": {
