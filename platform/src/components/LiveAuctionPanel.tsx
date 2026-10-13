@@ -175,6 +175,8 @@ export default function LiveAuctionPanel(props: Props) {
   const submitBid = async () => {
     const value = Number(String(input).replace(",", "."));
     if (!Number.isFinite(value) || value <= 0) return;
+    /** conducea deja? atunci oferta de acum e o ridicare de plafon */
+    const eraLider = leading;
     setSubmitting(true);
     setMessage(null);
     try {
@@ -186,7 +188,19 @@ export default function LiveAuctionPanel(props: Props) {
       const data = await res.json();
       if (data.ok) {
         if (data.leading) {
-          setMessage({ kind: "ok", text: t("bidPlacedLeading", { amount: fmt(data.priceCents) }) });
+          // Daca deja conducea, ce-a facut acum e o ridicare de plafon, iar
+          // pretul NU se misca: nu liciteaza contra lui insusi. Clientul a citit
+          // „Esti lider cu 1.600" dupa ce a oferit 1.650 si a crezut ca nu s-a
+          // inregistrat — de aceea i se spune limpede ce s-a intamplat.
+          setMessage({
+            kind: "ok",
+            text: eraLider
+              ? t("bidRaisedCeiling", {
+                  max: fmt(Math.round(value * 100)),
+                  price: fmt(data.priceCents),
+                })
+              : t("bidPlacedLeading", { amount: fmt(data.priceCents) }),
+          });
           setShowOutbid(false);
         } else {
           setMessage({ kind: "info", text: t("bidPlacedOutbid") });

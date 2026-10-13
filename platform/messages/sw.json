@@ -210,7 +210,8 @@
     "boxDays": "siku",
     "boxHours": "saa",
     "boxMinutes": "dakika",
-    "boxSeconds": "sekunde"
+    "boxSeconds": "sekunde",
+    "bidRaisedCeiling": "Umepandisha kikomo chako hadi {max}. Bei inasalia {price} — inapanda tu kiasi kinachohitajika kuwashinda wengine."
   },
   "pigeon": {
     "ring": "Nambari ya pete",

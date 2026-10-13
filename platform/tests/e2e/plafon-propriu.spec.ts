@@ -88,14 +88,16 @@ test.describe("Plafonul propriu", () => {
 
     // 4) și e primită: exact asta nu mergea (răspundea „Ofertă prea mică")
     await buyer.getByTestId("bid-submit").click();
-    await expect(buyer.getByTestId("bid-message")).toContainText("lider");
+    // conducea deja: mesajul spune ca si-a ridicat plafonul, nu ca „e lider cu" o
+    // suma mai mica decat ce-a oferit (clientul a crezut ca nu s-a inregistrat)
+    await expect(buyer.getByTestId("bid-message")).toContainText("ridicat plafonul");
     await expect(buyer.getByTestId("your-ceiling")).toContainText(String(propus / 100));
 
     // 5) a doua oară la fel: suma propusă urcă din nou peste plafonul nou
     const alDoilea = await dinCamp(buyer);
     expect(alDoilea).toBeGreaterThan(propus);
     await buyer.getByTestId("bid-submit").click();
-    await expect(buyer.getByTestId("bid-message")).toContainText("lider");
+    await expect(buyer.getByTestId("bid-message")).toContainText("ridicat plafonul");
 
     // 6) o sumă sub plafonul propriu primește mesajul potrivit, nu „ofertă prea mică"
     await buyer.getByTestId("bid-input").fill("300");

@@ -210,7 +210,8 @@
     "boxDays": "أيام",
     "boxHours": "ساعات",
     "boxMinutes": "دقائق",
-    "boxSeconds": "ثوانٍ"
+    "boxSeconds": "ثوانٍ",
+    "bidRaisedCeiling": "لقد رفعت حدّك الأقصى إلى {max}. يبقى السعر {price} — فهو لا يرتفع إلا بالقدر اللازم للتغلب على الآخرين."
   },
   "pigeon": {
     "ring": "رقم الحلقة",

@@ -210,7 +210,8 @@
     "boxDays": "日",
     "boxHours": "時間",
     "boxMinutes": "分",
-    "boxSeconds": "秒"
+    "boxSeconds": "秒",
+    "bidRaisedCeiling": "上限額を {max} に引き上げました。価格は {price} のままです — 他の方を上回るのに必要な分だけ上がります。"
   },
   "pigeon": {
     "ring": "足環番号",

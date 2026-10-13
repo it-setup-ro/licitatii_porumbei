@@ -210,7 +210,8 @@
     "boxDays": "dni",
     "boxHours": "godz.",
     "boxMinutes": "min",
-    "boxSeconds": "sek."
+    "boxSeconds": "sek.",
+    "bidRaisedCeiling": "Podniosłeś swój limit do {max}. Cena pozostaje {price} — rośnie tylko tyle, ile potrzeba, aby przebić innych."
   },
   "pigeon": {
     "ring": "Numer obrączki",

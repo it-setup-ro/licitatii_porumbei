@@ -210,7 +210,8 @@
     "boxDays": "days",
     "boxHours": "hours",
     "boxMinutes": "minutes",
-    "boxSeconds": "seconds"
+    "boxSeconds": "seconds",
+    "bidRaisedCeiling": "You raised your maximum to {max}. The price stays {price} — it only rises as much as needed to beat the others."
   },
   "pigeon": {
     "ring": "Ring number",
