@@ -245,6 +245,48 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
     await ctx2.close();
   });
 
+  test("pagina licitației se actualizează singură când licitează altcineva", async ({
+    page,
+    browser,
+  }) => {
+    test.setTimeout(150_000);
+    /*
+      Clientul: „dacă e pe un cont tot lotul și altul licitează sau se termină
+      timpul / prelungește, atunci nu se actualizează”. Pe pagina porumbelului
+      mergea (panoul are fir live), pe pagina lotului nu avea cine să asculte.
+    */
+    await login(page, "admin@nbp.test", "admin1234");
+    const s = await sale(page);
+    const l = await lot(page, s.saleId, new Date(Date.now() - MIN), new Date(Date.now() + 120 * MIN));
+    const a = await pigeon(page, l, "Viul Test");
+    expect((await post(page.request, `/api/admin/sale-lots/${l}/start`)).body.ok).toBe(true);
+
+    // prima ofertă a unui lot rămâne la prețul de pornire, deci cifra n-ar
+    // avea de ce să se miște; o dăm înainte de a deschide pagina
+    const ctx1 = await browser.newContext({ locale: "ro-RO" });
+    const unu = await ctx1.newPage();
+    await login(unu, "buyer2@nbp.test", "buyer1234");
+    expect((await post(unu.request, `/api/auctions/${a}/bid`, { maxCents: 20_000 })).body.ok).toBe(
+      true
+    );
+
+    await page.goto(`/ro/sales/${s.slug}`);
+    const inainte = await page.getByTestId("sale-lot-price").innerText();
+
+    const ctx2 = await browser.newContext({ locale: "ro-RO" });
+    const doi = await ctx2.newPage();
+    await login(doi, "buyer1@nbp.test", "buyer1234");
+    expect((await post(doi.request, `/api/auctions/${a}/bid`, { maxCents: 30_000 })).body.ok).toBe(
+      true
+    );
+
+    // fără niciun click și fără reîncărcare
+    await expect(page.getByTestId("sale-lot-price")).not.toHaveText(inainte, { timeout: 20_000 });
+
+    await ctx1.close();
+    await ctx2.close();
+  });
+
   test("linkul de dezabonare fără semnătură validă nu oprește nimic", async ({ page }) => {
     await page.goto("/ro/ending-notices/unsubscribe?u=oricine&t=gresit");
     await page.getByTestId("ending-unsub-button").click();

@@ -11,6 +11,7 @@ import { cardInclude, toCardData } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
 import Countdown from "@/components/Countdown";
 import CountdownBoxes from "@/components/CountdownBoxes";
+import SaleLive from "@/components/SaleLive";
 import { parseBreederResults } from "@/lib/breeder-results";
 import RichText from "@/components/RichText";
 import ExpandableText from "@/components/ExpandableText";
@@ -93,8 +94,13 @@ export default async function SalePage({
     timeZone: "Europe/Bucharest",
   });
 
+  // Cât timp licitația e deschisă, pagina se ia singură din nou când cineva
+  // licitează sau se prelungește un lot. Pe cele încheiate n-are ce asculta.
+  const deschisa = sale.lots.some((l) => l.status === "LIVE" || l.status === "SCHEDULED");
+
   return (
     <div>
+      {deschisa && <SaleLive slug={sale.slug} />}
       {/* ── Capul paginii, după macheta clientului: fundal, crescătorul, cifrele ── */}
       <header className="relative overflow-hidden" data-testid="sale-hero">
         {fundal ? (

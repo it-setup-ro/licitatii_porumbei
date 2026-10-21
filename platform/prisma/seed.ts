@@ -20,11 +20,24 @@ async function main() {
     prisma.contactMessage.deleteMany(),
     prisma.notification.deleteMany(),
     prisma.emailLog.deleteMany(),
+    // Aceeași poveste cu abonații la buletin: se adunau de la fiecare rulare
+    // (142 la numărătoarea din 21 oct), iar trimiterea unei campanii către toți
+    // depășea răbdarea testului. La fel cererile de licitație.
+    prisma.newsletterCampaign.deleteMany(),
+    prisma.newsletterSubscriber.deleteMany(),
+    prisma.auctionRequest.deleteMany(),
     prisma.review.deleteMany(),
     prisma.order.deleteMany(),
     prisma.watchItem.deleteMany(),
     prisma.bid.deleteMany(),
     prisma.auction.deleteMany(),
+    // Crescătorii, licitațiile și loturile rămâneau de la rulările vechi:
+    // baza de test ajunsese la 778 de crescători, iar pagina de administrare
+    // a crescătorilor (fără paginare) devenise prea grea pentru teste.
+    prisma.settlement.deleteMany(),
+    prisma.lot.deleteMany(),
+    prisma.sale.deleteMany(),
+    prisma.breeder.deleteMany(),
     prisma.contest.deleteMany(),
     prisma.shippingAgent.deleteMany(),
     prisma.pigeonResult.deleteMany(),
