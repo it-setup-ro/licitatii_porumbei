@@ -58,7 +58,7 @@
     "heroSubtitle": "उच्च प्रदर्शन वाले रेसिंग कबूतरों का नीलामी प्लेटफ़ॉर्म — सुरक्षा, पारदर्शिता, भरोसा।",
     "browseAuctions": "नीलामियाँ देखें",
     "current": "लाइव नीलामियाँ",
-    "upcoming": "आगामी",
+    "upcoming": "आगामी नीलामियाँ",
     "closed": "हाल ही में बंद हुई",
     "viewAll": "सभी देखें",
     "noAuctions": "इस अनुभाग में अभी कोई नीलामी नहीं है।",
@@ -116,7 +116,9 @@
     "organizeTooMany": "एक ही कनेक्शन से बहुत सारे अनुरोध। बाद में कोशिश करें।",
     "followTitle": "हमें फ़ॉलो करें",
     "followText": "नीलामियाँ, कबूतर और रेस के नतीजे, हमारे चैनलों पर।",
-    "followSoon": "जल्द आ रहा है।"
+    "followSoon": "जल्द आ रहा है।",
+    "latestBids": "नवीनतम बोलियाँ",
+    "latestBidLine": "{amount} · {time} पर {name} द्वारा"
   },
   "auction": {
     "statusLive": "लाइव",
@@ -732,7 +734,8 @@
     "lotsInAuction": "इस नीलामी के लॉट",
     "upcomingPeriod": "आगामी: {period}",
     "upcomingNote": "कबूतर नीलामी शुरू होने पर दिखाए जाएँगे।",
-    "pigeonsAtStart": "इस लॉट के कबूतर लॉट शुरू होने पर दिखाए जाएँगे।"
+    "pigeonsAtStart": "इस लॉट के कबूतर लॉट शुरू होने पर दिखाए जाएँगे।",
+    "upcomingWhen": "शुरू: {start} · समाप्त: {end}"
   },
   "email": {
     "subjects": {

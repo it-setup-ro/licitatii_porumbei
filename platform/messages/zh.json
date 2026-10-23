@@ -116,7 +116,9 @@
     "organizeTooMany": "同一网络提交的申请过多，请稍后再试。",
     "followTitle": "关注我们",
     "followText": "拍卖、鸽子和赛绩，尽在我们的社交平台。",
-    "followSoon": "敬请期待。"
+    "followSoon": "敬请期待。",
+    "latestBids": "最新出价",
+    "latestBidLine": "{time} {name} 出价 {amount}"
   },
   "auction": {
     "statusLive": "拍卖中",
@@ -732,7 +734,8 @@
     "lotsInAuction": "本场拍卖的批次",
     "upcomingPeriod": "即将开拍：{period}",
     "upcomingNote": "鸽子将在拍卖开始时显示。",
-    "pigeonsAtStart": "本批次的鸽子将在该批次开始时显示。"
+    "pigeonsAtStart": "本批次的鸽子将在该批次开始时显示。",
+    "upcomingWhen": "开始：{start} · 结束：{end}"
   },
   "email": {
     "subjects": {

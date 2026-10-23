@@ -58,7 +58,7 @@
     "heroSubtitle": "Platforma aukcyjna gołębi pocztowych o wysokich osiągach — bezpieczeństwo, przejrzystość, zaufanie.",
     "browseAuctions": "Przeglądaj aukcje",
     "current": "Trwające aukcje",
-    "upcoming": "Nadchodzące",
+    "upcoming": "Nadchodzące aukcje",
     "closed": "Ostatnio zakończone",
     "viewAll": "Zobacz wszystkie",
     "noAuctions": "Obecnie brak aukcji w tej sekcji.",
@@ -116,7 +116,9 @@
     "organizeTooMany": "Zbyt wiele zgłoszeń z tego samego połączenia. Spróbuj później.",
     "followTitle": "Obserwuj nas",
     "followText": "Aukcje, gołębie i wyniki lotów w naszych kanałach.",
-    "followSoon": "Wkrótce."
+    "followSoon": "Wkrótce.",
+    "latestBids": "Ostatnie oferty",
+    "latestBidLine": "{amount} o {time} od {name}"
   },
   "auction": {
     "statusLive": "Trwa",
@@ -732,7 +734,8 @@
     "lotsInAuction": "Partie na tej aukcji",
     "upcomingPeriod": "Już wkrótce: {period}",
     "upcomingNote": "Gołębie będą widoczne po rozpoczęciu aukcji.",
-    "pigeonsAtStart": "Gołębie z tej partii będą widoczne po rozpoczęciu partii."
+    "pigeonsAtStart": "Gołębie z tej partii będą widoczne po rozpoczęciu partii.",
+    "upcomingWhen": "Start: {start} · koniec: {end}"
   },
   "email": {
     "subjects": {

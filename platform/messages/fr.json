@@ -58,7 +58,7 @@
     "heroSubtitle": "Une plateforme d’enchères pour pigeons voyageurs de haute performance — sécurité, transparence, confiance.",
     "browseAuctions": "Voir les enchères",
     "current": "Enchères en direct",
-    "upcoming": "À venir",
+    "upcoming": "Enchères à venir",
     "closed": "Clôturées récemment",
     "viewAll": "Tout voir",
     "noAuctions": "Aucune enchère dans cette section pour le moment.",
@@ -116,7 +116,9 @@
     "organizeTooMany": "Trop de demandes depuis la même connexion. Réessayez plus tard.",
     "followTitle": "Suivez-nous",
     "followText": "Les enchères, les pigeons et les résultats des concours, sur nos réseaux.",
-    "followSoon": "Bientôt."
+    "followSoon": "Bientôt.",
+    "latestBids": "Dernières offres",
+    "latestBidLine": "{amount} à {time} par {name}"
   },
   "auction": {
     "statusLive": "En direct",
@@ -732,7 +734,8 @@
     "lotsInAuction": "Lots de cette vente",
     "upcomingPeriod": "Bientôt : {period}",
     "upcomingNote": "Les pigeons s’affichent au début de la vente.",
-    "pigeonsAtStart": "Les pigeons de ce lot s’affichent au début du lot."
+    "pigeonsAtStart": "Les pigeons de ce lot s’affichent au début du lot.",
+    "upcomingWhen": "Début : {start} · fin : {end}"
   },
   "email": {
     "subjects": {

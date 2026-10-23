@@ -205,6 +205,20 @@ export default async function SalePage({
                   zeroLabel={status === "UPCOMING" ? ta("startingNow") : ta("closingNow")}
                 />
               )}
+              {/* Voiajor.net scrie apăsat ora de start („Licitatia incepe in: 25 Oct
+                  2026 ora 20”), iar omul chiar are nevoie de ea: numărătoarea inversă
+                  nu-i spune la ce oră să fie în fața telefonului. */}
+              {doarAfis && (
+                <span
+                  className="w-full text-sm text-white/80"
+                  data-testid="sale-hero-when"
+                >
+                  {t("upcomingWhen", {
+                    start: dateFmt.format(period.startsAt),
+                    end: dateFmt.format(period.endsAt),
+                  })}
+                </span>
+              )}
             </div>
           )}
         </div>

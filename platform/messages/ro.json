@@ -58,7 +58,7 @@
     "heroSubtitle": "Platformă de licitații pentru porumbei voiajori de performanță — siguranță, transparență, încredere.",
     "browseAuctions": "Vezi licitațiile",
     "current": "Licitații live",
-    "upcoming": "În curând",
+    "upcoming": "Licitații viitoare",
     "closed": "Închise recent",
     "viewAll": "Vezi toate",
     "noAuctions": "Nicio licitație în această secțiune momentan.",
@@ -116,7 +116,9 @@
     "organizeTooMany": "Prea multe cereri de pe aceeași conexiune. Încearcă mai târziu.",
     "followTitle": "Urmărește-ne",
     "followText": "Licitațiile, porumbeii și rezultatele curselor, pe rețelele noastre.",
-    "followSoon": "În curând."
+    "followSoon": "În curând.",
+    "latestBids": "Ultimele oferte",
+    "latestBidLine": "{amount} la {time} de {name}"
   },
   "auction": {
     "statusLive": "Live",
@@ -732,7 +734,8 @@
     "lotsInAuction": "Loturi în licitație",
     "upcomingPeriod": "Urmează: {period}",
     "upcomingNote": "Porumbeii se văd la startul licitației.",
-    "pigeonsAtStart": "Porumbeii din acest lot se văd când începe lotul."
+    "pigeonsAtStart": "Porumbeii din acest lot se văd când începe lotul.",
+    "upcomingWhen": "Începe: {start} · se încheie: {end}"
   },
   "email": {
     "subjects": {

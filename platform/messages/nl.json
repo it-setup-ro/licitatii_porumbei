@@ -58,7 +58,7 @@
     "heroSubtitle": "Een veilingplatform voor topduiven — veiligheid, transparantie, vertrouwen.",
     "browseAuctions": "Bekijk de veilingen",
     "current": "Lopende veilingen",
-    "upcoming": "Binnenkort",
+    "upcoming": "Komende veilingen",
     "closed": "Onlangs afgelopen",
     "viewAll": "Alles bekijken",
     "noAuctions": "Momenteel geen veilingen in deze rubriek.",
@@ -116,7 +116,9 @@
     "organizeTooMany": "Te veel aanvragen vanaf dezelfde verbinding. Probeer het later opnieuw.",
     "followTitle": "Volg ons",
     "followText": "Veilingen, duiven en wedstrijduitslagen, op onze kanalen.",
-    "followSoon": "Binnenkort."
+    "followSoon": "Binnenkort.",
+    "latestBids": "Laatste biedingen",
+    "latestBidLine": "{amount} om {time} door {name}"
   },
   "auction": {
     "statusLive": "Live",
@@ -732,7 +734,8 @@
     "lotsInAuction": "Loten in deze veiling",
     "upcomingPeriod": "Binnenkort: {period}",
     "upcomingNote": "De duiven worden getoond zodra de veiling start.",
-    "pigeonsAtStart": "De duiven in dit lot worden getoond zodra het lot start."
+    "pigeonsAtStart": "De duiven in dit lot worden getoond zodra het lot start.",
+    "upcomingWhen": "Start: {start} · einde: {end}"
   },
   "email": {
     "subjects": {

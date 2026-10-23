@@ -58,7 +58,7 @@
     "heroSubtitle": "Jukwaa la minada ya njiwa wa mashindano wenye uwezo wa juu — usalama, uwazi, uaminifu.",
     "browseAuctions": "Vinjari minada",
     "current": "Minada inayoendelea",
-    "upcoming": "Inayokuja",
+    "upcoming": "Minada inayokuja",
     "closed": "Iliyofungwa hivi karibuni",
     "viewAll": "Tazama zote",
     "noAuctions": "Hakuna minada katika sehemu hii kwa sasa.",
@@ -116,7 +116,9 @@
     "organizeTooMany": "Maombi mengi mno kutoka muunganisho uleule. Jaribu baadaye.",
     "followTitle": "Tufuate",
     "followText": "Minada, njiwa na matokeo ya mashindano, kwenye kurasa zetu.",
-    "followSoon": "Hivi karibuni."
+    "followSoon": "Hivi karibuni.",
+    "latestBids": "Zabuni za hivi karibuni",
+    "latestBidLine": "{amount} saa {time} kutoka {name}"
   },
   "auction": {
     "statusLive": "Unaendelea",
@@ -732,7 +734,8 @@
     "lotsInAuction": "Makundi katika mnada huu",
     "upcomingPeriod": "Hivi karibuni: {period}",
     "upcomingNote": "Njiwa wanaonyeshwa mnada unapoanza.",
-    "pigeonsAtStart": "Njiwa wa kundi hili wanaonyeshwa kundi linapoanza."
+    "pigeonsAtStart": "Njiwa wa kundi hili wanaonyeshwa kundi linapoanza.",
+    "upcomingWhen": "Unaanza: {start} · unaisha: {end}"
   },
   "email": {
     "subjects": {

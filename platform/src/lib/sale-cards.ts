@@ -55,6 +55,9 @@ export async function getSaleCards(
         ? new Date(Math.max(...momente.map((d) => d.getTime())))
         : new Date(Math.min(...momente.map((d) => d.getTime())));
     const oreDiferite = new Set(momente.map((d) => d.getTime())).size > 1;
+    // ultimul final al licitației, oricare lot ar fi: cardurile viitoare scriu
+    // perioada întreagă, ca pe voiajor.net („25 Oct 20:00 - 02 Nov 20:00")
+    const ultimulFinal = new Date(Math.max(...loturi.map((l) => l.endsAt.getTime())));
 
     return {
       slug: s.slug,
@@ -68,6 +71,7 @@ export async function getSaleCards(
       pigeonCount: porumbei,
       status,
       nextAt,
+      lastAt: ultimulFinal,
       moreThanOneTime: oreDiferite,
     } satisfies SaleCardData;
   });

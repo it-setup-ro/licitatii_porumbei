@@ -25,6 +25,8 @@ export type SaleCardData = {
   status: "LIVE" | "SCHEDULED" | "CLOSED";
   /** începutul cel mai apropiat, finalul cel mai apropiat sau ultimul final */
   nextAt: Date;
+  /** ultimul final al licitației — pentru perioada scrisă pe cardurile viitoare */
+  lastAt: Date;
   /** loturile nu se închid la aceeași oră: atunci scriem „primul lot" */
   moreThanOneTime: boolean;
 };
@@ -48,6 +50,9 @@ export default async function SaleCard({ sale }: { sale: SaleCardData }) {
       : sale.status === "SCHEDULED"
         ? { label: t("statusUPCOMING"), cls: "bg-wing-blue text-white" }
         : { label: t("statusCLOSED"), cls: "bg-ink/70 text-ivory" };
+
+  // licitație care n-a început: perioada întreagă, fără numărul de porumbei
+  const viitoare = sale.status === "SCHEDULED";
 
   const eticheta =
     sale.status === "SCHEDULED"
@@ -88,10 +93,17 @@ export default async function SaleCard({ sale }: { sale: SaleCardData }) {
           {title}
           {sale.breederPlace ? ` · ${sale.breederPlace}` : ""}
         </p>
-        <p className="text-sm text-ink/70" data-testid="sale-card-counts">
-          {t("lotsCount", { count: sale.lotCount })} · {t("pigeonsCount", { count: sale.pigeonCount })}
+        {/* Cât nu s-a dat startul, pe card nu scrie câți porumbei sunt — clientul:
+            „fără porumbeii care vor fi în licitație”. Tot așa face voiajor.net:
+            numărul apare doar la licitațiile care se licitează deja. */}
+        {!viitoare && (
+          <p className="text-sm text-ink/70" data-testid="sale-card-counts">
+            {t("lotsCount", { count: sale.lotCount })} · {t("pigeonsCount", { count: sale.pigeonCount })}
+          </p>
+        )}
+        <p className="text-sm font-semibold" data-testid="sale-card-when">
+          {viitoare ? when.formatRange(sale.nextAt, sale.lastAt) : when.format(sale.nextAt)}
         </p>
-        <p className="text-sm font-semibold">{when.format(sale.nextAt)}</p>
         {sale.status !== "CLOSED" && (
           <div className="flex items-center justify-between pt-1 text-sm">
             <span className="text-xs uppercase tracking-wide text-ink/50">{eticheta}</span>

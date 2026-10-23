@@ -116,7 +116,9 @@
     "organizeTooMany": "طلبات كثيرة من الاتصال نفسه. حاول لاحقًا.",
     "followTitle": "تابعنا",
     "followText": "المزادات والحمام ونتائج السباقات على قنواتنا.",
-    "followSoon": "قريبًا."
+    "followSoon": "قريبًا.",
+    "latestBids": "أحدث المزايدات",
+    "latestBidLine": "{amount} الساعة {time} من {name}"
   },
   "auction": {
     "statusLive": "جارٍ",
@@ -732,7 +734,8 @@
     "lotsInAuction": "لوتات هذا المزاد",
     "upcomingPeriod": "قريبًا: {period}",
     "upcomingNote": "يظهر الحمام عند بدء المزاد.",
-    "pigeonsAtStart": "يظهر حمام هذا اللوت عند بدء اللوت."
+    "pigeonsAtStart": "يظهر حمام هذا اللوت عند بدء اللوت.",
+    "upcomingWhen": "يبدأ: {start} · ينتهي: {end}"
   },
   "email": {
     "subjects": {

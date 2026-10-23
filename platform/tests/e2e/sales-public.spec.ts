@@ -145,9 +145,14 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
     await page.goto("/ro/auctions?status=SCHEDULED");
     const card = page.getByTestId("sale-card").filter({ hasText: s.breeder });
     await expect(card).toHaveCount(1);
-    // cele două loturi și cei doi porumbei se numără pe card, dar nu se văd
-    await expect(card.getByTestId("sale-card-counts")).toContainText("2 loturi");
-    await expect(card.getByTestId("sale-card-counts")).toContainText("2 porumbei");
+    // Până la start, cardul nu spune câți porumbei sunt (așa face și voiajor.net:
+    // numărul apare doar la licitațiile care se licitează deja), dar scrie perioada
+    // întreagă, cu ore.
+    await expect(card.getByTestId("sale-card-counts")).toHaveCount(0);
+    // două momente pe același rând: începutul și sfârșitul
+    await expect(card.getByTestId("sale-card-when")).toHaveText(
+      /\d{2}\.\d{2}.*\d{2}:\d{2}.*\d{2}\.\d{2}.*\d{2}:\d{2}/
+    );
     await expect(page.getByTestId("auction-card")).toHaveCount(0);
 
     /*
@@ -167,6 +172,13 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
 
     await page.goto("/ro/auctions?status=LIVE");
     await expect(page.getByTestId("sale-card").filter({ hasText: s.breeder })).toHaveCount(0);
+
+    // Licitațiile care urmează stau și pe prima pagină, ca pe voiajor.net: omul
+    // vede ce se pregătește fără să intre la Licitații și să schimbe fila.
+    await page.goto("/ro");
+    await expect(
+      page.getByTestId("section-upcoming").getByTestId("sale-card").filter({ hasText: s.breeder })
+    ).toHaveCount(1);
 
     // o licitație doar cu loturi în ciornă nu are pagină publică
     const ciorna = await sale(page);
@@ -291,6 +303,10 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
 
     // fără niciun click și fără reîncărcare
     await expect(page.getByTestId("sale-lot-price")).not.toHaveText(inainte, { timeout: 20_000 });
+
+    // aceeași ofertă se vede pe prima pagină, la „Ultimele oferte"
+    await page.goto("/ro");
+    await expect(page.getByTestId("section-latest-bids")).toContainText("Viul Test");
 
     await ctx1.close();
     await ctx2.close();

@@ -58,7 +58,7 @@
     "heroSubtitle": "Eine Auktionsplattform für Brieftauben mit Spitzenleistung — Sicherheit, Transparenz, Vertrauen.",
     "browseAuctions": "Auktionen ansehen",
     "current": "Laufende Auktionen",
-    "upcoming": "Demnächst",
+    "upcoming": "Kommende Auktionen",
     "closed": "Kürzlich beendet",
     "viewAll": "Alle ansehen",
     "noAuctions": "Derzeit keine Auktionen in diesem Bereich.",
@@ -116,7 +116,9 @@
     "organizeTooMany": "Zu viele Anfragen von derselben Verbindung. Versuchen Sie es später erneut.",
     "followTitle": "Folgen Sie uns",
     "followText": "Auktionen, Tauben und Wettflugergebnisse auf unseren Kanälen.",
-    "followSoon": "Demnächst."
+    "followSoon": "Demnächst.",
+    "latestBids": "Neueste Gebote",
+    "latestBidLine": "{amount} um {time} von {name}"
   },
   "auction": {
     "statusLive": "Live",
@@ -732,7 +734,8 @@
     "lotsInAuction": "Lose dieser Auktion",
     "upcomingPeriod": "Demnächst: {period}",
     "upcomingNote": "Die Tauben werden beim Start der Auktion gezeigt.",
-    "pigeonsAtStart": "Die Tauben dieses Loses werden gezeigt, sobald das Los beginnt."
+    "pigeonsAtStart": "Die Tauben dieses Loses werden gezeigt, sobald das Los beginnt.",
+    "upcomingWhen": "Beginn: {start} · Ende: {end}"
   },
   "email": {
     "subjects": {

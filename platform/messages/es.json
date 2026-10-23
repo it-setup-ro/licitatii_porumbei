@@ -58,7 +58,7 @@
     "heroSubtitle": "Una plataforma de subastas de palomas mensajeras de alto rendimiento: seguridad, transparencia y confianza.",
     "browseAuctions": "Ver subastas",
     "current": "Subastas en curso",
-    "upcoming": "Próximas",
+    "upcoming": "Próximas subastas",
     "closed": "Cerradas recientemente",
     "viewAll": "Ver todas",
     "noAuctions": "Ahora mismo no hay subastas en esta sección.",
@@ -116,7 +116,9 @@
     "organizeTooMany": "Demasiadas solicitudes desde la misma conexión. Inténtalo más tarde.",
     "followTitle": "Síguenos",
     "followText": "Las subastas, las palomas y los resultados de los concursos, en nuestras redes.",
-    "followSoon": "Muy pronto."
+    "followSoon": "Muy pronto.",
+    "latestBids": "Últimas pujas",
+    "latestBidLine": "{amount} a las {time} por {name}"
   },
   "auction": {
     "statusLive": "En curso",
@@ -732,7 +734,8 @@
     "lotsInAuction": "Lotes de esta subasta",
     "upcomingPeriod": "Próximamente: {period}",
     "upcomingNote": "Las palomas se muestran cuando empieza la subasta.",
-    "pigeonsAtStart": "Las palomas de este lote se muestran cuando empieza el lote."
+    "pigeonsAtStart": "Las palomas de este lote se muestran cuando empieza el lote.",
+    "upcomingWhen": "Empieza: {start} · termina: {end}"
   },
   "email": {
     "subjects": {

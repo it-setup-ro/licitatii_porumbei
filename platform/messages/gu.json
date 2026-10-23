@@ -58,7 +58,7 @@
     "heroSubtitle": "ઉચ્ચ પ્રદર્શનવાળા રેસિંગ કબૂતરો માટે હરાજી પ્લેટફોર્મ — સુરક્ષા, પારદર્શિતા, વિશ્વાસ.",
     "browseAuctions": "હરાજીઓ જુઓ",
     "current": "ચાલુ હરાજીઓ",
-    "upcoming": "આગામી",
+    "upcoming": "આગામી હરાજીઓ",
     "closed": "તાજેતરમાં બંધ થયેલી",
     "viewAll": "બધું જુઓ",
     "noAuctions": "હાલમાં આ વિભાગમાં કોઈ હરાજી નથી.",
@@ -116,7 +116,9 @@
     "organizeTooMany": "એક જ કનેક્શનથી ઘણી બધી વિનંતીઓ. પછી પ્રયાસ કરો.",
     "followTitle": "અમને ફોલો કરો",
     "followText": "હરાજીઓ, કબૂતરો અને રેસનાં પરિણામો, અમારી ચેનલો પર.",
-    "followSoon": "ટૂંક સમયમાં."
+    "followSoon": "ટૂંક સમયમાં.",
+    "latestBids": "તાજેતરની બોલીઓ",
+    "latestBidLine": "{amount} · {time} વાગ્યે {name} દ્વારા"
   },
   "auction": {
     "statusLive": "ચાલુ",
@@ -732,7 +734,8 @@
     "lotsInAuction": "આ હરાજીના લોટ",
     "upcomingPeriod": "આગામી: {period}",
     "upcomingNote": "કબૂતરો હરાજી શરૂ થાય ત્યારે બતાવવામાં આવશે.",
-    "pigeonsAtStart": "આ લોટના કબૂતરો લોટ શરૂ થાય ત્યારે બતાવવામાં આવશે."
+    "pigeonsAtStart": "આ લોટના કબૂતરો લોટ શરૂ થાય ત્યારે બતાવવામાં આવશે.",
+    "upcomingWhen": "શરૂઆત: {start} · સમાપ્તિ: {end}"
   },
   "email": {
     "subjects": {

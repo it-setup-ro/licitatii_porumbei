@@ -58,7 +58,7 @@
     "heroSubtitle": "高性能レース鳩のためのオークションプラットフォーム — 安全・透明・信頼。",
     "browseAuctions": "オークションを見る",
     "current": "開催中のオークション",
-    "upcoming": "開催予定",
+    "upcoming": "開催予定のオークション",
     "closed": "最近終了したオークション",
     "viewAll": "すべて見る",
     "noAuctions": "現在このセクションにオークションはありません。",
@@ -116,7 +116,9 @@
     "organizeTooMany": "同じ接続からの申し込みが多すぎます。しばらくしてからお試しください。",
     "followTitle": "フォローする",
     "followText": "オークション、鳩、レース結果を各チャンネルでお届けします。",
-    "followSoon": "近日公開。"
+    "followSoon": "近日公開。",
+    "latestBids": "最新の入札",
+    "latestBidLine": "{name}さんが{time}に{amount}で入札"
   },
   "auction": {
     "statusLive": "開催中",
@@ -732,7 +734,8 @@
     "lotsInAuction": "このオークションのロット",
     "upcomingPeriod": "開催予定：{period}",
     "upcomingNote": "鳩はオークションの開始時に表示されます。",
-    "pigeonsAtStart": "このロットの鳩はロットの開始時に表示されます。"
+    "pigeonsAtStart": "このロットの鳩はロットの開始時に表示されます。",
+    "upcomingWhen": "開始：{start}・終了：{end}"
   },
   "email": {
     "subjects": {

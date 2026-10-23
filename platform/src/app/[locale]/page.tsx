@@ -2,7 +2,11 @@ import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/db";
 import { getAuctionsByStatus } from "@/lib/queries";
+import { getSaleCards } from "@/lib/sale-cards";
+import { latestBids } from "@/lib/latest-bids";
 import AuctionCard from "@/components/AuctionCard";
+import SaleCard from "@/components/SaleCard";
+import LatestBids from "@/components/LatestBids";
 import ContestCarousel from "@/components/ContestCarousel";
 import AuctionRequestForm from "@/components/AuctionRequestForm";
 import { IconFacebook, IconInstagram, IconYouTube } from "@/components/SocialIcons";
@@ -30,8 +34,12 @@ export default async function HomePage({
   const t = await getTranslations("home");
   const currentLocale = await getLocale();
 
-  const [live, liveLots, legacyRows, articles, contests, stats] = await Promise.all([
+  const [live, viitoare, oferte, liveLots, legacyRows, articles, contests, stats] = await Promise.all([
     getAuctionsByStatus("LIVE", 6),
+    // Ca pe voiajor.net: ce se licitează acum, ce s-a oferit ultima dată și ce
+    // urmează — toate pe prima pagină, fără să caute nimeni.
+    getSaleCards("SCHEDULED", 6),
+    latestBids(5),
     // Clientul: „să apară toți crescătorii cu licitații active". Crescătorii
     // licitațiilor pe loturi nu au cont — se iau din loturile aflate acum live.
     prisma.lot.findMany({
@@ -435,6 +443,34 @@ export default async function HomePage({
             </div>
           )}
         </section>
+
+        {/* ───────────── Ultimele oferte ───────────── */}
+        {oferte.length > 0 && (
+          <section data-testid="section-latest-bids">
+            <h2 className="font-display mb-5 text-2xl font-bold sm:text-3xl">{t("latestBids")}</h2>
+            <LatestBids bids={oferte} />
+          </section>
+        )}
+
+        {/* ───────────── Licitații viitoare ───────────── */}
+        {viitoare.length > 0 && (
+          <section data-testid="section-upcoming">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <h2 className="font-display text-2xl font-bold sm:text-3xl">{t("upcoming")}</h2>
+              <Link
+                href="/auctions?status=SCHEDULED"
+                className="font-semibold text-wing-blue hover:underline"
+              >
+                {t("viewAll")} →
+              </Link>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {viitoare.map((v) => (
+                <SaleCard key={v.slug} sale={v} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       {/* ───── Vreau să organizez o licitație · Urmărește-ne ───── */}

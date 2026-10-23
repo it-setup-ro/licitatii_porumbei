@@ -58,7 +58,7 @@
     "heroSubtitle": "An auction platform for high-performance racing pigeons — safety, transparency, trust.",
     "browseAuctions": "Browse auctions",
     "current": "Live auctions",
-    "upcoming": "Upcoming",
+    "upcoming": "Upcoming auctions",
     "closed": "Recently closed",
     "viewAll": "View all",
     "noAuctions": "No auctions in this section right now.",
@@ -116,7 +116,9 @@
     "organizeTooMany": "Too many requests from the same connection. Try again later.",
     "followTitle": "Follow us",
     "followText": "Auctions, pigeons and race results, on our channels.",
-    "followSoon": "Coming soon."
+    "followSoon": "Coming soon.",
+    "latestBids": "Latest bids",
+    "latestBidLine": "{amount} at {time} by {name}"
   },
   "auction": {
     "statusLive": "Live",
@@ -732,7 +734,8 @@
     "lotsInAuction": "Lots in this auction",
     "upcomingPeriod": "Coming up: {period}",
     "upcomingNote": "The pigeons are shown when the auction starts.",
-    "pigeonsAtStart": "The pigeons in this lot are shown when the lot starts."
+    "pigeonsAtStart": "The pigeons in this lot are shown when the lot starts.",
+    "upcomingWhen": "Starts: {start} · ends: {end}"
   },
   "email": {
     "subjects": {
