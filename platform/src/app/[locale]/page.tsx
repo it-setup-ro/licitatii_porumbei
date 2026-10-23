@@ -77,13 +77,17 @@ export default async function HomePage({
     // nepublicate sau încheiate rămân afară; cel ales anume în administrare
     // („Banda pe prima pagină") intră primul în carusel.
     prisma.contest.findMany({
-      // Un concurs intră în carusel fie dacă nu s-a încheiat după dată, fie
-      // dacă administratorul l-a trecut pe „Activ": s-a întâmplat să fie pus
-      // pe Activ cu orele rămase vechi, iar omul îl aștepta pe prima pagină.
-      where: {
-        published: true,
-        OR: [{ endsAt: { gte: new Date() } }, { status: "ACTIVE" }],
-      },
+      /*
+        Banda ține cât ține concursul: până la „Se încheie la".
+
+        Daniel: „după concurs nu ar mai trebui să fie pe bandă... dacă sunt
+        multe concursuri devine dificil să mergi la fiecare să-l oprești. Și
+        totuși concursul trebuie să fie anunțat din timp, să știe lumea să se
+        înscrie." Deci apare de când e publicat (inclusiv înainte de start, ca
+        anunț) și pleacă singură la final. Starea o întreține sweeperul
+        (`lib/contests.ts`), iar pagina concursului rămâne publicată.
+      */
+      where: { published: true, endsAt: { gte: new Date() } },
       orderBy: [{ featured: "desc" }, { startsAt: "asc" }],
       take: 6,
     }),

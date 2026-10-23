@@ -20,7 +20,9 @@ funcționează:
 4. **Scrie cu script, nu cu editări oarbe** → skill `batch-edits`.
 5. **Texte noi** → skill `texte-13-limbi` (nu lăsa o limbă pe dinafară).
 6. **Verifică**: `npx tsc --noEmit`, `npm test`, apoi e2e țintit → skill `e2e`.
-   Suita completă (~24 min, 304 teste) doar înainte de publicare.
+   Suita completă (~24 min, 306 teste) doar înainte de publicare. Caută și
+   **interferențele**: ce alte pagini folosesc ce-ai atins (`grep` după numele
+   componentei, al cheii de text, al funcției) și treci cu testele peste ele.
 7. **Scrie în documente**: rând în istoricul din `STARE-PROIECT.md`, rând nou în
    harta de aici dacă a apărut un fișier care contează.
 8. **Commit doar la cerere**; publicarea → skill `deploy`.
@@ -63,7 +65,7 @@ e-mailuri), nu te apăra cu testele: fă proba pe server → skill `proba-live`.
 | E-mail: configurare | din Administrare → E-mailuri: `components/admin/EmailSetupCard.tsx` + `api/admin/email-config`, parola criptată (`lib/secret-box.ts`); `.env` are întâietate (`scripts/set-smtp.sh`); jurnal: `app/[locale]/admin/emails` |
 | Comenzi, plată, decont | `lib/orders.ts`, `lib/settlement-math.ts`, `lib/payment-instructions.ts` (pure); admin: `app/[locale]/admin/orders`, `admin/settlements`; cumpărător: `app/[locale]/orders/[id]` |
 | Anunțuri pentru administrator | `lib/alerts.ts`, `lib/telegram.ts`, `lib/telegram-link.ts`, `app/[locale]/admin/alerts`; pe server: `scripts/set-telegram.sh` |
-| Prima pagină, concursuri, meniu | `app/[locale]/page.tsx` (live, **Ultimele oferte** din `lib/latest-bids.ts` + `components/LatestBids.tsx`, **Licitații viitoare** din `getSaleCards("SCHEDULED")`), `components/ContestCarousel.tsx`, `ContestBanner.tsx`, `SiteHeader.tsx` (`linkGroups`), `AccountMenu.tsx` |
+| Prima pagină, concursuri, meniu | Banda de concurs: `lib/contests.ts` ține stările la zi din sweeper (UPCOMING→ACTIVE la start, →FINISHED la final), iar prima pagină ia doar concursurile publicate cu `endsAt` în viitor — se anunță dinainte, pleacă singură la final, pagina concursului rămâne; test: `tests/e2e/banda-concurs.spec.ts`. `app/[locale]/page.tsx` (live, **Ultimele oferte** din `lib/latest-bids.ts` + `components/LatestBids.tsx`, **Licitații viitoare** din `getSaleCards("SCHEDULED")`), `components/ContestCarousel.tsx`, `ContestBanner.tsx`, `SiteHeader.tsx` (`linkGroups`), `AccountMenu.tsx` |
 | Ajutor, articole, magazin | `lib/faq.ts` + `app/[locale]/help`; articole: `app/[locale]/articles/**`, propuneri: `api/articles/propose`; magazin: `admin/shop-orders`, `admin/products` |
 | Ascundere / arhivare / ștergere | `Auction.hiddenAt`, `Sale.archivedAt`, `Breeder.hiddenAt`; rute `/hide`, `/withdraw`, `/archive`, DELETE; butoane: `AuctionVisibility.tsx`, `SaleAdminActions.tsx`, `RowActions.tsx` |
 | Erori pe câmpuri | `lib/api.ts` (`jsonValidationError`, `validationFields`; corp fără JSON → `INVALID_JSON` 400) |
@@ -99,6 +101,13 @@ node scripts/check-locale.cjs --all      # aceleași chei în toate limbile
 
 ## Reguli de siguranță
 
+- **Nu strica ce merge.** Orice cerere e „repar” sau „adaug”, niciodată „refac”.
+  Ce funcționează deja — pagini, fluxuri, texte, butoane — nu se schimbă dacă
+  clientul n-a cerut-o. Când o schimbare atinge o bucată folosită și în alte
+  părți (componentă, cheie de text, câmp, interogare), caută **toate** locurile
+  care o folosesc (`grep` după nume) și verifică-le pe rând, cu e2e pe paginile
+  acelea. Dacă un test vechi cere exact ce clientul vrea schimbat, rescrie-l și
+  spune-i lui Daniel ce-ai rescris și de ce.
 - **Nu rula `reset-demo.sh` / `db:seed` pe server** fără acordul lui Daniel —
   șterge date reale (s-a întâmplat).
 - Scripturi care modifică date pe producție: spune ce fac, cere acordul, arată

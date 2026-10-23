@@ -18,6 +18,7 @@ export async function register() {
   const { refreshBnrRate } = await import("./lib/fx");
   const { pollTelegramLinks } = await import("./lib/telegram-link");
   const { sendNewsletterBatch } = await import("./lib/newsletter-campaign");
+  const { actualizeazaStarileConcursurilor } = await import("./lib/contests");
 
   const ceas = setInterval(async () => {
     try {
@@ -42,6 +43,13 @@ export async function register() {
       await sendNewsletterBatch();
     } catch (e) {
       console.error("[newsletter]", e);
+    }
+    try {
+      // concursurile trec singure pe „in desfasurare" si pe „incheiat", ca sa
+      // nu umble nimeni pe la fiecare cand sunt multe
+      await actualizeazaStarileConcursurilor();
+    } catch (e) {
+      console.error("[concursuri]", e);
     }
   }, 15_000);
 

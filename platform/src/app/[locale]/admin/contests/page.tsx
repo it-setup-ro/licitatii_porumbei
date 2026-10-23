@@ -105,14 +105,14 @@ const FIELDS: FieldDef[] = [
     key: "published",
     label: "Publicat",
     type: "boolean",
-    hint: "Cât e oprit, concursul se vede doar de aici. Pornit, apare pe site.",
+    hint: "Cât e oprit, concursul se vede doar de aici. Pornit, apare pe site. Pagina lui rămâne și după concurs, pentru regulament și rezultate.",
   },
   {
     key: "featured",
     label: "Banda pe prima pagină",
     type: "boolean",
     full: true,
-    hint: "Prima pagină arată o singură bandă. Pornește-l aici ca să fie acesta — se stinge singur de pe celelalte concursuri. Dacă nu alegi niciunul, se afișează cel aflat în desfășurare.",
+    hint: "Prima pagină arată o singură bandă. Pornește-l aici ca să fie acesta — se stinge singur de pe celelalte concursuri. Dacă nu alegi niciunul, se afișează cel aflat în desfășurare. Banda pleacă singură de pe prima pagină după ora din „Se încheie la”, iar starea se pune singură — nu trebuie oprit nimic cu mâna.",
   },
 ];
 
