@@ -729,7 +729,10 @@
     "aboutBreederShort": "Sobre el criador",
     "readFullStory": "Leer toda la presentación",
     "importantResults": "Resultados principales",
-    "lotsInAuction": "Lotes de esta subasta"
+    "lotsInAuction": "Lotes de esta subasta",
+    "upcomingPeriod": "Próximamente: {period}",
+    "upcomingNote": "Las palomas se muestran cuando empieza la subasta.",
+    "pigeonsAtStart": "Las palomas de este lote se muestran cuando empieza el lote."
   },
   "email": {
     "subjects": {

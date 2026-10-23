@@ -82,6 +82,24 @@ export default async function SalePage({
   const period = salePeriod(sale.lots);
   const status = saleStatus(sale.lots);
 
+  /*
+    Cât timp n-a pornit niciun lot, pagina e un afiș: cine vinde și când.
+
+    Clientul: „aș vrea să apară «în curând» să se vadă doar perioada când se va
+    da startul și crescătorul, fără porumbeii care vor fi în licitație. Un fel de
+    «Urmează Licitație 01.01. - 10.01.2027»”. Deci nici cifre, nici loturi, nici
+    poze de porumbei; porumbeii apar la start (și pagina lor dă 404 până atunci).
+  */
+  const doarAfis = status === "UPCOMING";
+  // „1 – 10 ianuarie 2027": Intl strânge singur ce au în comun cele două date
+  const perioadaScrisa = period
+    ? platformFormat(intlLocale(currentLocale), {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).formatRange(period.startsAt, period.endsAt)
+    : null;
+
   // „Loc 1 | Maraton – Berlin | 2025" → trei coloane, ca în machetă
   const rezultate = parseBreederResults(results);
 
@@ -148,6 +166,7 @@ export default async function SalePage({
             </div>
           </div>
 
+          {!doarAfis && (
           <dl className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3" data-testid="sale-stats">
             <HeroStat label={t("pigeons")} value={String(all.length)} />
             <HeroStat label={t("lots")} value={String(sale.lots.length)} />
@@ -165,11 +184,14 @@ export default async function SalePage({
               testid="sale-average"
             />
           </dl>
+          )}
 
           {period && (
             <div className="mt-5 flex flex-wrap items-center gap-4" data-testid="sale-hero-time">
-              <span className="text-xs font-bold uppercase tracking-wide text-white/70">
-                {status === "CLOSED" ? t("endedAt") : t("endsAtLabel")} {dateFmt.format(period.endsAt)}
+              <span className="text-xs font-bold uppercase tracking-wide text-white/70" data-testid="sale-hero-period">
+                {doarAfis && perioadaScrisa
+                  ? t("upcomingPeriod", { period: perioadaScrisa })
+                  : `${status === "CLOSED" ? t("endedAt") : t("endsAtLabel")} ${dateFmt.format(period.endsAt)}`}
               </span>
               {status !== "CLOSED" && (
                 <CountdownBoxes
@@ -244,6 +266,11 @@ export default async function SalePage({
 
 
       {/* ── Loturile ── */}
+      {doarAfis ? (
+        <p className="mt-10 text-sm text-ink/60" data-testid="sale-upcoming-note">
+          {t("upcomingNote")}
+        </p>
+      ) : (
       <section className="mt-10" data-testid="sale-lots">
         <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="font-display text-2xl font-bold">{t("lotsInAuction")}</h2>
@@ -323,6 +350,14 @@ export default async function SalePage({
                   </summary>
 
                   <div className="border-t border-ink/10 p-5">
+                    {/* Un lot care n-a pornit nu-și arată porumbeii: cardurile ar duce
+                        la pagini care dau 404 până la start. */}
+                    {lot.status === "SCHEDULED" ? (
+                      <p className="text-sm text-ink/60" data-testid="sale-lot-later">
+                        {t("pigeonsAtStart")}
+                      </p>
+                    ) : (
+                      <>
                     {/* grila */}
                     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 group-data-[view=list]:hidden">
                       {lot.auctions.map((a) => (
@@ -367,6 +402,8 @@ export default async function SalePage({
                         );
                       })}
                     </ul>
+                      </>
+                    )}
                   </div>
                 </details>
               );
@@ -374,6 +411,7 @@ export default async function SalePage({
           </div>
         </ViewToggle>
       </section>
+      )}
 
         {/* Articolele lui, cele mai noi întâi */}
         {breederArticles.length > 0 && (

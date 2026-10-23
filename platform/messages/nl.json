@@ -729,7 +729,10 @@
     "aboutBreederShort": "Over de kweker",
     "readFullStory": "Lees de volledige presentatie",
     "importantResults": "Belangrijkste uitslagen",
-    "lotsInAuction": "Loten in deze veiling"
+    "lotsInAuction": "Loten in deze veiling",
+    "upcomingPeriod": "Binnenkort: {period}",
+    "upcomingNote": "De duiven worden getoond zodra de veiling start.",
+    "pigeonsAtStart": "De duiven in dit lot worden getoond zodra het lot start."
   },
   "email": {
     "subjects": {

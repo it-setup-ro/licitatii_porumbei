@@ -729,7 +729,10 @@
     "aboutBreederShort": "À propos de l’éleveur",
     "readFullStory": "Lire toute la présentation",
     "importantResults": "Résultats principaux",
-    "lotsInAuction": "Lots de cette vente"
+    "lotsInAuction": "Lots de cette vente",
+    "upcomingPeriod": "Bientôt : {period}",
+    "upcomingNote": "Les pigeons s’affichent au début de la vente.",
+    "pigeonsAtStart": "Les pigeons de ce lot s’affichent au début du lot."
   },
   "email": {
     "subjects": {

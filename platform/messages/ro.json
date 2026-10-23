@@ -729,7 +729,10 @@
     "aboutBreederShort": "Despre crescător",
     "readFullStory": "Citește toată prezentarea crescătorului",
     "importantResults": "Rezultate importante",
-    "lotsInAuction": "Loturi în licitație"
+    "lotsInAuction": "Loturi în licitație",
+    "upcomingPeriod": "Urmează: {period}",
+    "upcomingNote": "Porumbeii se văd la startul licitației.",
+    "pigeonsAtStart": "Porumbeii din acest lot se văd când începe lotul."
   },
   "email": {
     "subjects": {

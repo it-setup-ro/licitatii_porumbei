@@ -729,7 +729,10 @@
     "aboutBreederShort": "બ્રીડર વિશે",
     "readFullStory": "બ્રીડરનો પૂરો પરિચય વાંચો",
     "importantResults": "મુખ્ય પરિણામો",
-    "lotsInAuction": "આ હરાજીના લોટ"
+    "lotsInAuction": "આ હરાજીના લોટ",
+    "upcomingPeriod": "આગામી: {period}",
+    "upcomingNote": "કબૂતરો હરાજી શરૂ થાય ત્યારે બતાવવામાં આવશે.",
+    "pigeonsAtStart": "આ લોટના કબૂતરો લોટ શરૂ થાય ત્યારે બતાવવામાં આવશે."
   },
   "email": {
     "subjects": {

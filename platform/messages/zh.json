@@ -729,7 +729,10 @@
     "aboutBreederShort": "关于鸽舍",
     "readFullStory": "阅读鸽舍完整介绍",
     "importantResults": "主要成绩",
-    "lotsInAuction": "本场拍卖的批次"
+    "lotsInAuction": "本场拍卖的批次",
+    "upcomingPeriod": "即将开拍：{period}",
+    "upcomingNote": "鸽子将在拍卖开始时显示。",
+    "pigeonsAtStart": "本批次的鸽子将在该批次开始时显示。"
   },
   "email": {
     "subjects": {

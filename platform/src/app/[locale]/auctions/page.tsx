@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 import { normalizeSearch, DIACRITICE_DIN, DIACRITICE_IN } from "@/lib/search";
 import SaleCard from "@/components/SaleCard";
 import AuctionCard from "@/components/AuctionCard";
-import { cardInclude, toCardData, type AuctionWithCard } from "@/lib/queries";
+import { cardInclude, toCardData, LOTURI_PORNITE, type AuctionWithCard } from "@/lib/queries";
 import { getSaleCards } from "@/lib/sale-cards";
 
 export const dynamic = "force-dynamic";
@@ -76,7 +76,7 @@ export default async function AuctionsPage({
     // deși porumbelul lui e la „Închise" sau la „În curând"
     const peStare = await prisma.auction.groupBy({
       by: ["status"],
-      where: { pigeonId: { in: pigeonIds }, saleMode: "AUCTION", hiddenAt: null },
+      where: { pigeonId: { in: pigeonIds }, saleMode: "AUCTION", hiddenAt: null, ...LOTURI_PORNITE },
       _count: { _all: true },
     });
     potriviriPeStare = Object.fromEntries(peStare.map((r) => [r.status, r._count._all]));
@@ -87,7 +87,7 @@ export default async function AuctionsPage({
     // Cine caută un porumbel anume vrea să-l vadă, nu doar licitația lui. Fără
     // căutare, lista rămâne curată: numai licitațiile crescătorilor.
     porumbei = await prisma.auction.findMany({
-      where: { status, saleMode: "AUCTION", hiddenAt: null, pigeonId: { in: pigeonIds } },
+      where: { status, saleMode: "AUCTION", hiddenAt: null, pigeonId: { in: pigeonIds }, ...LOTURI_PORNITE },
       include: cardInclude,
       orderBy: status === "CLOSED" ? { closedAt: "desc" } : { endsAt: "asc" },
       take: 30,

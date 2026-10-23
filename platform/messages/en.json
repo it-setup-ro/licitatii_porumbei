@@ -729,7 +729,10 @@
     "aboutBreederShort": "About the breeder",
     "readFullStory": "Read the full presentation",
     "importantResults": "Key results",
-    "lotsInAuction": "Lots in this auction"
+    "lotsInAuction": "Lots in this auction",
+    "upcomingPeriod": "Coming up: {period}",
+    "upcomingNote": "The pigeons are shown when the auction starts.",
+    "pigeonsAtStart": "The pigeons in this lot are shown when the lot starts."
   },
   "email": {
     "subjects": {

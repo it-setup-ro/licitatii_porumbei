@@ -729,7 +729,10 @@
     "aboutBreederShort": "Über den Züchter",
     "readFullStory": "Ganze Vorstellung lesen",
     "importantResults": "Wichtigste Ergebnisse",
-    "lotsInAuction": "Lose dieser Auktion"
+    "lotsInAuction": "Lose dieser Auktion",
+    "upcomingPeriod": "Demnächst: {period}",
+    "upcomingNote": "Die Tauben werden beim Start der Auktion gezeigt.",
+    "pigeonsAtStart": "Die Tauben dieses Loses werden gezeigt, sobald das Los beginnt."
   },
   "email": {
     "subjects": {

@@ -84,6 +84,19 @@ export default async function AuctionDetailPage({
   const lotLabelText =
     auction.lot && auction.lotPosition ? lotLabel(auction.lot.number, auction.lotPosition) : null;
 
+  /*
+    Până la startul lotului, porumbelul nu există pentru vizitatori.
+
+    Clientul: „aș vrea să apară «în curând» să se vadă doar perioada când se va
+    da startul și crescătorul, fără porumbeii care vor fi în licitație”. Scoaterea
+    din liste nu ajunge: un link trimis pe WhatsApp ar arăta tot. Administratorul
+    și crescătorul licitației îl văd în continuare, ca să poată pregăti licitația.
+  */
+  const lotNepornit = auction.lot !== null && !["LIVE", "CLOSED"].includes(auction.lot.status);
+  const alLui = user?.role === "ADMIN" || (breeder?.userId != null && breeder.userId === user?.id);
+  if (lotNepornit && !alLui) notFound();
+
+
   const sellerStats = await prisma.review.aggregate({
     where: { sellerId: seller.id, status: "VISIBLE" },
     _avg: { rating: true },

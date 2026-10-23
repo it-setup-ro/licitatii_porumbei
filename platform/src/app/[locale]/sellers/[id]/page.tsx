@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations, getLocale, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
-import { toCardData, cardInclude } from "@/lib/queries";
+import { toCardData, cardInclude, LOTURI_PORNITE } from "@/lib/queries";
 import AuctionCard from "@/components/AuctionCard";
 import StarRating from "@/components/StarRating";
 import { platformFormat } from "@/lib/platform-time";
@@ -36,7 +36,8 @@ export default async function SellerProfilePage({
       take: 20,
     }),
     prisma.auction.findMany({
-      where: { sellerId: id, status: { in: ["LIVE", "SCHEDULED"] } },
+      // porumbeii unui lot care n-a pornit nu se văd nicăieri public
+      where: { sellerId: id, status: { in: ["LIVE", "SCHEDULED"] }, ...LOTURI_PORNITE },
       include: cardInclude,
       orderBy: { endsAt: "asc" },
       take: 12,

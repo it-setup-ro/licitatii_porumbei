@@ -729,7 +729,10 @@
     "aboutBreederShort": "ब्रीडर के बारे में",
     "readFullStory": "ब्रीडर का पूरा परिचय पढ़ें",
     "importantResults": "मुख्य परिणाम",
-    "lotsInAuction": "इस नीलामी के लॉट"
+    "lotsInAuction": "इस नीलामी के लॉट",
+    "upcomingPeriod": "आगामी: {period}",
+    "upcomingNote": "कबूतर नीलामी शुरू होने पर दिखाए जाएँगे।",
+    "pigeonsAtStart": "इस लॉट के कबूतर लॉट शुरू होने पर दिखाए जाएँगे।"
   },
   "email": {
     "subjects": {

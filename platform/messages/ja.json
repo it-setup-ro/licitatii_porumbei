@@ -729,7 +729,10 @@
     "aboutBreederShort": "ブリーダーについて",
     "readFullStory": "ブリーダーの紹介を全文読む",
     "importantResults": "主な成績",
-    "lotsInAuction": "このオークションのロット"
+    "lotsInAuction": "このオークションのロット",
+    "upcomingPeriod": "開催予定：{period}",
+    "upcomingNote": "鳩はオークションの開始時に表示されます。",
+    "pigeonsAtStart": "このロットの鳩はロットの開始時に表示されます。"
   },
   "email": {
     "subjects": {

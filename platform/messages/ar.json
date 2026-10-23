@@ -729,7 +729,10 @@
     "aboutBreederShort": "عن المربّي",
     "readFullStory": "اقرأ تعريف المربّي كاملًا",
     "importantResults": "أهم النتائج",
-    "lotsInAuction": "لوتات هذا المزاد"
+    "lotsInAuction": "لوتات هذا المزاد",
+    "upcomingPeriod": "قريبًا: {period}",
+    "upcomingNote": "يظهر الحمام عند بدء المزاد.",
+    "pigeonsAtStart": "يظهر حمام هذا اللوت عند بدء اللوت."
   },
   "email": {
     "subjects": {

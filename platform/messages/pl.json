@@ -729,7 +729,10 @@
     "aboutBreederShort": "O hodowcy",
     "readFullStory": "Przeczytaj całą prezentację",
     "importantResults": "Najważniejsze wyniki",
-    "lotsInAuction": "Partie na tej aukcji"
+    "lotsInAuction": "Partie na tej aukcji",
+    "upcomingPeriod": "Już wkrótce: {period}",
+    "upcomingNote": "Gołębie będą widoczne po rozpoczęciu aukcji.",
+    "pigeonsAtStart": "Gołębie z tej partii będą widoczne po rozpoczęciu partii."
   },
   "email": {
     "subjects": {

@@ -150,11 +150,20 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
     await expect(card.getByTestId("sale-card-counts")).toContainText("2 porumbei");
     await expect(page.getByTestId("auction-card")).toHaveCount(0);
 
-    // cardul duce în licitație, de unde se văd loturile cu porumbeii lor
+    /*
+      Cardul duce în licitație, dar până la start pagina e doar un afiș.
+
+      Clientul: „aș vrea să apară «în curând» să se vadă doar perioada când se va
+      da startul și crescătorul, fără porumbeii care vor fi în licitație”.
+    */
     await card.click();
     await expect(page).toHaveURL(new RegExp(`/ro/sales/${s.slug}$`));
-    await expect(page.getByTestId("sale-lot")).toHaveCount(2);
-    await expect(page.getByText("Programatul Test").first()).toBeVisible();
+    await expect(page.getByTestId("sale-page-title")).toHaveText(s.breeder);
+    await expect(page.getByTestId("sale-hero-period")).toContainText("Urmează");
+    await expect(page.getByTestId("sale-upcoming-note")).toBeVisible();
+    await expect(page.getByTestId("sale-lot")).toHaveCount(0);
+    await expect(page.getByTestId("sale-stats")).toHaveCount(0);
+    await expect(page.getByText("Programatul Test")).toHaveCount(0);
 
     await page.goto("/ro/auctions?status=LIVE");
     await expect(page.getByTestId("sale-card").filter({ hasText: s.breeder })).toHaveCount(0);
@@ -287,6 +296,40 @@ test.describe("Licitații pe loturi — ce vede cumpărătorul", () => {
     await ctx2.close();
   });
 
+
+  test("până la start, porumbelul nu se deschide nici cu linkul direct", async ({
+    page,
+    browser,
+  }) => {
+    test.setTimeout(120_000);
+    /*
+      „Fără porumbeii care vor fi în licitație” nu ține dacă îi scoatem doar din
+      pagina licitației: un link trimis pe WhatsApp ar arăta tot, iar căutarea
+      pe nume la fel. Adminul îl vede în continuare, ca să poată pregăti lotul.
+    */
+    await login(page, "admin@nbp.test", "admin1234");
+    const s = await sale(page);
+    const l = await lot(page, s.saleId, new Date(Date.now() + 60 * MIN), new Date(Date.now() + 180 * MIN));
+    const nume = `Nevăzutul ${uid()}`;
+    const a = await pigeon(page, l, nume);
+    expect((await post(page.request, `/api/admin/sale-lots/${l}/start`)).body.status).toBe(
+      "SCHEDULED"
+    );
+
+    const ctx = await browser.newContext({ locale: "ro-RO" });
+    const vizitator = await ctx.newPage();
+    const res = await vizitator.goto(`/ro/auctions/${a}`);
+    expect(res?.status(), "porumbelul unui lot nepornit nu are pagină").toBe(404);
+
+    await vizitator.goto(`/ro/auctions?status=SCHEDULED&q=${encodeURIComponent(nume)}`);
+    await expect(vizitator.getByTestId("auction-card")).toHaveCount(0);
+    await expect(vizitator.getByTestId("sale-card").filter({ hasText: s.breeder })).toHaveCount(1);
+
+    const caAdmin = await page.goto(`/ro/auctions/${a}`);
+    expect(caAdmin?.status(), "adminul trebuie să-l poată deschide").toBe(200);
+
+    await ctx.close();
+  });
   test("linkul de dezabonare fără semnătură validă nu oprește nimic", async ({ page }) => {
     await page.goto("/ro/ending-notices/unsubscribe?u=oricine&t=gresit");
     await page.getByTestId("ending-unsub-button").click();

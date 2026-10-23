@@ -729,7 +729,10 @@
     "aboutBreederShort": "Kuhusu mfugaji",
     "readFullStory": "Soma maelezo kamili ya mfugaji",
     "importantResults": "Matokeo muhimu",
-    "lotsInAuction": "Makundi katika mnada huu"
+    "lotsInAuction": "Makundi katika mnada huu",
+    "upcomingPeriod": "Hivi karibuni: {period}",
+    "upcomingNote": "Njiwa wanaonyeshwa mnada unapoanza.",
+    "pigeonsAtStart": "Njiwa wa kundi hili wanaonyeshwa kundi linapoanza."
   },
   "email": {
     "subjects": {

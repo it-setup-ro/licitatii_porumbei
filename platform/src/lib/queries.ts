@@ -25,6 +25,21 @@ export type AuctionWithCard = {
   lot?: { number: number } | null;
 };
 
+/**
+ * Porumbeii dintr-un lot care n-a pornit nu se văd public.
+ *
+ * Clientul: „aș vrea să apară «în curând» să se vadă doar perioada când se va
+ * da startul și crescătorul, fără porumbeii care vor fi în licitație”. Dacă
+ * i-am scoate doar din pagina licitației, linkul unui porumbel ar circula pe
+ * WhatsApp și secretul s-ar duce; de aceea filtrul stă în toate listele publice,
+ * iar pagina porumbelului dă 404 până la start (vezi auctions/[id]/page.tsx).
+ *
+ * Porumbeii vânduți de oameni, fără lot, nu sunt atinși.
+ */
+export const LOTURI_PORNITE = {
+  OR: [{ lotId: null }, { lot: { status: { in: ["LIVE", "CLOSED"] } } }],
+};
+
 export const cardInclude = {
   pigeon: { include: { media: { orderBy: { sortIdx: "asc" as const }, take: 1 } } },
   _count: { select: { bids: true } },
