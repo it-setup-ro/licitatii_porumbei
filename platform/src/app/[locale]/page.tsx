@@ -87,7 +87,9 @@ export default async function HomePage({
         anunț) și pleacă singură la final. Starea o întreține sweeperul
         (`lib/contests.ts`), iar pagina concursului rămâne publicată.
       */
-      where: { published: true, endsAt: { gte: new Date() } },
+      // „Încheiat” pus cu mâna scoate și el banda, chiar dacă data de sfârșit n-a venit:
+      // pe prod există concursuri marcate încheiate cu sfârșitul în decembrie.
+      where: { published: true, endsAt: { gte: new Date() }, status: { not: "FINISHED" } },
       orderBy: [{ featured: "desc" }, { startsAt: "asc" }],
       take: 6,
     }),
