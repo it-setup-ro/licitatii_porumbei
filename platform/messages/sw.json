@@ -13,7 +13,12 @@
     "none": "—",
     "error": "Hitilafu imetokea. Tafadhali jaribu tena.",
     "requiredField": "Sehemu ya lazima",
-    "language": "Lugha"
+    "language": "Lugha",
+    "share": "Shiriki",
+    "shareCopied": "Kiungo kimenakiliwa",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "Nakili kiungo"
   },
   "nav": {
     "auctions": "Minada",
@@ -96,7 +101,7 @@
     "statLots": "Njiwa walioorodheshwa",
     "statsTitle": "Takwimu za jukwaa",
     "statsHint": "Namba halisi, zinasomwa kutoka hifadhidata — si makadirio.",
-    "motto": "Mabingwa huruka pamoja!",
+    "motto": "Mabingwa huruka hapa!",
     "boarding": "Kupakia",
     "release": "Kuachiliwa",
     "weather": "Hali ya hewa njiani",

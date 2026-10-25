@@ -13,7 +13,12 @@
     "none": "—",
     "error": "A apărut o eroare. Încearcă din nou.",
     "requiredField": "Câmp obligatoriu",
-    "language": "Limba"
+    "language": "Limba",
+    "share": "Distribuie",
+    "shareCopied": "Link copiat",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "Copiază linkul"
   },
   "nav": {
     "auctions": "Licitații",
@@ -96,7 +101,7 @@
     "statLots": "Porumbei listați",
     "statsTitle": "Cifrele platformei",
     "statsHint": "Numere reale, actualizate din bază — nu estimări.",
-    "motto": "Campioni zboară împreună!",
+    "motto": "Campionii zboară aici!",
     "boarding": "Îmbarcare",
     "release": "Lansare",
     "weather": "Meteo pe traseu",

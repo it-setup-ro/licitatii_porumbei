@@ -31,7 +31,18 @@ export type AuctionCardData = {
   };
 };
 
-export default async function AuctionCard({ auction }: { auction: AuctionCardData }) {
+/**
+ * `mare` = cardul dintr-un rand care umple ecranul (lista de licitatii si
+ * loturile dintr-o licitatie). Clientul: „sa nu se vada si alea de jos. Si
+ * eventual mai late, sa se vada bine." In rest, cardul ramane compact.
+ */
+export default async function AuctionCard({
+  auction,
+  mare = false,
+}: {
+  auction: AuctionCardData;
+  mare?: boolean;
+}) {
   const t = await getTranslations("auction");
   const locale = await getLocale();
   const eurRate = await getEurRate();
@@ -54,12 +65,14 @@ export default async function AuctionCard({ auction }: { auction: AuctionCardDat
   return (
     <Link
       href={`/auctions/${auction.id}`}
-      className="card-hover block overflow-hidden rounded-2xl border border-ink/10 bg-white"
+      className={`card-hover overflow-hidden rounded-2xl border border-ink/10 bg-white ${
+        mare ? "flex flex-col sm:min-h-[72vh]" : "block"
+      }`}
       data-testid="auction-card"
     >
       {/* Poza întreagă, fără colțuri tăiate: clientul pune pe poze palmaresul,
           adresa și steagul chiar la margini, care dispăreau la decupare. */}
-      <div className="relative aspect-[4/3] bg-white">
+      <div className={`relative bg-white ${mare ? "aspect-[4/3] sm:aspect-auto sm:flex-1" : "aspect-[4/3]"}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={auction.pigeon.imageUrl ?? "/pigeons/p1.svg"}

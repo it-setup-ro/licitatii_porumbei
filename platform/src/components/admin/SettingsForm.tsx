@@ -13,10 +13,49 @@ import type { PlatformSettings } from "@/lib/settings";
 type FieldDef = {
   key: keyof PlatformSettings;
   label: string;
-  type: "number" | "boolean" | "text" | "select" | "image";
+  /** „money" = suma se scrie in lei (sau euro), desi in baza sta in bani */
+  type: "number" | "boolean" | "text" | "select" | "image" | "money";
   options?: string[];
   hint?: string;
 };
+
+/**
+ * O sumă scrisă în lei (sau euro), ținută în bani.
+ *
+ * Câmpul are text propriu, ca omul să poată scrie „5.000,50" fără ca valoarea
+ * să-i sară sub degete la fiecare tastă; în sus merge mereu suma în bani.
+ */
+function CampBani({
+  id,
+  testid,
+  cents,
+  onChange,
+}: {
+  id: string;
+  testid: string;
+  cents: number;
+  onChange: (cents: number) => void;
+}) {
+  const [text, setText] = useState(() => (cents / 100).toString());
+
+  const scrie = (t: string) => {
+    setText(t);
+    const numar = Number(t.replace(/\s/g, "").replace(",", "."));
+    if (t.trim() === "") onChange(0);
+    else if (Number.isFinite(numar) && numar >= 0) onChange(Math.round(numar * 100));
+  };
+
+  return (
+    <input
+      id={id}
+      data-testid={testid}
+      inputMode="decimal"
+      value={text}
+      onChange={(e) => scrie(e.target.value)}
+      className="mt-1 w-full rounded-xl border border-ink/20 bg-ivory-soft px-3 py-2 outline-none focus:border-wing-blue"
+    />
+  );
+}
 
 export default function SettingsForm({ initial }: { initial: PlatformSettings }) {
   const t = useTranslations("admin");
@@ -35,11 +74,11 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
         { key: "assistedListingEnabled", label: "Assisted listing activ", type: "boolean" },
         { key: "buyerPremiumPercent", label: "Buyer's premium (%)", type: "number" },
         { key: "adminFeeEnabled", label: "Taxă administrativă activă", type: "boolean" },
-        { key: "adminFeeCents", label: "Taxă administrativă (cenți)", type: "number" },
+        { key: "adminFeeCents", label: "Taxă administrativă", type: "money" },
         { key: "platformCurrency", label: "Moneda platformei (RON = lei)", type: "select", options: ["EUR", "RON"] },
         { key: "currencyEquivalentEnabled", label: "Arată echivalentul în cealaltă monedă (lei / €)", type: "boolean" },
-        { key: "minStartPriceCents", label: "Preț minim de pornire (cenți)", type: "number" },
-        { key: "shopShippingCents", label: "Transport magazin (cenți)", type: "number" },
+        { key: "minStartPriceCents", label: "Preț minim de pornire", type: "money" },
+        { key: "shopShippingCents", label: "Transport magazin", type: "money" },
         { key: "defaultDurationDays", label: "Durata licitației (zile)", type: "number" },
         { key: "sellerChoosesDuration", label: "Vânzătorul alege durata", type: "boolean" },
         { key: "reservePriceEnabled", label: "Preț de rezervă permis", type: "boolean" },
@@ -51,9 +90,9 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
         { key: "snipeWindowMinutes", label: "Fereastră anti-sniping (min)", type: "number" },
         { key: "extensionMinutes", label: "Prelungire (min)", type: "number" },
         { key: "maxExtensions", label: "Prelungiri maxime (0 = fără limită)", type: "number" },
-        { key: "newAccountBidLimitCents", label: "Limită conturi noi (cenți)", type: "number" },
+        { key: "newAccountBidLimitCents", label: "Limită conturi noi (0 = fără limită)", type: "money" },
         { key: "bidGuaranteeEnabled", label: "Garanții de licitare active", type: "boolean" },
-        { key: "bidGuaranteeThresholdCents", label: "Prag garanție (cenți)", type: "number" },
+        { key: "bidGuaranteeThresholdCents", label: "Prag garanție", type: "money" },
       ],
     },
     {
@@ -106,6 +145,17 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
       title: t("groupBrand"),
       fields: [
         { key: "siteName", label: "Numele site-ului", type: "text" },
+        {
+          /*
+            Clientul a schimbat poza de aici si a asteptat sa se schimbe si prima
+            pagina — dar prima pagina avea poza scrisa in cod. Acum sunt doua
+            setari, scrise pe fata: una pentru prima pagina, una pentru licitatii.
+          */
+          key: "homeHeroUrl",
+          label: "Fundalul primei pagini",
+          type: "image",
+          hint: "Fotografia mare din capul primei pagini, sub titlu. Goala = se foloseste cea din pachetul initial.",
+        },
         {
           key: "saleHeroUrl",
           label: "Fundalul paginii de licitație",
@@ -175,6 +225,14 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
     },
   ];
 
+  /*
+    Daniel, dintr-o poza a ecranului: „aici sa pui lei/euro". Sumele se tineau
+    in bani (500000 pentru 5.000 lei), iar omul trebuia sa numere zerourile.
+    In baza raman tot in bani — se schimba doar ce scrie si ce se citeste.
+  */
+  const moneda =
+    values.platformCurrency === "RON" ? "lei" : values.platformCurrency === "EUR" ? "€" : String(values.platformCurrency ?? "");
+
   const setValue = (key: string, value: unknown) => {
     setValues((v) => ({ ...v, [key]: value }));
     setDirty((d) => new Set(d).add(key));
@@ -219,7 +277,7 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
         {groups[tab].fields.map((f) => (
           <div key={f.key} className="text-sm">
             <label className="font-medium" htmlFor={`set-${f.key}`}>
-              {f.label}
+              {f.type === "money" ? `${f.label} (${moneda})` : f.label}
             </label>
             {f.type === "image" ? (
               <div className="mt-1">
@@ -263,6 +321,13 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
                   />
                 </button>
               </div>
+            ) : f.type === "money" ? (
+              <CampBani
+                id={`set-${f.key}`}
+                testid={`setting-${f.key}`}
+                cents={Number(values[f.key] ?? 0)}
+                onChange={(cents) => setValue(f.key, cents)}
+              />
             ) : f.type === "select" ? (
               <select
                 id={`set-${f.key}`}

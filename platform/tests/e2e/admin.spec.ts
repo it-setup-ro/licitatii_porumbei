@@ -67,6 +67,63 @@ test.describe("Panoul de administrare", () => {
     await expect(page.getByTestId("settings-saved")).toBeVisible();
   });
 
+  test("fundalul primei pagini se schimba din Setari", async ({ page }) => {
+    /*
+      Clientul a schimbat poza de fundal si s-a mirat ca prima pagina a ramas
+      la fel: acolo poza era scrisa in cod, iar setarea schimba doar paginile
+      de licitatie. Acum sunt doua setari separate.
+    */
+    await login(page, "admin@nbp.test", "admin1234");
+    const poza = `/pigeons/p${Date.now() % 7}.svg`;
+    const res = await page.request.post("/api/admin/settings", {
+      data: { updates: { homeHeroUrl: poza } },
+    });
+    expect((await res.json()).ok).toBe(true);
+
+    await expect(async () => {
+      await page.goto("/ro");
+      const stil = await page.getByTestId("hero-bg").getAttribute("style");
+      expect(stil ?? "").toContain(poza);
+    }).toPass({ timeout: 20_000, intervals: [2_000] });
+
+    // inapoi la poza din pachet
+    await page.request.post("/api/admin/settings", {
+      data: { updates: { homeHeroUrl: "/pigeons/hero-client.jpg" } },
+    });
+  });
+
+  test("sumele din Setari se scriu in lei, nu in bani", async ({ page }) => {
+    /*
+      Daniel, dintr-o poza a ecranului: „aici sa pui lei/euro". Campul arata si
+      primeste lei; in baza suma ramane in bani, deci motorul de licitare nu
+      vede nicio schimbare.
+    */
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/settings");
+    // tabul „Licitare"
+    await page.getByTestId("settings-tab-1").click();
+
+    const camp = page.getByTestId("setting-newAccountBidLimitCents");
+    const vechi = await camp.inputValue();
+    await expect(page.getByText(/Limită conturi noi .*\((lei|€)\)/)).toBeVisible();
+
+    await camp.fill("7500");
+    await page.getByTestId("settings-save").click();
+    await expect(page.getByTestId("settings-saved")).toBeVisible();
+
+    // dupa reincarcare, tot in lei: 7500, nu 750000
+    await page.reload();
+    await page.getByTestId("settings-tab-1").click();
+    await expect(page.getByTestId("setting-newAccountBidLimitCents")).toHaveValue("7500");
+
+    // inapoi cum era
+    await page.goto("/ro/admin/settings");
+    await page.getByTestId("settings-tab-1").click();
+    await page.getByTestId("setting-newAccountBidLimitCents").fill(vechi);
+    await page.getByTestId("settings-save").click();
+    await expect(page.getByTestId("settings-saved")).toBeVisible();
+  });
+
   test("moderare recenzie raportata: adminul o pastreaza", async ({ page }) => {
     // recenzia din seed e marcata ca raportata (echivalentul butonului "Raportează")
     runOnTestDb("scripts/report-seed-review.ts");

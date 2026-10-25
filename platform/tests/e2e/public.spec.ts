@@ -19,12 +19,18 @@ test.describe("Pagini publice & i18n", () => {
     page,
   }) => {
     await page.goto("/ro");
-    await expect(page.locator("h1")).toContainText("Pasiunea unește oameni");
+    /*
+      Titlul mare e acum numele site-ului, la cererea clientului („în loc de
+      «Pasiunea unește oameni!» să scrie «No.1 & Best Racing Pigeons»"), deci
+      el nu se mai traduce. Schimbarea limbii se vede pe deviza de sub el.
+    */
+    await expect(page.locator("h1")).toContainText("Best Racing Pigeons");
+    await expect(page.getByTestId("hero-motto")).toContainText("Campionii zboară aici");
     await page.getByTestId("lang-select").selectOption("en");
     await expect(page).toHaveURL(/\/en$/);
-    await expect(page.locator("h1")).toContainText("Passion brings people together");
+    await expect(page.getByTestId("hero-motto")).toContainText("Champions fly here");
     await page.getByTestId("lang-select").selectOption("ro");
-    await expect(page.locator("h1")).toContainText("Pasiunea unește oameni");
+    await expect(page.getByTestId("hero-motto")).toContainText("Campionii zboară aici");
 
     // numele porumbelului ramane acelasi in ambele limbi; se traduce rubrica
     await page.goto("/en/auctions?q=445566");

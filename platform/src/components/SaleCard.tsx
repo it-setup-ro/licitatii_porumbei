@@ -31,7 +31,14 @@ export type SaleCardData = {
   moreThanOneTime: boolean;
 };
 
-export default async function SaleCard({ sale }: { sale: SaleCardData }) {
+/** `mare` = un rand pe ecran, in pagina „Licitatii" (cererea clientului). */
+export default async function SaleCard({
+  sale,
+  mare = false,
+}: {
+  sale: SaleCardData;
+  mare?: boolean;
+}) {
   const t = await getTranslations("sales");
   const ta = await getTranslations("auction");
   const locale = await getLocale();
@@ -67,9 +74,11 @@ export default async function SaleCard({ sale }: { sale: SaleCardData }) {
     <Link
       href={`/sales/${sale.slug}`}
       data-testid="sale-card"
-      className="card-hover block overflow-hidden rounded-2xl border border-ink/10 bg-white"
+      className={`card-hover overflow-hidden rounded-2xl border border-ink/10 bg-white ${
+        mare ? "flex flex-col sm:min-h-[72vh]" : "block"
+      }`}
     >
-      <div className="relative aspect-[16/9] bg-white">
+      <div className={`relative bg-white ${mare ? "aspect-[16/9] sm:aspect-auto sm:flex-1" : "aspect-[16/9]"}`}>
         {sale.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={sale.imageUrl} alt={sale.breederName} className="h-full w-full object-cover" />

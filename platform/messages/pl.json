@@ -13,7 +13,12 @@
     "none": "—",
     "error": "Coś poszło nie tak. Spróbuj ponownie.",
     "requiredField": "Pole wymagane",
-    "language": "Język"
+    "language": "Język",
+    "share": "Udostępnij",
+    "shareCopied": "Link skopiowany",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "Kopiuj link"
   },
   "nav": {
     "auctions": "Aukcje",
@@ -96,7 +101,7 @@
     "statLots": "Wystawione gołębie",
     "statsTitle": "Platforma w liczbach",
     "statsHint": "Prawdziwe liczby, odczytane z bazy danych — nie szacunki.",
-    "motto": "Mistrzowie latają razem!",
+    "motto": "Tu latają mistrzowie!",
     "boarding": "Koszowanie",
     "release": "Wypuszczenie",
     "weather": "Pogoda na trasie",

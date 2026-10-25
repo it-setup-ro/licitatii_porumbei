@@ -24,6 +24,10 @@
   --wing-orange: #b8860b;
   /* rosu, doar pentru alerte si semnul „live" */
   --wing-red: #c0341d;
+  /* albastru deschis — banda cu insignele de sub poza de pe prima pagina.
+     Clientul: „sub poza de fundal este o banda albastru inchis, se doreste o
+     banda albastru deschis... insignele sa fie mai vizibile". */
+  --sky-soft: #d8e8f8;
   --background: var(--ivory);
   --foreground: var(--ink);
 }
@@ -38,6 +42,7 @@
   --color-wing-yellow: var(--wing-yellow);
   --color-wing-orange: var(--wing-orange);
   --color-wing-red: var(--wing-red);
+  --color-sky-soft: var(--sky-soft);
   --font-sans: var(--font-body);
   --font-serif: var(--font-display);
   --font-script: var(--font-script);

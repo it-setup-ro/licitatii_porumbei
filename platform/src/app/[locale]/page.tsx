@@ -220,7 +220,8 @@ export default async function HomePage({
             Pe telefon textul trece peste tot cadrul, deci acolo voalul e uniform. */}
         <div
           className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{ backgroundImage: "url(/pigeons/hero-client.jpg)" }}
+          data-testid="hero-bg"
+          style={{ backgroundImage: `url(${settings.homeHeroUrl || "/pigeons/hero-client.jpg"})` }}
           aria-hidden="true"
         />
         {/* Voalul e subtire: poza trebuie sa ramana luminoasa. Lizibilitatea o
@@ -235,8 +236,14 @@ export default async function HomePage({
             <p className="hero-shadow text-xs font-bold uppercase tracking-[0.25em] text-wing-yellow">
               {t("kicker")}
             </p>
-            <h1 className="font-display hero-shadow mt-4 text-4xl font-bold leading-[1.05] text-white sm:text-6xl">
-              {t("heroTitle")}
+            {/* Clientul: „pe prima pagina, in loc de «Pasiunea uneste oameni!» sa
+                scrie «No.1 & Best Racing Pigeons»" — adica numele site-ului, luat
+                din Setari, ca sa nu fie scris de doua ori in doua locuri. */}
+            <h1
+              className="font-display hero-shadow mt-4 text-4xl font-bold leading-[1.05] text-white sm:text-6xl"
+              data-testid="hero-title"
+            >
+              {settings.siteName}
             </h1>
             {/* Deviza scrisa de mana, ca in macheta */}
             <p
@@ -252,14 +259,16 @@ export default async function HomePage({
               <Link
                 href="/auctions"
                 data-testid="hero-cta"
-                className="rounded-full bg-wing-orange px-7 py-3.5 font-bold text-white shadow-lg transition-colors hover:bg-wing-red"
+                className="inline-flex min-w-[16rem] items-center justify-center rounded-full bg-wing-orange px-7 py-3.5 font-bold text-white shadow-lg transition-colors hover:bg-wing-red"
               >
                 {t("heroCta")} →
               </Link>
               <Link
                 href="/about"
                 data-testid="hero-about"
-                className="rounded-full bg-white/95 px-7 py-3.5 font-bold text-ink transition-colors hover:bg-white"
+                /* aceeasi latime minima ca butonul de langa el: clientul le vrea
+                   la fel de mari, iar „Despre noi" e un text scurt */
+                className="inline-flex min-w-[16rem] items-center justify-center rounded-full bg-white/95 px-7 py-3.5 font-bold text-ink transition-colors hover:bg-white"
               >
                 {t("heroAbout")}
               </Link>
@@ -282,8 +291,11 @@ export default async function HomePage({
       </section>
 
       {/* ───────────── Ce oferă platforma ───────────── */}
-      <section className="bg-ink text-white" data-testid="feature-strip">
-        <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-y-6 px-4 py-8 sm:grid-cols-3 lg:grid-cols-6">
+      {/* Clientul: „sub poza de fundal este o banda albastru inchis, se doreste o
+          banda albastru deschis" si „insignele sa aiba un fond deschis, sa fie mai
+          vizibile". Deci banda bleu, iar fiecare insigna pe cartonas alb. */}
+      <section className="bg-sky-soft text-ink" data-testid="feature-strip">
+        <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-3 px-4 py-8 sm:grid-cols-3 lg:grid-cols-6">
           {[
             [t("featureLive"), t("featureLiveSub"), <IconTrophy key="a" />],
             [t("featurePedigree"), t("featurePedigreeSub"), <IconShield key="b" />],
@@ -292,12 +304,15 @@ export default async function HomePage({
             [t("featureProducts"), t("featureProductsSub"), <IconCart key="e" />],
             [t("featureCommunity"), t("featureCommunitySub"), <IconHeart key="f" />],
           ].map(([title, sub, icon]) => (
-            <li key={String(title)} className="px-2 text-center">
-              <span className="mx-auto mb-2 flex h-9 w-9 items-center justify-center text-wing-yellow">
+            <li
+              key={String(title)}
+              className="rounded-2xl bg-white px-2 py-4 text-center shadow-sm ring-1 ring-ink/5"
+            >
+              <span className="mx-auto mb-2 flex h-9 w-9 items-center justify-center text-wing-blue">
                 {icon}
               </span>
               <p className="text-sm font-bold leading-tight">{title}</p>
-              <p className="mt-0.5 text-xs text-white/60">{sub}</p>
+              <p className="mt-0.5 text-xs text-ink/60">{sub}</p>
             </li>
           ))}
         </ul>

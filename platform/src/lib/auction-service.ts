@@ -87,11 +87,17 @@ async function placeBidOnce(
     if (bidder.accountStatus !== "APPROVED") return { ok: false, error: "ACCOUNT_PENDING" };
   }
 
-  // Limita pentru conturi noi (KYC hibrid, client-decisions B8)
-  const limit =
-    bidder.completedOrders > 0
-      ? null
-      : bidder.bidLimitOverride ?? settings.newAccountBidLimitCents;
+  /*
+    Limita pentru conturi noi (KYC hibrid, client-decisions B8).
+
+    Trei trepte, în ordinea asta: cine a cumpărat deja o dată licitează fără
+    plafon; cine are limită pusă pe cont merge pe a lui (Administrare →
+    Utilizatori); ceilalți, pe cea din Setări. **0 înseamnă „fără limită"**, ca
+    la celelalte setări — înainte însemna „limită zero", adică nimeni nu mai
+    putea licita nimic, iar asta nu voia nimeni vreodată.
+  */
+  const plafon = bidder.bidLimitOverride ?? settings.newAccountBidLimitCents;
+  const limit = bidder.completedOrders > 0 || plafon <= 0 ? null : plafon;
   if (limit !== null && maxCents > limit) {
     return { ok: false, error: "BID_LIMIT_EXCEEDED", limitCents: limit };
   }

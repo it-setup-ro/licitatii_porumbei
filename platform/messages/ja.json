@@ -13,7 +13,12 @@
     "none": "—",
     "error": "問題が発生しました。もう一度お試しください。",
     "requiredField": "必須項目",
-    "language": "言語"
+    "language": "言語",
+    "share": "共有",
+    "shareCopied": "リンクをコピーしました",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "リンクをコピー"
   },
   "nav": {
     "auctions": "オークション",
@@ -96,7 +101,7 @@
     "statLots": "出品された鳩",
     "statsTitle": "プラットフォームの数字",
     "statsHint": "推定値ではなく、データベースから読み取った実際の数字です。",
-    "motto": "チャンピオンは共に飛ぶ！",
+    "motto": "チャンピオンはここで飛ぶ！",
     "boarding": "積込",
     "release": "放鳩",
     "weather": "コース上の天候",

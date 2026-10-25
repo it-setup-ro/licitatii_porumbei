@@ -12,6 +12,7 @@ import AuctionCard from "@/components/AuctionCard";
 import Countdown from "@/components/Countdown";
 import CountdownBoxes from "@/components/CountdownBoxes";
 import SaleLive from "@/components/SaleLive";
+import ShareButton from "@/components/ShareButton";
 import { parseBreederResults } from "@/lib/breeder-results";
 import RichText from "@/components/RichText";
 import ExpandableText from "@/components/ExpandableText";
@@ -140,7 +141,7 @@ export default async function SalePage({
                 src={sale.breeder.photoUrl}
                 alt={sale.breeder.name}
                 data-testid="sale-hero-photo"
-                className="h-24 w-24 shrink-0 rounded-2xl border-2 border-white/60 object-cover shadow-lg sm:h-32 sm:w-32"
+                className="h-32 w-32 shrink-0 rounded-2xl border-2 border-white/60 object-cover shadow-lg sm:h-44 sm:w-44"
               />
             )}
             <div className="min-w-0">
@@ -163,6 +164,11 @@ export default async function SalePage({
                 {title}
                 {place ? ` · ${place}` : ""}
               </p>
+              {/* Clientul: „când intri într-o licitație să mai adaugi și funcția
+                  distribuie" — linkul oricum circulă pe grupurile de WhatsApp. */}
+              <div className="mt-3">
+                <ShareButton title={`${sale.breeder.name} — ${title}`} />
+              </div>
             </div>
           </div>
 
@@ -373,9 +379,11 @@ export default async function SalePage({
                     ) : (
                       <>
                     {/* grila */}
-                    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 group-data-[view=list]:hidden">
+                    {/* Clientul: „lotul de porumbei să fie mai mare ca mărime" —
+                        două pe rând pe calculator, nu trei. */}
+                    <div className="grid gap-6 sm:grid-cols-2 group-data-[view=list]:hidden">
                       {lot.auctions.map((a) => (
-                        <AuctionCard key={a.id} auction={toCardData(a)} />
+                        <AuctionCard key={a.id} auction={toCardData(a)} mare />
                       ))}
                     </div>
 

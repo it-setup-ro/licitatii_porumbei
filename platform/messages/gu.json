@@ -13,7 +13,12 @@
     "none": "—",
     "error": "કંઈક ખોટું થયું. કૃપા કરીને ફરી પ્રયાસ કરો.",
     "requiredField": "આવશ્યક ફીલ્ડ",
-    "language": "ભાષા"
+    "language": "ભાષા",
+    "share": "શેર કરો",
+    "shareCopied": "લિંક કૉપિ થઈ ગઈ",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "લિંક કૉપિ કરો"
   },
   "nav": {
     "auctions": "હરાજીઓ",
@@ -96,7 +101,7 @@
     "statLots": "સૂચિબદ્ધ કબૂતરો",
     "statsTitle": "પ્લેટફોર્મના આંકડા",
     "statsHint": "વાસ્તવિક આંકડા, ડેટાબેઝમાંથી વાંચેલા — અંદાજ નહીં.",
-    "motto": "ચેમ્પિયન્સ સાથે ઉડે છે!",
+    "motto": "ચેમ્પિયન્સ અહીં ઉડે છે!",
     "boarding": "કબૂતરો ભરવાનો સમય",
     "release": "છોડવાનો સમય",
     "weather": "રસ્તા પરનું હવામાન",

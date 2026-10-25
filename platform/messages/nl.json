@@ -13,7 +13,12 @@
     "none": "—",
     "error": "Er ging iets mis. Probeer het opnieuw.",
     "requiredField": "Verplicht veld",
-    "language": "Taal"
+    "language": "Taal",
+    "share": "Delen",
+    "shareCopied": "Link gekopieerd",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "Link kopiëren"
   },
   "nav": {
     "auctions": "Veilingen",
@@ -96,7 +101,7 @@
     "statLots": "Aangeboden duiven",
     "statsTitle": "Het platform in cijfers",
     "statsHint": "Echte cijfers, rechtstreeks uit de database — geen schattingen.",
-    "motto": "Kampioenen vliegen samen!",
+    "motto": "Hier vliegen de kampioenen!",
     "boarding": "Inkorving",
     "release": "Lossing",
     "weather": "Weer onderweg",

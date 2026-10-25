@@ -13,7 +13,12 @@
     "none": "—",
     "error": "Une erreur est survenue. Veuillez réessayer.",
     "requiredField": "Champ obligatoire",
-    "language": "Langue"
+    "language": "Langue",
+    "share": "Partager",
+    "shareCopied": "Lien copié",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "Copier le lien"
   },
   "nav": {
     "auctions": "Enchères",
@@ -96,7 +101,7 @@
     "statLots": "Pigeons mis en vente",
     "statsTitle": "La plateforme en chiffres",
     "statsHint": "Des chiffres réels, issus de la base de données — pas des estimations.",
-    "motto": "Les champions volent ensemble !",
+    "motto": "Les champions volent ici !",
     "boarding": "Enlogement",
     "release": "Lâcher",
     "weather": "Météo sur le parcours",

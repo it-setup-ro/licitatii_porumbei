@@ -13,7 +13,12 @@
     "none": "—",
     "error": "Algo ha salido mal. Inténtalo de nuevo.",
     "requiredField": "Campo obligatorio",
-    "language": "Idioma"
+    "language": "Idioma",
+    "share": "Compartir",
+    "shareCopied": "Enlace copiado",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "Copiar el enlace"
   },
   "nav": {
     "auctions": "Subastas",
@@ -96,7 +101,7 @@
     "statLots": "Palomas publicadas",
     "statsTitle": "La plataforma en cifras",
     "statsHint": "Cifras reales, leídas de la base de datos, no estimaciones.",
-    "motto": "¡Los campeones vuelan juntos!",
+    "motto": "¡Aquí vuelan los campeones!",
     "boarding": "Enjaule",
     "release": "Suelta",
     "weather": "El tiempo en la ruta",

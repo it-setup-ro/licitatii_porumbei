@@ -58,6 +58,8 @@ export type PlatformSettings = {
   // Continut & brand
   siteName: string;
   /** fundalul din capul paginii unei licitații de crescător (gol = degrade) */
+  /** fundalul capului de pe prima pagina */
+  homeHeroUrl: string;
   saleHeroUrl: string;
   blogEnabled: boolean;
   /* Datele de contact si retelele — apar in subsol. Goale = randul lipseste,
@@ -135,7 +137,8 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
     { upToCents: 500_000, stepCents: 5_000 }, // 1000–5000: pas 50
     { upToCents: null, stepCents: 10_000 }, // peste: pas 100
   ],
-  newAccountBidLimitCents: 100_000, // 1000 EUR pana la prima tranzactie finalizata
+  // pina la prima tranzactie finalizata; 0 = fara limita
+  newAccountBidLimitCents: 100_000,
   bidGuaranteeEnabled: false,
   bidGuaranteeThresholdCents: 50_000,
   paymentProvider: "mock",
@@ -151,6 +154,7 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   smsEnabled: false,
   siteName: "No.1° & Best Racing Pigeons",
   // poza de pe prima pagină, până pune clientul alta din Setări
+  homeHeroUrl: "/pigeons/hero-client.jpg",
   saleHeroUrl: "/pigeons/hero-client.jpg",
   blogEnabled: false,
   contactEmail: "",

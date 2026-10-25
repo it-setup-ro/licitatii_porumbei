@@ -154,17 +154,19 @@ export default async function AuctionsPage({
         </div>
       ) : (
         <>
+          {/* Clientul le vrea mai late, cu un rând întreg pe ecran: două pe rând
+              pe calculator, nu trei. */}
           {carduri.length > 0 && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-testid="sales-section">
+            <div className="grid gap-6 sm:grid-cols-2" data-testid="sales-section">
               {carduri.map((c) => (
-                <SaleCard key={c.slug} sale={c} />
+                <SaleCard key={c.slug} sale={c} mare />
               ))}
             </div>
           )}
           {porumbei.length > 0 && (
             <div className="mt-10">
               <h2 className="font-display mb-4 text-xl font-bold">{t("searchPigeons")}</h2>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 sm:grid-cols-2">
                 {porumbei.map((a) => (
                   <AuctionCard key={a.id} auction={toCardData(a)} />
                 ))}

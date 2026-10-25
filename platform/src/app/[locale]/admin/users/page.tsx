@@ -2,6 +2,8 @@ import { setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/db";
 import ResetLinkButton from "@/components/admin/ResetLinkButton";
 import RowActions from "@/components/admin/RowActions";
+import BidLimitField from "@/components/admin/BidLimitField";
+import { getSettings } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
@@ -42,8 +44,13 @@ export default async function AdminUsersPage({
       sellerStatus: true,
       suspendedAt: true,
       createdAt: true,
+      // limita de licitare a contului (Daniel: „cei noi au limita de 5000 lei,
+      // cum poate să o ridice adminul?")
+      bidLimitOverride: true,
+      completedOrders: true,
     },
   });
+  const settings = await getSettings();
 
   return (
     <div>
@@ -112,6 +119,15 @@ export default async function AdminUsersPage({
                     onLabel: "Deblochează",
                     offLabel: "Blochează",
                   }}
+                />
+              )}
+              {u.role !== "ADMIN" && (
+                <BidLimitField
+                  userId={u.id}
+                  limitCents={u.bidLimitOverride}
+                  implicitCents={settings.newAccountBidLimitCents}
+                  currency={settings.platformCurrency}
+                  aCumparat={u.completedOrders > 0}
                 />
               )}
             </div>

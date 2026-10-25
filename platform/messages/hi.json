@@ -13,7 +13,12 @@
     "none": "—",
     "error": "कुछ गलत हो गया। कृपया फिर से प्रयास करें।",
     "requiredField": "आवश्यक फ़ील्ड",
-    "language": "भाषा"
+    "language": "भाषा",
+    "share": "साझा करें",
+    "shareCopied": "लिंक कॉपी हो गया",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "लिंक कॉपी करें"
   },
   "nav": {
     "auctions": "नीलामियाँ",
@@ -96,7 +101,7 @@
     "statLots": "सूचीबद्ध कबूतर",
     "statsTitle": "प्लेटफ़ॉर्म के आँकड़े",
     "statsHint": "असली आँकड़े, डेटाबेस से पढ़े गए — अनुमान नहीं।",
-    "motto": "चैंपियन साथ उड़ते हैं!",
+    "motto": "चैंपियन यहाँ उड़ते हैं!",
     "boarding": "बास्केटिंग",
     "release": "छोड़ना",
     "weather": "रास्ते का मौसम",

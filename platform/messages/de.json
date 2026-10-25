@@ -13,7 +13,12 @@
     "none": "—",
     "error": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
     "requiredField": "Pflichtfeld",
-    "language": "Sprache"
+    "language": "Sprache",
+    "share": "Teilen",
+    "shareCopied": "Link kopiert",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "Link kopieren"
   },
   "nav": {
     "auctions": "Auktionen",
@@ -96,7 +101,7 @@
     "statLots": "Angebotene Tauben",
     "statsTitle": "Die Plattform in Zahlen",
     "statsHint": "Echte Zahlen aus der Datenbank — keine Schätzungen.",
-    "motto": "Champions fliegen gemeinsam!",
+    "motto": "Hier fliegen die Champions!",
     "boarding": "Einsetzen",
     "release": "Auflass",
     "weather": "Wetter auf der Strecke",

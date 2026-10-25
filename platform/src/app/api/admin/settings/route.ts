@@ -64,6 +64,7 @@ const SETTING_SCHEMAS: Record<keyof PlatformSettings, z.ZodTypeAny> = {
   // Continut & brand
   testShortenEnabled: z.boolean(),
   siteName: z.string().min(1).max(80),
+  homeHeroUrl: z.string().max(300),
   saleHeroUrl: z.string().max(300),
   blogEnabled: z.boolean(),
   fancyCategoryEnabled: z.boolean(),

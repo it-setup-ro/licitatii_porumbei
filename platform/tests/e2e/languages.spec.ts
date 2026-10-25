@@ -18,7 +18,9 @@ test.describe("Limbile site-ului", () => {
     await page.goto("/de");
     await expect(page.locator("html")).toHaveAttribute("lang", "de");
     await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
-    await expect(page.locator("h1")).toContainText(de.home.heroTitle);
+    // titlul mare e numele site-ului, la cererea clientului; traducerea se vede
+    // pe deviza de sub el
+    await expect(page.getByTestId("hero-motto")).toContainText(de.home.motto);
     // numele porumbelului rămâne, rubrica e în germană
     await page.goto("/de/auctions?q=445566");
     await expect(page.getByTestId("auction-card").filter({ hasText: "Fulger Albastru" })).toBeVisible();
@@ -27,7 +29,7 @@ test.describe("Limbile site-ului", () => {
   test("araba: pagina întreagă de la dreapta la stânga", async ({ page }) => {
     await page.goto("/ar");
     await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
-    await expect(page.locator("h1")).toContainText(ar.home.heroTitle);
+    await expect(page.getByTestId("hero-motto")).toContainText(ar.home.motto);
     const direction = await page.locator("body").evaluate((el) => getComputedStyle(el).direction);
     expect(direction).toBe("rtl");
     // pagina porumbelului se deschide și în arabă

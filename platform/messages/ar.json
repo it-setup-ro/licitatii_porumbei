@@ -13,7 +13,12 @@
     "none": "—",
     "error": "حدث خطأ ما. يُرجى المحاولة مرة أخرى.",
     "requiredField": "حقل مطلوب",
-    "language": "اللغة"
+    "language": "اللغة",
+    "share": "مشاركة",
+    "shareCopied": "تم نسخ الرابط",
+    "shareWhatsapp": "WhatsApp",
+    "shareFacebook": "Facebook",
+    "shareCopy": "نسخ الرابط"
   },
   "nav": {
     "auctions": "المزادات",
@@ -96,7 +101,7 @@
     "statLots": "حمام معروض",
     "statsTitle": "أرقام المنصة",
     "statsHint": "أرقام حقيقية مأخوذة من قاعدة البيانات — وليست تقديرات.",
-    "motto": "الأبطال يطيرون معًا!",
+    "motto": "الأبطال يطيرون هنا!",
     "boarding": "التسليم للسباق",
     "release": "الإطلاق",
     "weather": "الطقس على طول المسار",
