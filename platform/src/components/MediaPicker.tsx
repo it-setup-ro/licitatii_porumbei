@@ -173,7 +173,7 @@ export default function MediaPicker({
           ? "Clipul e prea mare (maxim 300 MB). Filmează mai scurt sau la calitate mai mică."
           : out.isDoc
             ? "PDF-ul e prea mare (maxim 10 MB)."
-            : "Poza e prea mare (maxim 5 MB)."
+            : "Poza e prea mare (maxim 15 MB)."
         : out.error === "INVALID_TYPE"
           ? `Format neacceptat. Poze: JPG, PNG, WebP.${allowVideo ? " Video: MP4, WebM, MOV." : ""}${allowPdf ? " Document: PDF." : ""}`
           : "Încărcarea a eșuat. Încearcă din nou.";
@@ -340,7 +340,7 @@ export default function MediaPicker({
       {busy && progress && <UploadProgress state={progress} />}
 
       <p className="mt-2 text-xs text-ink/50">
-        {allowImages && "Poze JPG/PNG/WebP până la 5 MB"}
+        {allowImages && "Poze JPG/PNG/WebP până la 15 MB — se micșorează singure"}
         {allowVideo &&
           `${allowImages ? "; c" : "C"}lipuri MP4/WebM/MOV până la ${MAX_VIDEO_SECONDS / 60} minute (300 MB)`}
         {allowPdf && "; PDF până la 10 MB"}. Maxim{" "}

@@ -157,6 +157,12 @@ export default function SettingsForm({ initial }: { initial: PlatformSettings })
           hint: "Fotografia mare din capul primei pagini, sub titlu. Goala = se foloseste cea din pachetul initial.",
         },
         {
+          key: "homeHeroDarkness",
+          label: "Intunecarea pozei de pe prima pagina (%)",
+          type: "number",
+          hint: "Peste fotografie se pune un voal bleumarin, ca sa se citeasca scrisul alb. 0 = fara voal (poza exact cum e, dar scrisul poate fi greu de citit), 15 = implicit, 60 = foarte inchis. Pe calculator voalul e mai apasat in stinga, unde cade textul, si se stinge spre dreapta.",
+        },
+        {
           key: "saleHeroUrl",
           label: "Fundalul paginii de licitație",
           type: "image",

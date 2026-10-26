@@ -86,9 +86,21 @@ test.describe("Panoul de administrare", () => {
       expect(stil ?? "").toContain(poza);
     }).toPass({ timeout: 20_000, intervals: [2_000] });
 
-    // inapoi la poza din pachet
+    /*
+      Si cat de tare se intuneca poza, tot din Setari. Clientul: poza pusa de el
+      „este mai inchisa decat poza originala" — voalul bleumarin tine scrisul
+      alb lizibil, dar acum isi alege singur cat de apasat e.
+    */
+    await page.request.post("/api/admin/settings", { data: { updates: { homeHeroDarkness: 0 } } });
+    await expect(async () => {
+      await page.goto("/ro");
+      const voal = await page.getByTestId("hero-veil").getAttribute("style");
+      expect(voal ?? "").toContain("rgba(16, 36, 63, 0)");
+    }).toPass({ timeout: 20_000, intervals: [2_000] });
+
+    // inapoi la poza din pachet si la voalul implicit
     await page.request.post("/api/admin/settings", {
-      data: { updates: { homeHeroUrl: "/pigeons/hero-client.jpg" } },
+      data: { updates: { homeHeroUrl: "/pigeons/hero-client.jpg", homeHeroDarkness: 15 } },
     });
   });
 

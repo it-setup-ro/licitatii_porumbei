@@ -60,6 +60,8 @@ export type PlatformSettings = {
   /** fundalul din capul paginii unei licitații de crescător (gol = degrade) */
   /** fundalul capului de pe prima pagina */
   homeHeroUrl: string;
+  /** cat de tare se intuneca poza de pe prima pagina, in procente (0-60) */
+  homeHeroDarkness: number;
   saleHeroUrl: string;
   blogEnabled: boolean;
   /* Datele de contact si retelele — apar in subsol. Goale = randul lipseste,
@@ -155,6 +157,9 @@ export const DEFAULT_SETTINGS: PlatformSettings = {
   siteName: "No.1° & Best Racing Pigeons",
   // poza de pe prima pagină, până pune clientul alta din Setări
   homeHeroUrl: "/pigeons/hero-client.jpg",
+  // Clientul: poza lui „este mai inchisa decat poza originala". Voalul tine
+  // scrisul alb lizibil, dar 30% era mult; 15% lasa fotografia sa se vada.
+  homeHeroDarkness: 15,
   saleHeroUrl: "/pigeons/hero-client.jpg",
   blogEnabled: false,
   contactEmail: "",

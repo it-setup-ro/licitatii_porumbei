@@ -49,14 +49,9 @@ export default async function ArticlesPage({
           {t("empty")}
         </p>
       ) : (
-        /* Clientul: „aș vrea să fie în pătrățele, nu listă"; apoi, văzând pagina:
-           „prezentarea articolelor să aibă dimensiunea ecranului, când scrolezi și
-           cuprinzi linia de articole să nu se vadă și alea de jos. Și eventual mai
-           late, să se vadă bine." Deci două pe rând, late, cu poza mare, iar un
-           rând cât ecranul: când te oprești pe el, nu mai vezi și rândul de jos.
-           Prinderea la derulare (scroll-snap) am încercat-o și am scos-o: trăgea
-           pagina înapoi exact când voiai să apeși ceva din bara de sus. */
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+        /* Clientul: „aș vrea să fie în pătrățele, nu listă" — carduri mici,
+           patru pe rând pe calculator, două pe telefon. */
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {articles.map((a) => {
             const title = pick(currentLocale, a.titleRo, a.titleEn);
             const excerpt = pick(currentLocale, a.excerptRo, a.excerptEn);
@@ -65,11 +60,9 @@ export default async function ArticlesPage({
                 key={a.id}
                 href={`/articles/${a.slug}`}
                 data-testid="article-card"
-                /* Pe calculator un rand umple ecranul: asa, cand te opresti pe el,
-                   nu mai vezi si jumatati din randul de jos. */
-                className="card-hover flex flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white sm:min-h-[calc(100vh-7rem)]"
+                className="card-hover flex flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white"
               >
-                <div className="aspect-[16/10] bg-ivory-soft sm:aspect-auto sm:flex-1">
+                <div className="aspect-square bg-ivory-soft">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={a.coverUrl ?? "/pigeons/p1.svg"}
@@ -77,17 +70,17 @@ export default async function ArticlesPage({
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div className="flex flex-1 flex-col gap-2 p-4 sm:p-5">
+                <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
                   <p className="text-[11px] uppercase tracking-wide text-ink/50">
                     {a.publishedAt ? t("published", { date: fmtDate(a.publishedAt) }) : ""}
                   </p>
-                  <h2 className="font-display line-clamp-2 text-lg font-bold leading-snug sm:text-2xl">
+                  <h2 className="font-display line-clamp-2 text-sm font-bold leading-snug sm:text-base">
                     {title}
                   </h2>
                   {excerpt && (
-                    <p className="line-clamp-3 text-sm text-ink/70">{excerpt}</p>
+                    <p className="line-clamp-2 hidden text-xs text-ink/70 sm:block">{excerpt}</p>
                   )}
-                  <span className="mt-auto pt-2 text-sm font-semibold text-wing-blue">
+                  <span className="mt-auto pt-2 text-xs font-semibold text-wing-blue sm:text-sm">
                     {t("readMore")} →
                   </span>
                 </div>

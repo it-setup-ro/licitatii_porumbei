@@ -7,6 +7,7 @@ import { Readable } from "stream";
 import { requireApprovedSeller, requireAdmin, AuthError } from "@/lib/auth";
 import { requireBreeder } from "@/lib/breeder-access";
 import { rateLimit } from "@/lib/rate-limit";
+import { pregatestePoza } from "@/lib/image-resize";
 import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/api";
 
 /**
@@ -25,7 +26,10 @@ import { jsonOk, jsonError, jsonTooManyRequests, handleApiError } from "@/lib/ap
  */
 
 const UPLOADS_DIR = path.join(process.cwd(), "uploads");
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+// 15 MB: o poza facuta cu telefonul are si 8-12 MB. Platforma o micsoreaza
+// oricum la 2000 px inainte de a o scrie pe disc (vezi lib/image-resize.ts),
+// deci nu are rost sa-l punem pe om sa o treaca intai printr-un program.
+const MAX_IMAGE_BYTES = 15 * 1024 * 1024;
 const MAX_VIDEO_BYTES = 300 * 1024 * 1024; // 300 MB — cinci minute filmate cu telefonul
 const MAX_DOC_BYTES = 10 * 1024 * 1024; // 10 MB — un pedigree scanat
 const MAX_FILES = 10;
@@ -42,6 +46,36 @@ const EXT: Record<string, string> = {
 
 const VIDEO_TYPES = new Set(["video/mp4", "video/webm", "video/quicktime"]);
 const DOC_TYPES = new Set(["application/pdf"]);
+
+/**
+ * Scrie pe disc un fisier venit intreg in memorie (poze si PDF-uri).
+ *
+ * Pozele trec intai prin `pregatestePoza`: se micsoreaza la 2000 px, se
+ * indreapta dupa EXIF si se salveaza in formatul potrivit. Clientul a urcat un
+ * fundal de 2,3 MB si pagina se incarca greu pe telefon; acum se face singur.
+ */
+async function scrieFisier(
+  buf: Buffer,
+  realType: string
+): Promise<{ url: string; type: "IMAGE" | "VIDEO" | "DOC" }> {
+  const isVideo = VIDEO_TYPES.has(realType);
+  const isDoc = DOC_TYPES.has(realType);
+
+  let continut = buf;
+  let tip = realType;
+  if (!isVideo && !isDoc) {
+    const gata = await pregatestePoza(buf, realType);
+    continut = gata.buf;
+    tip = gata.tip;
+  }
+
+  const name = `${Date.now()}-${randomBytes(8).toString("hex")}${EXT[tip]}`;
+  await writeFile(path.join(UPLOADS_DIR, name), continut);
+  return {
+    url: `/api/files/${name}`,
+    type: isVideo ? "VIDEO" : isDoc ? "DOC" : "IMAGE",
+  };
+}
 
 /** Recunoaste tipul dupa continut, nu dupa numele fisierului. */
 function sniff(buf: Buffer): string | null {
@@ -91,6 +125,25 @@ async function streamToDisk(body: ReadableStream<Uint8Array>): Promise<StreamRes
   const limit = isVideo ? MAX_VIDEO_BYTES : isDoc ? MAX_DOC_BYTES : MAX_IMAGE_BYTES;
 
   await mkdir(UPLOADS_DIR, { recursive: true });
+
+  // O poza trimisa pe calea asta (nu clip) se stringe in memorie: are oricum
+  // plafon de 15 MB, iar asa poate fi micsorata inainte de a ajunge pe disc.
+  if (!isVideo && !isDoc) {
+    const bucati: Uint8Array[] = [first.value];
+    let total = first.value.byteLength;
+    for (;;) {
+      const next = await reader.read();
+      if (next.done) break;
+      total += next.value.byteLength;
+      if (total > limit) {
+        await reader.cancel();
+        return { ok: false, error: "FILE_TOO_LARGE", isVideo, isDoc, maxBytes: limit };
+      }
+      bucati.push(next.value);
+    }
+    return { ok: true, file: await scrieFisier(Buffer.concat(bucati), realType) };
+  }
+
   const name = `${Date.now()}-${randomBytes(8).toString("hex")}${EXT[realType]}`;
   const full = path.join(UPLOADS_DIR, name);
 
@@ -192,12 +245,7 @@ export async function POST(req: Request) {
         return jsonError("FILE_TOO_LARGE", 400, { maxBytes: limit, isVideo, isDoc });
       }
 
-      const name = `${Date.now()}-${randomBytes(8).toString("hex")}${EXT[realType]}`;
-      await writeFile(path.join(UPLOADS_DIR, name), buf);
-      uploaded.push({
-        url: `/api/files/${name}`,
-        type: isVideo ? "VIDEO" : isDoc ? "DOC" : "IMAGE",
-      });
+      uploaded.push(await scrieFisier(buf, realType));
     }
 
     return jsonOk({ files: uploaded, urls: uploaded.map((u) => u.url) });

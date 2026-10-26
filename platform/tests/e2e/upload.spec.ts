@@ -98,6 +98,38 @@ test.describe("Upload poze de pe calculator (formular listare)", () => {
     expect(body.error).toBe("INVALID_TYPE");
   });
 
+  test("o poza mare se micsoreaza singura la incarcare", async ({ page }) => {
+    /*
+      Clientul a urcat un fundal de 2,3 MB si pagina se incarca greu pe telefon.
+      Acum platforma micsoreaza singura, pe server: latura lunga la 2560 px, iar
+      o fotografie fara transparenta se tine in JPEG, nu in PNG.
+    */
+    const sharp = (await import("sharp")).default;
+    const mare = await sharp({
+      create: { width: 3000, height: 1800, channels: 3, background: { r: 180, g: 120, b: 60 } },
+    })
+      .png()
+      .toBuffer();
+    expect((await sharp(mare).metadata()).width).toBe(3000);
+
+    await login(page, "admin@nbp.test", "admin1234");
+    const res = await page.request.post("/api/upload", {
+      multipart: { files: { name: "fundal.png", mimeType: "image/png", buffer: mare } },
+    });
+    const body = await res.json();
+    expect(body.ok, JSON.stringify(body)).toBe(true);
+
+    // PNG-ul unei fotografii devine JPEG, iar poza intra in 2560 px
+    const url = body.files[0].url as string;
+    expect(url).toMatch(/\.jpg$/);
+
+    const servit = await page.request.get(url);
+    expect(servit.status()).toBe(200);
+    expect(servit.headers()["content-type"]).toBe("image/jpeg");
+    const meta = await sharp(await servit.body()).metadata();
+    expect(meta.width).toBe(2560);
+  });
+
   test("cumparatorii nu pot urca fisiere (doar vanzatorii aprobati)", async ({ page }) => {
     await login(page, "buyer1@nbp.test", "buyer1234");
     const res = await page.request.post("/api/upload", {

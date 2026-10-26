@@ -188,6 +188,9 @@ export default async function HomePage({
 
   // Rețelele vin din Setări; cele necompletate nu apar deloc.
   const settings = await getSettings();
+  // 0-60% din Setari, adus la fractie; peste 60 nu mai e poza, e perete
+  const voal = Math.min(60, Math.max(0, settings.homeHeroDarkness)) / 100;
+
   const socialLinks = [
     {
       href: settings.facebookUrl,
@@ -224,10 +227,26 @@ export default async function HomePage({
           style={{ backgroundImage: `url(${settings.homeHeroUrl || "/pigeons/hero-client.jpg"})` }}
           aria-hidden="true"
         />
-        {/* Voalul e subtire: poza trebuie sa ramana luminoasa. Lizibilitatea o
-            tin umbrele de sub text, nu un strat gros de bleumarin peste tot. */}
+        {/*
+          Voalul bleumarin de peste fotografie, reglabil din Setari.
+
+          Clientul: poza pusa de el „este mai inchisa decat poza originala" —
+          asa e, voalul o intuneca, dar fara el scrisul alb nu se citeste pe o
+          poza luminoasa. Acum alege singur cat de tare: 0 = deloc, 15 =
+          implicit. Pe calculator e apasat in stinga, unde cade textul, si se
+          stinge spre dreapta, ca sa se vada pasarea.
+        */}
         <div
-          className="absolute inset-0 -z-10 bg-ink/30 lg:bg-gradient-to-r lg:from-ink/70 lg:via-ink/25 lg:to-transparent"
+          className="absolute inset-0 -z-10 lg:hidden"
+          style={{ backgroundColor: `rgba(16, 36, 63, ${voal})` }}
+          data-testid="hero-veil"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 -z-10 hidden lg:block"
+          style={{
+            backgroundImage: `linear-gradient(to right, rgba(16, 36, 63, ${Math.min(0.85, voal * 2.3).toFixed(3)}), rgba(16, 36, 63, ${(voal * 0.8).toFixed(3)}) 45%, rgba(16, 36, 63, 0))`,
+          }}
           aria-hidden="true"
         />
 
@@ -496,7 +515,9 @@ export default async function HomePage({
 
       {/* ───── Vreau să organizez o licitație · Urmărește-ne ───── */}
       <section className="bg-ivory-soft" data-testid="home-cta-strip">
-        <div className="mx-auto grid max-w-6xl gap-6 px-4 py-12 lg:grid-cols-[1.4fr_1fr]">
+        {/* Clientul, aratind spre ele: „si astea 2 sa fie egale" — erau 1,4 la 1.
+            Inaltimea era deja aceeasi; acum si latimea. */}
+        <div className="mx-auto grid max-w-6xl gap-6 px-4 py-12 lg:grid-cols-2">
           {/* Cardul cerut de client, ca pe voiajor.net: crescătorul lasă datele
               și îl sună administratorul. */}
           <div className="rounded-2xl bg-ink p-6 text-white sm:p-8" data-testid="organize-card">
