@@ -134,6 +134,12 @@ export default async function SalePage({
         />
 
         <div className="relative mx-auto max-w-6xl px-4 py-10 text-white sm:py-14">
+          {/* Banda e lata de aproape 1900 px pe calculator, iar tot ce scria
+              statea ingramadit in stanga ei — de aici „parca totul este mai
+              intins". Pe ecran lat crescatorul ramane in stanga, iar cifrele
+              si ceasul trec in dreapta. Pe telefon si tableta: neschimbat. */}
+          <div className="lg:flex lg:min-h-[22rem] lg:items-center lg:gap-10">
+            <div className="min-w-0 lg:flex-1">
           <div className="flex flex-wrap items-center gap-5">
             {sale.breeder.photoUrl && (
               // eslint-disable-next-line @next/next/no-img-element
@@ -171,9 +177,11 @@ export default async function SalePage({
               </div>
             </div>
           </div>
+            </div>
 
+            <div className="lg:w-[21rem] lg:shrink-0">
           {!doarAfis && (
-          <dl className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3" data-testid="sale-stats">
+          <dl className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:mt-0 lg:grid-cols-1" data-testid="sale-stats">
             <HeroStat label={t("pigeons")} value={String(all.length)} />
             <HeroStat label={t("lots")} value={String(sale.lots.length)} />
             <HeroStat
@@ -227,6 +235,8 @@ export default async function SalePage({
               )}
             </div>
           )}
+            </div>
+          </div>
         </div>
       </header>
 

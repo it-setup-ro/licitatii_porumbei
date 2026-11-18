@@ -70,8 +70,9 @@ test.describe("Unelte de administrare", () => {
     await login(page, "admin@nbp.test", "admin1234");
     await page.goto("/ro/admin/users");
 
-    // căutăm un cumpărător din baza de test
-    await page.getByTestId("users-search").fill("buyer");
+    // Un cumpărător anume, nu „primul din listă": dacă lista se reașază, a
+    // doua apăsare nimerește alt rând și cineva rămâne blocat.
+    await page.getByTestId("users-search").fill("buyer2@nbp.test");
     await page.getByTestId("users-search").press("Enter");
 
     const rand = page.getByTestId("user-row").first();
@@ -80,13 +81,26 @@ test.describe("Unelte de administrare", () => {
     const actiuni = rand.getByTestId("user-row-actions-toggle");
     if ((await actiuni.count()) === 0) return; // e administrator: nu se blochează
 
-    const eticheta = (await actiuni.innerText()).trim();
-    await actiuni.click();
-    await expect(rand.getByTestId("user-row-actions-toggle")).not.toHaveText(eticheta);
+    const id = await rand.getAttribute("data-user-id");
+    try {
+      // Se verifică insigna „suspendat", nu textul butonului: butonul scrie
+      // „…" cât ține cererea, iar o a doua apăsare pe el pleacă cu starea
+      // veche și blochează din nou în loc să deblocheze.
+      await actiuni.click();
+      await expect(rand).toContainText("suspendat");
 
-    // înapoi cum era, ca să nu stricăm celelalte teste
-    await rand.getByTestId("user-row-actions-toggle").click();
-    await expect(rand.getByTestId("user-row-actions-toggle")).toHaveText(eticheta);
+      await actiuni.click();
+      await expect(rand).not.toContainText("suspendat");
+    } finally {
+      // Plasă de siguranță: un cont rămas blocat pică toate testele de mai
+      // târziu care se autentifică cu el (s-a întâmplat: 20 de teste).
+      if (id) {
+        const r = await page.request.post(`/api/admin/users/${id}/suspend`, {
+          data: { suspended: false },
+        });
+        expect(r.ok()).toBe(true);
+      }
+    }
   });
 
   /**

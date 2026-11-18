@@ -86,6 +86,7 @@ export default async function AdminUsersPage({
             <div
               key={u.id}
               data-testid="user-row"
+              data-user-id={u.id}
               className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-ink/10 bg-white p-5"
             >
               <div className="min-w-0 text-sm">

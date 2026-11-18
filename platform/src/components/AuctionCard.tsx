@@ -66,13 +66,16 @@ export default async function AuctionCard({
     <Link
       href={`/auctions/${auction.id}`}
       className={`card-hover overflow-hidden rounded-2xl border border-ink/10 bg-white ${
-        mare ? "flex flex-col sm:min-h-[72vh]" : "block"
+        // pe tableta cardul umple ecranul, cum a cerut clientul; pe calculator
+        // un card de 550 px lat si 780 inalt devenea un turn cu poza plutind
+        // intr-o rama goala, de unde „pe calculator pare intins"
+        mare ? "flex flex-col sm:min-h-[72vh] lg:min-h-0" : "block"
       }`}
       data-testid="auction-card"
     >
       {/* Poza întreagă, fără colțuri tăiate: clientul pune pe poze palmaresul,
           adresa și steagul chiar la margini, care dispăreau la decupare. */}
-      <div className={`relative bg-white ${mare ? "aspect-[4/3] sm:aspect-auto sm:flex-1" : "aspect-[4/3]"}`}>
+      <div className={`relative bg-white ${mare ? "aspect-[4/3] sm:aspect-auto sm:flex-1 lg:aspect-[4/3] lg:flex-none" : "aspect-[4/3]"}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={auction.pigeon.imageUrl ?? "/pigeons/p1.svg"}

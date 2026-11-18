@@ -250,7 +250,13 @@ export default async function HomePage({
           aria-hidden="true"
         />
 
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 sm:py-24 lg:grid-cols-[1fr_auto] lg:items-center">
+        {/* Clientul: pe calculator „parca totul este mai intins". Pe telefon
+            cadrul e inalt (0,7 lat pe inalt) si fotografia intra pe inaltime;
+            pe calculator cadrul ramanea la aceeasi inaltime, dar de cinci ori
+            mai lat (3,4), asa ca din poza se taia un sfert de sus si de jos,
+            iar peisajul se lafaia. La 70% din inaltimea ecranului cadrul are
+            aproape forma fotografiei, deci se vede aproape intreaga. */}
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 sm:py-24 lg:min-h-[70vh] lg:content-center lg:grid-cols-[1fr_auto] lg:items-center">
           <div className="max-w-2xl">
             <p className="hero-shadow text-xs font-bold uppercase tracking-[0.25em] text-wing-yellow">
               {t("kicker")}

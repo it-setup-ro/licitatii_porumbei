@@ -75,10 +75,12 @@ export default async function SaleCard({
       href={`/sales/${sale.slug}`}
       data-testid="sale-card"
       className={`card-hover overflow-hidden rounded-2xl border border-ink/10 bg-white ${
-        mare ? "flex flex-col sm:min-h-[72vh]" : "block"
+        // pe calculator cardul nu mai creste in inaltime: ramane la forma lui,
+        // altfel poza pluteste intr-o rama goala (vezi AuctionCard)
+        mare ? "flex flex-col sm:min-h-[72vh] lg:min-h-0" : "block"
       }`}
     >
-      <div className={`relative bg-white ${mare ? "aspect-[16/9] sm:aspect-auto sm:flex-1" : "aspect-[16/9]"}`}>
+      <div className={`relative bg-white ${mare ? "aspect-[16/9] sm:aspect-auto sm:flex-1 lg:aspect-[16/9] lg:flex-none" : "aspect-[16/9]"}`}>
         {sale.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={sale.imageUrl} alt={sale.breederName} className="h-full w-full object-cover" />
