@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
+import RichEditor from "@/components/admin/RichEditor";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 
 /**
@@ -129,13 +130,15 @@ export default function ArticleComposer({
         className="w-full border-b border-ink/10 px-4 py-4 font-display text-xl font-bold outline-none placeholder:font-sans placeholder:text-base placeholder:font-normal placeholder:text-ink/35 focus:bg-ivory-soft"
       />
 
-      <textarea
+      {/* Butoanele scriu semnele in locul omului, iar „Vezi cum arata"
+          randeaza cu aceeasi componenta ca pagina publica. */}
+      <RichEditor
         value={body}
-        onChange={(e) => setBody(e.target.value)}
-        data-testid="composer-body"
+        onChange={setBody}
+        testid="composer-body"
         placeholder="Scrie aici…"
         rows={9}
-        className="w-full resize-y px-4 py-4 text-base leading-relaxed outline-none placeholder:text-ink/35 focus:bg-ivory-soft"
+        className="px-4 pt-3"
       />
 
       <div className="border-t border-ink/10 px-4 py-4">
@@ -204,13 +207,12 @@ export default function ArticleComposer({
               placeholder="Title in English"
               className="w-full rounded-xl border border-ink/20 bg-ivory-soft px-4 py-2.5 text-sm outline-none focus:border-wing-blue"
             />
-            <textarea
+            <RichEditor
               value={bodyEn}
-              onChange={(e) => setBodyEn(e.target.value)}
-              data-testid="composer-body-en"
+              onChange={setBodyEn}
+              testid="composer-body-en"
               placeholder="Text in English"
               rows={5}
-              className="w-full rounded-xl border border-ink/20 bg-ivory-soft px-4 py-2.5 text-sm outline-none focus:border-wing-blue"
             />
           </div>
         ) : (

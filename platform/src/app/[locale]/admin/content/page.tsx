@@ -68,12 +68,12 @@ export default async function AdminContentPage({
             {
               key: "bodyRo",
               label: "Conținut (RO)",
-              type: "textarea",
+              type: "rich",
               rows: 14,
               required: true,
-              hint: "Folosește „## " + "Titlu” pentru subtitluri și un rând gol între paragrafe.",
+              hint: "Selectează textul și apasă butoanele de deasupra casetei. Rând gol între paragrafe.",
             },
-            { key: "bodyEn", label: "Conținut (EN)", type: "textarea", rows: 14, required: true },
+            { key: "bodyEn", label: "Conținut (EN)", type: "rich", rows: 14, required: true },
           ]}
         />
       )}

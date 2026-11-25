@@ -148,9 +148,10 @@ export default async function SalePage({
                 alt={sale.breeder.name}
                 data-testid="sale-hero-photo"
                 // Daniel: "poza vanzatorului sa aiba un format mai mare ca arata mai bine".
-                // Pe calculator banda are 464 px, din care 352 utili: o poza de 224 px
-                // incape fara sa creasca banda si fara sa impinga numele.
-                className="h-32 w-32 shrink-0 rounded-2xl border-2 border-white/60 object-cover shadow-lg sm:h-44 sm:w-44 lg:h-56 lg:w-56"
+                // Pe calculator banda are 464 px, din care 352 utili: poza umple aproape
+                // toata inaltimea (320 px) si tot ramane aer sus si jos, iar numele
+                // incape pe un rand. Daniel: „fa-o mai mare, cat e banda sau pe aproape”.
+                className="h-32 w-32 shrink-0 rounded-2xl border-2 border-white/60 object-cover shadow-lg sm:h-44 sm:w-44 lg:h-80 lg:w-80"
               />
             )}
             <div className="min-w-0">
@@ -182,7 +183,9 @@ export default async function SalePage({
           </div>
             </div>
 
-            <div className="lg:w-[21rem] lg:shrink-0">
+            {/* Daniel: „micsoreaza ce casete poti… nu e nevoie sa fie atat de
+                lungi” — coloana scade de la 336 la 240 px, iar casetele cu ea. */}
+            <div className="lg:w-[15rem] lg:shrink-0">
           {!doarAfis && (
           <dl className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:mt-0 lg:grid-cols-1" data-testid="sale-stats">
             <HeroStat label={t("pigeons")} value={String(all.length)} />

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
+import RichEditor from "@/components/admin/RichEditor";
 
 /**
  * Editor generic pentru înregistrările din admin (produse, articole, concursuri,
@@ -13,8 +14,22 @@ import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
 export type FieldDef = {
   key: string;
   label: string;
-  /** "image" = alegere de poza cu acelasi selector ca la articole/loturi */
-  type: "text" | "textarea" | "number" | "money" | "boolean" | "select" | "datetime" | "image";
+  /**
+   * "image" = alegere de poza cu acelasi selector ca la articole/loturi.
+   * "rich"  = caseta cu butoane (ingrosat, inclinat, lista, link, culori) si
+   *           previzualizare — doar pentru textele care ajung pe site prin
+   *           `RichText`; un cimp de notite interne n-are ce face cu ele.
+   */
+  type:
+    | "text"
+    | "textarea"
+    | "rich"
+    | "number"
+    | "money"
+    | "boolean"
+    | "select"
+    | "datetime"
+    | "image";
   options?: { value: string; label: string }[];
   hint?: string;
   rows?: number;
@@ -182,7 +197,10 @@ export default function RecordEditor({
 
       <div className="grid gap-4 rounded-2xl border border-ink/10 bg-white p-5 sm:grid-cols-2">
         {fields.map((f) => (
-          <div key={f.key} className={f.full || f.type === "textarea" ? "sm:col-span-2" : ""}>
+          <div
+            key={f.key}
+            className={f.full || f.type === "textarea" || f.type === "rich" ? "sm:col-span-2" : ""}
+          >
             <label className="text-sm font-medium" htmlFor={`f-${f.key}`}>
               {f.label}
               {f.required && (
@@ -241,6 +259,15 @@ export default function RecordEditor({
                   </option>
                 ))}
               </select>
+            ) : f.type === "rich" ? (
+              <RichEditor
+                id={`f-${f.key}`}
+                value={String(values[f.key] ?? "")}
+                onChange={(v) => set(f.key, v)}
+                rows={f.rows ?? 8}
+                testid={`field-${f.key}`}
+                className="mt-1"
+              />
             ) : f.type === "textarea" ? (
               <textarea
                 id={`f-${f.key}`}

@@ -54,10 +54,10 @@ const FIELDS: FieldDef[] = [
     required: true,
     hint: "Banda de pe prima pagină dispare singură după data asta.",
   },
-  { key: "descRo", label: "Descriere (RO)", type: "textarea", rows: 4 },
-  { key: "descEn", label: "Descriere (EN)", type: "textarea", rows: 4 },
-  { key: "rulesRo", label: "Regulament (RO)", type: "textarea", rows: 8 },
-  { key: "rulesEn", label: "Regulament (EN)", type: "textarea", rows: 8 },
+  { key: "descRo", label: "Descriere (RO)", type: "rich", rows: 4 },
+  { key: "descEn", label: "Descriere (EN)", type: "rich", rows: 4 },
+  { key: "rulesRo", label: "Regulament (RO)", type: "rich", rows: 8 },
+  { key: "rulesEn", label: "Regulament (EN)", type: "rich", rows: 8 },
   {
     // selector de fisiere, ca la produse si articole: se alege o poza de pe
     // calculator sau de pe telefon, nu se scrie o adresa de mana

@@ -75,11 +75,11 @@ export default async function AdminSalesPage({
     {
       key: "descRo",
       label: "Descriere (RO)",
-      type: "textarea",
+      type: "rich",
       rows: 6,
-      hint: "Ce se vinde, de ce merită. Un rând gol între paragrafe.",
+      hint: "Ce se vinde, de ce merită. Selectează textul și apasă butoanele de deasupra casetei.",
     },
-    { key: "descEn", label: "Descriere (EN)", type: "textarea", rows: 4 },
+    { key: "descEn", label: "Descriere (EN)", type: "rich", rows: 4 },
     {
       key: "coverUrl",
       label: "Imagine copertă",

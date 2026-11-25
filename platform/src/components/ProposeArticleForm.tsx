@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
+import RichEditor from "@/components/admin/RichEditor";
 
 /**
  * Crescătorul își scrie povestea, adminul o publică.
@@ -98,13 +99,13 @@ export default function ProposeArticleForm() {
 
       <label className="block">
         <span className="text-sm font-semibold">{t("bodyLabel")}</span>
-        <textarea
-          className={camp}
+        <RichEditor
           rows={12}
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={setText}
           placeholder={t("bodyPlaceholder")}
-          data-testid="propose-body"
+          testid="propose-body"
+          className="mt-1"
         />
         <span className="mt-1 block text-xs text-ink/50">{t("bodyHint")}</span>
         {erori.body && (

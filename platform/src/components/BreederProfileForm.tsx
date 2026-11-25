@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import MediaPicker, { type PickedMedia } from "@/components/MediaPicker";
+import RichEditor from "@/components/admin/RichEditor";
 
 export type BreederProfileData = {
   alias: string;
@@ -82,16 +83,35 @@ export default function BreederProfileForm({ initial }: { initial: BreederProfil
     </label>
   );
 
-  const area = (k: keyof BreederProfileData, label: string, testid: string, rows = 6) => (
+  const area = (
+    k: keyof BreederProfileData,
+    label: string,
+    testid: string,
+    rows = 6,
+    /** povestea merge pe site prin `RichText`, deci primește butoanele;
+        rezultatele se scriu „Loc 1 | Maraton – Berlin | 2025" și sunt citite
+        de lib/breeder-results.ts — acolo semnele n-au ce căuta */
+    bogat = false,
+  ) => (
     <label className="block text-sm">
       <span className="font-medium">{label}</span>
-      <textarea
-        value={String(form[k])}
-        onChange={(e) => set(k, e.target.value)}
-        rows={rows}
-        data-testid={testid}
-        className={cls(k)}
-      />
+      {bogat ? (
+        <RichEditor
+          value={String(form[k])}
+          onChange={(v) => set(k, v)}
+          rows={rows}
+          testid={testid}
+          className="mt-1"
+        />
+      ) : (
+        <textarea
+          value={String(form[k])}
+          onChange={(e) => set(k, e.target.value)}
+          rows={rows}
+          data-testid={testid}
+          className={cls(k)}
+        />
+      )}
       {errors[k] && <span className="mt-1 block text-wing-red">{errors[k]}</span>}
     </label>
   );
@@ -132,8 +152,8 @@ export default function BreederProfileForm({ initial }: { initial: BreederProfil
       </div>
 
       <div className="mt-5 grid gap-4">
-        {area("storyRo", t("story"), "breeder-story-ro")}
-        {area("storyEn", t("storyEn"), "breeder-story-en", 4)}
+        {area("storyRo", t("story"), "breeder-story-ro", 6, true)}
+        {area("storyEn", t("storyEn"), "breeder-story-en", 4, true)}
         {area("resultsRo", t("results"), "breeder-results-ro")}
         {area("resultsEn", t("resultsEn"), "breeder-results-en", 4)}
       </div>

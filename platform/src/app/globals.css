@@ -28,6 +28,11 @@
      Clientul: „sub poza de fundal este o banda albastru inchis, se doreste o
      banda albastru deschis... insignele sa fie mai vizibile". */
   --sky-soft: #d8e8f8;
+  /* cele doua culori de evidentiere din editor care nu existau in paleta:
+     un portocaliu adevarat (--wing-orange e auriu profund) si un verde.
+     Clientul le vrea pentru masculi/femele si pentru accente in text. */
+  --mark-orange: #e8762c;
+  --mark-green: #2f8f5b;
   --background: var(--ivory);
   --foreground: var(--ink);
 }
@@ -43,6 +48,8 @@
   --color-wing-orange: var(--wing-orange);
   --color-wing-red: var(--wing-red);
   --color-sky-soft: var(--sky-soft);
+  --color-mark-orange: var(--mark-orange);
+  --color-mark-green: var(--mark-green);
   --font-sans: var(--font-body);
   --font-serif: var(--font-display);
   --font-script: var(--font-script);

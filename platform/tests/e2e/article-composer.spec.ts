@@ -35,6 +35,74 @@ test.describe("Compozitor de articole", () => {
     await expect(page.getByTestId("article-card").first()).toContainText("Vara cere atenție");
   });
 
+  /**
+   * Clientul vrea sa scrie cu ingrosat si cu culori (albastru pentru masculi,
+   * portocaliu pentru femele). Butoanele scriu semnele in locul lui, iar
+   * „Vezi cum arata" randeaza cu aceeasi componenta ca pagina publica.
+   */
+  test("butoanele de scris pun semnele, iar textul ajunge colorat pe site", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/articles?new=1");
+
+    const titlu = `Perechea de maraton ${Date.now()}`;
+    await page.getByTestId("composer-title").fill(titlu);
+
+    const caseta = page.getByTestId("composer-body");
+    await caseta.fill("Linia conteaza: ");
+    await caseta.focus();
+    // cursorul la final, ca butonul sa insereze acolo
+    await page.keyboard.press("End");
+
+    // fara text selectat, butonul lasa cuvantul „text" selectat; scriem peste el
+    await page.getByTestId("composer-body-buton-b").click();
+    await page.keyboard.type("osatura");
+    await expect(caseta).toHaveValue("Linia conteaza: **osatura**");
+
+    await caseta.fill("Linia conteaza: **osatura**. La perechi: ");
+    await caseta.focus();
+    await page.keyboard.press("End");
+    await page.getByTestId("composer-body-buton-albastru").click();
+    await page.keyboard.type("masculul");
+    await expect(caseta).toHaveValue(
+      "Linia conteaza: **osatura**. La perechi: {albastru|masculul}"
+    );
+
+    // previzualizarea arata rezultatul, nu semnele
+    await page.getByTestId("composer-body-vezi").click();
+    const previzualizare = page.getByTestId("composer-body-previzualizare");
+    await expect(previzualizare).toBeVisible();
+    await expect(previzualizare.locator("strong")).toHaveText("osatura");
+    await expect(previzualizare).not.toContainText("**");
+    await expect(previzualizare.locator(".text-wing-blue")).toHaveText("masculul");
+
+    await page.getByTestId("composer-body-vezi").click();
+    await page.getByTestId("composer-submit").click();
+    await expect(page.getByTestId("composer-saved")).toBeVisible();
+
+    // pe site: ingrosat si colorat, fara semne la vedere
+    await page.getByTestId("composer-view").click();
+    const corp = page.getByTestId("article-body");
+    await expect(corp.locator("strong")).toHaveText("osatura");
+    await expect(corp.locator(".text-wing-blue")).toHaveText("masculul");
+    await expect(corp).not.toContainText("{albastru");
+  });
+
+  test("un link scris cu adresa periculoasa nu devine link", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/articles?new=1");
+    await page.getByTestId("composer-title").fill(`Link nesigur ${Date.now()}`);
+    await page
+      .getByTestId("composer-body")
+      .fill("Un text destul de lung ca sa treaca de validare. [apasa](javascript:alert(1))");
+    await page.getByTestId("composer-submit").click();
+    await expect(page.getByTestId("composer-saved")).toBeVisible();
+
+    await page.getByTestId("composer-view").click();
+    const corp = page.getByTestId("article-body");
+    await expect(corp.locator("a")).toHaveCount(0);
+    await expect(corp).toContainText("javascript:alert(1)");
+  });
+
   test("articolul apare si in engleza fara traducere manuala", async ({ page }) => {
     await login(page, "admin@nbp.test", "admin1234");
     await page.goto("/ro/admin/articles?new=1");

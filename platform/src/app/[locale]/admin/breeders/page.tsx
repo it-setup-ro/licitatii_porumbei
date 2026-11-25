@@ -26,11 +26,11 @@ const FIELDS: FieldDef[] = [
   {
     key: "storyRo",
     label: "Povestea (RO)",
-    type: "textarea",
+    type: "rich",
     rows: 6,
-    hint: "De când crește porumbei, liniile, ce îl face special. Un rând gol între paragrafe.",
+    hint: "De când crește porumbei, liniile, ce îl face special. Selectează textul și apasă butoanele de deasupra casetei.",
   },
-  { key: "storyEn", label: "Povestea (EN)", type: "textarea", rows: 4 },
+  { key: "storyEn", label: "Povestea (EN)", type: "rich", rows: 4 },
   {
     key: "resultsRo",
     label: "Rezultate (RO)",
