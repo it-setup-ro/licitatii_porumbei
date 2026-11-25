@@ -147,7 +147,10 @@ export default async function SalePage({
                 src={sale.breeder.photoUrl}
                 alt={sale.breeder.name}
                 data-testid="sale-hero-photo"
-                className="h-32 w-32 shrink-0 rounded-2xl border-2 border-white/60 object-cover shadow-lg sm:h-44 sm:w-44"
+                // Daniel: "poza vanzatorului sa aiba un format mai mare ca arata mai bine".
+                // Pe calculator banda are 464 px, din care 352 utili: o poza de 224 px
+                // incape fara sa creasca banda si fara sa impinga numele.
+                className="h-32 w-32 shrink-0 rounded-2xl border-2 border-white/60 object-cover shadow-lg sm:h-44 sm:w-44 lg:h-56 lg:w-56"
               />
             )}
             <div className="min-w-0">

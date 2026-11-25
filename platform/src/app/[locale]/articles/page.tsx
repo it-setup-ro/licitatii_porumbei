@@ -62,12 +62,19 @@ export default async function ArticlesPage({
                 data-testid="article-card"
                 className="card-hover flex flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white"
               >
-                <div className="aspect-square bg-ivory-soft">
+                {/* Poza stă așezată peste ramă (`absolute inset-0`), nu în ea:
+                    cardul e `flex flex-col`, iar într-un card flexibil Chrome nu
+                    rezolvă `h-full` pe poză — o desena la mărimea ei adevărată și
+                    pătratul creștea de la 234 la 520 px, cu rândul ragged și
+                    pozele uriașe (clientul: „pe calculator, articolele nu se văd
+                    bine, pozele pot fi mai mici"). Firefox o rezolva, de-aia pe
+                    un ecran arăta bine și pe altul nu. */}
+                <div className="relative aspect-square shrink-0 overflow-hidden bg-ivory-soft">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={a.coverUrl ?? "/pigeons/p1.svg"}
                     alt={title}
-                    className="h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
                 <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
