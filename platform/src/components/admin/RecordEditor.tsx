@@ -176,7 +176,15 @@ export default function RecordEditor({
   };
 
   return (
-    <form onSubmit={submit} className="space-y-4" data-testid="record-editor">
+    /* Daniel: „cand merg la crescatori si dau editeaza nu se intampla nimic” —
+       formularul sta sub tabel, la peste doua ecrane; linkurile vin cu #editor
+       si pagina se deschide direct la el. `scroll-mt` tine bara de sus deoparte. */
+    <form
+      id="editor"
+      onSubmit={submit}
+      className="scroll-mt-24 space-y-4"
+      data-testid="record-editor"
+    >
       <h2 className="font-display text-xl font-bold">{title}</h2>
 
       {help && (

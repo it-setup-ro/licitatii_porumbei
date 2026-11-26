@@ -403,3 +403,35 @@ test.describe("Newsletter", () => {
     expect(stari).toContain(409);
   });
 });
+
+test.describe("Editarea dintr-o listă lungă", () => {
+  /**
+   * Daniel: „cand merg la crescatori si dau editeaza nu se intampla nimic".
+   * Formularul stătea sub tabel, la peste două ecrane, iar pagina se deschidea
+   * sus: tabelul arăta la fel și părea că butonul n-a făcut nimic. Linkurile
+   * duc acum la ancora formularului.
+   */
+  test("„Editează” duce pagina direct la formular", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    // Ajutorul are intotdeauna intrebari in baza de probă (crescatorii si
+    // licitatiile se fac in teste), iar formularul e acelasi `RecordEditor`.
+    await page.goto("/ro/admin/faq");
+
+    await page.getByTestId("faq-row").first().click();
+    await expect(page).toHaveURL(/\?id=[a-z0-9]+#editor$/);
+
+    const editor = page.getByTestId("record-editor");
+    await expect(editor).toBeInViewport();
+    // formularul e deschis pe intrebarea apasata, nu gol
+    await expect(editor.getByTestId("field-questionRo")).not.toHaveValue("");
+  });
+
+  test("„+ Crescător nou” duce și el la formular", async ({ page }) => {
+    await login(page, "admin@nbp.test", "admin1234");
+    await page.goto("/ro/admin/breeders");
+
+    await page.getByTestId("breeder-new").click();
+    await expect(page).toHaveURL(/\?new=1#editor$/);
+    await expect(page.getByTestId("record-editor")).toBeInViewport();
+  });
+});

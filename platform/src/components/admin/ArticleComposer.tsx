@@ -102,7 +102,7 @@ export default function ArticleComposer({
             </a>
           )}
           <a
-            href="?new=1"
+            href="?new=1#editor"
             className="rounded-xl border border-ink/20 px-6 py-3 font-semibold hover:border-ink/40"
             data-testid="composer-again"
           >
@@ -117,8 +117,9 @@ export default function ArticleComposer({
 
   return (
     <form
+      id="editor"
       onSubmit={publish}
-      className="overflow-hidden rounded-2xl border border-ink/10 bg-white"
+      className="scroll-mt-24 overflow-hidden rounded-2xl border border-ink/10 bg-white"
       data-testid="article-composer"
     >
       <input

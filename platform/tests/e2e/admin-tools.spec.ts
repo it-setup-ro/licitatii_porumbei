@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login } from "./helpers";
+import { login, asteaptaFormularViu } from "./helpers";
 
 /**
  * Uneltele cerute după verificarea site-ului: comenzile din magazin, jurnalul
@@ -86,9 +86,14 @@ test.describe("Unelte de administrare", () => {
       // Se verifică insigna „suspendat", nu textul butonului: butonul scrie
       // „…" cât ține cererea, iar o a doua apăsare pe el pleacă cu starea
       // veche și blochează din nou în loc să deblocheze.
+      // Butonul trebuie sa fie viu (hidratat) inainte de apasare: in suita
+      // completa pagina se incarca mai lent si prima apasare se pierdea —
+      // insigna nu mai apărea și testul pică singur.
+      await asteaptaFormularViu(page, "user-row-actions-toggle");
       await actiuni.click();
       await expect(rand).toContainText("suspendat");
 
+      await asteaptaFormularViu(page, "user-row-actions-toggle");
       await actiuni.click();
       await expect(rand).not.toContainText("suspendat");
     } finally {

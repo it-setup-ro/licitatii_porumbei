@@ -37,7 +37,7 @@ export default async function AdminContentPage({
         {pages.map((p) => (
           <a
             key={p.slug}
-            href={`?slug=${p.slug}`}
+            href={`?slug=${p.slug}#editor`}
             data-testid={`content-tab-${p.slug}`}
             className={`rounded-full px-4 py-1.5 text-sm font-semibold ${
               active?.slug === p.slug

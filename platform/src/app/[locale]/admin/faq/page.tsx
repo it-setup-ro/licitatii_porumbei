@@ -35,7 +35,7 @@ export default async function AdminFaqPage({
         </h1>
         {editing && (
           <a
-            href="?new=1"
+            href="?new=1#editor"
             data-testid="faq-new"
             className="rounded-xl bg-ink px-5 py-2.5 text-sm font-bold text-ivory hover:bg-wing-orange"
           >
@@ -93,7 +93,7 @@ export default async function AdminFaqPage({
                   .map((i) => (
                     <li key={i.id} className="flex items-center justify-between gap-3 px-4 py-3">
                       <a
-                        href={`?id=${i.id}`}
+                        href={`?id=${i.id}#editor`}
                         className="min-w-0 flex-1 truncate font-medium hover:text-wing-blue"
                         data-testid="faq-row"
                       >

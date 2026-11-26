@@ -38,7 +38,7 @@ export default async function AdminArticlesPage({
         </h1>
         {editing && (
           <a
-            href="?new=1"
+            href="?new=1#editor"
             data-testid="article-new"
             className="rounded-xl bg-ink px-5 py-2.5 text-sm font-bold text-ivory hover:bg-wing-orange"
           >
@@ -79,7 +79,7 @@ export default async function AdminArticlesPage({
                 className="flex flex-wrap items-center gap-3 rounded-2xl border border-wing-orange/30 bg-wing-orange/5 p-3"
                 data-testid="admin-proposal-row"
               >
-                <a href={`?id=${a.id}`} className="min-w-0 flex-1">
+                <a href={`?id=${a.id}#editor`} className="min-w-0 flex-1">
                   <span className="block truncate font-semibold">{a.titleRo}</span>
                   <span className="text-xs text-ink/50">
                     {a.proposedBy?.sellerCompany || a.proposedBy?.name || a.proposedBy?.email} ·{" "}
@@ -103,7 +103,7 @@ export default async function AdminArticlesPage({
           {articles.map((a) => (
             <div key={a.id} className="flex items-center gap-2">
             <a
-              href={`?id=${a.id}`}
+              href={`?id=${a.id}#editor`}
               data-testid="article-edit"
               className={`flex min-w-0 flex-1 items-center gap-3 rounded-2xl border bg-white p-3 transition-colors hover:border-wing-blue ${
                 editing?.id === a.id ? "border-wing-blue" : "border-ink/10"

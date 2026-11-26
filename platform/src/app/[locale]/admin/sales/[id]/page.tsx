@@ -99,7 +99,7 @@ export default async function AdminSalePage({
         </div>
         <div className="flex flex-wrap gap-2">
           <a
-            href={`/${locale}/admin/sales?id=${sale.id}`}
+            href={`/${locale}/admin/sales?id=${sale.id}#editor`}
             className="rounded-xl border border-ink/20 px-4 py-2 text-sm font-semibold hover:border-wing-blue"
           >
             Editează datele

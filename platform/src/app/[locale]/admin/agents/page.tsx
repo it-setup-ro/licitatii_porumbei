@@ -133,7 +133,7 @@ export default async function AdminAgentsPage({
       <div className="mb-2 flex items-center justify-between">
         <h1 className="font-display text-3xl font-bold">Transport &amp; agenți</h1>
         <a
-          href="?new=1"
+          href="?new=1#editor"
           data-testid="agent-new"
           className="rounded-xl bg-ink px-5 py-2 text-sm font-bold text-ivory hover:bg-wing-orange"
         >
@@ -162,7 +162,7 @@ export default async function AdminAgentsPage({
                   </td>
                   <td className="px-4 py-2.5 text-end">
                     <a
-                      href={`?id=${a.id}`}
+                      href={`?id=${a.id}#editor`}
                       className="-my-1 inline-block rounded-lg px-3 py-2 font-semibold text-wing-blue hover:bg-wing-blue/10 hover:underline"
                       data-testid="agent-edit"
                     >
